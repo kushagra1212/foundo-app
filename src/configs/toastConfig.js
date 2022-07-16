@@ -39,6 +39,18 @@ export const toastConfig = {
       )}
     />
   ),
+  success: ({ props }) => (
+    <FoundoToast
+      {...props}
+      ToastIcon={() => (
+        <AntDesign
+          style={{ color: COLORS.greenSecondary, marginRight: 10 }}
+          name="infocirlce"
+          size={30}
+        />
+      )}
+    />
+  ),
 };
 
 const FoundoToast = (props) => (

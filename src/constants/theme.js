@@ -1,5 +1,6 @@
 import { Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
+import { Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
 export const COLORS = {
   primary: '#0165FF',
 
@@ -68,42 +69,42 @@ export const STYLE = {
 
 export const FONTS = {
   h1: {
-    fontfamily: 'Roboto-black',
+    fontfamily: 'Roboto_700Bold',
     fontsize: SIZES.h1,
     lineheight: 30,
   },
   h2: {
-    fontfamily: 'Roboto-blold',
+    fontfamily: 'Roboto_700Bold',
     fontsize: SIZES.h2,
     lineheight: 30,
   },
   h3: {
-    fontfamily: 'Roboto-blold',
+    fontfamily: 'Roboto_700Bold',
     fontsize: SIZES.h3,
     lineheight: 22,
   },
   h4: {
-    fontfamily: 'Roboto-blold',
+    fontfamily: 'Roboto_700Bold',
     fontsize: SIZES.h4,
     lineheight: 22,
   },
   body1: {
-    fontfamily: 'Roboto-Regular',
+    fontfamily: 'Roboto_400Regular',
     fontsize: SIZES.h1,
     lineheight: 30,
   },
   body2: {
-    fontfamily: 'Roboto-Regular',
+    fontfamily: 'Roboto_400Regular',
     fontsize: SIZES.body2,
     lineheight: 30,
   },
   body3: {
-    fontfamily: 'Roboto-Regular',
+    fontfamily: 'Roboto_400Regular',
     fontsize: SIZES.body3,
     lineheight: 22,
   },
   body4: {
-    fontfamily: 'Roboto-Regular',
+    fontfamily: 'Roboto_400Regular',
     fontsize: SIZES.body4,
     lineheight: 22,
   },

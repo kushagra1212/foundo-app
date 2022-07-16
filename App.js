@@ -6,9 +6,24 @@ import Toast from 'react-native-toast-message';
 import AuthScreen from './src/screens/authScreens/AuthScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import { toastConfig } from './src/configs/toastConfig';
+import { useFonts } from 'expo-font';
+import {
+  Roboto_100Thin,
+  Roboto_400Regular,
+  Roboto_700Bold,
+} from '@expo-google-fonts/roboto';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [isfontLoaded] = useFonts({
+    Roboto_400Regular: Roboto_400Regular,
+    Roboto_700Bold: Roboto_700Bold,
+    Roboto_100Thin: Roboto_100Thin,
+  });
+  if (!isfontLoaded) {
+    return null;
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Auth">

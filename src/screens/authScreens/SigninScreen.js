@@ -8,13 +8,14 @@ import { TextInput } from 'react-native-gesture-handler';
 import { useState } from 'react';
 import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo } from '../../constants/icons';
+import { Roboto_100Thin, Roboto_400Regular } from '@expo-google-fonts/roboto';
 
-const SigninScreen = () => {
+const SigninScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
   const handleLoginSubmit = (e) => {
     console.log(e);
     Toast.show({
-      type: 'info',
+      type: 'error',
       props: {
         text: 'Error !',
         message: 'wnfefjjew wfjejfe wefwefuhjewfewoif  wefhweiofewfh ',
@@ -46,7 +47,11 @@ const SigninScreen = () => {
                   size={20}
                 />
                 <TextInput
-                  style={{ width: '80%', fontSize: 20 }}
+                  style={{
+                    width: '80%',
+                    fontSize: 20,
+                    fontFamily: 'Roboto_400Regular',
+                  }}
                   name="email"
                   placeholder="Email ID"
                   onChangeText={handleChange('email')}
@@ -81,7 +86,25 @@ const SigninScreen = () => {
             </View>
           )}
         </Formik>
-        <Text style={styles.register_text}>New to Foundo? Register here</Text>
+        <View style={styles.register_view}>
+          <Text
+            style={{
+              fontSize: SIZES.h4,
+            }}
+          >
+            New to Foundo?{' '}
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <Text
+              style={{
+                color: COLORS.blueSecondary,
+                fontSize: SIZES.h4,
+              }}
+            >
+              Register here
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -156,12 +179,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  register_text: {
+  register_view: {
     position: 'absolute',
-    fontSize: SIZES.h4,
     fontWeight: '400',
     marginLeft: '15%',
     marginTop: '100%',
+    display: 'flex',
+    flexDirection: 'row',
   },
 });
 const loginValidationSchema = yup.object().shape({

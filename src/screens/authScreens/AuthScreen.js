@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SigninScreen from './SigninScreen';
 import SignupScreen from './SignupScreen';
 import { NavigationContainer } from '@react-navigation/native';
+import { COLORS } from '../../constants/theme';
 const Stack = createNativeStackNavigator();
 
 const AuthScreen = () => {
@@ -15,7 +16,17 @@ const AuthScreen = () => {
         name="Signin"
         component={SigninScreen}
       />
-      <Stack.Screen name="Signup" component={SignupScreen} />
+      <Stack.Screen
+        options={{
+          title: '',
+          headerShadowVisible: false,
+          headerStyle: {
+            backgroundColor: COLORS.white,
+          },
+        }}
+        name="Signup"
+        component={SignupScreen}
+      />
     </Stack.Navigator>
   );
 };
