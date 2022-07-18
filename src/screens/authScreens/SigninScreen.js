@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Formik } from 'formik';
 import Toast from 'react-native-toast-message';
@@ -7,11 +6,12 @@ import * as yup from 'yup';
 import { TextInput } from 'react-native-gesture-handler';
 import { useState } from 'react';
 import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
-import { SimpleLineIcons, Entypo } from '../../constants/icons';
-import { Roboto_100Thin, Roboto_400Regular } from '@expo-google-fonts/roboto';
+import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 
+import character1 from '../../assets/images/character1.png';
 const SigninScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
+  const [uri, setUri] = useState('./../assets/images/character1.svg');
   const handleLoginSubmit = (e) => {
     console.log(e);
     Toast.show({
@@ -22,8 +22,19 @@ const SigninScreen = ({ navigation }) => {
       },
     });
   };
+
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
+      <Image
+        source={character1}
+        style={{
+          width: 300,
+          height: 300,
+          position: 'absolute',
+          zIndex: -1,
+          right: 1,
+        }}
+      />
       <View style={styles.login_container}>
         <Text style={styles.login_text}>Login</Text>
         <Formik
@@ -75,6 +86,17 @@ const SigninScreen = ({ navigation }) => {
                   value={values.password}
                   secureTextEntry={secureTextEntry.password}
                 />
+                <Ionicons
+                  onPress={() =>
+                    setSecureTextEntry({
+                      ...secureTextEntry,
+                      password: !secureTextEntry.password,
+                    })
+                  }
+                  style={{ width: '10%' }}
+                  name={secureTextEntry.password ? 'eye-off' : 'eye'}
+                  size={20}
+                />
               </View>
               <TouchableOpacity
                 style={isValid ? styles.login_btn_active : styles.login_btn_off}
@@ -82,6 +104,20 @@ const SigninScreen = ({ navigation }) => {
                 onPress={handleSubmit}
               >
                 <Text style={styles.login_btn_text}>Login</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Forgotpassword')}
+              >
+                <Text
+                  style={{
+                    color: COLORS.blueSecondary,
+                    fontSize: SIZES.h5,
+                    marginTop: 20,
+                    marginLeft: '50%',
+                  }}
+                >
+                  Forgot Password ?
+                </Text>
               </TouchableOpacity>
             </View>
           )}

@@ -6,6 +6,7 @@ import SigninScreen from './SigninScreen';
 import SignupScreen from './SignupScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { COLORS } from '../../constants/theme';
+import ForgotPasswordScreen from './ForgotPasswordScreen';
 const Stack = createNativeStackNavigator();
 
 const AuthScreen = () => {
@@ -26,6 +27,17 @@ const AuthScreen = () => {
         }}
         name="Signup"
         component={SignupScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: '',
+          headerShadowVisible: false,
+          headerStyle: {
+            backgroundColor: COLORS.white,
+          },
+        }}
+        name="Forgotpassword"
+        component={ForgotPasswordScreen}
       />
     </Stack.Navigator>
   );

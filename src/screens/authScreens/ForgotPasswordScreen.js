@@ -17,10 +17,11 @@ import { TextInput } from 'react-native-gesture-handler';
 import { useState } from 'react';
 import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
-import object1 from '../../assets/images/object1.png';
-const SignupScreen = ({ navigation }) => {
+
+import character2 from '../../assets/images/character2.png';
+const ForgotPasswordScreen = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
-  const handleSignupSubmit = (e) => {
+  const handleSubmit = (e) => {
     console.log(e);
     Toast.show({
       type: 'error',
@@ -32,30 +33,31 @@ const SignupScreen = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
-      <Image
-        source={object1}
-        style={{
-          width: 120,
-          height: 120,
-          position: 'absolute',
-          zIndex: -1,
-          right: 10,
-        }}
-      />
       <KeyboardAvoidingView>
+        <Image
+          source={character2}
+          style={{
+            width: 300,
+            height: 300,
+            position: 'absolute',
+            zIndex: -1,
+            right: 1,
+          }}
+        />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner}>
             <View style={styles.login_container}>
-              <Text style={styles.login_text}>Signup</Text>
+              <Text style={styles.login_text}>Forgot Password ?</Text>
+
+              <Text style={styles.login_text2}>
+                Don't worry, Please enter your Email
+              </Text>
               <Formik
                 validationSchema={loginValidationSchema}
                 initialValues={{
-                  firstName: '',
-                  lastName: '',
                   email: '',
-                  password: '',
                 }}
-                onSubmit={handleSignupSubmit}
+                onSubmit={handleSubmit}
               >
                 {({
                   handleChange,
@@ -66,46 +68,6 @@ const SignupScreen = ({ navigation }) => {
                   isValid,
                 }) => (
                   <View style={styles.formik_view}>
-                    <View style={styles.name_input}>
-                      <Ionicons
-                        style={{
-                          width: '10%',
-                          fontWeight: '100',
-                          opacity: 0.6,
-                        }}
-                        name="person-outline"
-                        size={20}
-                      />
-                      <TextInput
-                        style={{ width: '80%', fontSize: 20 }}
-                        name="firstName"
-                        placeholder="First Name"
-                        onChangeText={handleChange('firstName')}
-                        onBlur={handleBlur('firstName')}
-                        value={values.lastName}
-                        keyboardType="name-phone-pad"
-                      />
-                    </View>
-                    <View style={styles.name_input}>
-                      <Ionicons
-                        style={{
-                          width: '10%',
-                          fontWeight: '100',
-                          opacity: 0.6,
-                        }}
-                        name="person-outline"
-                        size={20}
-                      />
-                      <TextInput
-                        style={{ width: '80%', fontSize: 20 }}
-                        name="lastName"
-                        placeholder="Last Name"
-                        onChangeText={handleChange('lastName')}
-                        onBlur={handleBlur('lastName')}
-                        value={values.lastName}
-                        keyboardType="name-phone-pad"
-                      />
-                    </View>
                     <View style={styles.email_input}>
                       <Entypo
                         style={{
@@ -119,40 +81,14 @@ const SignupScreen = ({ navigation }) => {
                       <TextInput
                         style={{ width: '80%', fontSize: 20 }}
                         name="email"
-                        placeholder="Email ID"
+                        placeholder="Email"
                         onChangeText={handleChange('email')}
                         onBlur={handleBlur('email')}
                         value={values.email}
                         keyboardType="email-address"
                       />
                     </View>
-                    <View style={styles.password_input}>
-                      <SimpleLineIcons
-                        style={{ width: '10%' }}
-                        name="lock"
-                        size={20}
-                      />
-                      <TextInput
-                        name="password"
-                        style={{ width: '80%', fontSize: 20 }}
-                        placeholder="Password"
-                        onChangeText={handleChange('password')}
-                        onBlur={handleBlur('password')}
-                        value={values.password}
-                        secureTextEntry={secureTextEntry.password}
-                      />
-                      <Ionicons
-                        onPress={() =>
-                          setSecureTextEntry({
-                            ...secureTextEntry,
-                            password: !secureTextEntry.password,
-                          })
-                        }
-                        style={{ width: '10%' }}
-                        name={secureTextEntry.password ? 'eye-off' : 'eye'}
-                        size={20}
-                      />
-                    </View>
+
                     <TouchableOpacity
                       style={
                         isValid ? styles.login_btn_active : styles.login_btn_off
@@ -160,31 +96,11 @@ const SignupScreen = ({ navigation }) => {
                       disabled={!isValid}
                       onPress={handleSubmit}
                     >
-                      <Text style={styles.login_btn_text}>Signup</Text>
+                      <Text style={styles.login_btn_text}>Send Email</Text>
                     </TouchableOpacity>
                   </View>
                 )}
               </Formik>
-              <View style={styles.register_view}>
-                <Text
-                  style={{
-                    fontSize: SIZES.h4,
-                    marginRight: 10,
-                  }}
-                >
-                  Already have an account
-                </Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
-                  <Text
-                    style={{
-                      color: COLORS.blueSecondary,
-                      fontSize: SIZES.h4,
-                    }}
-                  >
-                    Login
-                  </Text>
-                </TouchableOpacity>
-              </View>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -200,15 +116,22 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   login_container: {
-    margin: 20,
+    margin: 5,
     marginTop: 50,
-    marginBottom: 100,
-    height: '100%',
     fontFamily: 'Roboto_400Regular',
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    elevation: 10,
+    padding: 20,
   },
   login_text: {
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: '700',
+  },
+  login_text2: {
+    fontSize: 15,
+    fontFamily: 'Roboto_300Light',
+    marginTop: 10,
   },
   name_input: {
     display: 'flex',
@@ -296,4 +219,4 @@ const loginValidationSchema = yup.object().shape({
     .min(8, ({ min }) => `Password must be at least ${min} characters`)
     .required('Password is required'),
 });
-export default SignupScreen;
+export default ForgotPasswordScreen;

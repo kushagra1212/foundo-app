@@ -7,20 +7,12 @@ import AuthScreen from './src/screens/authScreens/AuthScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import { toastConfig } from './src/configs/toastConfig';
 import { useFonts } from 'expo-font';
-import {
-  Roboto_100Thin,
-  Roboto_400Regular,
-  Roboto_700Bold,
-} from '@expo-google-fonts/roboto';
+import { FONTS } from './src/assets/fonts';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [isfontLoaded] = useFonts({
-    Roboto_400Regular: Roboto_400Regular,
-    Roboto_700Bold: Roboto_700Bold,
-    Roboto_100Thin: Roboto_100Thin,
-  });
+  const [isfontLoaded] = useFonts(FONTS);
   if (!isfontLoaded) {
     return null;
   }
