@@ -31,6 +31,7 @@ export const COLORS = {
   pinkPrimary: '#EC87C0',
   pinkSecond: '#D770AD',
 
+  lightGrayPrePrimary: '#F5F7FF',
   lightGrayPrimary: '#F5F7FA',
   lightGraySecondary: '#E6E9ED',
 
@@ -69,44 +70,44 @@ export const STYLE = {
 
 export const FONTS = {
   h1: {
-    fontfamily: 'Roboto_700Bold',
-    fontsize: SIZES.h1,
-    lineheight: 30,
+    fontFamily: 'Roboto_700Bold',
+    fontSize: SIZES.h1,
+    lineHeight: 30,
   },
   h2: {
-    fontfamily: 'Roboto_700Bold',
-    fontsize: SIZES.h2,
-    lineheight: 30,
+    fontFamily: 'Roboto_700Bold',
+    fontSize: SIZES.h2,
+    lineHeight: 30,
   },
   h3: {
-    fontfamily: 'Roboto_700Bold',
-    fontsize: SIZES.h3,
-    lineheight: 22,
+    fontFamily: 'Roboto_700Bold',
+    fontSize: SIZES.h3,
+    lineHeight: 26,
   },
   h4: {
-    fontfamily: 'Roboto_700Bold',
-    fontsize: SIZES.h4,
-    lineheight: 22,
+    fontFamily: 'Roboto_700Bold',
+    fontSize: SIZES.h4,
+    lineHeight: 22,
   },
   body1: {
-    fontfamily: 'Roboto_400Regular',
-    fontsize: SIZES.h1,
-    lineheight: 30,
+    fontFamily: 'Roboto_400Regular',
+    fontSize: SIZES.h1,
+    lineHeight: 30,
   },
   body2: {
-    fontfamily: 'Roboto_400Regular',
-    fontsize: SIZES.body2,
-    lineheight: 30,
+    fontFamily: 'Roboto_400Regular',
+    fontSize: SIZES.body2,
+    lineHeight: 30,
   },
   body3: {
-    fontfamily: 'Roboto_400Regular',
-    fontsize: SIZES.body3,
-    lineheight: 22,
+    fontFamily: 'Roboto_400Regular',
+    fontSize: SIZES.body3,
+    lineHeight: 22,
   },
   body4: {
-    fontfamily: 'Roboto_400Regular',
-    fontsize: SIZES.body4,
-    lineheight: 22,
+    fontFamily: 'Roboto_400Regular',
+    fontSize: SIZES.body4,
+    lineHeight: 22,
   },
 };
 

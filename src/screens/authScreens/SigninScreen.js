@@ -14,13 +14,14 @@ const SigninScreen = ({ navigation }) => {
   const [uri, setUri] = useState('./../assets/images/character1.svg');
   const handleLoginSubmit = (e) => {
     console.log(e);
-    Toast.show({
-      type: 'error',
-      props: {
-        text: 'Error !',
-        message: 'wnfefjjew wfjejfe wefwefuhjewfewoif  wefhweiofewfh ',
-      },
-    });
+    // Toast.show({
+    //   type: 'error',
+    //   props: {
+    //     text: 'Error !',
+    //     message: 'wnfefjjew wfjejfe wefwefuhjewfewoif  wefhweiofewfh ',
+    //   },
+    // });
+    navigation.navigate('Home');
   };
 
   return (

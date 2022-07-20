@@ -7,18 +7,18 @@ import AuthScreen from './src/screens/authScreens/AuthScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import { toastConfig } from './src/configs/toastConfig';
 import { useFonts } from 'expo-font';
-import { FONTS } from './src/assets/fonts';
+import { ROBOTO_FONTS } from './src/assets/fonts';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [isfontLoaded] = useFonts(FONTS);
+  const [isfontLoaded] = useFonts(ROBOTO_FONTS);
   if (!isfontLoaded) {
     return null;
   }
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Auth">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           options={{ headerShown: false }}
           name="Auth"
