@@ -17,11 +17,14 @@ import { TextInput } from 'react-native-gesture-handler';
 import { useState } from 'react';
 import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
-
 import character2 from '../../assets/images/character2.png';
-const ForgotPasswordScreen = ({ navigation }) => {
+
+export type props = {
+  navigation: any;
+};
+const ForgotPasswordScreen: React.FC<props> = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     console.log(e);
     Toast.show({
       type: 'error',
@@ -80,7 +83,6 @@ const ForgotPasswordScreen = ({ navigation }) => {
                       />
                       <TextInput
                         style={{ width: '80%', fontSize: 20 }}
-                        name="email"
                         placeholder="Email"
                         onChangeText={handleChange('email')}
                         onBlur={handleBlur('email')}

@@ -18,9 +18,12 @@ import { useState } from 'react';
 import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 import object1 from '../../assets/images/object1.png';
-const SignupScreen = ({ navigation }) => {
+export type props = {
+  navigation: any;
+};
+const SignupScreen: React.FC<props> = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
-  const handleSignupSubmit = (e) => {
+  const handleSignupSubmit = (e: any) => {
     console.log(e);
     Toast.show({
       type: 'error',
@@ -78,7 +81,6 @@ const SignupScreen = ({ navigation }) => {
                       />
                       <TextInput
                         style={{ width: '80%', fontSize: 20 }}
-                        name="firstName"
                         placeholder="First Name"
                         onChangeText={handleChange('firstName')}
                         onBlur={handleBlur('firstName')}
@@ -98,7 +100,6 @@ const SignupScreen = ({ navigation }) => {
                       />
                       <TextInput
                         style={{ width: '80%', fontSize: 20 }}
-                        name="lastName"
                         placeholder="Last Name"
                         onChangeText={handleChange('lastName')}
                         onBlur={handleBlur('lastName')}
@@ -113,12 +114,10 @@ const SignupScreen = ({ navigation }) => {
                           fontWeight: '100',
                           opacity: 0.6,
                         }}
-                        name="email"
                         size={20}
                       />
                       <TextInput
                         style={{ width: '80%', fontSize: 20 }}
-                        name="email"
                         placeholder="Email ID"
                         onChangeText={handleChange('email')}
                         onBlur={handleBlur('email')}
@@ -133,7 +132,6 @@ const SignupScreen = ({ navigation }) => {
                         size={20}
                       />
                       <TextInput
-                        name="password"
                         style={{ width: '80%', fontSize: 20 }}
                         placeholder="Password"
                         onChangeText={handleChange('password')}

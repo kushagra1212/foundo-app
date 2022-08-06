@@ -13,11 +13,11 @@ export const FILTER_ITEMS = [
 ];
 const FilterOptionComponent = ({
   item,
-  selectedFilter,
+  selectedFilterId,
   handleChangeFilter,
 }) => {
   const isItemSelected = (id) => {
-    return id === selectedFilter;
+    return id === selectedFilterId;
   };
 
   return (

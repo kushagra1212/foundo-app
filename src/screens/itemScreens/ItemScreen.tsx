@@ -1,31 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import FilterOptionComponent, {
   FILTER_ITEMS,
-} from '../components/atoms/FilterOptionComponent';
-import ItemSearchComponent from '../components/atoms/ItemSearchComponent';
-import { COLORS } from '../constants/theme';
+} from '../../components/atoms/FilterOptionComponent';
+import ItemSearchComponent from '../../components/atoms/ItemSearchComponent';
+import { COLORS } from '../../constants/theme';
 
-const FeedScreen = () => {
-  const [selectedFilter, setSelectedFilter] = useState(FILTER_ITEMS[0].id);
-  const handleChangeFilter = (id) => {
-    setSelectedFilter(id);
+export type props = {
+  navigation: any;
+};
+const ItemScreen: React.FC<props> = ({ navigation }) => {
+  const [selectedFilterId, setSelectedFilterId] = useState(FILTER_ITEMS[0].id);
+  const handleChangeFilter = (id: number) => {
+    setSelectedFilterId(id);
   };
   return (
     <View style={styles.feed}>
-      <ItemSearchComponent />
+      <View style={styles.item_search_input}>
+        <ItemSearchComponent navigation={navigation} isItemScreenClick={true} />
+      </View>
       <FlatList
         data={FILTER_ITEMS}
         contentContainerStyle={styles.option_flatlist}
         renderItem={({ item }) => (
           <FilterOptionComponent
             item={item}
-            selectedFilter={selectedFilter}
+            selectedFilterId={selectedFilterId}
             handleChangeFilter={handleChangeFilter}
           />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item: any) => item.id}
         horizontal
       />
     </View>
@@ -44,8 +49,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     width: '100%',
     margin: 5,
-    marginTop: 20,
     height: 80,
   },
+  item_search_input: {
+    margin: 5,
+    marginTop: 10,
+  },
 });
-export default FeedScreen;
+export default ItemScreen;

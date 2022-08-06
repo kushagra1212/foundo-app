@@ -9,10 +9,14 @@ import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 
 import character1 from '../../assets/images/character1.png';
-const SigninScreen = ({ navigation }) => {
+
+export type props = {
+  navigation: any
+}
+const SigninScreen: React.FC<props> = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
   const [uri, setUri] = useState('./../assets/images/character1.svg');
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = (e: any) => {
     console.log(e);
     // Toast.show({
     //   type: 'error',
@@ -64,7 +68,6 @@ const SigninScreen = ({ navigation }) => {
                     fontSize: 20,
                     fontFamily: 'Roboto_400Regular',
                   }}
-                  name="email"
                   placeholder="Email ID"
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
@@ -79,7 +82,6 @@ const SigninScreen = ({ navigation }) => {
                   size={20}
                 />
                 <TextInput
-                  name="password"
                   style={{ width: '80%', fontSize: 20 }}
                   placeholder="Password"
                   onChangeText={handleChange('password')}
@@ -112,7 +114,7 @@ const SigninScreen = ({ navigation }) => {
                 <Text
                   style={{
                     color: COLORS.blueSecondary,
-                    fontSize: SIZES.h5,
+                    fontSize: SIZES.h4,
                     marginTop: 20,
                     marginLeft: '50%',
                   }}
@@ -129,7 +131,7 @@ const SigninScreen = ({ navigation }) => {
               fontSize: SIZES.h4,
             }}
           >
-            New to Foundo?{' '}
+            New to Foundo?
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
             <Text

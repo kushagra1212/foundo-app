@@ -1,16 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import FeedScreen from './FeedScreen';
-import ProfileScreen from './ProfileScreen';
-import { COLORS } from '../constants/theme';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import { Foundation } from '../constants/icons';
-const Tab = createBottomTabNavigator();
+import { COLORS } from '../constants/theme';
+import FeedSearchSceen from './itemScreens/FeedSearchScreen';
+import ItemScreen from './itemScreens/ItemScreen';
+const Stack = createNativeStackNavigator();
 
-const HomeScreen = () => {
+export type props = {};
+const FeedScreen: React.FC<props> = () => {
   return (
-    <Tab.Navigator initialRouteName="Feed">
-      <Tab.Screen
+    <Stack.Navigator initialRouteName="ItemScreen">
+      <Stack.Screen
         options={{
           title: '',
           headerStyle: {
@@ -30,11 +37,15 @@ const HomeScreen = () => {
             fontWeight: 'bold',
           },
         }}
-        name="Feed"
-        component={FeedScreen}
+        name="ItemScreen"
+        component={ItemScreen}
       />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-    </Tab.Navigator>
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="FeedSearchScreen"
+        component={FeedSearchSceen}
+      />
+    </Stack.Navigator>
   );
 };
 
@@ -46,7 +57,8 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     borderRadius: 10,
+    marginLeft: -5,
     elevation: 10,
   },
 });
-export default HomeScreen;
+export default FeedScreen;
