@@ -5,6 +5,7 @@ import FilterOptionComponent, {
   FILTER_ITEMS,
 } from '../../components/atoms/FilterOptionComponent';
 import ItemSearchComponent from '../../components/atoms/ItemSearchComponent';
+import CardsComponent from '../../components/molecules/CardsComponent';
 import { COLORS } from '../../constants/theme';
 
 export type props = {
@@ -20,19 +21,24 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
       <View style={styles.item_search_input}>
         <ItemSearchComponent navigation={navigation} isItemScreenClick={true} />
       </View>
-      <FlatList
-        data={FILTER_ITEMS}
-        contentContainerStyle={styles.option_flatlist}
-        renderItem={({ item }) => (
-          <FilterOptionComponent
-            item={item}
-            selectedFilterId={selectedFilterId}
-            handleChangeFilter={handleChangeFilter}
-          />
-        )}
-        keyExtractor={(item: any) => item.id}
-        horizontal
-      />
+      <View>
+        <FlatList
+          data={FILTER_ITEMS}
+          contentContainerStyle={styles.option_flatlist}
+          renderItem={({ item }) => (
+            <FilterOptionComponent
+              item={item}
+              selectedFilterId={selectedFilterId}
+              handleChangeFilter={handleChangeFilter}
+            />
+          )}
+          keyExtractor={(item: any) => item.id}
+          horizontal
+        />
+      </View>
+      <View>
+        <CardsComponent />
+      </View>
     </View>
   );
 };

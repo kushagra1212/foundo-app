@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, FlatList, BackHandler } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ItemSearchComponent from '../../components/atoms/ItemSearchComponent';
+
 import { Ionicons } from '../../constants/icons';
-import { COLORS } from '../../constants/theme';
 
 export type props = {
   navigation?: any;
