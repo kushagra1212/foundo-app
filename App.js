@@ -8,6 +8,8 @@ import HomeScreen from './src/screens/HomeScreen';
 import { toastConfig } from './src/configs/toastConfig';
 import { useFonts } from 'expo-font';
 import { ROBOTO_FONTS } from './src/assets/fonts';
+import { store } from './src/redux/store';
+import { Provider } from 'react-redux';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,22 +19,24 @@ export default function App() {
     return null;
   }
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Auth"
-          component={AuthScreen}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Home"
-          component={HomeScreen}
-        />
-      </Stack.Navigator>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Auth">
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Auth"
+            component={AuthScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Home"
+            component={HomeScreen}
+          />
+        </Stack.Navigator>
 
-      <Toast config={toastConfig} visibilityTime={10000} />
-    </NavigationContainer>
+        <Toast config={toastConfig} visibilityTime={10000} />
+      </NavigationContainer>
+    </Provider>
   );
 }
 

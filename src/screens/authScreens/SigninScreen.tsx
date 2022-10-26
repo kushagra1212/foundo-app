@@ -9,23 +9,29 @@ import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 
 import character1 from '../../assets/images/character1.png';
+import { useUserLoginMutation } from '../../redux/services/auth-service';
 
 export type props = {
-  navigation: any
-}
+  navigation: any;
+};
 const SigninScreen: React.FC<props> = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
   const [uri, setUri] = useState('./../assets/images/character1.svg');
-  const handleLoginSubmit = (e: any) => {
-    console.log(e);
-    // Toast.show({
-    //   type: 'error',
-    //   props: {
-    //     text: 'Error !',
-    //     message: 'wnfefjjew wfjejfe wefwefuhjewfewoif  wefhweiofewfh ',
-    //   },
-    // });
-    navigation.navigate('Home');
+  const [userLogin, { isLoading }] = useUserLoginMutation();
+  const handleLoginSubmit = async (data: object) => {
+    console.log(isLoading, data);
+    try {
+      const res = await userLogin(data).unwrap();
+      console.log(res);
+    } catch (e: any) {
+      Toast.show({
+        type: 'error',
+        props: {
+          text: 'Error !',
+          message: e.data.message,
+        },
+      });
+    }
   };
 
   return (
@@ -104,7 +110,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
               <TouchableOpacity
                 style={isValid ? styles.login_btn_active : styles.login_btn_off}
                 disabled={!isValid}
-                onPress={handleSubmit}
+                onPress={() => handleSubmit()}
               >
                 <Text style={styles.login_btn_text}>Login</Text>
               </TouchableOpacity>

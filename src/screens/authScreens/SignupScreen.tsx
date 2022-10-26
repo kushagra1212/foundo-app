@@ -114,6 +114,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                           fontWeight: '100',
                           opacity: 0.6,
                         }}
+                        name="email"
                         size={20}
                       />
                       <TextInput
@@ -156,7 +157,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                         isValid ? styles.login_btn_active : styles.login_btn_off
                       }
                       disabled={!isValid}
-                      onPress={handleSubmit}
+                      onPress={() => handleSubmit()}
                     >
                       <Text style={styles.login_btn_text}>Signup</Text>
                     </TouchableOpacity>
