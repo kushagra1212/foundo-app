@@ -10,6 +10,7 @@ import { useFonts } from 'expo-font';
 import { ROBOTO_FONTS } from './src/assets/fonts';
 import { store } from './src/redux/store';
 import { Provider } from 'react-redux';
+import { userLoggedIn } from './src/redux/services/auth-service';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +22,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Auth">
+        <Stack.Navigator initialRouteName={userLoggedIn ? 'Home' : 'Auth'}>
           <Stack.Screen
             options={{ headerShown: false }}
             name="Auth"

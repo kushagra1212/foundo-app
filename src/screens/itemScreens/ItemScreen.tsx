@@ -5,6 +5,7 @@ import FilterOptionComponent, {
   FILTER_ITEMS,
 } from '../../components/atoms/FilterOptionComponent';
 import ItemSearchComponent from '../../components/atoms/ItemSearchComponent';
+import LogoutButtonComponent from '../../components/atoms/LogoutButtonComponent';
 import CardsComponent from '../../components/molecules/CardsComponent';
 import { COLORS } from '../../constants/theme';
 
@@ -38,6 +39,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
       </View>
       <View>
         <CardsComponent />
+        <LogoutButtonComponent navigation={navigation} />
       </View>
     </View>
   );

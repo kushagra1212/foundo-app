@@ -10,6 +10,8 @@ import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 
 import character1 from '../../assets/images/character1.png';
 import { useUserLoginMutation } from '../../redux/services/auth-service';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../../redux/slices/authSlice';
 
 export type props = {
   navigation: any;
@@ -18,11 +20,20 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
   const [uri, setUri] = useState('./../assets/images/character1.svg');
   const [userLogin, { isLoading }] = useUserLoginMutation();
+  const dispatch = useDispatch();
   const handleLoginSubmit = async (data: object) => {
     console.log(isLoading, data);
     try {
       const res = await userLogin(data).unwrap();
-      console.log(res);
+      Toast.show({
+        type: 'success',
+        props: {
+          text: 'Success',
+          message: res.message,
+        },
+      });
+      dispatch(setCredentials({ user: res.user, jwtToken: res.jwtToken }));
+      navigation.replace('Home');
     } catch (e: any) {
       Toast.show({
         type: 'error',
