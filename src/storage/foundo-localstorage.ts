@@ -9,7 +9,7 @@ export const setItemToLocalStorage=async(jwtToken:string,key:string)=>{
         }
 }
 export const getTokenFromLocalStorage=async(key:string)=>{
-        let token; 
+        let token=null; 
         try{
                 token=await SecureStore.getItemAsync(key);
         }catch(err){
@@ -21,6 +21,7 @@ export const getTokenFromLocalStorage=async(key:string)=>{
 export const removeItemFromLocalStroage=async(key:string)=>{
         try{
                 const res=await SecureStore.deleteItemAsync(key);
+                console.log(res,"logOut")
         }catch(err){
                 console.log(err);
         }

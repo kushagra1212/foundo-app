@@ -22,7 +22,6 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
   const [userLogin, { isLoading }] = useUserLoginMutation();
   const dispatch = useDispatch();
   const handleLoginSubmit = async (data: object) => {
-    console.log(isLoading, data);
     try {
       const res = await userLogin(data).unwrap();
       Toast.show({
@@ -33,13 +32,14 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
         },
       });
       dispatch(setCredentials({ user: res.user, jwtToken: res.jwtToken }));
-      navigation.replace('Home');
+      navigation.navigate('Home');
     } catch (e: any) {
+      console.log(e);
       Toast.show({
         type: 'error',
         props: {
           text: 'Error !',
-          message: e.data.message,
+          message: e.data.errorMessage,
         },
       });
     }

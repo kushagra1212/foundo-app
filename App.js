@@ -11,18 +11,32 @@ import { ROBOTO_FONTS } from './src/assets/fonts';
 import { store } from './src/redux/store';
 import { Provider } from 'react-redux';
 import { userLoggedIn } from './src/redux/services/auth-service';
-
+import { useEffect, useState } from 'react';
+import { BASE_URL } from '@env';
+console.log(BASE_URL);
 const Stack = createNativeStackNavigator();
-
 export default function App() {
   const [isfontLoaded] = useFonts(ROBOTO_FONTS);
-  if (!isfontLoaded) {
+  const [appLoaded, setAppLoaded] = useState(false);
+  const [isLoggedIn, setIsloggedIn] = useState(false);
+
+  useEffect(() => {
+    let flag = true;
+    userLoggedIn()
+      .then((isLogged) => {
+        if (flag) setIsloggedIn(isLogged);
+        setAppLoaded(true);
+      })
+      .catch((err) => console.log(err));
+    return () => (flag = false);
+  }, []);
+  if (!isfontLoaded || !appLoaded) {
     return null;
   }
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName={userLoggedIn ? 'Home' : 'Auth'}>
+        <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Auth'}>
           <Stack.Screen
             options={{ headerShown: false }}
             name="Auth"
@@ -35,7 +49,7 @@ export default function App() {
           />
         </Stack.Navigator>
 
-        <Toast config={toastConfig} visibilityTime={10000} />
+        <Toast config={toastConfig} visibilityTime={2000} />
       </NavigationContainer>
     </Provider>
   );

@@ -18,20 +18,34 @@ import { useState } from 'react';
 import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 import object1 from '../../assets/images/object1.png';
+import { useUserSignupMutation } from '../../redux/services/auth-service';
 export type props = {
   navigation: any;
 };
 const SignupScreen: React.FC<props> = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
-  const handleSignupSubmit = (e: any) => {
-    console.log(e);
-    Toast.show({
-      type: 'error',
-      props: {
-        text: 'Error !',
-        message: 'wnfefjjew wfjejfe wefwefuhjewfewoif  wefhweiofewfh ',
-      },
-    });
+  const [userSignup, { isLoading }] = useUserSignupMutation();
+  const handleSignupSubmit = async (data: any) => {
+    try {
+      const res = await userSignup(data).unwrap();
+      Toast.show({
+        type: 'success',
+        props: {
+          text: 'Success',
+          message: res.message,
+        },
+      });
+      navigation.navigate('Signin');
+    } catch (e: any) {
+      console.log(e);
+      Toast.show({
+        type: 'error',
+        props: {
+          text: 'Error !',
+          message: e.data.errorMessage,
+        },
+      });
+    }
   };
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
@@ -84,7 +98,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                         placeholder="First Name"
                         onChangeText={handleChange('firstName')}
                         onBlur={handleBlur('firstName')}
-                        value={values.lastName}
+                        value={values.firstName}
                         keyboardType="name-phone-pad"
                       />
                     </View>

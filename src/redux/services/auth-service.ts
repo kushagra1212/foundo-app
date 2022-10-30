@@ -13,16 +13,28 @@ export const authApi = api.injectEndpoints({
                 })
             }
         }),
+        userSignup:builder.mutation({
+            query:credentials=>{
+                return ({
+                    url:'/v1/user/signup',
+                    method:'POST',
+                    body:{...credentials}
+                })
+            }
+        })
     }),
     overrideExisting: true,
 })
-export const userLoggedIn=()=>{
-    if(!getTokenFromLocalStorage(LOCAL_STORAGE_ACCESS_TOKEN_KEY)) return false;
-    return true;
+export const userLoggedIn=async()=>{
+    const res=await getTokenFromLocalStorage(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+
+    if(res) return true;
+    return false;
 }
 export const logoutUser=()=>{
     removeItemFromLocalStroage(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
 }
 export const {
-    useUserLoginMutation
+    useUserLoginMutation,
+    useUserSignupMutation
 } = authApi
