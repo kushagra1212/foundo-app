@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { Link, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
 import AuthScreen from './src/screens/authScreens/AuthScreen';
@@ -13,8 +13,8 @@ import { Provider } from 'react-redux';
 import { userLoggedIn } from './src/redux/services/auth-service';
 import { useEffect, useState } from 'react';
 import { BASE_URL } from '@env';
-console.log(BASE_URL);
 const Stack = createNativeStackNavigator();
+import * as Linking from 'expo-linking';
 export default function App() {
   const [isfontLoaded] = useFonts(ROBOTO_FONTS);
   const [appLoaded, setAppLoaded] = useState(false);
@@ -33,9 +33,37 @@ export default function App() {
   if (!isfontLoaded || !appLoaded) {
     return null;
   }
+  const config = {
+    screens: {
+      Home: {
+        path: 'home',
+        screens: {
+          FeedScreen: {
+            path: 'feed',
+            screens: {
+              ItemScreen: 'item',
+              FeedSearchScreen: 'feedsearch',
+            },
+          },
+          ProfileScreen: {
+            path: 'profilescreen',
+          },
+        },
+      },
+      Auth: {
+        path: 'auth',
+        screens: {
+          Signin: 'signin',
+          Signup: 'signup',
+          Forgotpassword: 'forgotpassword/:email/:token',
+        },
+      },
+    },
+  };
+  const prefix = Linking.createURL('app');
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer linking={{ prefixes: [prefix], config }}>
         <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Auth'}>
           <Stack.Screen
             options={{ headerShown: false }}

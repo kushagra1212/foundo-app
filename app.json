@@ -3,6 +3,7 @@
     "name": "foundo-app",
     "slug": "foundo-app",
     "version": "1.0.0",
+    "scheme":"foundo",
     "orientation": "portrait",
     "icon": "",
     "userInterfaceStyle": "light",
@@ -24,7 +25,20 @@
       "adaptiveIcon": {
         "foregroundImage": "",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "https",
+              "host": "*.foundo.io",
+              "pathPrefix": "/"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
     "web": {
       "favicon": ""

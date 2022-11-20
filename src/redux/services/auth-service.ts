@@ -21,6 +21,9 @@ export const authApi = api.injectEndpoints({
                     body:{...credentials}
                 })
             }
+        }),
+        userForgotPassword:builder.mutation({
+            query:({email})=>`/v1/app-auth/forgot-password/${email}`
         })
     }),
     overrideExisting: true,
@@ -36,5 +39,6 @@ export const logoutUser=()=>{
 }
 export const {
     useUserLoginMutation,
-    useUserSignupMutation
+    useUserSignupMutation,
+    useUserForgotPasswordMutation
 } = authApi

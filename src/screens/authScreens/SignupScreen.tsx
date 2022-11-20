@@ -47,6 +47,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
       });
     }
   };
+  console.log(navigation.getState());
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
       <Image

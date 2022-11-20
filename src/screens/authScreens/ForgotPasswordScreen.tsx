@@ -18,95 +18,169 @@ import { useState } from 'react';
 import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 import character2 from '../../assets/images/character2.png';
+import character3 from '../../assets/images/character3.png';
+import objectEmail from '../../assets/images/email.png';
+import * as Linking from 'expo-linking';
+import { useUserForgotPasswordMutation } from '../../redux/services/auth-service';
+import {
+  selectorgotPasswordStatus,
+  setForgotPasswordLinkSent,
+} from '../../redux/slices/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 export type props = {
   navigation: any;
 };
 const ForgotPasswordScreen: React.FC<props> = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
-  const handleSubmit = (e: any) => {
-    console.log(e);
-    Toast.show({
-      type: 'error',
-      props: {
-        text: 'Error !',
-        message: 'wnfefjjew wfjejfe wefwefuhjewfewoif  wefhweiofewfh ',
-      },
-    });
+
+  const [userForgotPassword, { isLoading }] = useUserForgotPasswordMutation();
+  const forgotPasswordLinkSent = useSelector(selectorgotPasswordStatus);
+  const dispatch = useDispatch();
+  const handleSubmit = async (details: object) => {
+    try {
+      const res = await userForgotPassword(details).unwrap();
+      Toast.show({
+        type: 'success',
+        props: {
+          text: 'Success',
+          message: res.message,
+        },
+      });
+      dispatch(setForgotPasswordLinkSent({ forgotPasswordLinkSent: true }));
+    } catch (err: any) {
+      console.log(err);
+      Toast.show({
+        type: 'error',
+        props: {
+          text: 'Error !',
+          message: err.data.errorMessage,
+        },
+      });
+    }
+  };
+  const resendEmail = () => {
+    dispatch(setForgotPasswordLinkSent({ forgotPasswordLinkSent: false }));
   };
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
-      <KeyboardAvoidingView>
-        <Image
-          source={character2}
-          style={{
-            width: 300,
-            height: 300,
-            position: 'absolute',
-            zIndex: -1,
-            right: 1,
-          }}
-        />
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.inner}>
-            <View style={styles.login_container}>
-              <Text style={styles.login_text}>Forgot Password ?</Text>
+      {!forgotPasswordLinkSent ? (
+        <KeyboardAvoidingView>
+          <Image
+            source={character2}
+            style={{
+              width: 300,
+              height: 300,
+              position: 'absolute',
+              zIndex: -1,
+              right: 1,
+            }}
+          />
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.inner}>
+              <View style={styles.login_container}>
+                <Text style={styles.login_text}>Forgot Password ?</Text>
 
-              <Text style={styles.login_text2}>
-                Don't worry, Please enter your Email
-              </Text>
-              <Formik
-                validationSchema={loginValidationSchema}
-                initialValues={{
-                  email: '',
-                }}
-                onSubmit={handleSubmit}
-              >
-                {({
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  values,
-                  errors,
-                  isValid,
-                }) => (
-                  <View style={styles.formik_view}>
-                    <View style={styles.email_input}>
-                      <Entypo
-                        style={{
-                          width: '10%',
-                          fontWeight: '100',
-                          opacity: 0.6,
-                        }}
-                        name="email"
-                        size={20}
-                      />
-                      <TextInput
-                        style={{ width: '80%', fontSize: 20 }}
-                        placeholder="Email"
-                        onChangeText={handleChange('email')}
-                        onBlur={handleBlur('email')}
-                        value={values.email}
-                        keyboardType="email-address"
-                      />
+                <Text style={styles.login_text2}>
+                  Don't worry, Please enter your Email
+                </Text>
+                <Formik
+                  validationSchema={ForgotPasswordValidationSchema}
+                  initialValues={{
+                    email: '',
+                  }}
+                  onSubmit={handleSubmit}
+                >
+                  {({
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    values,
+                    errors,
+                    isValid,
+                  }) => (
+                    <View style={styles.formik_view}>
+                      <View style={styles.email_input}>
+                        <Entypo
+                          style={{
+                            width: '10%',
+                            fontWeight: '100',
+                            opacity: 0.6,
+                          }}
+                          name="email"
+                          size={20}
+                        />
+                        <TextInput
+                          style={{ width: '80%', fontSize: 20 }}
+                          placeholder="Email"
+                          onChangeText={handleChange('email')}
+                          onBlur={handleBlur('email')}
+                          value={values.email}
+                          keyboardType="email-address"
+                        />
+                      </View>
+
+                      <TouchableOpacity
+                        style={
+                          isValid
+                            ? styles.login_btn_active
+                            : styles.login_btn_off
+                        }
+                        disabled={!isValid}
+                        onPress={() => handleSubmit()}
+                      >
+                        <Text style={styles.login_btn_text}>Send Email</Text>
+                      </TouchableOpacity>
                     </View>
-
-                    <TouchableOpacity
-                      style={
-                        isValid ? styles.login_btn_active : styles.login_btn_off
-                      }
-                      disabled={!isValid}
-                      onPress={handleSubmit}
-                    >
-                      <Text style={styles.login_btn_text}>Send Email</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </Formik>
+                  )}
+                </Formik>
+              </View>
             </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+      ) : (
+        <View style={styles.email_sent}>
+          <View>
+            <Image
+              source={objectEmail}
+              style={{
+                width: 300,
+                height: 300,
+                position: 'absolute',
+                right: -100,
+              }}
+            />
           </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+          <View>
+            <Image
+              source={character3}
+              style={{
+                width: 300,
+                height: 300,
+                position: 'absolute',
+                zIndex: -1,
+                top: 340,
+              }}
+            />
+          </View>
+
+          <View>
+            <Text style={{ height: 130, ...styles.email_text_container }}>
+              We've Sent you an Email to reset Password,check that out!
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={
+              forgotPasswordLinkSent
+                ? styles.login_btn_active
+                : styles.login_btn_off
+            }
+            onPress={resendEmail}
+          >
+            <Text style={styles.login_btn_text}>Resend Email</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -196,6 +270,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  email_text_container: {
+    margin: 20,
+    fontFamily: 'Roboto_400Regular',
+    backgroundColor: COLORS.white,
+    borderRadius: 10,
+    elevation: 10,
+    padding: 20,
+    fontSize: SIZES.h2,
+    marginTop: 450,
+  },
   login_btn_text: {
     color: COLORS.white,
     fontSize: SIZES.h3,
@@ -210,6 +294,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
   },
+  email_sent: {
+    display: 'flex',
+    alignItems: 'center',
+    height: '100%',
+    backgroundColor: COLORS.lightGrayPrePrimary,
+  },
 });
 const loginValidationSchema = yup.object().shape({
   email: yup
@@ -220,5 +310,11 @@ const loginValidationSchema = yup.object().shape({
     .string()
     .min(8, ({ min }) => `Password must be at least ${min} characters`)
     .required('Password is required'),
+});
+const ForgotPasswordValidationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Please enter valid email')
+    .required('Email Address is Required'),
 });
 export default ForgotPasswordScreen;

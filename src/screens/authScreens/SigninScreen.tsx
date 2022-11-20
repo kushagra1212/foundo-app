@@ -21,6 +21,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
   const [uri, setUri] = useState('./../assets/images/character1.svg');
   const [userLogin, { isLoading }] = useUserLoginMutation();
   const dispatch = useDispatch();
+
   const handleLoginSubmit = async (data: object) => {
     try {
       const res = await userLogin(data).unwrap();

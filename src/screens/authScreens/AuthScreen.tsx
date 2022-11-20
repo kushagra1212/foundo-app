@@ -7,9 +7,13 @@ import SignupScreen from './SignupScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { COLORS } from '../../constants/theme';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
+import { useSelector } from 'react-redux';
+import { selectorgotPasswordStatus } from '../../redux/slices/authSlice';
 const Stack = createNativeStackNavigator();
 
 const AuthScreen = () => {
+  const forgotPasswordLinkSent = useSelector(selectorgotPasswordStatus);
+  console.log(forgotPasswordLinkSent);
   return (
     <Stack.Navigator initialRouteName="Signin">
       <Stack.Screen
@@ -32,6 +36,7 @@ const AuthScreen = () => {
         options={{
           title: '',
           headerShadowVisible: false,
+          headerShown: !forgotPasswordLinkSent,
           headerStyle: {
             backgroundColor: COLORS.white,
           },
