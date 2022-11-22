@@ -55,7 +55,8 @@ export default function App() {
         screens: {
           Signin: 'signin',
           Signup: 'signup',
-          Forgotpassword: 'forgotpassword/:email/:token',
+          ResetPassword: 'resetpassword/:email/:token',
+          Forgotpassword: 'forgotpassword',
         },
       },
     },

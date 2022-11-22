@@ -24,6 +24,16 @@ export const authApi = api.injectEndpoints({
         }),
         userForgotPassword:builder.mutation({
             query:({email})=>`/v1/app-auth/forgot-password/${email}`
+        }),
+        userVerifyResetPassword:builder.query({
+            query:({email,token})=>{
+                return `/v1/app-auth/verify-token/${email}/${token}`
+            },transformResponse:(response)=>{
+                console.log(response)
+                if(response?.id)
+                return true;
+                else return false;
+            }
         })
     }),
     overrideExisting: true,
@@ -40,5 +50,6 @@ export const logoutUser=()=>{
 export const {
     useUserLoginMutation,
     useUserSignupMutation,
-    useUserForgotPasswordMutation
+    useUserForgotPasswordMutation,
+    useUserVerifyResetPasswordQuery
 } = authApi

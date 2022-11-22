@@ -9,6 +9,7 @@ import { COLORS } from '../../constants/theme';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
 import { useSelector } from 'react-redux';
 import { selectorgotPasswordStatus } from '../../redux/slices/authSlice';
+import ResetPasswordScreen from './ResetPasswordScreen';
 const Stack = createNativeStackNavigator();
 
 const AuthScreen = () => {
@@ -43,6 +44,18 @@ const AuthScreen = () => {
         }}
         name="Forgotpassword"
         component={ForgotPasswordScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: '',
+          headerShadowVisible: false,
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: COLORS.white,
+          },
+        }}
+        name="ResetPassword"
+        component={ResetPasswordScreen}
       />
     </Stack.Navigator>
   );
