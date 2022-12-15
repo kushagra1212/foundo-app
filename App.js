@@ -33,6 +33,7 @@ export default function App() {
   if (!isfontLoaded || !appLoaded) {
     return null;
   }
+
   const config = {
     screens: {
       Home: {
@@ -62,6 +63,7 @@ export default function App() {
     },
   };
   const prefix = Linking.createURL('app');
+
   return (
     <Provider store={store}>
       <NavigationContainer linking={{ prefixes: [prefix], config }}>

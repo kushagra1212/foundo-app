@@ -1,10 +1,17 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Animated,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Formik } from 'formik';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 import { TextInput } from 'react-native-gesture-handler';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 
@@ -12,6 +19,7 @@ import character1 from '../../assets/images/character1.png';
 import { useUserLoginMutation } from '../../redux/services/auth-service';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../redux/slices/authSlice';
+import AnimationTranslateScale from '../../components/molecules/Animations/AnimationTranslateScale';
 
 export type props = {
   navigation: any;
@@ -20,6 +28,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
   const [uri, setUri] = useState('./../assets/images/character1.svg');
   const [userLogin, { isLoading }] = useUserLoginMutation();
+
   const dispatch = useDispatch();
 
   const handleLoginSubmit = async (data: object) => {
@@ -32,6 +41,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
           message: res.message,
         },
       });
+      console.log(res);
       dispatch(setCredentials({ user: res.user, jwtToken: res.jwtToken }));
       navigation.navigate('Home');
     } catch (e: any) {
@@ -48,16 +58,18 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
-      <Image
-        source={character1}
-        style={{
-          width: 300,
-          height: 300,
-          position: 'absolute',
-          zIndex: -1,
-          right: 1,
-        }}
-      />
+      <AnimationTranslateScale scaleRange={[1, 1.01]} scaleDuration={1000}>
+        <Image
+          source={character1}
+          style={{
+            width: 300,
+            height: 300,
+            position: 'absolute',
+            zIndex: -1,
+            right: 1,
+          }}
+        />
+      </AnimationTranslateScale>
       <View style={styles.login_container}>
         <Text style={styles.login_text}>Login</Text>
         <Formik

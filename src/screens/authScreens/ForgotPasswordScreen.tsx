@@ -14,7 +14,7 @@ import { Formik } from 'formik';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 import { TextInput } from 'react-native-gesture-handler';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 import character2 from '../../assets/images/character2.png';
@@ -27,6 +27,7 @@ import {
   setForgotPasswordLinkSent,
 } from '../../redux/slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import AnimationTranslateScale from '../../components/molecules/Animations/AnimationTranslateScale';
 
 export type props = {
   navigation: any;
@@ -37,6 +38,7 @@ const ForgotPasswordScreen: React.FC<props> = ({ navigation }) => {
   const [userForgotPassword, { isLoading }] = useUserForgotPasswordMutation();
   const forgotPasswordLinkSent = useSelector(selectorgotPasswordStatus);
   const dispatch = useDispatch();
+
   const handleSubmit = async (details: object) => {
     try {
       const res = await userForgotPassword(details).unwrap();
@@ -66,16 +68,18 @@ const ForgotPasswordScreen: React.FC<props> = ({ navigation }) => {
     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
       {!forgotPasswordLinkSent ? (
         <KeyboardAvoidingView>
-          <Image
-            source={character2}
-            style={{
-              width: 300,
-              height: 300,
-              position: 'absolute',
-              zIndex: -1,
-              right: 1,
-            }}
-          />
+          <AnimationTranslateScale>
+            <Image
+              source={character2}
+              style={{
+                width: 300,
+                height: 300,
+                position: 'absolute',
+                zIndex: -1,
+                right: 1,
+              }}
+            />
+          </AnimationTranslateScale>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.inner}>
               <View style={styles.login_container}>

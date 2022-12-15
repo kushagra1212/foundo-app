@@ -15,6 +15,7 @@ const Stack = createNativeStackNavigator();
 const AuthScreen = () => {
   const forgotPasswordLinkSent = useSelector(selectorgotPasswordStatus);
   console.log(forgotPasswordLinkSent);
+
   return (
     <Stack.Navigator initialRouteName="Signin">
       <Stack.Screen

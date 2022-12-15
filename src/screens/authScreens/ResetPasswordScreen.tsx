@@ -23,6 +23,7 @@ import objectEmail from '../../assets/images/email.png';
 import * as Linking from 'expo-linking';
 import {
   useUserForgotPasswordMutation,
+  useUserResetPasswordMutation,
   useUserVerifyResetPasswordQuery,
 } from '../../redux/services/auth-service';
 import {
@@ -31,6 +32,7 @@ import {
 } from '../../redux/slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import VerifyUserToken from '../../components/atoms/VerifyUserToken';
+import AnimationTranslateScale from '../../components/molecules/Animations/AnimationTranslateScale';
 
 export type props = {
   navigation: any;
@@ -41,10 +43,15 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
   const [credentials, setCredentials] = useState({ email: '', token: '' });
 
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
-  const [userForgotPassword, {}] = useUserForgotPasswordMutation();
-  const handleSubmit = async (details: object) => {
+  const [userResetPassword, {}] = useUserResetPasswordMutation();
+  const handleSubmit = async ({ password }: { password: string }) => {
+    console.log(credentials);
     try {
-      const res = await userForgotPassword(details).unwrap();
+      const res = await userResetPassword({
+        password,
+        email: credentials.email,
+        token: credentials.token,
+      }).unwrap();
       Toast.show({
         type: 'success',
         props: {
@@ -52,7 +59,6 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
           message: res.message,
         },
       });
-      dispatch(setForgotPasswordLinkSent({ forgotPasswordLinkSent: true }));
     } catch (err: any) {
       console.log(err);
       Toast.show({
@@ -65,10 +71,9 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
     }
   };
 
-  console.log(url);
   useEffect(() => {
     if (url) {
-      const { hostname, path, queryParams } = Linking.parse(url);
+      const { path } = Linking.parse(url);
       const pathArray = path?.split('/');
       if (pathArray !== undefined && pathArray?.length >= 2) {
         setCredentials({
@@ -78,35 +83,38 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
       }
     }
   }, [url]);
-
+  if (credentials.email !== '' && credentials.token !== '')
+    return (
+      <SafeAreaView style={{ backgroundColor: COLORS.white }}>
+        <VerifyUserToken credentials={credentials} navigation={navigation} />
+      </SafeAreaView>
+    );
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
       <KeyboardAvoidingView>
-        {credentials.email !== '' && credentials.token !== '' ? (
-          <VerifyUserToken credentials={credentials} navigation={navigation} />
-        ) : null}
-        <Image
-          source={character2}
-          style={{
-            width: 300,
-            height: 300,
-            position: 'absolute',
-            zIndex: -1,
-            right: 1,
-          }}
-        />
+        <AnimationTranslateScale>
+          <Image
+            source={character2}
+            style={{
+              width: 300,
+              height: 300,
+              position: 'absolute',
+              zIndex: -1,
+              right: 1,
+            }}
+          />
+        </AnimationTranslateScale>
+
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner}>
             <View style={styles.login_container}>
-              <Text style={styles.login_text}>Forgot Password ?</Text>
+              <Text style={styles.login_text}>Enter Your New Password</Text>
 
-              <Text style={styles.login_text2}>
-                Don't worry, Please enter your Email
-              </Text>
+              <Text style={styles.login_text2}></Text>
               <Formik
                 validationSchema={ForgotPasswordValidationSchema}
                 initialValues={{
-                  email: '',
+                  password: '',
                 }}
                 onSubmit={handleSubmit}
               >
@@ -119,26 +127,32 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
                   isValid,
                 }) => (
                   <View style={styles.formik_view}>
-                    <View style={styles.email_input}>
-                      <Entypo
-                        style={{
-                          width: '10%',
-                          fontWeight: '100',
-                          opacity: 0.6,
-                        }}
-                        name="email"
+                    <View style={styles.password_input}>
+                      <SimpleLineIcons
+                        style={{ width: '10%' }}
+                        name="lock"
                         size={20}
                       />
                       <TextInput
                         style={{ width: '80%', fontSize: 20 }}
-                        placeholder="Email"
-                        onChangeText={handleChange('email')}
-                        onBlur={handleBlur('email')}
-                        value={values.email}
-                        keyboardType="email-address"
+                        placeholder="Password"
+                        onChangeText={handleChange('password')}
+                        onBlur={handleBlur('password')}
+                        value={values.password}
+                        secureTextEntry={secureTextEntry.password}
+                      />
+                      <Ionicons
+                        onPress={() =>
+                          setSecureTextEntry({
+                            ...secureTextEntry,
+                            password: !secureTextEntry.password,
+                          })
+                        }
+                        style={{ width: '10%' }}
+                        name={secureTextEntry.password ? 'eye-off' : 'eye'}
+                        size={20}
                       />
                     </View>
-
                     <TouchableOpacity
                       style={
                         isValid ? styles.login_btn_active : styles.login_btn_off
@@ -146,7 +160,7 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
                       disabled={!isValid}
                       onPress={() => handleSubmit()}
                     >
-                      <Text style={styles.login_btn_text}>Send Email</Text>
+                      <Text style={styles.login_btn_text}>Update Password</Text>
                     </TouchableOpacity>
                   </View>
                 )}
@@ -275,20 +289,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightGrayPrePrimary,
   },
 });
-const loginValidationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email('Please enter valid email')
-    .required('Email Address is Required'),
+const ForgotPasswordValidationSchema = yup.object().shape({
   password: yup
     .string()
     .min(8, ({ min }) => `Password must be at least ${min} characters`)
     .required('Password is required'),
-});
-const ForgotPasswordValidationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email('Please enter valid email')
-    .required('Email Address is Required'),
 });
 export default ResetPasswordScreen;

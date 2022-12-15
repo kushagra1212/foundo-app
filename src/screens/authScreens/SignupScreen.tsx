@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import {
+  Animated,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -14,17 +15,19 @@ import { Formik } from 'formik';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 import { TextInput } from 'react-native-gesture-handler';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 import object1 from '../../assets/images/object1.png';
 import { useUserSignupMutation } from '../../redux/services/auth-service';
+import AnimationTranslateScale from '../../components/molecules/Animations/AnimationTranslateScale';
 export type props = {
   navigation: any;
 };
 const SignupScreen: React.FC<props> = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
   const [userSignup, { isLoading }] = useUserSignupMutation();
+
   const handleSignupSubmit = async (data: any) => {
     try {
       const res = await userSignup(data).unwrap();
@@ -50,16 +53,18 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
   console.log(navigation.getState());
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
-      <Image
-        source={object1}
-        style={{
-          width: 120,
-          height: 120,
-          position: 'absolute',
-          zIndex: -1,
-          right: 10,
-        }}
-      />
+      <AnimationTranslateScale scaleRange={[10, 1]} translateRange={[0, 0]}>
+        <Image
+          source={object1}
+          style={{
+            width: 120,
+            height: 120,
+            position: 'absolute',
+            zIndex: -1,
+            right: 10,
+          }}
+        />
+      </AnimationTranslateScale>
       <KeyboardAvoidingView>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View style={styles.inner}>

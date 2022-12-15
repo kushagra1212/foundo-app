@@ -1,5 +1,6 @@
 import { LOCAL_STORAGE_ACCESS_TOKEN_KEY } from "@env";
 import { getTokenFromLocalStorage, removeItemFromLocalStroage } from "../../storage/foundo-localstorage";
+import { setCredentials } from "../slices/authSlice";
 import { api } from "./api-service"
 
 export const authApi = api.injectEndpoints({
@@ -34,7 +35,14 @@ export const authApi = api.injectEndpoints({
                 return true;
                 else return false;
             }
-        })
+        }),
+        userResetPassword:builder.mutation({query:({email,token,password})=>{
+            return ({
+                url:`/v1/app-auth/reset-password/${email}/${token}`,
+                method:'POST',
+                body:{password:password}
+            })
+        }})
     }),
     overrideExisting: true,
 })
@@ -51,5 +59,5 @@ export const {
     useUserLoginMutation,
     useUserSignupMutation,
     useUserForgotPasswordMutation,
-    useUserVerifyResetPasswordQuery
+    useUserVerifyResetPasswordQuery,useUserResetPasswordMutation
 } = authApi
