@@ -28,16 +28,14 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: COLORS.white,
-    width: '90%',
-    height: 200,
     overflow: 'scroll',
     borderRadius: 10,
     elevation: 10,
+    margin: 10,
   },
   card_header: {
     width: '100%',
-    height: 200,
+    height: 'auto',
     position: 'relative',
   },
   thumbnail: {

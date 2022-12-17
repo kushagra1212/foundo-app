@@ -37,11 +37,13 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
           horizontal
         />
       </View>
+      <View style={{
+        backgroundColor: COLORS.redPrimary, marginBottom: 160, marginTop: 10,
+      }}><CardsComponent /></View>
       <View>
-        <CardsComponent />
-        <LogoutButtonComponent navigation={navigation} />
+        < LogoutButtonComponent navigation={navigation} />
       </View>
-    </View>
+    </View >
   );
 };
 

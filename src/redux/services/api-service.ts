@@ -5,19 +5,19 @@ import { logOut, setCredentials } from '../slices/authSlice';
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}`,
   credentials: 'include',
-  prepareHeaders: (headers, { getState }:{getState:any}) => {
+  prepareHeaders: (headers, { getState }: { getState: any }) => {
     const token = getState().auth.jwtToken;
     if (token) {
       headers.set('x-auth-token', `${token}`);
     }
-    headers.set('Content-Type','application/json');
+    headers.set('Content-Type', 'application/json');
     return headers;
   },
 });
 
-const baseQueryWithReauth = async (args:any, api:any, extraOptions:any) => {
-  let result:any = await baseQuery(args, api, extraOptions);
- console.log(result);
+const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
+  let result: any = await baseQuery(args, api, extraOptions);
+  console.log(result);
   if (result?.error?.originalStatus === 403) {
     console.log('sending refresh token');
     // send refresh token to get new access token
@@ -37,7 +37,7 @@ const baseQueryWithReauth = async (args:any, api:any, extraOptions:any) => {
   return result;
 };
 
-export const api= createApi({
+export const api = createApi({
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({}),
 });
