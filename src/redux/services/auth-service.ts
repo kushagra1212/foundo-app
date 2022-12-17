@@ -1,4 +1,4 @@
-import { LOCAL_STORAGE_ACCESS_TOKEN_KEY } from "@env";
+import { BASE_URL, LOCAL_STORAGE_ACCESS_TOKEN_KEY } from "@env";
 import { getTokenFromLocalStorage, removeItemFromLocalStroage } from "../../storage/foundo-localstorage";
 import { setCredentials } from "../slices/authSlice";
 import { api } from "./api-service"
@@ -28,12 +28,12 @@ export const authApi = api.injectEndpoints({
         }),
         userVerifyResetPassword:builder.query({
             query:({email,token})=>{
-                return `/v1/app-auth/verify-token/${email}/${token}`
+                return `/v1/app-auth/verify-reset-password-token/${email}/${token}`
             },transformResponse:(response)=>{
-                console.log(response)
+                console.log(response,"Verify Token")
                 if(response?.id)
-                return true;
-                else return false;
+                return {userCredentials:response};
+                else return {userCredentials:null};
             }
         }),
         userResetPassword:builder.mutation({query:({email,token,password})=>{
@@ -47,10 +47,18 @@ export const authApi = api.injectEndpoints({
     overrideExisting: true,
 })
 export const userLoggedIn=async()=>{
-    const res=await getTokenFromLocalStorage(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
-
-    if(res) return true;
-    return false;
+    const token=await getTokenFromLocalStorage(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+    
+    if(!token)return {isLoggedIn:false};
+    try{
+        const res=await fetch(`${BASE_URL}/v1/app-auth/verify-token/${token}`);
+        const resJson=await res.json();
+        if(resJson?.error) return {isLoggedIn:false}
+        return {...resJson,isLoggedIn:true,token};
+    }catch(err){
+        console.log(err,"Handle: UserLoggedIn ");
+        return  {isLoggedIn:false};;
+    }
 }
 export const logoutUser=()=>{
     removeItemFromLocalStroage(LOCAL_STORAGE_ACCESS_TOKEN_KEY);

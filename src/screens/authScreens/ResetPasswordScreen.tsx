@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import {
+  ActivityIndicator,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -18,8 +19,7 @@ import { useEffect, useState } from 'react';
 import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 import character2 from '../../assets/images/character2.png';
-import character3 from '../../assets/images/character3.png';
-import objectEmail from '../../assets/images/email.png';
+import tokenExpiredIcon from '../../assets/images/file.png';
 import * as Linking from 'expo-linking';
 import {
   useUserForgotPasswordMutation,
@@ -27,6 +27,9 @@ import {
   useUserVerifyResetPasswordQuery,
 } from '../../redux/services/auth-service';
 import {
+  selectCurrentResetToken,
+  selectCurrentToken,
+  selectCurrentUser,
   selectorgotPasswordStatus,
   setForgotPasswordLinkSent,
 } from '../../redux/slices/authSlice';
@@ -39,18 +42,25 @@ export type props = {
 };
 const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
   const dispatch = useDispatch();
-  const url = Linking.useURL();
-  const [credentials, setCredentials] = useState({ email: '', token: '' });
+  const jwtResetToken = useSelector(selectCurrentResetToken);
+  const currUser = useSelector(selectCurrentUser);
 
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
   const [userResetPassword, {}] = useUserResetPasswordMutation();
+  const {
+    data: userCredentials,
+    error,
+    isLoading,
+  } = useUserVerifyResetPasswordQuery({
+    email: currUser?.email,
+    token: jwtResetToken,
+  });
   const handleSubmit = async ({ password }: { password: string }) => {
-    console.log(credentials);
     try {
       const res = await userResetPassword({
         password,
-        email: credentials.email,
-        token: credentials.token,
+        email: currUser?.email,
+        token: jwtResetToken,
       }).unwrap();
       Toast.show({
         type: 'success',
@@ -59,6 +69,7 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
           message: res.message,
         },
       });
+      navigation.navigate('Signin');
     } catch (err: any) {
       console.log(err);
       Toast.show({
@@ -70,23 +81,34 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
       });
     }
   };
-
-  useEffect(() => {
-    if (url) {
-      const { path } = Linking.parse(url);
-      const pathArray = path?.split('/');
-      if (pathArray !== undefined && pathArray?.length >= 2) {
-        setCredentials({
-          email: pathArray[pathArray?.length - 2],
-          token: pathArray[pathArray?.length - 1],
-        });
-      }
-    }
-  }, [url]);
-  if (credentials.email !== '' && credentials.token !== '')
+  if (!userCredentials || error)
     return (
-      <SafeAreaView style={{ backgroundColor: COLORS.white }}>
-        <VerifyUserToken credentials={credentials} navigation={navigation} />
+      <SafeAreaView
+        style={{ backgroundColor: COLORS.redPrimary, ...styles.inner }}
+      >
+        <View>
+          <AnimationTranslateScale>
+            <Image
+              source={tokenExpiredIcon}
+              style={{
+                width: 300,
+                height: 300,
+                position: 'absolute',
+                zIndex: -1,
+                right: 1,
+              }}
+            />
+          </AnimationTranslateScale>
+        </View>
+
+        <View
+          style={{
+            ...styles.login_container,
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ fontSize: 25 }}> Token Expired </Text>
+        </View>
       </SafeAreaView>
     );
   return (

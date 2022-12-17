@@ -17,12 +17,11 @@ export type props = {
 };
 const VerifyUserToken: React.FC<props> = ({ navigation, credentials }) => {
   const {
-    data: isUserTokenValid,
+    data: userCredentials,
     error,
     isLoading,
   } = useUserVerifyResetPasswordQuery(credentials);
-  console.log('Valid?', isUserTokenValid);
-  if (isUserTokenValid) {
+  if (!userCredentials) {
     return null;
   }
   return (
