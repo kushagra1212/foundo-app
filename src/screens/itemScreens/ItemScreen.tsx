@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import FilterOptionComponent, {
   FILTER_ITEMS,
 } from '../../components/atoms/FilterOptionComponent';
@@ -18,7 +19,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
     setSelectedFilterId(id);
   };
   return (
-    <View style={styles.feed}>
+    <SafeAreaView style={styles.feed}>
       <View style={styles.item_search_input}>
         <ItemSearchComponent navigation={navigation} isItemScreenClick={true} />
       </View>
@@ -37,13 +38,11 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
           horizontal
         />
       </View>
-      <View style={{
-        backgroundColor: COLORS.redPrimary, marginBottom: 160, marginTop: 10,
-      }}><CardsComponent /></View>
-      <View>
-        < LogoutButtonComponent navigation={navigation} />
-      </View>
-    </View >
+      <CardsComponent />
+      {/* <View>
+        <LogoutButtonComponent navigation={navigation} />
+      </View> */}
+    </SafeAreaView >
   );
 };
 
@@ -59,11 +58,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     width: '100%',
     margin: 5,
-    height: 80,
+    height: 60,
   },
   item_search_input: {
     margin: 5,
-    marginTop: 10,
   },
 });
 export default ItemScreen;

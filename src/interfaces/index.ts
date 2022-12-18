@@ -9,3 +9,15 @@ export interface User {
   address?: string;
   createdAt: string;
 }
+export interface Post {
+  id: string;
+  category: string;
+  thumbnail: string;
+  itemName: string;
+  description: string;
+  dateTime: string
+  city: string;
+  color: string;
+  brand: string;
+  firstName: string;
+}

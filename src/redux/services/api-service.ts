@@ -7,6 +7,7 @@ const baseQuery = fetchBaseQuery({
   credentials: 'include',
   prepareHeaders: (headers, { getState }: { getState: any }) => {
     const token = getState().auth.jwtToken;
+    console.log("TOKEN: ", token)
     if (token) {
       headers.set('x-auth-token', `${token}`);
     }
@@ -17,7 +18,6 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
   let result: any = await baseQuery(args, api, extraOptions);
-  console.log(result);
   if (result?.error?.originalStatus === 403) {
     console.log('sending refresh token');
     // send refresh token to get new access token

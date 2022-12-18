@@ -62,7 +62,7 @@ const Foundo = () => {
 
     setAppLoaded(true);
     return () => (flag = false);
-  }, [url]);
+  }, []);
   if (!isfontLoaded || !appLoaded) {
     return null;
   }

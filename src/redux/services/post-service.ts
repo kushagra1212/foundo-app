@@ -3,16 +3,16 @@ import { api } from './api-service';
 
 export const postApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getPosts: builder.query({
+        getPosts: builder.mutation({
             query: ({ offset, limit }) => {
+                console.log(offset, limit)
                 return `/v1/item/all?offset=${offset}&limit=${limit}`;
             },
             transformResponse: (response) => {
-                console.log("response", response);
                 return response.items;
             },
         }),
     }),
 });
 
-export const { useGetPostsQuery } = postApi;
+export const { useGetPostsMutation } = postApi;

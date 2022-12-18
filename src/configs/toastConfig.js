@@ -93,10 +93,10 @@ const FoundoToast = (props) => (
         <AntDesign onPress={() => Toast.hide()} name="close" size={30} />
       </View>
     </View>
-    <View style={{ margin: 10, marginBottom: 5 }}>
+    {props?.message && <View style={{ margin: 10, marginBottom: 5 }}>
       <Text style={{ fontWeight: '300', fontSize: 18, textAlign: 'auto' }}>
         {props.message}
       </Text>
-    </View>
+    </View>}
   </View>
 );

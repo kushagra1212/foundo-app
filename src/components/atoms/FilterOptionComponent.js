@@ -32,7 +32,7 @@ const FilterOptionComponent = ({
     >
       <Text
         style={[
-          FONTS.h3,
+          FONTS.h4,
           isItemSelected(item.id)
             ? styles.selected_option_text
             : styles.not_selected_option_text,
@@ -46,7 +46,7 @@ const FilterOptionComponent = ({
 
 const styles = StyleSheet.create({
   base_option: {
-    borderRadius: 15,
+    borderRadius: 10,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

@@ -23,14 +23,15 @@ const FeedScreen: React.FC<props> = () => {
           headerStyle: {
             backgroundColor: COLORS.lightGrayPrePrimary,
           },
+          headerShown: false,
           headerShadowVisible: false,
-          headerLeft: () => (
-            <TouchableOpacity
-              style={styles.left_btn}
-              onPress={() => console.log('left-btn')}
-            >
-              <Foundation name="indent-more" size={30} />
-            </TouchableOpacity>
+          headerLeft: () => (null
+            // <TouchableOpacity
+            //   style={styles.left_btn}
+            //   onPress={() => console.log('left-btn')}
+            // >
+            //   <Foundation name="indent-more" size={30} />
+            // </TouchableOpacity>
           ),
           headerTintColor: 'black',
           headerTitleStyle: {
