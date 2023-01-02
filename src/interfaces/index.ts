@@ -21,3 +21,10 @@ export interface Post {
   brand: string;
   firstName: string;
 }
+export interface FilterItemOn {
+  category?: string;
+  brand?: string;
+  color?: string;
+  college?: string;
+  latest?: string;
+}

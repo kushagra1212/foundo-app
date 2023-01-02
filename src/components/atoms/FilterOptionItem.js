@@ -7,9 +7,8 @@ import {
 } from 'react-native';
 import { COLORS, FONTS } from '../../constants/theme';
 export const FILTER_ITEMS = [
-  { id: 1, text: 'lost' },
-  { id: 2, text: 'founded' },
-  { id: 3, text: 'add filter' },
+  { id: 0, text: 'lost' },
+  { id: 1, text: 'founded' },
 ];
 const FilterOptionComponent = ({
   item,
@@ -17,6 +16,7 @@ const FilterOptionComponent = ({
   handleChangeFilter,
 }) => {
   const isItemSelected = (id) => {
+    console.log({ id, selectedFilterId })
     return id === selectedFilterId;
   };
 
@@ -40,7 +40,7 @@ const FilterOptionComponent = ({
       >
         {item.text}
       </Text>
-    </TouchableOpacity>
+        </TouchableOpacity>
   );
 };
 

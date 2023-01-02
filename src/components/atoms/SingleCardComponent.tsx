@@ -70,17 +70,14 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
           </Text>
         </View>
         <View style={styles.color_brand}>
-          <Text
-            style={{ margin: 5, marginTop: 10 }}>
-
+          <View style={styles.color_view}>
             <View style={{ ...styles.color, backgroundColor: ITEM_STANDARD_COLORS.get(item.color) }} />
-            <Ionicons
 
-              name="color-palette-outline"
-              size={20}
-            />
-          </Text>
 
+            <Text
+              style={{ margin: 5, marginTop: 10, fontWeight: '500' }}>
+              {capitalizeFirstLetter(item.color)}
+            </Text></View>
           <Text
             style={{
               color: COLORS.black,
@@ -111,7 +108,7 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
             }}
           >
             <Text style={{
-              fontWeight: '200',
+              fontWeight: '300',
             }}>posted by</Text> {item.firstName}
           </Text></View>
         </View>
@@ -161,8 +158,16 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     margin: 5,
-    borderRadius: 5,
-    elevation: 5
+    borderRadius: 20,
+  },
+  color_view: {
+    display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: COLORS.white,
+    borderRadius: 15,
+    elevation: 2,
+    margin: 5,
+    padding: 2
   },
   view_details: {
     display: 'flex',

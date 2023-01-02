@@ -1,35 +1,38 @@
 import { StyleSheet, Text, View, TextInput, FlatList, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/theme';
-export type props = {};
+
 import { ITEMS } from '../../Dummy/constants';
 import { useGetPostsMutation } from '../../redux/services/post-service';
-import { selectOffsetAndLimit, selectPosts, updatePosts } from '../../redux/slices/postSlice';
+import { selectFilterType, selectOffsetAndLimit, selectPosts, updatePosts } from '../../redux/slices/postSlice';
 import SingleCardComponent from '../atoms/SingleCardComponent';
 import { useEffect, useState } from 'react'
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-const CardsComponent: React.FC<props> = ({ }) => {
+import { boolean } from 'yup';
+import { FilterItemOn } from '../../interfaces';
+export type props = {
+  itemFilterOption: FilterItemOn
+};
+const CardsComponent: React.FC<props> = ({ itemFilterOption }) => {
   const dispatch = useDispatch();
-  const { limit } = useSelector(selectOffsetAndLimit);
+  const { limit, offset } = useSelector(selectOffsetAndLimit);
+  const filterType = useSelector(selectFilterType);
+  const [reachedEnd, setReachedEnd] = useState<boolean>(false)
   const posts = useSelector(selectPosts);
-  const [currentOffset, setCurrentOffset] = useState(0);
-  const [allPostsRecived, setAllPostRecived] = useState(false)
   const [getPost, { isLoading }] = useGetPostsMutation();
   const [loading, setLoading] = useState(false);
   const fetchPosts = async () => {
-    if (allPostsRecived || loading) return;
+    if (loading) return;
     setLoading(true);
     try {
-      const posts = await getPost({ offset: currentOffset, limit }).unwrap();
+      const posts = await getPost({ offset: offset, limit, founded: filterType, ...itemFilterOption }).unwrap();
 
-      console.log(posts, "CARDS COMPONENT");
-      setCurrentOffset(currentOffset + limit);
-      dispatch(updatePosts({ offset: currentOffset + limit, posts: posts }));
+      dispatch(updatePosts({ offset: offset + limit, posts: posts }));
       setLoading(false);
     } catch (e: any) {
       console.log(e);
-      setAllPostRecived(true);
       setLoading(false);
+      setReachedEnd(true);
       Toast.show({
         type: 'success',
         props: {
@@ -44,25 +47,30 @@ const CardsComponent: React.FC<props> = ({ }) => {
     const { nativeEvent } = event;
     const { contentOffset } = nativeEvent;
     const { y } = contentOffset;
-    console.log(y)
   }
   useEffect(() => {
-    let flag: boolean = false;
-    if (currentOffset == 0) {
+    let flag: boolean = true;
+    setReachedEnd(false);
+    dispatch(updatePosts({ offset: 0, posts: [] }));
+    if (flag) {
       fetchPosts();
     }
-  }, [currentOffset])
+    return () => {
+      (flag = true);
+    }
+  }, [filterType])
   return (
     <FlatList
       data={posts}
       renderItem={({ item }) => (<SingleCardComponent key={item.id.toString()} item={item} />)}
-      onEndReached={fetchPosts}
+      onEndReached={reachedEnd ? null : fetchPosts}
       keyExtractor={(item) => item.id.toString()}
       ListFooterComponent={loading ? <ActivityIndicator
         size="large"
         color={COLORS.greenPrimary}
       /> : null}
       onScroll={onScroll}
+
 
     />
   );
