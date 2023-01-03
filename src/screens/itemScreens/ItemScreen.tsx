@@ -1,6 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  KeyboardAvoidingView,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import FilterOptionComponent, {
@@ -16,41 +22,48 @@ import { filterItemOnInitial } from '../../interfaces/initials';
 import { selectFilterType, updateFilter } from '../../redux/slices/postSlice';
 import FilterItemComponent from '../../components/molecules/FilterItemComponent';
 import BottomModal from '../../components/molecules/BottomModal';
+import { AntDesign } from '../../constants/icons';
 
 export type props = {
   navigation: any;
 };
 const ItemScreen: React.FC<props> = ({ navigation }) => {
-
   const filterType = useSelector(selectFilterType);
-  const [itemFilterOption, setItemFilterOption] = useState<FilterItemOn>(filterItemOnInitial)
+  const [itemFilterOption, setItemFilterOption] =
+    useState<FilterItemOn>(filterItemOnInitial);
   const [backgroundFilter, setBackgroundFilter] = useState<boolean>(false);
+  const [advFilterOn, setAdvFilterOn] = useState<boolean>(false);
   const dispatch = useDispatch();
   const handleChangeFilter = (id: number) => {
     dispatch(updateFilter({ filterType: id }));
   };
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const onModalClose = () => {
+  const onModalClose = (options: FilterItemOn) => {
+    if (options?.latest) updateItemFilterOption(options);
     setBackgroundFilter(false);
+    setAdvFilterOn(true);
     setTimeout(() => {
       setIsModalVisible(false);
-    }, 10)
+    }, 10);
   };
   const onModalOpen = () => {
     setIsModalVisible(true);
     setTimeout(() => {
       setBackgroundFilter(true);
-    }, 200)
-  }
+    }, 200);
+  };
   const updateItemFilterOption = (options: FilterItemOn): void => {
-    setItemFilterOption(options);
-  }
+    setItemFilterOption({ ...itemFilterOption, ...options });
+  };
+  console.log(itemFilterOption);
   return (
     <SafeAreaView style={styles.feed}>
       <View style={styles.item_search_input}>
         <ItemSearchComponent navigation={navigation} isItemScreenClick={true} />
       </View>
-      <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      <View
+        style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+      >
         <FlatList
           data={FILTER_ITEMS}
           contentContainerStyle={styles.option_flatlist}
@@ -64,16 +77,35 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
           keyExtractor={(item: any) => item.id}
           horizontal
         />
-        <AdditionalFilterOptionComponent onModalOpen={onModalOpen} isFilterOptionSelected={JSON.stringify(itemFilterOption) !== JSON.stringify(filterItemOnInitial)} />
+        <AdditionalFilterOptionComponent
+          onModalOpen={onModalOpen}
+          isFilterOptionSelected={
+            JSON.stringify(itemFilterOption) !==
+            JSON.stringify(filterItemOnInitial)
+          }
+        />
       </View>
-      <BottomModal backgroundFilter={backgroundFilter} isVisible={isModalVisible} onClose={onModalClose} >
-        <FilterItemComponent updateItemFilterOption={updateItemFilterOption} />
-      </BottomModal >
-      <CardsComponent itemFilterOption={itemFilterOption} />
+      <BottomModal
+        backgroundFilter={backgroundFilter}
+        isVisible={isModalVisible}
+        onClose={onModalClose}
+        titleText="Filter"
+        refreshAvail
+      >
+        <FilterItemComponent
+          options={itemFilterOption}
+          updateItemFilterOption={updateItemFilterOption}
+          onModalClose={onModalClose}
+        />
+      </BottomModal>
+      <CardsComponent
+        advFilterOn={advFilterOn}
+        itemFilterOption={itemFilterOption}
+      />
       {/* <View>
         <LogoutButtonComponent navigation={navigation} />
       </View> */}
-    </SafeAreaView >
+    </SafeAreaView>
   );
 };
 

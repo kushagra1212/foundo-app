@@ -7,12 +7,14 @@ import { FilterItemOn } from '../../interfaces';
 type Props = {
   isSelected: boolean;
   text: string;
-  updateItemFilterOption: (options: FilterItemOn) => void;
+  color: string;
+  onSelect: (options: FilterItemOn) => void;
 };
-const MiniItemTextIcon: React.FC<Props> = ({
+const MiniItemColorIcon: React.FC<Props> = ({
   isSelected,
   text,
-  updateItemFilterOption,
+  color,
+  onSelect,
 }) => {
   return (
     <View
@@ -20,10 +22,19 @@ const MiniItemTextIcon: React.FC<Props> = ({
         ...styles.btn,
         ...(isSelected ? styles.selected_btn : styles.not_selected_btn),
       }}
-      onTouchEnd={() =>
-        updateItemFilterOption({ category: isSelected ? '' : text })
-      }
+      onTouchEnd={() => onSelect({ color: isSelected ? '' : text })}
     >
+      <View
+        style={{
+          backgroundColor: color,
+          width: 10,
+          height: 10,
+          borderRadius: 10,
+          padding: 10,
+          margin: 5,
+          elevation: 3,
+        }}
+      ></View>
       <Text
         style={{
           ...FONTS.h4,
@@ -71,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MiniItemTextIcon;
+export default MiniItemColorIcon;

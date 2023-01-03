@@ -64,7 +64,7 @@ export const ITEMCAT_TO_NUM = new Map([
   ["railway identity", 44],
   ["arms license", 45],
   ["land certificate", 46],
-  ["overseas citizenship of india", 47],
+  ["overseas citizen india", 47],
 ]);
 
 export const NUM_TO_ITEMCAT = new Map([...ITEMCAT_TO_NUM.entries()].map(

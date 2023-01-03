@@ -1,18 +1,37 @@
 import { View, Text, StyleSheet, TextInput } from 'react-native';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Formik } from 'formik';
-import { COLORS, SIZES } from '../../constants/theme';
+import { COLORS, FONTS, SIZES } from '../../constants/theme';
 import { FilterItemOn } from '../../interfaces';
-import { ListItemType1 } from '../atoms/ListItem';
-import { Ionicons } from '../../constants/icons';
+import {
+  ListFilterItemSlideDownInput,
+  ListFilterItemSlideDownList,
+  ListFilterItemViewAllType,
+} from '../atoms/ListItem';
+import {
+  AntDesign,
+  FontAwesome,
+  Ionicons,
+  MaterialIcons,
+} from '../../constants/icons';
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
 import { ITEMCAT_TO_NUM } from '../../constants/item';
 import MiniItemTextIcon from '../atoms/MiniItemTextIcon';
+import { filterItemOnInitial } from '../../interfaces/initials';
+import BottomModal from './BottomModal';
 type Props = {
   updateItemFilterOption: (options: FilterItemOn) => void;
+  options: FilterItemOn;
+  onModalClose: (options: {}) => void;
 };
-const FilterItemComponent: React.FC<Props> = ({ updateItemFilterOption }) => {
+const FilterItemComponent: React.FC<Props> = ({
+  updateItemFilterOption,
+  options,
+  onModalClose,
+}) => {
   const [viewAll, setViewAll] = useState<boolean>(false);
+  const [slideDownButton, setSlideDownButton] = useState<boolean>(false);
+  const [showLatest, setShowLatest] = useState<number | undefined>(undefined);
   const categories = useMemo(() => {
     let categories: Array<[string, number]> = [];
     for (let element of ITEMCAT_TO_NUM.entries()) {
@@ -20,81 +39,134 @@ const FilterItemComponent: React.FC<Props> = ({ updateItemFilterOption }) => {
     }
     return categories;
   }, [ITEMCAT_TO_NUM]);
+
   const viewAllHandler = () => {
-    setViewAll(true);
+    setViewAll(!viewAll);
   };
-  const SaveSelected = () => {};
-  if (viewAll) {
-    return (
-      <View style={styles.view_container}>
-        <FlatList
-          data={categories}
-          contentContainerStyle={{
-            display: 'flex',
-            width: '100%',
-            margin: 10,
-          }}
-          numColumns={2}
-          renderItem={({ item }) => (
-            <MiniItemTextIcon isSelected={false} text={item[0]} />
-          )}
-          keyExtractor={(item) => item[1].toString()}
-        />
-        <TouchableOpacity style={styles.btn_active} onPress={SaveSelected}>
-          <Text
-            style={{
-              color: COLORS.white,
-              fontSize: SIZES.h3,
-              fontWeight: '600',
-            }}
-          >
-            Add
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+  const closeModal = () => {
+    updateItemFilterOption({ category: '' });
+    setViewAll(!viewAll);
+  };
+  const handleChangeSlideDownButton = () => {
+    setSlideDownButton(!slideDownButton);
+  };
+  const getItems = () => {
+    onModalClose({
+      latest: showLatest === undefined ? showLatest : showLatest ? '1' : '0',
+    });
+  };
+  useEffect(() => {
+    if (options?.latest === '1') setShowLatest(1);
+  }, [options?.latest]);
+
   return (
     <View>
-      <Formik
-        initialValues={{
-          category: '',
-          brand: '',
-          color: '',
-          college: '',
-          latest: '',
+      <ListFilterItemViewAllType
+        text="Category"
+        category={options.category}
+        viewAllHandler={viewAllHandler}
+      />
+      <ListFilterItemSlideDownList
+        text="Color"
+        category={options.color}
+        handleChangeSlideDownButton={handleChangeSlideDownButton}
+        options={options}
+        updateItemFilterOption={updateItemFilterOption}
+      />
+      <ListFilterItemSlideDownInput
+        options={options}
+        handleChangeSlideDownButton={() => {}}
+        text="Brand"
+        desc="write brand name"
+        updateItem={updateItemFilterOption}
+      />
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          margin: 10,
         }}
-        onSubmit={updateItemFilterOption}
+        onTouchStart={() => setShowLatest(showLatest ? 0 : 1)}
       >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          isValid,
-        }) => (
-          <View style={styles.formik_view}>
-            {/* <TextInput
-                                                style={{
-                                                        width: '80%',
-                                                        fontSize: 20,
-                                                        fontFamily: 'Roboto_400Regular',
-                                                }}
-                                                placeholder="Email ID"
-                                                onChangeText={handleChange('email')}
-                                                onBlur={handleBlur('email')}
-                                                value={values.category}
-                                                keyboardType="email-address"
-                                        /> */}
-            <ListItemType1
-              text="Category"
-              category={values.category}
-              viewAllHandler={viewAllHandler}
-            />
+        <AntDesign
+          style={{
+            backgroundColor: COLORS.white,
+            width: 35,
+            elevation: 5,
+            borderRadius: 5,
+            color: COLORS.primary,
+            borderWidth: 1,
+            ...(!showLatest ? { color: COLORS.GrayPrimary } : {}),
+          }}
+          name="check"
+          size={35}
+        />
+        <Text
+          style={{
+            marginLeft: 10,
+            ...FONTS.body3,
+            ...(!showLatest ? { color: COLORS.GraySecondary } : {}),
+          }}
+        >
+          Get Lastest At Top
+        </Text>
+      </View>
+      <View
+        style={{
+          ...styles.btn_active,
+        }}
+        onTouchStart={() => getItems()}
+      >
+        <Text style={{ ...FONTS.h3, color: COLORS.white }}>Find</Text>
+      </View>
+      <BottomModal
+        backgroundFilter={false}
+        isVisible={viewAll}
+        onClose={closeModal}
+        effect="fade"
+      >
+        <View style={styles.view_container}>
+          <FlatList
+            data={categories}
+            contentContainerStyle={{
+              margin: 5,
+              paddingBottom: 50,
+            }}
+            numColumns={2}
+            renderItem={({ item }) => (
+              <MiniItemTextIcon
+                isSelected={options?.category === item[0]}
+                text={item[0]}
+                updateItemFilterOption={updateItemFilterOption}
+              />
+            )}
+            keyExtractor={(item) => {
+              return item[0].toString();
+            }}
+          />
+          <View
+            style={{
+              ...styles.btn_active,
+              ...(options.category !== ''
+                ? {}
+                : { backgroundColor: COLORS.GraySecondary }),
+            }}
+            onTouchStart={viewAllHandler}
+          >
+            <Text
+              style={{
+                color: COLORS.white,
+                fontSize: SIZES.h3,
+                fontWeight: '600',
+              }}
+            >
+              Add
+            </Text>
           </View>
-        )}
-      </Formik>
+        </View>
+      </BottomModal>
     </View>
   );
 };
@@ -109,13 +181,14 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   btn_active: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.blueSecondary,
     elevation: 10,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    height: '30%',
+    height: 50,
     margin: 10,
+    marginBottom: 100,
   },
 });
 

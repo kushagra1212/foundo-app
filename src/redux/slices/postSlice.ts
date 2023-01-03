@@ -15,7 +15,11 @@ const postSlice = createSlice({
   reducers: {
     updatePosts: (state, action) => {
       state.offset = action.payload.offset;
-      state.posts = [...state.posts, ...action.payload.posts]
+      let set = new Set([...state.posts, ...action.payload.posts])
+      let post = [];
+      for (let ele of set)
+        post.push(ele);
+      state.posts = post;
     },
     updateFilter: (state, action) => {
       state.posts = [];

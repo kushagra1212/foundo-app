@@ -16,7 +16,6 @@ const FilterOptionComponent = ({
   handleChangeFilter,
 }) => {
   const isItemSelected = (id) => {
-    console.log({ id, selectedFilterId })
     return id === selectedFilterId;
   };
 
@@ -40,7 +39,7 @@ const FilterOptionComponent = ({
       >
         {item.text}
       </Text>
-        </TouchableOpacity>
+    </TouchableOpacity>
   );
 };
 
