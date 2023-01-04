@@ -3,6 +3,16 @@ import { api } from './api-service';
 
 export const postApi = api.injectEndpoints({
     endpoints: (builder) => ({
+        getSearchedPosts: builder.mutation({
+            query: ({ offset, limit, searchString }) => {
+                console.log(offset, limit, searchString)
+                return `/v1/item/all-by-search?offset=${offset}&limit=${limit}&searchstring=${searchString}`;
+            },
+            transformResponse: (response) => {
+                return response;
+            },
+        }),
+
         getPosts: builder.mutation({
             query: ({ offset, limit, ...rest }) => {
                 console.log(offset, limit)
@@ -19,6 +29,8 @@ export const postApi = api.injectEndpoints({
             },
         }),
     }),
+    overrideExisting: false,
+
 });
 
-export const { useGetPostsMutation } = postApi;
+export const { useGetPostsMutation, useGetSearchedPostsMutation } = postApi;

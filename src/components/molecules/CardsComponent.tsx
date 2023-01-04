@@ -5,13 +5,15 @@ import {
   TextInput,
   FlatList,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { COLORS } from '../../constants/theme';
+import { COLORS, FONTS } from '../../constants/theme';
 
 import { ITEMS } from '../../Dummy/constants';
 import { useGetPostsMutation } from '../../redux/services/post-service';
-import {
+import postSlice, {
+  resetPosts,
   selectFilterType,
   selectOffsetAndLimit,
   selectPosts,
@@ -22,61 +24,81 @@ import SingleCardComponent from '../atoms/SingleCardComponent';
 import { useEffect, useState } from 'react';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { boolean } from 'yup';
-import { FilterItemOn } from '../../interfaces';
-export type props = {
-  itemFilterOption: FilterItemOn;
-  advFilterOn: boolean;
-};
-const CardsComponent: React.FC<props> = ({ itemFilterOption, advFilterOn }) => {
-  const dispatch = useDispatch();
-  const { limit, offset } = useSelector(selectOffsetAndLimit);
-  const filterType = useSelector(selectFilterType);
-  const [reachedEnd, setReachedEnd] = useState<boolean>(false);
-  const posts = useSelector(selectPosts);
-  const [getPost, { isLoading }] = useGetPostsMutation();
-  const [loading, setLoading] = useState(false);
-  const fetchPosts = async () => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      const posts = await getPost({
-        offset: offset,
-        limit,
-        founded: filterType,
-        ...itemFilterOption,
-      }).unwrap();
+import { FilterItemOn, Post } from '../../interfaces';
+import AnimationTranslateScale from './Animations/AnimationTranslateScale';
 
-      dispatch(updatePosts({ offset: offset + limit, posts: posts }));
-      setLoading(false);
-    } catch (e: any) {
-      console.log(e);
-      setLoading(false);
-      setReachedEnd(true);
-      Toast.show({
-        type: 'success',
-        props: {
-          text: `You've seen it all`,
-          message: null,
-        },
-      });
-    }
-  };
+import character13 from '../../assets/images/character13.png';
+export type props = {
+  postFound: boolean;
+  posts: Array<Post>;
+  reachedEnd: boolean;
+  fetchPosts: () => void;
+  loading: boolean;
+};
+const CardsComponent: React.FC<props> = ({
+  postFound,
+  reachedEnd,
+  fetchPosts,
+  loading,
+  posts,
+}) => {
   const onScroll = (event: any) => {
     const { nativeEvent } = event;
     const { contentOffset } = nativeEvent;
     const { y } = contentOffset;
   };
-  useEffect(() => {
-    let flag: boolean = true;
-    setReachedEnd(false);
 
-    if (flag) {
-      fetchPosts();
-    }
-    return () => {
-      flag = true;
-    };
-  }, [filterType, advFilterOn]);
+  if (!postFound) {
+    return (
+      <View
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <View
+          style={{
+            position: 'absolute',
+            backgroundColor: COLORS.lightGraySecondary,
+            width: '100%',
+            height: '100%',
+            borderRadius: 25,
+          }}
+        >
+          <AnimationTranslateScale scaleRange={[1, 1.3]} scaleDuration={500}>
+            <Image
+              source={character13}
+              style={{
+                width: 500,
+                height: 500,
+                position: 'absolute',
+                zIndex: 0,
+                right: 1,
+              }}
+            />
+          </AnimationTranslateScale>
+        </View>
+        <View
+          style={{
+            width: '80%',
+            backgroundColor: COLORS.white,
+            zIndex: 3,
+            padding: 20,
+            elevation: 20,
+            borderRadius: 20,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: '80%',
+          }}
+        >
+          <Text style={FONTS.h1}>No Results</Text>
+          <Text>Sorry We couldn't found anything</Text>
+        </View>
+      </View>
+    );
+  }
   return (
     <FlatList
       data={posts}

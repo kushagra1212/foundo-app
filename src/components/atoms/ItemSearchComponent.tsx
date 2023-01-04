@@ -1,17 +1,22 @@
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { Feather } from '../../constants/icons';
 import { COLORS, FONTS } from '../../constants/theme';
+import { resetPosts } from '../../redux/slices/postSlice';
 export type props = {
-  isItemScreenClick: boolean;
   navigation?: any;
+  handleOnFocus?: () => void;
+  registerString?: (searchString: string) => void;
 };
 const ItemSearchComponent: React.FC<props> = ({
-  isItemScreenClick,
+  handleOnFocus,
+  registerString,
   navigation,
 }) => {
-  const handleOnFocus = () => {
-    if (isItemScreenClick) navigation.navigate('FeedSearchScreen');
-  };
+  useEffect(() => {
+    //dispatch(resetPosts());
+  }, []);
   return (
     <View style={styles.item_search}>
       <Feather name="search" size={25} />
@@ -19,7 +24,8 @@ const ItemSearchComponent: React.FC<props> = ({
         style={[styles.item_text_ip, FONTS.body3]}
         placeholder="Search Items here.."
         onFocus={handleOnFocus}
-        autoFocus={!isItemScreenClick}
+        autoFocus={true}
+        onChangeText={registerString}
       />
     </View>
   );

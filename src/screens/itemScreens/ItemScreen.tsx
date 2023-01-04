@@ -16,32 +16,52 @@ import ItemSearchComponent from '../../components/atoms/ItemSearchComponent';
 import LogoutButtonComponent from '../../components/atoms/LogoutButtonComponent';
 import AdditionalFilterOptionComponent from '../../components/molecules/AditionalFilterOptionComponent.tsx';
 import CardsComponent from '../../components/molecules/CardsComponent';
-import { COLORS } from '../../constants/theme';
-import { FilterItemOn } from '../../interfaces';
+import { COLORS, FONTS } from '../../constants/theme';
+import { FilterItemOn, Post } from '../../interfaces';
 import { filterItemOnInitial } from '../../interfaces/initials';
-import { selectFilterType, updateFilter } from '../../redux/slices/postSlice';
+import {
+  resetPosts,
+  selectFilterType,
+  selectOffsetAndLimit,
+  selectPosts,
+  updateFilter,
+  updatePosts,
+} from '../../redux/slices/postSlice';
 import FilterItemComponent from '../../components/molecules/FilterItemComponent';
 import BottomModal from '../../components/molecules/BottomModal';
-import { AntDesign } from '../../constants/icons';
+import { AntDesign, Feather } from '../../constants/icons';
+import { useGetPostsMutation } from '../../redux/services/post-service';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { TextInput } from 'react-native-gesture-handler';
 
 export type props = {
   navigation: any;
 };
 const ItemScreen: React.FC<props> = ({ navigation }) => {
   const filterType = useSelector(selectFilterType);
+  const posts: Array<Post> = useSelector(selectPosts);
   const [itemFilterOption, setItemFilterOption] =
     useState<FilterItemOn>(filterItemOnInitial);
   const [backgroundFilter, setBackgroundFilter] = useState<boolean>(false);
-  const [advFilterOn, setAdvFilterOn] = useState<boolean>(false);
+  const [advFilterOn, setAdvFilterOn] = useState<boolean | undefined>(
+    undefined
+  );
+  const { limit, offset } = useSelector(selectOffsetAndLimit);
+  const [getPost, { isLoading }] = useGetPostsMutation();
+  const [reachedEnd, setReachedEnd] = useState<boolean>(false);
+
+  const [postFound, setPostFound] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const handleChangeFilter = (id: number) => {
     dispatch(updateFilter({ filterType: id }));
   };
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const onModalClose = (options: FilterItemOn) => {
-    if (options?.latest) updateItemFilterOption(options);
+  const onModalClose = () => {
     setBackgroundFilter(false);
-    setAdvFilterOn(true);
+    if (advFilterOn === undefined) setAdvFilterOn(true);
+    else setAdvFilterOn(!advFilterOn);
+    dispatch(updateFilter({ filterType: filterType }));
     setTimeout(() => {
       setIsModalVisible(false);
     }, 10);
@@ -50,16 +70,67 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
     setIsModalVisible(true);
     setTimeout(() => {
       setBackgroundFilter(true);
+      dispatch(resetPosts());
     }, 200);
   };
   const updateItemFilterOption = (options: FilterItemOn): void => {
     setItemFilterOption({ ...itemFilterOption, ...options });
   };
-  console.log(itemFilterOption);
+  const resetItemFilter = () => {
+    setItemFilterOption(filterItemOnInitial);
+  };
+  const fetchPosts = async () => {
+    setPostFound(true);
+    if (loading) return;
+    setLoading(true);
+    try {
+      const posts = await getPost({
+        offset: offset,
+        limit,
+        founded: filterType,
+        ...itemFilterOption,
+      }).unwrap();
+      dispatch(updatePosts({ offset: offset + limit, posts: posts }));
+      setLoading(false);
+    } catch (e: any) {
+      console.log(e);
+      setLoading(false);
+      setReachedEnd(true);
+      if (posts.length !== 0)
+        Toast.show({
+          type: 'success',
+          props: {
+            text: `You've seen it all`,
+            message: null,
+          },
+        });
+      else setPostFound(false);
+    }
+  };
+  useEffect(() => {
+    let flag: boolean = true;
+    setReachedEnd(false);
+    if (flag && offset === 0) {
+      fetchPosts();
+    }
+    return () => {
+      flag = true;
+    };
+  }, [filterType, advFilterOn, offset]);
+  const handleOnFocus = () => {
+    navigation.replace('FeedSearchScreen');
+  };
   return (
     <SafeAreaView style={styles.feed}>
       <View style={styles.item_search_input}>
-        <ItemSearchComponent navigation={navigation} isItemScreenClick={true} />
+        <View style={styles.item_search}>
+          <Feather name="search" size={25} />
+          <TextInput
+            style={[styles.item_text_ip, FONTS.body3]}
+            placeholder="Search Items here.."
+            onFocus={handleOnFocus}
+          />
+        </View>
       </View>
       <View
         style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
@@ -90,6 +161,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
         isVisible={isModalVisible}
         onClose={onModalClose}
         titleText="Filter"
+        reset={resetItemFilter}
         refreshAvail
       >
         <FilterItemComponent
@@ -99,8 +171,11 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
         />
       </BottomModal>
       <CardsComponent
-        advFilterOn={advFilterOn}
-        itemFilterOption={itemFilterOption}
+        fetchPosts={fetchPosts}
+        loading={loading}
+        postFound={postFound}
+        posts={posts}
+        reachedEnd={reachedEnd}
       />
       {/* <View>
         <LogoutButtonComponent navigation={navigation} />
@@ -125,6 +200,20 @@ const styles = StyleSheet.create({
   },
   item_search_input: {
     margin: 5,
+  },
+  item_search: {
+    backgroundColor: COLORS.white,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    elevation: 10,
+    margin: 5,
+    borderRadius: 10,
+  },
+  item_text_ip: {
+    marginLeft: 10,
+    width: '90%',
   },
 });
 export default ItemScreen;

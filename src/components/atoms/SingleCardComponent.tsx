@@ -12,7 +12,9 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
   return (
     <View style={styles.card}>
       <View style={styles.card_header}>
-        <View style={styles.category}><Text style={{ color: COLORS.white }}>{item.category}</Text></View>
+        <View style={styles.category}>
+          <Text style={{ color: COLORS.white }}>{item.category}</Text>
+        </View>
         <Image source={{ uri: item.thumbnail }} style={styles.thumbnail} />
       </View>
       <View style={styles.card_footer}>
@@ -33,7 +35,7 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
               color: COLORS.black,
               fontSize: SIZES.body3,
               fontWeight: '400',
-              textAlign: 'left'
+              textAlign: 'left',
             }}
           >
             {item.description}
@@ -52,7 +54,8 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
               style={{ width: '10%', fontWeight: '100', opacity: 0.6 }}
               name="clock"
               size={15}
-            /> {new Date(item.dateTime).toDateString()}
+            />{' '}
+            {new Date(item.dateTime).toDateString()}
           </Text>
           <Text
             style={{
@@ -71,27 +74,38 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
         </View>
         <View style={styles.color_brand}>
           <View style={styles.color_view}>
-            <View style={{ ...styles.color, backgroundColor: ITEM_STANDARD_COLORS.get(item.color) }} />
+            <View
+              style={{
+                ...styles.color,
+                backgroundColor: ITEM_STANDARD_COLORS.get(item.color),
+              }}
+            />
 
-
-            <Text
-              style={{ margin: 5, marginTop: 10, fontWeight: '500' }}>
+            <Text style={{ ...FONTS.body3, lineHeight: 20 }}>
               {capitalizeFirstLetter(item.color)}
-            </Text></View>
+            </Text>
+          </View>
           <Text
             style={{
               color: COLORS.black,
               fontSize: SIZES.body3,
               fontWeight: '600',
               textAlign: 'center',
-              margin: 5
+              margin: 5,
             }}
           >
             {item.brand}
           </Text>
         </View>
 
-        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <View style={styles.view_details}>
             <Text>View</Text>
             <Ionicons
@@ -100,21 +114,26 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
               size={25}
             />
           </View>
-          <View><Text
-            style={{
-              fontSize: SIZES.body4,
-              alignSelf: 'flex-end',
-              margin: 5,
-            }}
-          >
-            <Text style={{
-              fontWeight: '300',
-            }}>posted by</Text> {item.firstName}
-          </Text></View>
+          <View>
+            <Text
+              style={{
+                fontSize: SIZES.body4,
+                alignSelf: 'flex-end',
+                margin: 5,
+              }}
+            >
+              <Text
+                style={{
+                  fontWeight: '300',
+                }}
+              >
+                posted by
+              </Text>{' '}
+              {item.firstName}
+            </Text>
+          </View>
         </View>
-
       </View>
-
     </View>
   );
 };
@@ -129,55 +148,59 @@ const styles = StyleSheet.create({
   card_header: {
     width: '100%',
     position: 'relative',
-  }, card_footer: {
-    backgroundColor: COLORS.white
+  },
+  card_footer: {
+    backgroundColor: COLORS.white,
   },
   thumbnail: {
     width: '100%',
     height: 150,
   },
   item_name: {
-    margin: 5
+    margin: 5,
   },
   description: {
-    margin: 5
+    margin: 5,
   },
   lost_when: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: 5
-  }
-  , color_brand: {
+    margin: 5,
+  },
+  color_brand: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   color: {
-    width: 30,
-    height: 30,
-    margin: 5,
+    width: 20,
+    height: 20,
     borderRadius: 20,
   },
   color_view: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
     backgroundColor: COLORS.white,
-    borderRadius: 15,
+    borderRadius: 20,
     elevation: 2,
+    padding: 10,
+    width: 100,
+    height: 40,
     margin: 5,
-    padding: 2
   },
   view_details: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.GraySecondary,
-    elevation: 6,
+    backgroundColor: COLORS.lightGraySecondary,
+    elevation: 1,
     borderRadius: 10,
     margin: 5,
-    paddingLeft: 5
+    paddingLeft: 5,
   },
   category: {
     fontSize: SIZES.h2,
@@ -186,9 +209,10 @@ const styles = StyleSheet.create({
     zIndex: 5,
     elevation: 30,
     borderRadius: 5,
-    padding: 1, alignSelf: 'flex-end',
-    transform: [{ rotate: "15 deg" }],
-    marginTop: 10
-  }
+    padding: 1,
+    alignSelf: 'flex-end',
+    transform: [{ rotate: '15 deg' }],
+    marginTop: 10,
+  },
 });
 export default SingleCardComponent;

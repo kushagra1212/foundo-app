@@ -22,7 +22,7 @@ import BottomModal from './BottomModal';
 type Props = {
   updateItemFilterOption: (options: FilterItemOn) => void;
   options: FilterItemOn;
-  onModalClose: (options: {}) => void;
+  onModalClose: () => void;
 };
 const FilterItemComponent: React.FC<Props> = ({
   updateItemFilterOption,
@@ -31,7 +31,6 @@ const FilterItemComponent: React.FC<Props> = ({
 }) => {
   const [viewAll, setViewAll] = useState<boolean>(false);
   const [slideDownButton, setSlideDownButton] = useState<boolean>(false);
-  const [showLatest, setShowLatest] = useState<number | undefined>(undefined);
   const categories = useMemo(() => {
     let categories: Array<[string, number]> = [];
     for (let element of ITEMCAT_TO_NUM.entries()) {
@@ -51,14 +50,9 @@ const FilterItemComponent: React.FC<Props> = ({
     setSlideDownButton(!slideDownButton);
   };
   const getItems = () => {
-    onModalClose({
-      latest: showLatest === undefined ? showLatest : showLatest ? '1' : '0',
-    });
+    onModalClose();
   };
-  useEffect(() => {
-    if (options?.latest === '1') setShowLatest(1);
-  }, [options?.latest]);
-
+  console.log(options);
   return (
     <View>
       <ListFilterItemViewAllType
@@ -88,7 +82,16 @@ const FilterItemComponent: React.FC<Props> = ({
           justifyContent: 'flex-start',
           margin: 10,
         }}
-        onTouchStart={() => setShowLatest(showLatest ? 0 : 1)}
+        onTouchStart={() =>
+          updateItemFilterOption({
+            latest:
+              options.latest === 'undefined'
+                ? '1'
+                : options.latest === '1'
+                ? '0'
+                : '1',
+          })
+        }
       >
         <AntDesign
           style={{
@@ -98,7 +101,9 @@ const FilterItemComponent: React.FC<Props> = ({
             borderRadius: 5,
             color: COLORS.primary,
             borderWidth: 1,
-            ...(!showLatest ? { color: COLORS.GrayPrimary } : {}),
+            ...(options.latest === undefined || options.latest === '0'
+              ? { color: COLORS.GrayPrimary }
+              : {}),
           }}
           name="check"
           size={35}
@@ -107,7 +112,9 @@ const FilterItemComponent: React.FC<Props> = ({
           style={{
             marginLeft: 10,
             ...FONTS.body3,
-            ...(!showLatest ? { color: COLORS.GraySecondary } : {}),
+            ...(options.latest === undefined || options.latest === '0'
+              ? { color: COLORS.GrayPrimary }
+              : {}),
           }}
         >
           Get Lastest At Top
@@ -116,8 +123,15 @@ const FilterItemComponent: React.FC<Props> = ({
       <View
         style={{
           ...styles.btn_active,
+          ...(JSON.stringify(options) === JSON.stringify(filterItemOnInitial)
+            ? { backgroundColor: COLORS.GraySecondary }
+            : {}),
         }}
-        onTouchStart={() => getItems()}
+        onTouchStart={() =>
+          JSON.stringify(options) === JSON.stringify(filterItemOnInitial)
+            ? () => {}
+            : getItems()
+        }
       >
         <Text style={{ ...FONTS.h3, color: COLORS.white }}>Find</Text>
       </View>
@@ -153,7 +167,7 @@ const FilterItemComponent: React.FC<Props> = ({
                 ? {}
                 : { backgroundColor: COLORS.GraySecondary }),
             }}
-            onTouchStart={viewAllHandler}
+            onTouchStart={options.category !== '' ? viewAllHandler : () => ({})}
           >
             <Text
               style={{

@@ -28,6 +28,7 @@ const FilterOptionComponent = ({
           ? styles.selected_option
           : styles.not_selected_option,
       ]}
+      disabled={isItemSelected(item.id)}
     >
       <Text
         style={[

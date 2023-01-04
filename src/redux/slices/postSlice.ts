@@ -25,12 +25,15 @@ const postSlice = createSlice({
       state.posts = [];
       state.filterType = action.payload.filterType;
       state.offset = 0;
-      state.limit = 3;
+    },
+    resetPosts: (state) => {
+      state.posts = [];
+      state.offset = 0;
     }
   },
 });
 
-export const { updatePosts, updateFilter } = postSlice.actions;
+export const { updatePosts, updateFilter, resetPosts } = postSlice.actions;
 
 export default postSlice.reducer;
 export const selectOffsetAndLimit = (state: any) => ({ offset: state.post.offset, limit: state.post.limit });

@@ -1,3 +1,4 @@
 import { FilterItemOn } from ".";
 
-export const filterItemOnInitial: FilterItemOn = {}
+export const filterItemOnInitial: FilterItemOn = {
+}

@@ -11,12 +11,14 @@ type Props = {
   effect?: AnimationType;
   titleText?: string;
   refreshAvail?: boolean;
+  reset?: () => void;
 };
 const BottomModal: React.FC<Props> = ({
   isVisible,
   children,
   onClose,
   backgroundFilter,
+  reset,
   effect = 'slide',
   titleText = '',
   refreshAvail = false,
@@ -42,7 +44,7 @@ const BottomModal: React.FC<Props> = ({
           </Pressable>
           <Text style={styles.title}>{titleText}</Text>
           {refreshAvail && (
-            <Pressable onPress={onClose}>
+            <Pressable onPress={reset}>
               <Ionicons
                 style={{
                   fontWeight: '500',
