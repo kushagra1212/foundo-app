@@ -10,7 +10,7 @@ export const toastConfig = {
         <Entypo
           style={{ color: COLORS.yellowPrimary, marginRight: 10 }}
           name="warning"
-          size={30}
+          size={25}
         />
       )}
     />
@@ -22,7 +22,7 @@ export const toastConfig = {
         <Entypo
           style={{ color: COLORS.redPrimary, marginRight: 10 }}
           name="circle-with-cross"
-          size={30}
+          size={25}
         />
       )}
     />
@@ -34,7 +34,7 @@ export const toastConfig = {
         <AntDesign
           style={{ color: COLORS.blueSecondary, marginRight: 10 }}
           name="infocirlce"
-          size={30}
+          size={25}
         />
       )}
     />
@@ -46,7 +46,7 @@ export const toastConfig = {
         <AntDesign
           style={{ color: COLORS.greenSecondary, marginRight: 10 }}
           name="infocirlce"
-          size={30}
+          size={25}
         />
       )}
     />
@@ -80,7 +80,7 @@ const FoundoToast = (props) => (
         }}
       >
         {props.ToastIcon()}
-        <Text style={{ fontWeight: '700', fontSize: 22 }}>{props.text}</Text>
+        <Text style={{ fontWeight: '700', fontSize: 20 }}>{props.text}</Text>
       </View>
       <View
         style={{
@@ -90,13 +90,15 @@ const FoundoToast = (props) => (
           alignItems: 'center',
         }}
       >
-        <AntDesign onPress={() => Toast.hide()} name="close" size={30} />
+        <AntDesign onPress={() => Toast.hide()} name="close" size={25} />
       </View>
     </View>
-    {props?.message && <View style={{ margin: 10, marginBottom: 5 }}>
-      <Text style={{ fontWeight: '300', fontSize: 18, textAlign: 'auto' }}>
-        {props.message}
-      </Text>
-    </View>}
+    {props?.message && (
+      <View style={{ margin: 10, marginBottom: 5 }}>
+        <Text style={{ fontWeight: '300', fontSize: 18, textAlign: 'auto' }}>
+          {props.message}
+        </Text>
+      </View>
+    )}
   </View>
 );

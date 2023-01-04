@@ -10,16 +10,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, FONTS } from '../../constants/theme';
 
-import { ITEMS } from '../../Dummy/constants';
-import { useGetPostsMutation } from '../../redux/services/post-service';
-import postSlice, {
-  resetPosts,
-  selectFilterType,
-  selectOffsetAndLimit,
-  selectPosts,
-  updateFilter,
-  updatePosts,
-} from '../../redux/slices/postSlice';
 import SingleCardComponent from '../atoms/SingleCardComponent';
 import { useEffect, useState } from 'react';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
@@ -28,6 +18,7 @@ import { FilterItemOn, Post } from '../../interfaces';
 import AnimationTranslateScale from './Animations/AnimationTranslateScale';
 
 import character13 from '../../assets/images/character13.png';
+import ElevatedCard from '../atoms/ElevatedCard';
 export type props = {
   postFound: boolean;
   posts: Array<Post>;
@@ -79,23 +70,10 @@ const CardsComponent: React.FC<props> = ({
             />
           </AnimationTranslateScale>
         </View>
-        <View
-          style={{
-            width: '80%',
-            backgroundColor: COLORS.white,
-            zIndex: 3,
-            padding: 20,
-            elevation: 20,
-            borderRadius: 20,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: '80%',
-          }}
-        >
-          <Text style={FONTS.h1}>No Results</Text>
-          <Text>Sorry We couldn't found anything</Text>
-        </View>
+        <ElevatedCard
+          title="No Results"
+          description={`Sorry We couldn't found anything`}
+        />
       </View>
     );
   }

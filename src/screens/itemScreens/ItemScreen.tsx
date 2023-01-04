@@ -33,6 +33,10 @@ import { AntDesign, Feather } from '../../constants/icons';
 import { useGetPostsMutation } from '../../redux/services/post-service';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { TextInput } from 'react-native-gesture-handler';
+import {
+  selectFeedSearchScreenStatus,
+  updateFeedSearchScreenStatus,
+} from '../../redux/slices/sreenSilce';
 
 export type props = {
   navigation: any;
@@ -40,6 +44,7 @@ export type props = {
 const ItemScreen: React.FC<props> = ({ navigation }) => {
   const filterType = useSelector(selectFilterType);
   const posts: Array<Post> = useSelector(selectPosts);
+  const feedSearchScreenStatus = useSelector(selectFeedSearchScreenStatus);
   const [itemFilterOption, setItemFilterOption] =
     useState<FilterItemOn>(filterItemOnInitial);
   const [backgroundFilter, setBackgroundFilter] = useState<boolean>(false);
@@ -81,7 +86,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
   };
   const fetchPosts = async () => {
     setPostFound(true);
-    if (loading) return;
+    if (loading || feedSearchScreenStatus) return;
     setLoading(true);
     try {
       const posts = await getPost({
@@ -109,16 +114,21 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
   };
   useEffect(() => {
     let flag: boolean = true;
-    setReachedEnd(false);
-    if (flag && offset === 0) {
-      fetchPosts();
+    if (!feedSearchScreenStatus) {
+      setReachedEnd(false);
+      if (flag && offset === 0) {
+        fetchPosts();
+      }
+      return () => {
+        flag = true;
+      };
     }
-    return () => {
-      flag = true;
-    };
   }, [filterType, advFilterOn, offset]);
+
   const handleOnFocus = () => {
-    navigation.replace('FeedSearchScreen');
+    dispatch(updateFeedSearchScreenStatus({ feedSearchScreenStatus: true }));
+    dispatch(updateFilter({ filterType: !filterType }));
+    navigation.navigate('FeedSearchScreen');
   };
   return (
     <SafeAreaView style={styles.feed}>

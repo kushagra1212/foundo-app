@@ -1,13 +1,24 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { StyleSheet, Text, View, FlatList, BackHandler } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  Image,
+  BackHandler,
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 import ItemSearchComponent from '../../components/atoms/ItemSearchComponent';
 import LogoutButtonComponent from '../../components/atoms/LogoutButtonComponent';
+import AnimationTranslateScale from '../../components/molecules/Animations/AnimationTranslateScale';
+import CardsComponent from '../../components/molecules/CardsComponent';
 
+import searchItemImg from '../../assets/images/searchitem.png';
 import { Ionicons } from '../../constants/icons';
+import { COLORS, FONTS } from '../../constants/theme';
 import { Post } from '../../interfaces';
 import { useGetSearchedPostsMutation } from '../../redux/services/post-service';
 import {
@@ -17,6 +28,8 @@ import {
   updateFilter,
   updatePosts,
 } from '../../redux/slices/postSlice';
+import ElevatedCard from '../../components/atoms/ElevatedCard';
+import { updateFeedSearchScreenStatus } from '../../redux/slices/sreenSilce';
 
 export type props = {
   navigation?: any;
@@ -41,6 +54,7 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
   const { limit, offset } = useSelector(selectOffsetAndLimit);
   const [getSearchedPosts, { isLoading }] = useGetSearchedPostsMutation();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
+  const [totalPosts, setTotalPosts] = useState<null | number>(null);
 
   const [postFound, setPostFound] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
@@ -54,8 +68,8 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
         limit,
         searchString,
       }).unwrap();
-      console.log(res.total);
-      // dispatch(updatePosts({ offset: offset + limit, posts: res.items }));
+      setTotalPosts(res.total);
+      dispatch(updatePosts({ offset: offset + limit, posts: res.items }));
       setLoading(false);
     } catch (e: any) {
       console.log(e);
@@ -76,31 +90,42 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
   const registerString = (value: string) => {
     setSearchString(value);
   };
-  const fet = debounce(fetchPosts, 5000);
-
+  const onPressBack = (): boolean | null | undefined => {
+    dispatch(
+      updateFeedSearchScreenStatus({
+        feedSearchScreenStatus: false,
+      })
+    );
+    dispatch(updateFilter({ filterType: !filterType }));
+    navigation.goBack();
+    return true;
+  };
   useEffect(() => {
     setReachedEnd(false);
+    setPostFound(true);
+    setTotalPosts(null);
 
+    BackHandler.addEventListener('hardwareBackPress', onPressBack);
+    let timer: NodeJS.Timeout;
     let flag: boolean = true;
-    if (flag && searchString !== '') fet();
+    if (flag && searchString !== '') {
+      timer = setTimeout(() => {
+        fetchPosts();
+      }, 500);
+    }
 
     return () => {
+      clearTimeout(timer);
+      BackHandler.removeEventListener('hardwareBackPress', onPressBack);
       flag = false;
     };
   }, [searchString]);
   const handleOnFocus = () => {};
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ width: '100%', height: '100%' }}>
       <View style={styles.search_header}>
         <View>
-          <Ionicons
-            onPress={() => {
-              dispatch(updateFilter({ filterType: filterType }));
-              navigation.replace('ItemScreen');
-            }}
-            name="arrow-back"
-            size={35}
-          />
+          <Ionicons onPress={onPressBack} name="arrow-back" size={35} />
         </View>
         <View style={styles.item_search_input}>
           <ItemSearchComponent
@@ -110,6 +135,47 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
           />
         </View>
       </View>
+      {totalPosts !== null && (
+        <View
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={FONTS.body3}>
+            We've found {totalPosts} Posts for you ❤️
+          </Text>
+        </View>
+      )}
+      <CardsComponent
+        fetchPosts={fetchPosts}
+        loading={loading}
+        postFound={postFound}
+        posts={posts}
+        reachedEnd={reachedEnd}
+      />
+      {searchString === '' && (
+        <View style={{ width: '100%', height: '100%' }}>
+          <AnimationTranslateScale scaleRange={[1, 1.3]} scaleDuration={500}>
+            <Image
+              source={searchItemImg}
+              style={{
+                width: 500,
+                height: 500,
+                position: 'absolute',
+                zIndex: 0,
+                right: 1,
+              }}
+            />
+          </AnimationTranslateScale>
+          <ElevatedCard
+            title="Search anything"
+            description={`by name, brand, city, color, category`}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 };
