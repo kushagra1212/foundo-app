@@ -57,8 +57,9 @@ const FilterItemComponent: React.FC<Props> = ({
     <View>
       <ListFilterItemViewAllType
         text="Category"
-        category={options.category}
+        items={options.category}
         viewAllHandler={viewAllHandler}
+        arrowText="View All"
       />
       <ListFilterItemSlideDownList
         text="Color"

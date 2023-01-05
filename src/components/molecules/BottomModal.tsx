@@ -12,6 +12,7 @@ type Props = {
   titleText?: string;
   refreshAvail?: boolean;
   reset?: () => void;
+  height?: string;
 };
 const BottomModal: React.FC<Props> = ({
   isVisible,
@@ -19,6 +20,7 @@ const BottomModal: React.FC<Props> = ({
   onClose,
   backgroundFilter,
   reset,
+  height = '80%',
   effect = 'slide',
   titleText = '',
   refreshAvail = false,
@@ -31,7 +33,7 @@ const BottomModal: React.FC<Props> = ({
       statusBarTranslucent={true}
     >
       <View style={backgroundFilter ? styles.modal : { height: '100%' }}></View>
-      <View style={styles.modalContent}>
+      <View style={{ ...styles.modalContent, height }}>
         <View style={styles.titleContainer}>
           <Pressable onPress={onClose}>
             <Ionicons
@@ -62,7 +64,7 @@ const BottomModal: React.FC<Props> = ({
 };
 const styles = StyleSheet.create({
   modal: {
-    height: '30%',
+    height: '100%',
     backgroundColor: COLORS.black,
     opacity: 0.8,
   },
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   titleContainer: {
-    height: '10%',
+    height: 50,
     backgroundColor: COLORS.white,
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,

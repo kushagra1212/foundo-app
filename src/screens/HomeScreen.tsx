@@ -20,7 +20,29 @@ const HomeScreen = () => {
         options={{ headerShown: false }}
         component={FeedScreen}
       />
-      <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Tab.Screen
+        options={{
+          title: 'Profile',
+          headerStyle: {
+            backgroundColor: COLORS.lightGraySecondary,
+          },
+          headerShadowVisible: false,
+          headerTitleAlign: 'center',
+          headerLeft: () => null,
+          // <TouchableOpacity
+          //   style={styles.left_btn}
+          //   onPress={() => console.log('left-btn')}
+          // >
+          //   <Foundation name="indent-more" size={30} />
+          // </TouchableOpacity>
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+        name="ProfileScreen"
+        component={ProfileScreen}
+      />
     </Tab.Navigator>
   );
 };

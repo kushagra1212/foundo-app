@@ -20,6 +20,7 @@ import { useUserLoginMutation } from '../../redux/services/auth-service';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../redux/slices/authSlice';
 import AnimationTranslateScale from '../../components/molecules/Animations/AnimationTranslateScale';
+import { updateFilter } from '../../redux/slices/postSlice';
 
 export type props = {
   navigation: any;
@@ -42,6 +43,8 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
         },
       });
       console.log(res);
+
+      dispatch(updateFilter({ filterType: 0 }));
       dispatch(setCredentials({ user: res.user, jwtToken: res.jwtToken }));
       navigation.navigate('Home');
     } catch (e: any) {

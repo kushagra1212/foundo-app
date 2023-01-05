@@ -106,6 +106,8 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
     setTotalPosts(null);
 
     BackHandler.addEventListener('hardwareBackPress', onPressBack);
+
+    dispatch(updateFilter({ filterType: filterType }));
     let timer: NodeJS.Timeout;
     let flag: boolean = true;
     if (flag && searchString !== '') {
@@ -115,9 +117,9 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
     }
 
     return () => {
+      flag = false;
       clearTimeout(timer);
       BackHandler.removeEventListener('hardwareBackPress', onPressBack);
-      flag = false;
     };
   }, [searchString]);
   const handleOnFocus = () => {};

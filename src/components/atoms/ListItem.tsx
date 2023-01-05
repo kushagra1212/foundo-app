@@ -9,24 +9,29 @@ import MiniItemColorIcon from './MiniItemColorIcon';
 import MiniItemTextIcon from './MiniItemTextIcon';
 interface PropsType1 extends FilterItemOn {
   text: string;
+  arrowText: string;
   viewAllHandler: () => void;
+  items: any;
+  icon?: JSX.Element;
 }
 
-const ListFilterItemViewAllType: React.FC<PropsType1> = ({ text, ...rest }) => {
+const ListFilterItemViewAllType: React.FC<PropsType1> = ({
+  text,
+  icon,
+  ...rest
+}) => {
   return (
     <View
-      style={{
-        marginBottom: 10,
-      }}
+      style={{ backgroundColor: COLORS.white }}
+      onTouchStart={rest.viewAllHandler}
     >
       <View style={styles.list_item}>
         <View style={styles.text}>
+          {icon}
           <Text style={{ margin: 5, ...FONTS.h4 }}>{text}</Text>
         </View>
         <View style={styles.view_all}>
-          <Text style={FONTS.h4} onPress={rest.viewAllHandler}>
-            View all
-          </Text>
+          <Text style={FONTS.h4}>{rest.arrowText}</Text>
           <Ionicons
             style={{ margin: 10, ...FONTS.h1 }}
             name="chevron-forward"
@@ -35,10 +40,10 @@ const ListFilterItemViewAllType: React.FC<PropsType1> = ({ text, ...rest }) => {
         </View>
       </View>
       <View style={{ width: '60%' }}>
-        {rest?.category !== undefined && rest?.category !== '' && (
+        {rest?.items !== undefined && rest?.items !== '' && (
           <MiniItemTextIcon
             isSelected={true}
-            text={rest?.category}
+            text={rest?.items}
             updateItemFilterOption={() => {}}
           />
         )}
@@ -184,7 +189,7 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = ({
     >
       <View style={styles.list_item}>
         <View style={styles.text}>
-          <Text style={{ margin: 5, ...FONTS.h4 }}>{text}</Text>
+          <Text style={{ ...FONTS.h4 }}>{text}</Text>
         </View>
         <View style={styles.view_all} onTouchStart={() => setOpen(!open)}>
           <Ionicons
@@ -253,7 +258,12 @@ const styles = StyleSheet.create({
     margin: 5,
     alignItems: 'center',
   },
-  text: {},
+  text: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 10,
+  },
   view_all: {
     display: 'flex',
     flexDirection: 'row',
