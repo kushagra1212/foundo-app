@@ -19,6 +19,7 @@ import { useCallback, useMemo, useState } from 'react';
 import BottomModal from '../components/molecules/BottomModal';
 import EmailComponent from '../components/atoms/EmailComponent';
 import PhoneNumberComponent from '../components/atoms/PhoneNumberComponent';
+import UserAddressComponent from '../components/atoms/UserAddressComponent';
 type props = {
   navigation: any;
 };
@@ -123,7 +124,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
                 <Entypo name="address" size={20} />
               </View>
             }
-            viewAllHandler={() => viewAllHandler}
+            viewAllHandler={() => viewAllHandler('Residential Address')}
           />
         </View>
       </View>
@@ -163,13 +164,32 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       )}
       {open.phoneNumber && (
         <BottomModal
-          height="30%"
+          height={user?.phoneNumber ? '90%' : '30%'}
           backgroundFilter={true}
           isVisible={true}
           effect={'fade'}
           onClose={() => setOpen(intitalOpenDialog)}
         >
-          <PhoneNumberComponent phoneNumber={user?.phoneNumber} />
+          <PhoneNumberComponent
+            onClose={() => setOpen(intitalOpenDialog)}
+            phoneNumber={user?.phoneNo}
+            userId={user?.id}
+          />
+        </BottomModal>
+      )}
+      {open.residentialAddress && (
+        <BottomModal
+          height={user?.address ? '40%' : '80%'}
+          backgroundFilter={true}
+          isVisible={true}
+          effect={'fade'}
+          onClose={() => setOpen(intitalOpenDialog)}
+        >
+          <UserAddressComponent
+            onClose={() => setOpen(intitalOpenDialog)}
+            address={user?.address}
+            userId={user?.id}
+          />
         </BottomModal>
       )}
     </SafeAreaView>

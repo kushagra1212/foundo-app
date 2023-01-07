@@ -2,6 +2,7 @@ import { Modal, View, Text, Pressable, StyleSheet } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Entypo, Ionicons } from '../../constants/icons';
 import { COLORS, SIZES } from '../../constants/theme';
+import { SafeAreaView } from 'react-native-safe-area-context';
 type AnimationType = 'slide' | 'none' | 'fade' | undefined;
 type Props = {
   isVisible: boolean;
@@ -26,40 +27,44 @@ const BottomModal: React.FC<Props> = ({
   refreshAvail = false,
 }) => {
   return (
-    <Modal
-      animationType={effect}
-      transparent={true}
-      visible={isVisible}
-      statusBarTranslucent={true}
-    >
-      <View style={backgroundFilter ? styles.modal : { height: '100%' }}></View>
-      <View style={{ ...styles.modalContent, height }}>
-        <View style={styles.titleContainer}>
-          <Pressable onPress={onClose}>
-            <Ionicons
-              style={{
-                fontWeight: '500',
-              }}
-              name="chevron-back"
-              size={30}
-            />
-          </Pressable>
-          <Text style={styles.title}>{titleText}</Text>
-          {refreshAvail && (
-            <Pressable onPress={reset}>
+    <SafeAreaView>
+      <Modal
+        animationType={effect}
+        transparent={true}
+        visible={isVisible}
+        statusBarTranslucent={true}
+      >
+        <View
+          style={backgroundFilter ? styles.modal : { height: '100%' }}
+        ></View>
+        <View style={{ ...styles.modalContent, height }}>
+          <View style={styles.titleContainer}>
+            <Pressable onPress={onClose}>
               <Ionicons
                 style={{
                   fontWeight: '500',
                 }}
-                name="refresh"
+                name="chevron-back"
                 size={30}
               />
             </Pressable>
-          )}
+            <Text style={styles.title}>{titleText}</Text>
+            {refreshAvail && (
+              <Pressable onPress={reset}>
+                <Ionicons
+                  style={{
+                    fontWeight: '500',
+                  }}
+                  name="refresh"
+                  size={30}
+                />
+              </Pressable>
+            )}
+          </View>
+          {children}
         </View>
-        {children}
-      </View>
-    </Modal>
+      </Modal>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

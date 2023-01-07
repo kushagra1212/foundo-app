@@ -5,65 +5,60 @@ import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
 import { useUserUpdateMutation } from '../../redux/services/auth-service';
 import { useGetUserQuery } from '../../redux/services/profile-service';
-import {
-  selectCurrentUser,
-  selectCurrentUserId,
-  updateUser,
-} from '../../redux/slices/authSlice';
+import { updateUser } from '../../redux/slices/authSlice';
 type props = {
-  phoneNumber: string | null;
+  address: string | null;
   onClose: () => void;
   userId: number;
 };
-const PhoneNumberComponent: React.FC<props> = ({
-  phoneNumber,
+const UserAddressComponent: React.FC<props> = ({
+  address,
   onClose,
   userId,
 }) => {
-  const [phoneNumberState, setPhoneNumberState] = useState<string | null>(
-    phoneNumber
-  );
+  const [addressState, setAddressState] = useState<string | null>(address);
   const dispatch = useDispatch();
   const [isValid, setIsValid] = useState<boolean>(false);
   const [userUpdate] = useUserUpdateMutation();
   const { data: user } = useGetUserQuery({ userId });
-  console.log(user, userId);
-  const setPhoneNumber = (value: string) => {
-    value = value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, '');
-    setPhoneNumberState(value);
-    if (value.length >= 10 && value.length <= 12) {
+  const setAddress = (value: string) => {
+    setAddressState(value);
+    if (value.length >= 10 && value.length <= 100) {
       setIsValid(true);
     } else {
       setIsValid(false);
     }
   };
-  const addPhoneNumber = async () => {
+  const addAddress = async () => {
     if (isValid) {
       try {
         const { user } = await userUpdate({
           userId,
-          phoneNo: phoneNumberState,
+          address: addressState,
         }).unwrap();
         dispatch(updateUser({ user }));
+
+        onClose();
       } catch (err) {
         console.log(err);
+
+        onClose();
       }
-      onClose();
     }
   };
-  const verifyPhoneNumber = () => {};
   return (
     <View style={styles.view}>
-      {phoneNumber === '' || !phoneNumber ? (
+      {address === '' || !address ? (
         <View>
           <TextInput
-            placeholder={'Write your phone number'}
-            onChangeText={setPhoneNumber}
-            value={phoneNumberState === null ? undefined : phoneNumberState}
-            keyboardType="numeric"
+            placeholder={'Write your Residential Address'}
+            onChangeText={setAddress}
+            value={addressState === null ? undefined : addressState}
             autoFocus
+            numberOfLines={5}
+            multiline={true}
             placeholderTextColor={COLORS.GraySecondary}
-            textContentType="telephoneNumber"
+            textContentType="addressState"
             style={{
               backgroundColor: COLORS.white,
               elevation: 40,
@@ -72,14 +67,16 @@ const PhoneNumberComponent: React.FC<props> = ({
               fontSize: SIZES.h3,
               margin: 10,
               color: COLORS.black,
+              textTransform: 'capitalize',
             }}
           />
+
           <View
             style={{
               ...styles.verify_email_but,
               ...(!isValid ? { backgroundColor: COLORS.GraySecondary } : {}),
             }}
-            onTouchStart={isValid ? addPhoneNumber : undefined}
+            onTouchStart={isValid ? addAddress : undefined}
           >
             <Text style={{ ...FONTS.h2, color: COLORS.white }}>Add</Text>
           </View>
@@ -94,29 +91,8 @@ const PhoneNumberComponent: React.FC<props> = ({
               textAlign: 'center',
             }}
           >
-            {phoneNumberState}
+            {addressState}
           </Text>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              margin: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Text>
-              We've noticed that you haven't varified your phone number{' '}
-            </Text>
-          </View>
-          <TouchableOpacity
-            style={styles.verify_email_but}
-            onPress={verifyPhoneNumber}
-          >
-            <Text style={{ ...FONTS.h2, color: COLORS.white }}>
-              Verify Phone Number
-            </Text>
-          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -140,4 +116,4 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-export default PhoneNumberComponent;
+export default UserAddressComponent;

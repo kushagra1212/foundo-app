@@ -2,7 +2,9 @@ import { BASE_URL, LOCAL_STORAGE_ACCESS_TOKEN_KEY } from "@env";
 import { getTokenFromLocalStorage, removeItemFromLocalStroage } from "../../storage/foundo-localstorage";
 import { setCredentials } from "../slices/authSlice";
 import { api } from "./api-service"
-
+type Response = {
+    data: any;
+}
 export const authApi = api.injectEndpoints({
     endpoints: builder => ({
         userLogin: builder.mutation({
@@ -44,7 +46,16 @@ export const authApi = api.injectEndpoints({
                     body: { password: password }
                 })
             }
-        })
+        }),
+        userUpdate: builder.mutation({
+            query: (update) => {
+                return ({
+                    url: `v1/user/update`,
+                    method: 'PATCH',
+                    body: update
+                })
+            }
+        }),
     }),
     overrideExisting: true,
 })
@@ -69,5 +80,6 @@ export const {
     useUserLoginMutation,
     useUserSignupMutation,
     useUserForgotPasswordMutation,
-    useUserVerifyResetPasswordQuery, useUserResetPasswordMutation
+    useUserVerifyResetPasswordQuery, useUserResetPasswordMutation,
+    useUserUpdateMutation
 } = authApi

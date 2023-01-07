@@ -10,9 +10,17 @@ export const profileApi = api.injectEndpoints({
                                 return response;
                         }
                 }),
+                getUser: builder.query(({
+                        query: ({ userId }) => {
+                                return `/v1/user/${userId}`
+                        }, transformResponse: (response) => {
+
+                                return response.user;
+                        }
+                }))
         }),
-        overrideExisting: false,
+        overrideExisting: true,
 
 });
 
-export const { useGetUserSettingQuery } = profileApi;
+export const { useGetUserSettingQuery, useGetUserQuery } = profileApi;
