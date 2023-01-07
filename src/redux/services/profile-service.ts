@@ -16,7 +16,8 @@ export const profileApi = api.injectEndpoints({
                         }, transformResponse: (response) => {
 
                                 return response.user;
-                        }
+                        },
+                        providesTags: ['user']
                 }))
         }),
         overrideExisting: true,

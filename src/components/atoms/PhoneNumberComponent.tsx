@@ -1,17 +1,24 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useMemo,
+  useCallback,
+} from 'react';
 import { View, StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
 import { useUserUpdateMutation } from '../../redux/services/auth-service';
 import { useGetUserQuery } from '../../redux/services/profile-service';
+import PhoneInput from 'react-native-phone-number-input';
 import {
   selectCurrentUser,
   selectCurrentUserId,
   updateUser,
 } from '../../redux/slices/authSlice';
 type props = {
-  phoneNumber: string | null;
+  phoneNumber: string | undefined;
   onClose: () => void;
   userId: number;
 };
@@ -20,22 +27,19 @@ const PhoneNumberComponent: React.FC<props> = ({
   onClose,
   userId,
 }) => {
-  const [phoneNumberState, setPhoneNumberState] = useState<string | null>(
+  const [phoneNumberState, setPhoneNumberState] = useState<string | undefined>(
     phoneNumber
   );
   const dispatch = useDispatch();
   const [isValid, setIsValid] = useState<boolean>(false);
   const [userUpdate] = useUserUpdateMutation();
-  const { data: user } = useGetUserQuery({ userId });
-  console.log(user, userId);
+  const user = useCallback(useGetUserQuery({ userId }).data, []);
+  const phoneInput = useRef<PhoneInput>(null);
   const setPhoneNumber = (value: string) => {
     value = value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, '');
     setPhoneNumberState(value);
-    if (value.length >= 10 && value.length <= 12) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
+    const checkValid = phoneInput.current?.isValidNumber(value);
+    setIsValid(checkValid ? checkValid : false);
   };
   const addPhoneNumber = async () => {
     if (isValid) {
@@ -55,25 +59,19 @@ const PhoneNumberComponent: React.FC<props> = ({
   return (
     <View style={styles.view}>
       {phoneNumber === '' || !phoneNumber ? (
-        <View>
-          <TextInput
-            placeholder={'Write your phone number'}
-            onChangeText={setPhoneNumber}
-            value={phoneNumberState === null ? undefined : phoneNumberState}
-            keyboardType="numeric"
-            autoFocus
-            placeholderTextColor={COLORS.GraySecondary}
-            textContentType="telephoneNumber"
-            style={{
-              backgroundColor: COLORS.white,
-              elevation: 40,
-              borderRadius: 10,
-              padding: 10,
-              fontSize: SIZES.h3,
-              margin: 10,
-              color: COLORS.black,
+        <View style={{ width: '100%' }}>
+          <PhoneInput
+            ref={phoneInput}
+            defaultValue={phoneNumberState}
+            defaultCode="IN"
+            onChangeFormattedText={(text) => {
+              setPhoneNumber(text);
             }}
+            withShadow
+            autoFocus
+            containerStyle={{ width: '100%' }}
           />
+
           <View
             style={{
               ...styles.verify_email_but,
@@ -106,7 +104,7 @@ const PhoneNumberComponent: React.FC<props> = ({
             }}
           >
             <Text>
-              We've noticed that you haven't varified your phone number{' '}
+              We've noticed that you haven't verified your phone number{' '}
             </Text>
           </View>
           <TouchableOpacity
@@ -137,7 +135,6 @@ const styles = StyleSheet.create({
     elevation: 10,
     width: '90%',
     alignSelf: 'center',
-    marginTop: 20,
   },
 });
 export default PhoneNumberComponent;

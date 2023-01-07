@@ -16,19 +16,20 @@ const UserAddressComponent: React.FC<props> = ({
   onClose,
   userId,
 }) => {
-  const [addressState, setAddressState] = useState<string | null>(address);
+  const [addressState, setAddressState] = useState<string | null>('');
   const dispatch = useDispatch();
   const [isValid, setIsValid] = useState<boolean>(false);
   const [userUpdate] = useUserUpdateMutation();
   const { data: user } = useGetUserQuery({ userId });
   const setAddress = (value: string) => {
     setAddressState(value);
-    if (value.length >= 10 && value.length <= 100) {
+    if (value.length >= 30 && value.length <= 100) {
       setIsValid(true);
     } else {
       setIsValid(false);
     }
   };
+
   const addAddress = async () => {
     if (isValid) {
       try {
@@ -46,6 +47,14 @@ const UserAddressComponent: React.FC<props> = ({
       }
     }
   };
+  useEffect(() => {
+    let go = true;
+    if (go && user) setAddressState(user?.address);
+
+    return () => {
+      go = false;
+    };
+  }, [user]);
   return (
     <View style={styles.view}>
       {address === '' || !address ? (
@@ -83,12 +92,14 @@ const UserAddressComponent: React.FC<props> = ({
         </View>
       ) : (
         <View>
+          <Text style={{ ...FONTS.body3, margin: 10 }}>
+            Your Residential Address
+          </Text>
           <Text
             style={{
               ...FONTS.h3,
-              margin: 20,
+              margin: 10,
               opacity: 0.7,
-              textAlign: 'center',
             }}
           >
             {addressState}

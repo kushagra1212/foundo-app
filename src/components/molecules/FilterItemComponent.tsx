@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TextInput, BackHandler } from 'react-native';
 import React, { useMemo, useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
@@ -52,6 +52,17 @@ const FilterItemComponent: React.FC<Props> = ({
   const getItems = () => {
     onModalClose();
   };
+  // const onPressBack = (): boolean | null | undefined => {
+  //   onModalClose();
+  //   return true;
+  // };
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', onPressBack);
+
+  //   return () => {
+  //     BackHandler.removeEventListener('hardwareBackPress', onPressBack);
+  //   };
+  // }, []);
   console.log(options);
   return (
     <View>

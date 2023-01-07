@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
-import { Ionicons } from '../../constants/icons';
+import { FontAwesome, Ionicons, MaterialIcons } from '../../constants/icons';
 import { ITEMCAT_TO_NUM, ITEM_STANDARD_COLORS } from '../../constants/item';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
 import { FilterItemOn } from '../../interfaces';
@@ -212,7 +212,9 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = ({
         <KeyboardAvoidingView keyboardVerticalOffset={500} behavior="position">
           <TextInput
             placeholder={desc}
-            onChangeText={setBrandName}
+            onChangeText={(value) =>
+              setBrandName(value.substring(0, 14).split(' ').join(''))
+            }
             value={brandName}
             placeholderTextColor={COLORS.GraySecondary}
             autoFocus={true}
@@ -231,11 +233,31 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = ({
       )}
       <View style={{ width: '60%' }}>
         {options?.brand !== undefined && options?.brand !== '' && (
-          <MiniItemTextIcon
-            isSelected={true}
-            text={options?.brand}
-            updateItemFilterOption={() => {}}
-          />
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+            }}
+          >
+            <MiniItemTextIcon
+              isSelected={true}
+              text={options?.brand}
+              updateItemFilterOption={() => {}}
+            />
+            <View
+              onTouchStart={() => {
+                onSelect({ brand: '' });
+                setBrandName('');
+              }}
+            >
+              <FontAwesome
+                style={{ margin: 10, ...FONTS.h1 }}
+                name="close"
+                size={30}
+              />
+            </View>
+          </View>
         )}
       </View>
       <View

@@ -33,6 +33,9 @@ import { AntDesign, Feather } from '../../constants/icons';
 import { useGetPostsMutation } from '../../redux/services/post-service';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { TextInput } from 'react-native-gesture-handler';
+import MaskedView from '@react-native-masked-view/masked-view';
+
+import { LinearGradient } from 'expo-linear-gradient';
 import {
   selectFeedSearchScreenStatus,
   updateFeedSearchScreenStatus,
@@ -73,10 +76,8 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
   };
   const onModalOpen = () => {
     setIsModalVisible(true);
-    setTimeout(() => {
-      setBackgroundFilter(true);
-      dispatch(resetPosts());
-    }, 200);
+    setBackgroundFilter(true);
+    dispatch(resetPosts());
   };
   const updateItemFilterOption = (options: FilterItemOn): void => {
     setItemFilterOption({ ...itemFilterOption, ...options });
@@ -132,61 +133,110 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={styles.feed}>
-      <View style={styles.item_search_input}>
-        <View style={styles.item_search}>
-          <Feather name="search" size={25} />
+      <View>
+        <View onTouchStart={handleOnFocus} style={styles.item_search_input}>
+          <View style={{ marginLeft: 10 }}>
+            <Text style={{ ...FONTS.body2 }}>
+              <Text style={FONTS.h1}>Find </Text>Things you Lost
+            </Text>
+          </View>
+          <Feather style={styles.item_search} name="search" size={35} />
+          {/* 
           <TextInput
             style={[styles.item_text_ip, FONTS.body3]}
             placeholder="Search Items here.."
-            onFocus={handleOnFocus}
+          />
+        </View> */}
+        </View>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <FlatList
+            data={FILTER_ITEMS}
+            contentContainerStyle={styles.option_flatlist}
+            renderItem={({ item }) => (
+              <FilterOptionComponent
+                item={item}
+                selectedFilterId={filterType}
+                handleChangeFilter={handleChangeFilter}
+              />
+            )}
+            keyExtractor={(item: any) => item.id}
+            horizontal
+          />
+          <AdditionalFilterOptionComponent
+            onModalOpen={onModalOpen}
+            isFilterOptionSelected={
+              JSON.stringify(itemFilterOption) !==
+              JSON.stringify(filterItemOnInitial)
+            }
           />
         </View>
       </View>
-      <View
-        style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+      <MaskedView
+        style={{ flex: 1 }}
+        maskElement={
+          <View
+            style={{
+              backgroundColor: 'transparent',
+              flex: 1,
+              marginTop: 0,
+            }}
+          >
+            <LinearGradient
+              colors={[
+                '#FFFFFF00',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+              ]}
+              style={{
+                flex: 1,
+                borderRadius: 5,
+              }}
+            ></LinearGradient>
+          </View>
+        }
       >
-        <FlatList
-          data={FILTER_ITEMS}
-          contentContainerStyle={styles.option_flatlist}
-          renderItem={({ item }) => (
-            <FilterOptionComponent
-              item={item}
-              selectedFilterId={filterType}
-              handleChangeFilter={handleChangeFilter}
-            />
-          )}
-          keyExtractor={(item: any) => item.id}
-          horizontal
+        {/* Shows behind the mask, you can put anything here, such as an image */}
+
+        <CardsComponent
+          fetchPosts={fetchPosts}
+          loading={loading}
+          postFound={postFound}
+          posts={posts}
+          reachedEnd={reachedEnd}
         />
-        <AdditionalFilterOptionComponent
-          onModalOpen={onModalOpen}
-          isFilterOptionSelected={
-            JSON.stringify(itemFilterOption) !==
-            JSON.stringify(filterItemOnInitial)
-          }
-        />
-      </View>
-      <BottomModal
-        backgroundFilter={backgroundFilter}
-        isVisible={isModalVisible}
-        onClose={onModalClose}
-        titleText="Filter"
-        reset={resetItemFilter}
-        refreshAvail
-      >
-        <FilterItemComponent
-          options={itemFilterOption}
-          updateItemFilterOption={updateItemFilterOption}
-          onModalClose={onModalClose}
-        />
-      </BottomModal>
-      <CardsComponent
-        fetchPosts={fetchPosts}
-        loading={loading}
-        postFound={postFound}
-        posts={posts}
-        reachedEnd={reachedEnd}
-      />
+      </MaskedView>
+      {isModalVisible && (
+        <BottomModal
+          backgroundFilter={backgroundFilter}
+          isVisible={isModalVisible}
+          onClose={onModalClose}
+          titleText="Filter"
+          reset={resetItemFilter}
+          refreshAvail
+        >
+          <FilterItemComponent
+            options={itemFilterOption}
+            updateItemFilterOption={updateItemFilterOption}
+            onModalClose={onModalClose}
+          />
+        </BottomModal>
+      )}
       {/* <View>
         <LogoutButtonComponent navigation={navigation} />
       </View> */}
@@ -202,22 +252,25 @@ const styles = StyleSheet.create({
   },
   option_flatlist: {
     display: 'flex',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
     width: '100%',
-    margin: 5,
-    height: 60,
+    height: '100%',
   },
   item_search_input: {
-    margin: 5,
+    margin: 10,
+    marginRight: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   item_search: {
-    backgroundColor: COLORS.white,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    elevation: 10,
     margin: 5,
     borderRadius: 10,
   },

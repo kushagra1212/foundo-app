@@ -142,8 +142,10 @@ const styles = StyleSheet.create({
   card: {
     overflow: 'scroll',
     borderRadius: 10,
-    elevation: 10,
-    margin: 10,
+    elevation: 60,
+    width: '90%',
+    alignSelf: 'center',
+    margin: 20,
   },
   card_header: {
     width: '100%',

@@ -23,7 +23,7 @@ const EmailComponent: React.FC<props> = ({ email }) => {
           alignItems: 'center',
         }}
       >
-        <Text>We've noticed that you haven't varified your email </Text>
+        <Text>We've noticed that you haven't verified your email </Text>
       </View>
       <TouchableOpacity
         style={styles.verify_email_but}

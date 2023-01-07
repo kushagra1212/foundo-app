@@ -7,8 +7,8 @@ import {
 } from 'react-native';
 import { COLORS, FONTS } from '../../constants/theme';
 export const FILTER_ITEMS = [
-  { id: 0, text: 'lost' },
-  { id: 1, text: 'founded' },
+  { id: 0, text: 'Lost' },
+  { id: 1, text: 'Found' },
 ];
 const FilterOptionComponent = ({
   item,
@@ -48,17 +48,16 @@ const styles = StyleSheet.create({
   base_option: {
     borderRadius: 10,
     display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
     padding: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
-
+    padding: 15,
+    elevation: 15,
     height: '80%',
+    zIndex: 3,
+    marginBottom: 20,
+    marginTop: 20,
   },
   selected_option: {
     backgroundColor: COLORS.primary,
-    elevation: 10,
   },
   not_selected_option: {
     backgroundColor: COLORS.GrayPrimary,
@@ -67,7 +66,7 @@ const styles = StyleSheet.create({
     color: COLORS.white,
   },
   not_selected_option_text: {
-    color: COLORS.blackSecondary,
+    color: COLORS.black,
   },
 });
 export default FilterOptionComponent;

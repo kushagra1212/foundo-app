@@ -30,7 +30,9 @@ import {
 } from '../../redux/slices/postSlice';
 import ElevatedCard from '../../components/atoms/ElevatedCard';
 import { updateFeedSearchScreenStatus } from '../../redux/slices/sreenSilce';
+import MaskedView from '@react-native-masked-view/masked-view';
 
+import { LinearGradient } from 'expo-linear-gradient';
 export type props = {
   navigation?: any;
 };
@@ -101,15 +103,17 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
     return true;
   };
   useEffect(() => {
-    setReachedEnd(false);
-    setPostFound(true);
-    setTotalPosts(null);
+    let flag: boolean = true;
+    if (flag) {
+      setReachedEnd(false);
+      setPostFound(true);
+      setTotalPosts(null);
+    }
 
     BackHandler.addEventListener('hardwareBackPress', onPressBack);
 
     dispatch(updateFilter({ filterType: filterType }));
     let timer: NodeJS.Timeout;
-    let flag: boolean = true;
     if (flag && searchString !== '') {
       timer = setTimeout(() => {
         fetchPosts();
@@ -151,13 +155,49 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
           </Text>
         </View>
       )}
-      <CardsComponent
-        fetchPosts={fetchPosts}
-        loading={loading}
-        postFound={postFound}
-        posts={posts}
-        reachedEnd={reachedEnd}
-      />
+      <MaskedView
+        style={{ flex: 1 }}
+        maskElement={
+          <View
+            style={{
+              backgroundColor: 'transparent',
+              flex: 1,
+              marginTop: 0,
+            }}
+          >
+            <LinearGradient
+              colors={[
+                '#FFFFFF00',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+              ]}
+              style={{
+                flex: 1,
+                borderRadius: 5,
+              }}
+            ></LinearGradient>
+          </View>
+        }
+      >
+        <CardsComponent
+          fetchPosts={fetchPosts}
+          loading={loading}
+          postFound={postFound}
+          posts={posts}
+          reachedEnd={reachedEnd}
+        />
+      </MaskedView>
+
       {searchString === '' && (
         <View style={{ width: '100%', height: '100%' }}>
           <AnimationTranslateScale scaleRange={[1, 1.3]} scaleDuration={500}>

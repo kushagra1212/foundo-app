@@ -164,7 +164,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       )}
       {open.phoneNumber && (
         <BottomModal
-          height={user?.phoneNumber ? '90%' : '30%'}
+          height={user?.phoneNo ? '30%' : '60%'}
           backgroundFilter={true}
           isVisible={true}
           effect={'fade'}
