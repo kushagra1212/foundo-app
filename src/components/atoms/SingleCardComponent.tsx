@@ -62,6 +62,7 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
               color: COLORS.black,
               fontSize: SIZES.body3,
               fontWeight: '400',
+              marginRight: 10,
             }}
           >
             <Entypo
@@ -102,24 +103,33 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
           style={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             alignItems: 'center',
           }}
         >
           <View style={styles.view_details}>
-            <Text>View</Text>
-            <Ionicons
-              style={{ opacity: 0.9, margin: 5 }}
-              name="ios-open"
-              size={25}
-            />
+            <Text
+              style={{
+                ...FONTS.h3,
+                color: COLORS.white,
+                textAlign: 'center',
+              }}
+            >
+              View
+            </Text>
           </View>
-          <View>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              width: '45%',
+            }}
+          >
             <Text
               style={{
                 fontSize: SIZES.body4,
-                alignSelf: 'flex-end',
-                margin: 5,
               }}
             >
               <Text
@@ -141,8 +151,8 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
 const styles = StyleSheet.create({
   card: {
     overflow: 'scroll',
-    borderRadius: 10,
-    elevation: 60,
+    borderRadius: 20,
+    elevation: 30,
     width: '90%',
     alignSelf: 'center',
     margin: 20,
@@ -160,21 +170,25 @@ const styles = StyleSheet.create({
   },
   item_name: {
     margin: 5,
+    marginLeft: 10,
   },
   description: {
     margin: 5,
+    marginLeft: 10,
   },
   lost_when: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     margin: 5,
+    marginLeft: 10,
   },
   color_brand: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginRight: 10,
   },
   color: {
     width: 20,
@@ -188,21 +202,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.white,
     borderRadius: 20,
-    elevation: 2,
+    elevation: 30,
     padding: 10,
     width: 100,
     height: 40,
     margin: 5,
+    marginLeft: 10,
   },
   view_details: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.lightGraySecondary,
+    justifyContent: 'center',
+    backgroundColor: COLORS.primary,
     elevation: 1,
-    borderRadius: 10,
-    margin: 5,
-    paddingLeft: 5,
+    borderTopRightRadius: 30,
+    width: '50%',
+    height: 50,
+    marginTop: 10,
   },
   category: {
     fontSize: SIZES.h2,

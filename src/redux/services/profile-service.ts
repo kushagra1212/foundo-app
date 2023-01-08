@@ -7,10 +7,11 @@ export const profileApi = api.injectEndpoints({
                         query: ({ userId }) => {
                                 return `/v1/user-setting/${userId}`
                         }, transformResponse: (response) => {
-                                return response;
-                        }
+                                return response.userSetting;
+                        },
+                        providesTags: ['user-setting']
                 }),
-                getUser: builder.query(({
+                getUser: builder.query({
                         query: ({ userId }) => {
                                 return `/v1/user/${userId}`
                         }, transformResponse: (response) => {
@@ -18,10 +19,21 @@ export const profileApi = api.injectEndpoints({
                                 return response.user;
                         },
                         providesTags: ['user']
-                }))
+                }),
+                updateUserSetting: builder.mutation({
+                        query: (update) => {
+                                return ({
+                                        url: `v1/user-setting/update`,
+                                        method: 'PATCH',
+                                        body: update
+                                })
+                        },
+                        invalidatesTags: ['user-setting']
+                }),
+
         }),
         overrideExisting: true,
 
 });
 
-export const { useGetUserSettingQuery, useGetUserQuery } = profileApi;
+export const { useGetUserSettingQuery, useGetUserQuery, useUpdateUserSettingMutation } = profileApi;

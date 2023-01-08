@@ -94,7 +94,7 @@ const Foundo = () => {
         />
       </Stack.Navigator>
 
-      <Toast config={toastConfig} visibilityTime={2000} />
+      <Toast config={toastConfig} visibilityTime={1200} />
     </NavigationContainer>
   );
 };

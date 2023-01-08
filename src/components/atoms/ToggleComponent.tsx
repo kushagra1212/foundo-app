@@ -1,0 +1,31 @@
+import { StyleSheet, View } from 'react-native';
+import { Switch } from 'react-native-gesture-handler';
+import { COLORS } from '../../constants/theme';
+type props = {
+  value: boolean;
+  onChange: (value: boolean) => void;
+};
+const ToggleComponent: React.FC<props> = ({ value, onChange }) => {
+  return (
+    <View style={styles.view}>
+      <Switch
+        trackColor={{ false: COLORS.lightGraySecondary, true: COLORS.black }}
+        thumbColor={value ? COLORS.white : COLORS.white}
+        ios_backgroundColor={COLORS.lightGraySecondary}
+        onValueChange={onChange}
+        value={value}
+        style={{ transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }] }}
+      />
+    </View>
+  );
+};
+const styles = StyleSheet.create({
+  view: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    padding: 10,
+  },
+});
+export default ToggleComponent;

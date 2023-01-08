@@ -87,7 +87,11 @@ const CardsComponent: React.FC<props> = ({
       keyExtractor={(item) => item.id.toString()}
       ListFooterComponent={
         loading ? (
-          <ActivityIndicator size="large" color={COLORS.greenPrimary} />
+          <ActivityIndicator
+            size="large"
+            style={{ marginBottom: 20 }}
+            color={COLORS.primary}
+          />
         ) : null
       }
       onScroll={onScroll}

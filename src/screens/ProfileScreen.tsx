@@ -20,6 +20,7 @@ import BottomModal from '../components/molecules/BottomModal';
 import EmailComponent from '../components/atoms/EmailComponent';
 import PhoneNumberComponent from '../components/atoms/PhoneNumberComponent';
 import UserAddressComponent from '../components/atoms/UserAddressComponent';
+import UserUpdatePrivacyComponent from '../components/molecules/UserUpdatePrivacyComponent';
 type props = {
   navigation: any;
 };
@@ -188,6 +189,21 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
           <UserAddressComponent
             onClose={() => setOpen(intitalOpenDialog)}
             address={user?.address}
+            userId={user?.id}
+          />
+        </BottomModal>
+      )}
+      {open.updatePrivacy && (
+        <BottomModal
+          height="90%"
+          backgroundFilter={true}
+          isVisible={true}
+          effect={'fade'}
+          onClose={() => setOpen(intitalOpenDialog)}
+        >
+          <UserUpdatePrivacyComponent
+            onClose={() => setOpen(intitalOpenDialog)}
+            userSettings={userSetting}
             userId={user?.id}
           />
         </BottomModal>
