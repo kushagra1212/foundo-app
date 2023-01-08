@@ -14,6 +14,7 @@ type Props = {
   refreshAvail?: boolean;
   reset?: () => void;
   height?: string;
+  iconName?: string;
 };
 const BottomModal: React.FC<Props> = ({
   isVisible,
@@ -21,6 +22,7 @@ const BottomModal: React.FC<Props> = ({
   onClose,
   backgroundFilter,
   reset,
+  iconName = 'chevron-back',
   height = '80%',
   effect = 'slide',
   titleText = '',
@@ -44,7 +46,7 @@ const BottomModal: React.FC<Props> = ({
                 style={{
                   fontWeight: '500',
                 }}
-                name="chevron-back"
+                name={iconName !== 'chevron-back' ? iconName : 'chevron-back'}
                 size={30}
               />
             </Pressable>

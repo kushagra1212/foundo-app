@@ -38,7 +38,9 @@ const intitalOpenDialog = {
 };
 const ProfileScreen: React.FC<props> = ({ navigation }) => {
   const user = useSelector(selectCurrentUser);
-  const { data: userSetting } = useGetUserSettingQuery({ userId: user?.id });
+  const { data: userSetting, isLoading } = useGetUserSettingQuery({
+    userId: user?.id,
+  });
   const [open, setOpen] = useState<OpenDialog>(intitalOpenDialog);
   const viewAllHandler = (
     value: 'email' | 'phoneNumber' | 'Residential Address' | 'Update Privacy'
@@ -62,7 +64,10 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
   console.log(user, userSetting);
   return (
     <SafeAreaView
-      style={{ backgroundColor: COLORS.lightGraySecondary, height: '100%' }}
+      style={{
+        height: '100%',
+        marginTop: 20,
+      }}
     >
       <View style={styles.profile_view}>
         <View>
@@ -82,17 +87,10 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       </View>
       <View
         style={{
-          backgroundColor: COLORS.lightGraySecondary,
           margin: 10,
         }}
       >
-        <View
-          style={{
-            backgroundColor: COLORS.lightGraySecondary,
-          }}
-        >
-          <Text style={{ ...FONTS.h4, opacity: 0.6 }}>Contact Details</Text>
-        </View>
+        <Text style={{ ...FONTS.h4, opacity: 0.6 }}>Contact Details</Text>
         <View style={{ backgroundColor: COLORS.white, marginTop: 5 }}>
           <ListFilterItemViewAllType
             arrowText=""
@@ -132,12 +130,15 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
 
       <View
         style={{
-          backgroundColor: COLORS.lightGraySecondary,
           margin: 10,
         }}
       >
         <Text style={{ ...FONTS.h4, opacity: 0.6 }}>Privacy Setting</Text>
-        <View style={{ backgroundColor: COLORS.white, marginTop: 5 }}>
+        <View
+          style={{
+            marginTop: 5,
+          }}
+        >
           <ListFilterItemViewAllType
             arrowText=""
             items={undefined}
@@ -180,10 +181,11 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       )}
       {open.residentialAddress && (
         <BottomModal
-          height={user?.address ? '40%' : '80%'}
+          height={user?.address ? '40%' : '30%'}
           backgroundFilter={true}
           isVisible={true}
           effect={'fade'}
+          iconName="close"
           onClose={() => setOpen(intitalOpenDialog)}
         >
           <UserAddressComponent
@@ -195,7 +197,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       )}
       {open.updatePrivacy && (
         <BottomModal
-          height="90%"
+          height="60%"
           backgroundFilter={true}
           isVisible={true}
           effect={'fade'}
@@ -204,6 +206,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
           <UserUpdatePrivacyComponent
             onClose={() => setOpen(intitalOpenDialog)}
             userSettings={userSetting}
+            isLoading={isLoading}
             userId={user?.id}
           />
         </BottomModal>
@@ -215,7 +218,6 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   profile_view: {
     backgroundColor: COLORS.white,
-    elevation: 10,
     width: '90%',
     borderRadius: 20,
     marginLeft: 5,
@@ -226,6 +228,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
+    elevation: 50,
+    shadowColor: COLORS.GrayPrimary,
   },
   profile_img: {
     height: 150,

@@ -202,6 +202,8 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
                 '#FFFFFF',
                 '#FFFFFF',
                 '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
               ]}
               style={{
                 flex: 1,

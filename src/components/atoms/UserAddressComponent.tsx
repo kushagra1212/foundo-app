@@ -1,11 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  KeyboardAvoidingView,
+  Alert,
+} from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
 import { useUserUpdateMutation } from '../../redux/services/auth-service';
 import { useGetUserQuery } from '../../redux/services/profile-service';
 import { updateUser } from '../../redux/slices/authSlice';
+import * as Location from 'expo-location';
+
 type props = {
   address: string | null;
   onClose: () => void;
@@ -16,93 +24,148 @@ const UserAddressComponent: React.FC<props> = ({
   onClose,
   userId,
 }) => {
-  const [addressState, setAddressState] = useState<string | null>('');
   const dispatch = useDispatch();
-  const [isValid, setIsValid] = useState<boolean>(false);
   const [userUpdate] = useUserUpdateMutation();
   const { data: user } = useGetUserQuery({ userId });
-  const setAddress = (value: string) => {
-    setAddressState(value);
-    if (value.length >= 30 && value.length <= 100) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
+  const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
+  const [displayCurrentAddress, setDisplayCurrentAddress] = useState('');
+
+  const addAddress = async (address: string) => {
+    try {
+      const { user } = await userUpdate({
+        userId,
+        address,
+      }).unwrap();
+      dispatch(updateUser({ user }));
+
+      onClose();
+    } catch (err) {
+      console.log(err);
+      onClose();
     }
   };
+  const CheckIfLocationEnabled = async () => {
+    try {
+      let enabled = await Location.hasServicesEnabledAsync();
 
-  const addAddress = async () => {
-    if (isValid) {
-      try {
-        const { user } = await userUpdate({
-          userId,
-          address: addressState,
-        }).unwrap();
-        dispatch(updateUser({ user }));
-
-        onClose();
-      } catch (err) {
-        console.log(err);
-
-        onClose();
+      if (enabled) {
+        setLocationServiceEnabled(enabled);
       }
+    } catch (err) {
+      console.log(err);
+      onClose();
     }
   };
   useEffect(() => {
     let go = true;
-    if (go && user) setAddressState(user?.address);
+    if (go && user) setDisplayCurrentAddress(user?.address);
 
     return () => {
       go = false;
     };
   }, [user]);
+  useEffect(() => {
+    CheckIfLocationEnabled();
+  }, []);
+  const makeLocationRequest = async () => {
+    try {
+      let { coords } = await Location.getCurrentPositionAsync();
+      CheckIfLocationEnabled();
+    } catch (err) {
+      console.log(err);
+      onClose();
+    }
+  };
+  const GetCurrentLocation = async () => {
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        onClose();
+        return;
+      }
+
+      let { coords } = await Location.getCurrentPositionAsync();
+
+      if (coords) {
+        const { latitude, longitude } = coords;
+        let response = await Location.reverseGeocodeAsync({
+          latitude,
+          longitude,
+        });
+
+        for (let item of response) {
+          let address = '';
+
+          if (item?.name) address += `${item?.name}, `;
+          if (item?.street) address += `${item?.street}, `;
+          if (item?.postalCode) address += `${item?.postalCode}, `;
+          if (item?.city) address += `${item?.city}, `;
+          if (item?.subregion) address += `${item?.subregion}, `;
+          if (item?.region) address += `${item?.region}, `;
+          if (item?.country) address += `${item?.country}`;
+
+          setDisplayCurrentAddress(address);
+          await addAddress(address);
+        }
+      }
+    } catch (err) {
+      onClose();
+    }
+  };
   return (
     <View style={styles.view}>
       {address === '' || !address ? (
-        <View>
-          <TextInput
-            placeholder={'Write your Residential Address'}
-            onChangeText={setAddress}
-            value={addressState === null ? undefined : addressState}
-            autoFocus
-            numberOfLines={5}
-            multiline={true}
-            placeholderTextColor={COLORS.GraySecondary}
-            textContentType="addressState"
-            style={{
-              backgroundColor: COLORS.white,
-              elevation: 40,
-              borderRadius: 10,
-              padding: 10,
-              fontSize: SIZES.h3,
-              margin: 10,
-              color: COLORS.black,
-              textTransform: 'capitalize',
-            }}
-          />
-
-          <View
-            style={{
-              ...styles.verify_email_but,
-              ...(!isValid ? { backgroundColor: COLORS.GraySecondary } : {}),
-            }}
-            onTouchStart={isValid ? addAddress : undefined}
-          >
-            <Text style={{ ...FONTS.h2, color: COLORS.white }}>Add</Text>
-          </View>
+        <View
+          style={{
+            width: '100%',
+          }}
+        >
+          {!locationServiceEnabled ? (
+            <View>
+              <Text style={{ ...FONTS.body3, margin: 10 }}>
+                Please enable location service to get your current address
+              </Text>
+              <View
+                style={{ ...styles.verify_email_but, width: '80%' }}
+                onTouchStart={() => {
+                  makeLocationRequest();
+                }}
+              >
+                <Text style={{ ...FONTS.body3, color: COLORS.white }}>
+                  Enable Location Service
+                </Text>
+              </View>
+            </View>
+          ) : (
+            <View>
+              <View
+                style={{ ...styles.verify_email_but, width: '80%' }}
+                onTouchStart={GetCurrentLocation}
+              >
+                <Text style={{ ...FONTS.body3, color: COLORS.white }}>
+                  Get Your Adddress
+                </Text>
+              </View>
+            </View>
+          )}
         </View>
       ) : (
-        <View>
-          <Text style={{ ...FONTS.body3, margin: 10 }}>
-            Your Residential Address
+        <View
+          style={{
+            backgroundColor: COLORS.white,
+            elevation: 30,
+            margin: 1,
+            borderRadius: 20,
+            marginTop: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ ...FONTS.h2, margin: 10 }}>
+            Your current address is
           </Text>
-          <Text
-            style={{
-              ...FONTS.h3,
-              margin: 10,
-              opacity: 0.7,
-            }}
-          >
-            {addressState}
+          <Text style={{ ...FONTS.body3, margin: 10 }}>
+            {displayCurrentAddress}
           </Text>
         </View>
       )}
@@ -111,8 +174,10 @@ const UserAddressComponent: React.FC<props> = ({
 };
 const styles = StyleSheet.create({
   view: {
-    height: '100%',
     backgroundColor: COLORS.white,
+    alignItems: 'center',
+    height: '100%',
+    width: '100%',
   },
   verify_email_but: {
     backgroundColor: COLORS.primary,
@@ -122,9 +187,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 5,
     elevation: 10,
-    width: '90%',
+    width: '100%',
     alignSelf: 'center',
     marginTop: 20,
+    height: 50,
   },
 });
 export default UserAddressComponent;

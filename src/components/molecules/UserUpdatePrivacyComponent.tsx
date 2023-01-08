@@ -16,6 +16,7 @@ type props = {
   userSettings: any;
   onClose: () => void;
   userId: number;
+  isLoading: boolean;
 };
 interface UserSettings {
   displayPhoneNo: number;
@@ -24,14 +25,13 @@ interface UserSettings {
 }
 const UserUpdatePrivacyComponent: React.FC<props> = ({
   userSettings,
-  onClose,
   userId,
+  isLoading,
 }) => {
   const [updateUserSettings] = useUpdateUserSettingMutation();
 
   const updatePrivacy = async (state: any) => {
     try {
-      console.log(state, 'state');
       await updateUserSettings({
         userId,
         ...state,
@@ -41,16 +41,6 @@ const UserUpdatePrivacyComponent: React.FC<props> = ({
       console.log(err);
     }
   };
-  // useEffect(() => {
-  //   let unmount = false;
-  //   if (!unmount && userSettings) {
-  //     setUserSettingsState({ ...userSetttingsState, ...userSettings });
-  //   }
-
-  //   return () => {
-  //     unmount = true;
-  //   };
-  // }, [userSettings]);
   return (
     <SafeAreaView>
       <View style={styles.view}>
@@ -58,16 +48,50 @@ const UserUpdatePrivacyComponent: React.FC<props> = ({
         <View style={styles.toggle_view}>
           <Text style={FONTS.body3}>Allow others to see your Phone Number</Text>
           <ToggleComponent
-            value={numToBool(userSettings?.displayPhoneNo)}
-            onChange={() => {
-              updatePrivacy({
-                ...userSettings,
-                displayPhoneNo: !userSettings?.displayPhoneNo ? 1 : 0,
-              });
+            value={numToBool(userSettings.displayPhoneNo)}
+            onChange={(value) => {
+              setTimeout(
+                () =>
+                  updatePrivacy({
+                    displayPhoneNo: value ? 1 : 0,
+                  }),
+                500
+              );
             }}
           />
         </View>
-        <ToggleComponent value={true} onChange={() => {}} />
+        <View style={styles.toggle_view}>
+          <Text style={FONTS.body3}>
+            Allow others to see your Profile Photo
+          </Text>
+          <ToggleComponent
+            value={numToBool(userSettings.displayProfilePhoto)}
+            onChange={(value) => {
+              setTimeout(
+                () =>
+                  updatePrivacy({
+                    displayProfilePhoto: value ? 1 : 0,
+                  }),
+                100
+              );
+            }}
+          />
+        </View>
+        <View style={styles.toggle_view}>
+          <Text style={FONTS.body3}>Allow others to see your Address</Text>
+          <ToggleComponent
+            value={numToBool(userSettings.displayAddress)}
+            onChange={(value) => {
+              setTimeout(
+                () =>
+                  updatePrivacy({
+                    displayAddress: value ? 1 : 0,
+                  }),
+                500
+              );
+            }}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -92,7 +116,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: COLORS.primary,
+    color: COLORS.blackPrimary,
     alignSelf: 'center',
     marginTop: 20,
   },
@@ -101,13 +125,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
+    width: '95%',
     alignSelf: 'center',
     marginTop: 20,
-    elevation: 100,
+    elevation: 40,
     padding: 10,
     backgroundColor: COLORS.white,
-    borderRadius: 30,
+    borderRadius: 20,
+    height: 100,
   },
 });
 export default UserUpdatePrivacyComponent;

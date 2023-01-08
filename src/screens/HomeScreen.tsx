@@ -46,8 +46,8 @@ const HomeScreen = () => {
       />
       <Tab.Screen
         options={{
-          title: 'Profile',
-          headerShadowVisible: false,
+          title: '',
+          headerShown: false,
           headerTitleAlign: 'center',
           headerLeft: () => null,
           // <TouchableOpacity

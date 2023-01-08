@@ -9,7 +9,7 @@ const ToggleComponent: React.FC<props> = ({ value, onChange }) => {
   return (
     <View style={styles.view}>
       <Switch
-        trackColor={{ false: COLORS.lightGraySecondary, true: COLORS.black }}
+        trackColor={{ false: COLORS.lightGraySecondary, true: COLORS.primary }}
         thumbColor={value ? COLORS.white : COLORS.white}
         ios_backgroundColor={COLORS.lightGraySecondary}
         onValueChange={onChange}
@@ -20,12 +20,6 @@ const ToggleComponent: React.FC<props> = ({ value, onChange }) => {
   );
 };
 const styles = StyleSheet.create({
-  view: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    padding: 10,
-  },
+  view: {},
 });
 export default ToggleComponent;
