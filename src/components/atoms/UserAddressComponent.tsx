@@ -174,7 +174,7 @@ const UserAddressComponent: React.FC<props> = ({
 };
 const styles = StyleSheet.create({
   view: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.lightGrayPrePrimary,
     alignItems: 'center',
     height: '100%',
     width: '100%',

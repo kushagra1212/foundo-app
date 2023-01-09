@@ -67,6 +67,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       style={{
         height: '100%',
         marginTop: 20,
+        backgroundColor: COLORS.lightGrayPrePrimary,
       }}
     >
       <View style={styles.profile_view}>
@@ -91,7 +92,9 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
         }}
       >
         <Text style={{ ...FONTS.h4, opacity: 0.6 }}>Contact Details</Text>
-        <View style={{ backgroundColor: COLORS.white, marginTop: 5 }}>
+        <View
+          style={{ backgroundColor: COLORS.lightGrayPrePrimary, marginTop: 5 }}
+        >
           <ListFilterItemViewAllType
             arrowText=""
             items={undefined}
@@ -228,8 +231,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
-    elevation: 50,
-    shadowColor: COLORS.GrayPrimary,
+    elevation: 5,
   },
   profile_img: {
     height: 150,

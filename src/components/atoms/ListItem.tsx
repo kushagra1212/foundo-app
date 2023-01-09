@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { View, Text, StyleSheet, KeyboardAvoidingView } from 'react-native';
-import { FlatList, TextInput } from 'react-native-gesture-handler';
+import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler';
 import { FontAwesome, Ionicons, MaterialIcons } from '../../constants/icons';
 import { ITEMCAT_TO_NUM, ITEM_STANDARD_COLORS } from '../../constants/item';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
 import { FilterItemOn } from '../../interfaces';
+import AnimationTranslateScale from '../molecules/Animations/AnimationTranslateScale';
 import MiniItemColorIcon from './MiniItemColorIcon';
 import MiniItemTextIcon from './MiniItemTextIcon';
 interface PropsType1 extends FilterItemOn {
@@ -22,7 +23,12 @@ const ListFilterItemViewAllType: React.FC<PropsType1> = ({
 }) => {
   return (
     <View
-      style={{ backgroundColor: COLORS.white }}
+      style={{
+        backgroundColor: COLORS.white,
+        elevation: 20,
+        borderRadius: 20,
+        margin: 10,
+      }}
       onTouchStart={rest.viewAllHandler}
     >
       <View style={styles.list_item}>
@@ -48,14 +54,6 @@ const ListFilterItemViewAllType: React.FC<PropsType1> = ({
           />
         )}
       </View>
-      <View
-        style={{
-          width: '100%',
-          height: 1,
-          backgroundColor: COLORS.lightGrayPrimary,
-          elevation: 1,
-        }}
-      />
     </View>
   );
 };
@@ -87,9 +85,12 @@ const ListFilterItemSlideDownList: React.FC<PropsType2> = ({
     updateItemFilterOption(options);
   };
   return (
-    <View
+    <ScrollView
       style={{
-        marginBottom: 10,
+        elevation: 10,
+        borderRadius: 20,
+        backgroundColor: COLORS.white,
+        margin: 10,
       }}
     >
       <View style={styles.list_item}>
@@ -114,27 +115,36 @@ const ListFilterItemSlideDownList: React.FC<PropsType2> = ({
         )}
       </View>
       {open && (
-        <FlatList
-          data={colors}
-          contentContainerStyle={{
-            display: 'flex',
-            alignItems: 'baseline',
-            paddingBottom: 10,
-            marginLeft: '10%',
-          }}
-          numColumns={3}
-          renderItem={({ item }) => (
-            <MiniItemColorIcon
-              isSelected={options?.color === item[0]}
-              text={item[0]}
-              color={item[1]}
-              onSelect={onSelect}
-            />
-          )}
-          keyExtractor={(item) => {
-            return item[1].toString();
-          }}
-        />
+        <AnimationTranslateScale
+          translateRange={[0, 0]}
+          translateDuration={500}
+          scaleRange={[1, 1]}
+          scaleDuration={100}
+          translateRangeX={[500, 0]}
+          tension={100}
+          friction={1000}
+        >
+          <FlatList
+            data={colors}
+            contentContainerStyle={{
+              display: 'flex',
+              alignItems: 'baseline',
+              paddingBottom: 10,
+            }}
+            horizontal={true}
+            renderItem={({ item }) => (
+              <MiniItemColorIcon
+                isSelected={options?.color === item[0]}
+                text={item[0]}
+                color={item[1]}
+                onSelect={onSelect}
+              />
+            )}
+            keyExtractor={(item) => {
+              return item[1].toString();
+            }}
+          />
+        </AnimationTranslateScale>
       )}
 
       {options?.color !== undefined && options.color !== '' && (
@@ -147,15 +157,7 @@ const ListFilterItemSlideDownList: React.FC<PropsType2> = ({
           />
         </View>
       )}
-      <View
-        style={{
-          width: '100%',
-          height: 1,
-          backgroundColor: COLORS.lightGrayPrimary,
-          elevation: 1,
-        }}
-      />
-    </View>
+    </ScrollView>
   );
 };
 interface PropsType3 extends FilterItemOn {
@@ -184,7 +186,10 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = ({
   return (
     <View
       style={{
-        marginBottom: 10,
+        borderRadius: 20,
+        backgroundColor: COLORS.white,
+        margin: 10,
+        elevation: 20,
       }}
     >
       <View style={styles.list_item}>
@@ -209,7 +214,7 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = ({
         )}
       </View>
       {open && (
-        <KeyboardAvoidingView keyboardVerticalOffset={500} behavior="position">
+        <KeyboardAvoidingView keyboardVerticalOffset={520} behavior="position">
           <TextInput
             placeholder={desc}
             onChangeText={(value) =>
@@ -231,20 +236,28 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = ({
           />
         </KeyboardAvoidingView>
       )}
-      <View style={{ width: '60%' }}>
+      <View style={{ width: '100%' }}>
         {options?.brand !== undefined && options?.brand !== '' && (
           <View
             style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'space-around',
+              justifyContent: 'center',
+              width: '100%',
+              alignItems: 'center',
+              backgroundColor: COLORS.lightGrayPrimary,
+              borderRadius: 20,
             }}
           >
-            <MiniItemTextIcon
-              isSelected={true}
-              text={options?.brand}
-              updateItemFilterOption={() => {}}
-            />
+            <Text
+              style={{
+                ...FONTS.h2,
+                width: '90%',
+                textAlign: 'center',
+              }}
+            >
+              {options.brand}
+            </Text>
             <View
               onTouchStart={() => {
                 onSelect({ brand: '' });
@@ -260,14 +273,6 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = ({
           </View>
         )}
       </View>
-      <View
-        style={{
-          width: '100%',
-          height: 1,
-          backgroundColor: COLORS.lightGrayPrimary,
-          elevation: 1,
-        }}
-      />
     </View>
   );
 };

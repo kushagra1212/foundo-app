@@ -99,7 +99,8 @@ const UserUpdatePrivacyComponent: React.FC<props> = ({
 const styles = StyleSheet.create({
   view: {
     height: '100%',
-    backgroundColor: COLORS.white,
+
+    backgroundColor: COLORS.lightGrayPrePrimary,
   },
   verify_email_but: {
     backgroundColor: COLORS.primary,

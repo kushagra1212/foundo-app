@@ -14,11 +14,17 @@ import {
   Ionicons,
   MaterialIcons,
 } from '../../constants/icons';
-import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native-gesture-handler';
 import { ITEMCAT_TO_NUM } from '../../constants/item';
 import MiniItemTextIcon from '../atoms/MiniItemTextIcon';
 import { filterItemOnInitial } from '../../interfaces/initials';
 import BottomModal from './BottomModal';
+import MaskedView from '@react-native-masked-view/masked-view';
+import { LinearGradient } from 'expo-linear-gradient';
 type Props = {
   updateItemFilterOption: (options: FilterItemOn) => void;
   options: FilterItemOn;
@@ -65,135 +71,174 @@ const FilterItemComponent: React.FC<Props> = ({
   // }, []);
   console.log(options);
   return (
-    <View>
-      <ListFilterItemViewAllType
-        text="Category"
-        items={options.category}
-        viewAllHandler={viewAllHandler}
-        arrowText="View All"
-      />
-      <ListFilterItemSlideDownList
-        text="Color"
-        category={options.color}
-        handleChangeSlideDownButton={handleChangeSlideDownButton}
-        options={options}
-        updateItemFilterOption={updateItemFilterOption}
-      />
-      <ListFilterItemSlideDownInput
-        options={options}
-        handleChangeSlideDownButton={() => {}}
-        text="Brand"
-        desc="write brand name"
-        updateItem={updateItemFilterOption}
-      />
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          margin: 10,
-        }}
-        onTouchStart={() =>
-          updateItemFilterOption({
-            latest:
-              options.latest === 'undefined'
-                ? '1'
-                : options.latest === '1'
-                ? '0'
-                : '1',
-          })
-        }
-      >
-        <AntDesign
+    <MaskedView
+      style={{ flex: 1 }}
+      maskElement={
+        <View
           style={{
-            backgroundColor: COLORS.white,
-            width: 35,
-            elevation: 5,
-            borderRadius: 5,
-            color: COLORS.primary,
-            borderWidth: 1,
-            ...(options.latest === undefined || options.latest === '0'
-              ? { color: COLORS.GrayPrimary }
-              : {}),
-          }}
-          name="check"
-          size={35}
-        />
-        <Text
-          style={{
-            marginLeft: 10,
-            ...FONTS.body3,
-            ...(options.latest === undefined || options.latest === '0'
-              ? { color: COLORS.GrayPrimary }
-              : {}),
+            backgroundColor: 'transparent',
+            flex: 1,
+            marginTop: 0,
           }}
         >
-          Get Lastest At Top
-        </Text>
-      </View>
-      <View
-        style={{
-          ...styles.btn_active,
-          ...(JSON.stringify(options) === JSON.stringify(filterItemOnInitial)
-            ? { backgroundColor: COLORS.GraySecondary }
-            : {}),
-        }}
-        onTouchStart={() =>
-          JSON.stringify(options) === JSON.stringify(filterItemOnInitial)
-            ? () => {}
-            : getItems()
-        }
-      >
-        <Text style={{ ...FONTS.h3, color: COLORS.white }}>Find</Text>
-      </View>
-      <BottomModal
-        backgroundFilter={false}
-        isVisible={viewAll}
-        onClose={closeModal}
-        effect="fade"
-      >
-        <View style={styles.view_container}>
-          <FlatList
-            data={categories}
-            contentContainerStyle={{
-              margin: 5,
-              paddingBottom: 50,
-            }}
-            numColumns={2}
-            renderItem={({ item }) => (
-              <MiniItemTextIcon
-                isSelected={options?.category === item[0]}
-                text={item[0]}
-                updateItemFilterOption={updateItemFilterOption}
-              />
-            )}
-            keyExtractor={(item) => {
-              return item[0].toString();
-            }}
-          />
-          <View
+          <LinearGradient
+            colors={[
+              '#FFFFFF00',
+              '#FFFFFF',
+              '#FFFFFF',
+              '#FFFFFF',
+              '#FFFFFF',
+              '#FFFFFF',
+              '#FFFFFF',
+              '#FFFFFF',
+              '#FFFFFF',
+              '#FFFFFF',
+              '#FFFFFF',
+              '#FFFFFF',
+              '#FFFFFF',
+              '#FFFFFF',
+              '#FFFFFF',
+            ]}
             style={{
-              ...styles.btn_active,
-              ...(options.category !== ''
-                ? {}
-                : { backgroundColor: COLORS.GraySecondary }),
+              flex: 1,
+              borderRadius: 5,
             }}
-            onTouchStart={options.category !== '' ? viewAllHandler : () => ({})}
-          >
-            <Text
-              style={{
-                color: COLORS.white,
-                fontSize: SIZES.h3,
-                fontWeight: '600',
-              }}
-            >
-              Add
-            </Text>
-          </View>
+          ></LinearGradient>
         </View>
-      </BottomModal>
-    </View>
+      }
+    >
+      <ScrollView>
+        <ListFilterItemViewAllType
+          text="Category"
+          items={options.category}
+          viewAllHandler={viewAllHandler}
+          arrowText="View All"
+        />
+        <ListFilterItemSlideDownList
+          text="Color"
+          category={options.color}
+          handleChangeSlideDownButton={handleChangeSlideDownButton}
+          options={options}
+          updateItemFilterOption={updateItemFilterOption}
+        />
+        <ListFilterItemSlideDownInput
+          options={options}
+          handleChangeSlideDownButton={() => {}}
+          text="Brand"
+          desc="write brand name"
+          updateItem={updateItemFilterOption}
+        />
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            margin: 10,
+          }}
+          onTouchStart={() =>
+            updateItemFilterOption({
+              latest:
+                options.latest === 'undefined'
+                  ? '1'
+                  : options.latest === '1'
+                  ? '0'
+                  : '1',
+            })
+          }
+        >
+          <AntDesign
+            style={{
+              backgroundColor: COLORS.white,
+              width: 35,
+              elevation: 5,
+              borderRadius: 5,
+              color: COLORS.primary,
+              borderWidth: 1,
+              ...(options.latest === undefined || options.latest === '0'
+                ? { color: COLORS.GrayPrimary }
+                : {}),
+            }}
+            name="check"
+            size={35}
+          />
+          <Text
+            style={{
+              marginLeft: 10,
+              ...FONTS.body3,
+              ...(options.latest === undefined || options.latest === '0'
+                ? { color: COLORS.GrayPrimary }
+                : {}),
+            }}
+          >
+            Get Lastest At Top
+          </Text>
+        </View>
+        <View
+          style={{
+            ...styles.btn_active,
+            ...(JSON.stringify(options) === JSON.stringify(filterItemOnInitial)
+              ? { backgroundColor: COLORS.GraySecondary }
+              : {}),
+          }}
+          onTouchStart={() =>
+            JSON.stringify(options) === JSON.stringify(filterItemOnInitial)
+              ? () => {}
+              : getItems()
+          }
+        >
+          <Text style={{ ...FONTS.h3, color: COLORS.white }}>Find</Text>
+        </View>
+        <BottomModal
+          backgroundFilter={false}
+          isVisible={viewAll}
+          onClose={closeModal}
+          effect="fade"
+        >
+          <View style={styles.view_container}>
+            <FlatList
+              data={categories}
+              contentContainerStyle={{
+                margin: 5,
+                paddingBottom: 50,
+              }}
+              numColumns={2}
+              renderItem={({ item }) => (
+                <MiniItemTextIcon
+                  isSelected={options?.category === item[0]}
+                  text={item[0]}
+                  updateItemFilterOption={updateItemFilterOption}
+                />
+              )}
+              keyExtractor={(item) => {
+                return item[0].toString();
+              }}
+            />
+            <View
+              style={{
+                ...styles.btn_active,
+                ...(options.category !== ''
+                  ? {}
+                  : { backgroundColor: COLORS.GraySecondary }),
+              }}
+              onTouchStart={
+                options.category !== '' ? viewAllHandler : () => ({})
+              }
+            >
+              <Text
+                style={{
+                  color: COLORS.white,
+                  fontSize: SIZES.h3,
+                  fontWeight: '600',
+                }}
+              >
+                Add
+              </Text>
+            </View>
+          </View>
+        </BottomModal>
+      </ScrollView>
+    </MaskedView>
   );
 };
 const styles = StyleSheet.create({
@@ -204,7 +249,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     height: '100%',
     width: '100%',
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.lightGrayPrePrimary,
   },
   btn_active: {
     backgroundColor: COLORS.blueSecondary,

@@ -35,6 +35,7 @@ const BottomModal: React.FC<Props> = ({
         transparent={true}
         visible={isVisible}
         statusBarTranslucent={true}
+        style={{ backgroundColor: COLORS.lightGrayPrePrimary }}
       >
         <View
           style={backgroundFilter ? styles.modal : { height: '100%' }}
@@ -47,7 +48,7 @@ const BottomModal: React.FC<Props> = ({
                   fontWeight: '500',
                 }}
                 name={iconName !== 'chevron-back' ? iconName : 'chevron-back'}
-                size={30}
+                size={35}
               />
             </Pressable>
             <Text style={styles.title}>{titleText}</Text>
@@ -58,7 +59,7 @@ const BottomModal: React.FC<Props> = ({
                     fontWeight: '500',
                   }}
                   name="refresh"
-                  size={30}
+                  size={35}
                 />
               </Pressable>
             )}
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     height: '80%',
     width: '100%',
     opacity: 1,
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.lightGrayPrePrimary,
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,
     position: 'absolute',
@@ -87,8 +88,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   titleContainer: {
-    height: 50,
-    backgroundColor: COLORS.white,
+    height: 60,
+    backgroundColor: COLORS.lightGrayPrePrimary,
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
     paddingHorizontal: 20,

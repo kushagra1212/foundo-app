@@ -8,6 +8,7 @@ export type props = {
   friction?: number;
   scaleRange?: number[];
   translateRange?: number[];
+  translateRangeX?: number[];
 };
 const AnimationTranslateScale: React.FC<props> = ({
   children,
@@ -17,11 +18,16 @@ const AnimationTranslateScale: React.FC<props> = ({
   friction,
   scaleRange,
   translateRange,
+  translateRangeX,
 }) => {
   const Translate = useRef(new Animated.Value(0)).current;
   const translateY = Translate.interpolate({
     inputRange: [0, 1],
     outputRange: translateRange ? translateRange : [-10, 10],
+  });
+  const translateX = Translate.interpolate({
+    inputRange: [0, 1],
+    outputRange: translateRangeX ? translateRangeX : [0, 0],
   });
   const Scale = useRef(new Animated.Value(0)).current;
   const scaleValue = Scale.interpolate({
@@ -53,7 +59,11 @@ const AnimationTranslateScale: React.FC<props> = ({
   return (
     <Animated.View
       style={{
-        transform: [{ scale: scaleValue }, { translateY: translateY }],
+        transform: [
+          { scale: scaleValue },
+          { translateY: translateY },
+          { translateX: translateX },
+        ],
       }}
     >
       {children}
