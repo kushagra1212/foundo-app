@@ -1,7 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import * as ImagePicker from 'expo-image-picker';
+
 import { ListFilterItemViewAllType } from '../components/atoms/ListItem';
 import {
   AntDesign,
@@ -11,7 +13,7 @@ import {
   MaterialIcons,
 } from '../constants/icons';
 import { COLORS, FONTS } from '../constants/theme';
-import { selectCurrentUser } from '../redux/slices/authSlice';
+import { selectCurrentUser, updateUser } from '../redux/slices/authSlice';
 import character from '../assets/images/Clock.png';
 import { useGetUserSettingQuery } from '../redux/services/profile-service';
 import LogoutButtonComponent from '../components/atoms/LogoutButtonComponent';
@@ -21,6 +23,8 @@ import EmailComponent from '../components/atoms/EmailComponent';
 import PhoneNumberComponent from '../components/atoms/PhoneNumberComponent';
 import UserAddressComponent from '../components/atoms/UserAddressComponent';
 import UserUpdatePrivacyComponent from '../components/molecules/UserUpdatePrivacyComponent';
+import { getBase64FromUrl } from '../utils';
+import { useUserUpdateMutation } from '../redux/services/auth-service';
 type props = {
   navigation: any;
 };
@@ -42,6 +46,8 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
     userId: user?.id,
   });
   const [open, setOpen] = useState<OpenDialog>(intitalOpenDialog);
+  const [userUpdate] = useUserUpdateMutation();
+  const dispatch = useDispatch();
   const viewAllHandler = (
     value: 'email' | 'phoneNumber' | 'Residential Address' | 'Update Privacy'
   ) => {
@@ -61,7 +67,32 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       default:
     }
   };
-  console.log(user, userSetting);
+  const showImagePicker = async () => {
+    // Ask the user for the permission to access the media library
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      console.log("You've refused to allow this appp to access your photos!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync();
+
+    if (!result.cancelled) {
+      const base64 = await getBase64FromUrl(result.uri);
+      try {
+        const result = await userUpdate({
+          userId: user?.id,
+          profilePhoto: base64,
+        }).unwrap();
+        dispatch(updateUser({ user: result.user }));
+      } catch (err) {
+        console.log(err);
+      }
+      console.log(base64.length);
+    }
+  };
   return (
     <SafeAreaView
       style={{
@@ -71,9 +102,12 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       }}
     >
       <View style={styles.profile_view}>
+        <View style={{ alignSelf: 'flex-end' }} onTouchStart={showImagePicker}>
+          <AntDesign name="edit" size={25} style={{ color: COLORS.primary }} />
+        </View>
         <View>
           <Image
-            source={{ uri: user?.profilePhoto }}
+            source={{ uri: user?.profilePhoto ? user?.profilePhoto : null }}
             style={{
               ...styles.profile_img,
               aspectRatio: 1,
@@ -130,7 +164,6 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
           />
         </View>
       </View>
-
       <View
         style={{
           margin: 10,
@@ -236,7 +269,7 @@ const styles = StyleSheet.create({
   profile_img: {
     height: 150,
     borderRadius: 20,
-    backgroundColor: COLORS.redPrimary,
+    backgroundColor: COLORS.primary,
   },
 });
 export default ProfileScreen;
