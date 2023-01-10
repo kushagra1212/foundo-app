@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
@@ -102,9 +102,12 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       }}
     >
       <View style={styles.profile_view}>
-        <View style={{ alignSelf: 'flex-end' }} onTouchStart={showImagePicker}>
+        <TouchableOpacity
+          style={{ alignSelf: 'flex-end' }}
+          onPress={showImagePicker}
+        >
           <AntDesign name="edit" size={25} style={{ color: COLORS.primary }} />
-        </View>
+        </TouchableOpacity>
         <View>
           <Image
             source={{ uri: user?.profilePhoto ? user?.profilePhoto : null }}
@@ -191,13 +194,18 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       <LogoutButtonComponent navigation={navigation} />
       {open.email && (
         <BottomModal
-          height="30%"
+          height={user?.is_Verified ? '30%' : '90%'}
           backgroundFilter={true}
           isVisible={true}
           effect={'fade'}
+          iconName="close"
           onClose={() => setOpen(intitalOpenDialog)}
         >
-          <EmailComponent email={user?.email} />
+          <EmailComponent
+            onClose={() => setOpen(intitalOpenDialog)}
+            email={user?.email}
+            user={user}
+          />
         </BottomModal>
       )}
       {open.phoneNumber && (

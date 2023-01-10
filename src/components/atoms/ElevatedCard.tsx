@@ -21,7 +21,7 @@ const ElevatedCard: React.FC<props> = ({ title, description }) => {
       }}
     >
       <Text style={FONTS.h1}>{title}</Text>
-      <Text>{description}</Text>
+      <Text style={FONTS.body4}>{description}</Text>
     </View>
   );
 };

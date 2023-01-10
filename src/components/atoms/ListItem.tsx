@@ -1,5 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { View, Text, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+} from 'react-native';
 import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler';
 import { FontAwesome, Ionicons, MaterialIcons } from '../../constants/icons';
 import { ITEMCAT_TO_NUM, ITEM_STANDARD_COLORS } from '../../constants/item';
@@ -22,14 +28,14 @@ const ListFilterItemViewAllType: React.FC<PropsType1> = ({
   ...rest
 }) => {
   return (
-    <View
+    <TouchableOpacity
       style={{
         backgroundColor: COLORS.white,
         elevation: 20,
         borderRadius: 20,
         margin: 10,
       }}
-      onTouchStart={rest.viewAllHandler}
+      onPress={rest.viewAllHandler}
     >
       <View style={styles.list_item}>
         <View style={styles.text}>
@@ -54,7 +60,7 @@ const ListFilterItemViewAllType: React.FC<PropsType1> = ({
           />
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 interface PropsType2 extends FilterItemOn {
@@ -97,13 +103,16 @@ const ListFilterItemSlideDownList: React.FC<PropsType2> = ({
         <View style={styles.text}>
           <Text style={{ margin: 5, ...FONTS.h4 }}>{text}</Text>
         </View>
-        <View style={styles.view_all} onTouchStart={() => setOpen(!open)}>
+        <TouchableOpacity
+          style={styles.view_all}
+          onPress={() => setOpen(!open)}
+        >
           <Ionicons
             style={{ margin: 10, ...FONTS.h1 }}
             name={open ? 'chevron-up' : 'chevron-down'}
             size={30}
           />
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={{ width: '50%' }}>
         {rest?.color !== undefined && rest?.color !== '' && (
@@ -196,13 +205,16 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = ({
         <View style={styles.text}>
           <Text style={{ ...FONTS.h4 }}>{text}</Text>
         </View>
-        <View style={styles.view_all} onTouchStart={() => setOpen(!open)}>
+        <TouchableOpacity
+          style={styles.view_all}
+          onPress={() => setOpen(!open)}
+        >
           <Ionicons
             style={{ margin: 10, ...FONTS.h1 }}
             name={open ? 'chevron-up' : 'chevron-down'}
             size={30}
           />
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={{ width: '50%' }}>
         {rest?.color !== undefined && rest?.color !== '' && (
@@ -217,12 +229,11 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = ({
         <KeyboardAvoidingView keyboardVerticalOffset={520} behavior="position">
           <TextInput
             placeholder={desc}
-            onChangeText={(value) =>
-              setBrandName(value.substring(0, 14).split(' ').join(''))
-            }
+            onChangeText={(value) => setBrandName(value.split(' ').join(''))}
             value={brandName}
             placeholderTextColor={COLORS.GraySecondary}
             autoFocus={true}
+            maxLength={14}
             onBlur={() => onSelect({ brand: brandName })}
             style={{
               backgroundColor: COLORS.black,
@@ -258,8 +269,8 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = ({
             >
               {options.brand}
             </Text>
-            <View
-              onTouchStart={() => {
+            <TouchableOpacity
+              onPress={() => {
                 onSelect({ brand: '' });
                 setBrandName('');
               }}
@@ -269,7 +280,7 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = ({
                 name="close"
                 size={30}
               />
-            </View>
+            </TouchableOpacity>
           </View>
         )}
       </View>

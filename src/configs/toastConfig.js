@@ -20,7 +20,7 @@ export const toastConfig = {
       {...props}
       ToastIcon={() => (
         <Entypo
-          style={{ color: COLORS.redPrimary, marginRight: 10 }}
+          style={{ color: COLORS.redPrimary, marginRight: 10, zIndex: 100 }}
           name="circle-with-cross"
           size={25}
         />
@@ -94,7 +94,7 @@ const FoundoToast = (props) => (
       </View>
     </View>
     {props?.message && (
-      <View style={{ margin: 10, marginBottom: 5 }}>
+      <View style={{ margin: 10, marginBottom: 5, zIndex: 200 }}>
         <Text style={{ fontWeight: '300', fontSize: 18, textAlign: 'auto' }}>
           {props.message}
         </Text>

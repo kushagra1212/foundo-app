@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, TextInput, BackHandler } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  BackHandler,
+  TouchableOpacity,
+} from 'react-native';
 import React, { useMemo, useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
@@ -14,11 +21,7 @@ import {
   Ionicons,
   MaterialIcons,
 } from '../../constants/icons';
-import {
-  FlatList,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { ITEMCAT_TO_NUM } from '../../constants/item';
 import MiniItemTextIcon from '../atoms/MiniItemTextIcon';
 import { filterItemOnInitial } from '../../interfaces/initials';
@@ -128,7 +131,7 @@ const FilterItemComponent: React.FC<Props> = ({
           desc="write brand name"
           updateItem={updateItemFilterOption}
         />
-        <View
+        <TouchableOpacity
           style={{
             display: 'flex',
             flexDirection: 'row',
@@ -136,7 +139,7 @@ const FilterItemComponent: React.FC<Props> = ({
             justifyContent: 'flex-start',
             margin: 10,
           }}
-          onTouchStart={() =>
+          onPress={() =>
             updateItemFilterOption({
               latest:
                 options.latest === 'undefined'
@@ -173,22 +176,22 @@ const FilterItemComponent: React.FC<Props> = ({
           >
             Get Lastest At Top
           </Text>
-        </View>
-        <View
+        </TouchableOpacity>
+        <TouchableOpacity
           style={{
             ...styles.btn_active,
             ...(JSON.stringify(options) === JSON.stringify(filterItemOnInitial)
               ? { backgroundColor: COLORS.GraySecondary }
               : {}),
           }}
-          onTouchStart={() =>
+          onPress={() =>
             JSON.stringify(options) === JSON.stringify(filterItemOnInitial)
               ? () => {}
               : getItems()
           }
         >
           <Text style={{ ...FONTS.h3, color: COLORS.white }}>Find</Text>
-        </View>
+        </TouchableOpacity>
         <BottomModal
           backgroundFilter={false}
           isVisible={viewAll}
@@ -214,16 +217,14 @@ const FilterItemComponent: React.FC<Props> = ({
                 return item[0].toString();
               }}
             />
-            <View
+            <TouchableOpacity
               style={{
                 ...styles.btn_active,
                 ...(options.category !== ''
                   ? {}
                   : { backgroundColor: COLORS.GraySecondary }),
               }}
-              onTouchStart={
-                options.category !== '' ? viewAllHandler : () => ({})
-              }
+              onPress={options.category !== '' ? viewAllHandler : () => ({})}
             >
               <Text
                 style={{
@@ -234,7 +235,7 @@ const FilterItemComponent: React.FC<Props> = ({
               >
                 Add
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </BottomModal>
       </ScrollView>

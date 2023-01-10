@@ -6,6 +6,7 @@ import {
   View,
   FlatList,
   KeyboardAvoidingView,
+  TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,7 +33,6 @@ import BottomModal from '../../components/molecules/BottomModal';
 import { AntDesign, Feather } from '../../constants/icons';
 import { useGetPostsMutation } from '../../redux/services/post-service';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { TextInput } from 'react-native-gesture-handler';
 import MaskedView from '@react-native-masked-view/masked-view';
 
 import { LinearGradient } from 'expo-linear-gradient';
@@ -134,7 +134,10 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.feed}>
       <View>
-        <View onTouchStart={handleOnFocus} style={styles.item_search_input}>
+        <TouchableOpacity
+          onPress={handleOnFocus}
+          style={styles.item_search_input}
+        >
           <View style={{ marginLeft: 10 }}>
             <Text style={{ ...FONTS.body2 }}>
               <Text style={FONTS.h1}>Find </Text>Things you Lost
@@ -147,7 +150,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
             placeholder="Search Items here.."
           />
         </View> */}
-        </View>
+        </TouchableOpacity>
         <View
           style={{
             display: 'flex',

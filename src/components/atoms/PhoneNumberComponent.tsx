@@ -5,8 +5,13 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import { View, StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  View,
+  StyleSheet,
+  Text,
+  KeyboardAvoidingView,
+  TouchableOpacity,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
 import { useUserUpdateMutation } from '../../redux/services/auth-service';
@@ -72,15 +77,15 @@ const PhoneNumberComponent: React.FC<props> = ({
             containerStyle={{ width: '100%' }}
           />
 
-          <View
+          <TouchableOpacity
             style={{
               ...styles.verify_email_but,
               ...(!isValid ? { backgroundColor: COLORS.GraySecondary } : {}),
             }}
-            onTouchStart={isValid ? addPhoneNumber : undefined}
+            onPress={isValid ? addPhoneNumber : undefined}
           >
             <Text style={{ ...FONTS.h2, color: COLORS.white }}>Add</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       ) : (
         <View>

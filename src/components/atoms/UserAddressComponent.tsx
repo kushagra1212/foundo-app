@@ -5,8 +5,9 @@ import {
   Text,
   KeyboardAvoidingView,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import { TextInput } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
 import { useUserUpdateMutation } from '../../redux/services/auth-service';
@@ -125,27 +126,27 @@ const UserAddressComponent: React.FC<props> = ({
               <Text style={{ ...FONTS.body3, margin: 10 }}>
                 Please enable location service to get your current address
               </Text>
-              <View
+              <TouchableOpacity
                 style={{ ...styles.verify_email_but, width: '80%' }}
-                onTouchStart={() => {
+                onPress={() => {
                   makeLocationRequest();
                 }}
               >
                 <Text style={{ ...FONTS.body3, color: COLORS.white }}>
                   Enable Location Service
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           ) : (
             <View>
-              <View
+              <TouchableOpacity
                 style={{ ...styles.verify_email_but, width: '80%' }}
-                onTouchStart={GetCurrentLocation}
+                onPress={GetCurrentLocation}
               >
                 <Text style={{ ...FONTS.body3, color: COLORS.white }}>
                   Get Your Adddress
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           )}
         </View>
