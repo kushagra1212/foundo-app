@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { Link, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -22,6 +23,7 @@ const Stack = createNativeStackNavigator();
 import * as Linking from 'expo-linking';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from './src/constants/theme';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 const Foundo = () => {
   const [isfontLoaded] = useFonts(ROBOTO_FONTS);
   const [appLoaded, setAppLoaded] = useState(false);
@@ -106,4 +108,9 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    height: '100%',
+    width: '100%',
+  },
+});

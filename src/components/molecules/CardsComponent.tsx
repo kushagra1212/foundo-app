@@ -10,7 +10,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, FONTS } from '../../constants/theme';
 
-import SingleCardComponent from '../atoms/SingleCardComponent';
+import SingleCardComponent from './SingleCardComponent';
 import { useEffect, useState } from 'react';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { boolean } from 'yup';

@@ -71,10 +71,10 @@ const UserAddressComponent: React.FC<props> = ({
   const makeLocationRequest = async () => {
     try {
       let { coords } = await Location.getCurrentPositionAsync();
+
       CheckIfLocationEnabled();
     } catch (err) {
       console.log(err);
-      onClose();
     }
   };
   const GetCurrentLocation = async () => {

@@ -1,16 +1,33 @@
 import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { boolean } from 'yup';
 import { Entypo, Ionicons } from '../../constants/icons';
 import { ITEM_STANDARD_COLORS } from '../../constants/item';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
 import { Post } from '../../interfaces';
+import { useState } from 'react';
 import { capitalizeFirstLetter } from '../../utils';
+import ItemComponent from './ItemComponent';
 export type props = {
   item: Post;
 };
 const SingleCardComponent: React.FC<props> = ({ item }) => {
+  const [isCardDetailVisible, setIsCardDetailVisible] =
+    useState<boolean>(false);
+
+  const toggleCardDetail = () => {
+    setIsCardDetailVisible(!isCardDetailVisible);
+  };
+
   return (
     <View style={styles.card}>
+      {isCardDetailVisible && (
+        <ItemComponent
+          isVisible={isCardDetailVisible}
+          item={item}
+          onClose={toggleCardDetail}
+        />
+      )}
       <View style={styles.card_header}>
         <View style={styles.category}>
           <Text style={{ color: COLORS.white }}>{item.category}</Text>
@@ -107,7 +124,7 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
             alignItems: 'center',
           }}
         >
-          <View style={styles.view_details}>
+          <View onTouchStart={toggleCardDetail} style={styles.view_details}>
             <Text
               style={{
                 ...FONTS.h3,
