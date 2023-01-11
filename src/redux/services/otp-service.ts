@@ -11,7 +11,8 @@ export const OTPApi = api.injectEndpoints({
                 verifyOTP: builder.mutation({
                         query: ({ userId, otp }) => {
                                 return `/v1/user/verify-otp/${userId}/${otp}`
-                        }, invalidatesTags: ['user']
+                        },
+                        invalidatesTags: ['user']
                 }),
                 resetOTP: builder.mutation({
                         query: ({ userId }) => {

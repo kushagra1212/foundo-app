@@ -28,9 +28,16 @@ export const postApi = api.injectEndpoints({
                 return response.items;
             },
         }),
+        getpost: builder.query({
+            query: (id) => {
+                return `/v1/item/${id}`;
+            },
+            transformResponse: (response) => {
+                return response;
+            }
+        })
     }),
-    overrideExisting: false,
-
+    overrideExisting: true,
 });
 
-export const { useGetPostsMutation, useGetSearchedPostsMutation } = postApi;
+export const { useGetPostsMutation, useGetSearchedPostsMutation, useGetpostQuery } = postApi;
