@@ -57,7 +57,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
   const { limit, offset } = useSelector(selectOffsetAndLimit);
   const [getPost, { isLoading }] = useGetPostsMutation();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
-
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const [postFound, setPostFound] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -170,6 +170,14 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
             )}
             keyExtractor={(item: any) => item.id}
             horizontal
+            refreshing={false}
+            onRefresh={() => {
+              console.log('refresh');
+              setRefreshing(true);
+              setTimeout(() => {
+                setRefreshing(false);
+              }, 10000);
+            }}
           />
           <AdditionalFilterOptionComponent
             onModalOpen={onModalOpen}

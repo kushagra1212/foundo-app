@@ -23,8 +23,10 @@ enum Direction {
   RIGHT,
   CENTER,
 }
-type props = {};
-const AnimatedImageComponent: React.FC<props> = ({}) => {
+type props = {
+  urls: string[];
+};
+const AnimatedImageComponent: React.FC<props> = ({ urls }) => {
   const NewGestureDetector: React.FC<GestureDetectorProps> = GestureDetector;
   const END_POSITION = 250;
   const direction = useSharedValue(Direction.CENTER);
@@ -34,7 +36,6 @@ const AnimatedImageComponent: React.FC<props> = ({}) => {
   const position2 = useSharedValue(END_POSITION);
   const panGesture = Gesture.Pan()
     .onUpdate((e) => {
-      console.log(e.translationX);
       if (direction.value === Direction.CENTER) {
         position1.value = e.translationX;
         position2.value = END_POSITION + e.translationX;
@@ -94,26 +95,20 @@ const AnimatedImageComponent: React.FC<props> = ({}) => {
           height: '100%',
         }}
       >
-        <Animated.View
-          style={[
-            styles.ball,
-            animatedStyle,
-            {
-              backgroundColor: 'green',
-              position: 'absolute',
-            },
-          ]}
-        />
-        <Animated.View
-          style={[
-            styles.ball,
-            animatedStyle2,
-            {
-              position: 'absolute',
-              backgroundColor: 'red',
-            },
-          ]}
-        />
+        <Animated.View style={[styles.ball, animatedStyle]}>
+          <Image
+            source={{ uri: urls[0] }}
+            style={{ width: '100%', height: '100%', borderRadius: 10 }}
+          />
+        </Animated.View>
+        {urls.length > 1 && (
+          <Animated.View style={[styles.ball, animatedStyle2]}>
+            <Image
+              source={{ uri: urls[1] }}
+              style={{ width: '100%', height: '100%', borderRadius: 10 }}
+            />
+          </Animated.View>
+        )}
       </View>
     </NewGestureDetector>
   );
@@ -122,8 +117,11 @@ const styles = StyleSheet.create({
   ball: {
     width: 300,
     height: 300,
-    backgroundColor: 'blue',
+    backgroundColor: 'white',
     alignSelf: 'center',
+    position: 'absolute',
+    elevation: 50,
+    borderRadius: 10,
   },
 });
 

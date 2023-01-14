@@ -13,7 +13,7 @@ type Props = {
   titleText?: string;
   refreshAvail?: boolean;
   reset?: () => void;
-  height?: string;
+  height?: string | number;
   iconName?: string;
 };
 const BottomModal: React.FC<Props> = ({

@@ -5,9 +5,12 @@ import FeedScreen from './FeedScreen';
 import ProfileScreen from './ProfileScreen';
 import { COLORS } from '../constants/theme';
 import { Ionicons } from '../constants/icons';
+import { useSelector } from 'react-redux';
+import { selectFeedSearchScreenStatus } from '../redux/slices/sreenSilce';
 const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => {
+  const feedSearchShow = useSelector(selectFeedSearchScreenStatus);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -16,7 +19,7 @@ const HomeScreen = () => {
         tabBarStyle: {
           backgroundColor: COLORS.white,
           height: 70,
-          display: 'flex',
+          display: feedSearchShow ? 'none' : 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           padding: 10,

@@ -33,7 +33,7 @@ export const postApi = api.injectEndpoints({
                 return `/v1/item/${id}`;
             },
             transformResponse: (response) => {
-                return response;
+                return response.item;
             }
         })
     }),
