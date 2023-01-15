@@ -4,9 +4,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FeedScreen from './FeedScreen';
 import ProfileScreen from './ProfileScreen';
 import { COLORS } from '../constants/theme';
-import { Ionicons } from '../constants/icons';
+import { Ionicons, MaterialIconsCommunity } from '../constants/icons';
 import { useSelector } from 'react-redux';
 import { selectFeedSearchScreenStatus } from '../redux/slices/sreenSilce';
+import MessageScreen from './MessageScreen';
 const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => {
@@ -76,6 +77,36 @@ const HomeScreen = () => {
         }}
         name="ProfileScreen"
         component={ProfileScreen}
+      />
+      <Tab.Screen
+        options={{
+          title: '',
+          headerShown: false,
+          headerTitleAlign: 'center',
+          headerLeft: () => null,
+          // <TouchableOpacity
+          //   style={styles.left_btn}
+          //   onPress={() => console.log('left-btn')}
+          // >
+          //   <Foundation name="indent-more" size={30} />
+          // </TouchableOpacity>
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          tabBarLabel: '',
+          tabBarIcon: ({ focused }) => {
+            return (
+              <MaterialIconsCommunity
+                name={focused ? 'message-badge' : 'message-badge-outline'}
+                size={30}
+                color={focused ? COLORS.black : COLORS.GraySecondary}
+              />
+            );
+          },
+        }}
+        name="MessageScreen"
+        component={MessageScreen}
       />
     </Tab.Navigator>
   );

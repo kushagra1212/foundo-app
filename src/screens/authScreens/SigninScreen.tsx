@@ -164,7 +164,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
               fontSize: SIZES.h4,
             }}
           >
-            New to Foundo?
+            New to Foundo ?
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
             <Text
@@ -173,7 +173,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
                 fontSize: SIZES.h4,
               }}
             >
-              Register here
+              {'  '}Register here
             </Text>
           </TouchableOpacity>
         </View>

@@ -1,5 +1,11 @@
-import { StyleSheet, Text, View, TextInput, Image } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import { boolean } from 'yup';
 import { Entypo, Ionicons } from '../../constants/icons';
 import { ITEM_STANDARD_COLORS } from '../../constants/item';
@@ -124,7 +130,10 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
             alignItems: 'center',
           }}
         >
-          <View onTouchStart={toggleCardDetail} style={styles.view_details}>
+          <TouchableOpacity
+            onPress={toggleCardDetail}
+            style={styles.view_details}
+          >
             <Text
               style={{
                 ...FONTS.h3,
@@ -134,7 +143,7 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
             >
               View
             </Text>
-          </View>
+          </TouchableOpacity>
           <View
             style={{
               display: 'flex',

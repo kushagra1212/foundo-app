@@ -24,7 +24,7 @@ import { useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import BottomSheet from './Animations/BottomSheet';
 import ShowMapComponent from '../atoms/ShowMapComponent';
-import ItemExtraDetailCompoent from '../atoms/ItemExtraDetailCompoent';
+import ItemExtraDetailCompoent from '../atoms/ItemExtraDetailComponent';
 import ContactOwnerComponent from './ContactOwnerComponent';
 type props = {
   item: any;
@@ -156,9 +156,7 @@ const ItemComponent: React.FC<props> = ({ item, onClose, isVisible }) => {
                       textAlign: 'justify',
                     }}
                   >
-                    {detailedItem.description} Lorderit delectus incidunt magni
-                    provident! Lorem, ipsum dolor sit amet consectetur
-                    adipisicing elit. Odio fugit sequi moles
+                    {detailedItem.description}
                   </Text>
                 </ScrollView>
               </View>
@@ -199,7 +197,7 @@ const ItemComponent: React.FC<props> = ({ item, onClose, isVisible }) => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <Text style={FONTS.body3}>Lost When </Text>
+                  <Text style={FONTS.body3}>Lost On </Text>
                   <Text style={{ fontWeight: '800' }}>
                     {new Date(detailedItem.dateTime).toDateString()}
                   </Text>
@@ -302,7 +300,10 @@ const ItemComponent: React.FC<props> = ({ item, onClose, isVisible }) => {
                   onClose={closeContactModal}
                   iconName={'close'}
                 >
-                  <ContactOwnerComponent />
+                  <ContactOwnerComponent
+                    close={closeContactModal}
+                    receiverId={item.userId}
+                  />
                 </BottomModal>
               )}
             </ScrollView>

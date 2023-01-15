@@ -3,7 +3,7 @@ import { COLORS, FONTS } from '../../constants/theme';
 type props = {
   detailedItem: any;
 };
-const ItemExtraDetailCompoent: React.FC<props> = ({ detailedItem }) => {
+const ItemExtraDetailComponent: React.FC<props> = ({ detailedItem }) => {
   return (
     <View style={{ backgroundColor: COLORS.lightGrayPrePrimary }}>
       <View style={styles.item_detail_content}>
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ItemExtraDetailCompoent;
+export default ItemExtraDetailComponent;

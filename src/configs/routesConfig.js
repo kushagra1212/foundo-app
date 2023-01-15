@@ -13,6 +13,13 @@ export const routesConfig = {
         ProfileScreen: {
           path: 'profilescreen',
         },
+        MessageScreen: {
+          path: 'MessageScreen',
+          screens: {
+            ChatScreen: 'chat',
+            ContactScreen: 'contact',
+          },
+        },
       },
     },
     Auth: {
