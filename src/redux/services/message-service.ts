@@ -11,18 +11,22 @@ export const messageApi = api.injectEndpoints({
                         }),
                 }),
                 sendMessage: builder.mutation({
-                        query: (body) => ({
-                                url: '/v1/message/add',
-                                method: 'POST',
-                                body: body,
-                        }),
+                        query: (body) => {
+                                return ({
+                                        url: '/v1/message/add',
+                                        method: 'POST',
+                                        body: body,
+                                })
+                        },
+                        invalidatesTags: ['Contacts'],
                 }),
-                getContacts: builder.mutation({
+                getContacts: builder.query({
                         query: ({ userId, limit, offset }) => ({
                                 url: `/v1/message/contact-list?userId=${userId}&limit=${limit}&offset=${offset}`,
                                 method: 'GET',
-
                         }),
+                        providesTags: ['Contacts'],
+
                 }),
 
         }),
@@ -30,4 +34,4 @@ export const messageApi = api.injectEndpoints({
 
 });
 
-export const { useGetContactsMutation, useGetMessagesMutation, useSendMessageMutation } = messageApi;
+export const { useGetMessagesMutation, useSendMessageMutation, useLazyGetContactsQuery } = messageApi;

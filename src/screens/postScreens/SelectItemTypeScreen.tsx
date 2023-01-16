@@ -5,9 +5,11 @@ import character3 from '../../assets/images/character3.png';
 import object2 from '../../assets/images/object4.png';
 import AnimatedObject from '../../components/molecules/Animation/AnimatedObject';
 import { COLORS, FONTS } from '../../constants/theme';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateAddItemDetailsScreenStatus } from '../../redux/slices/sreenSilce';
 import { useEffect } from 'react';
+import { selectCurrentUser } from '../../redux/slices/authSlice';
+import NotLoggedInProfileComponent from '../../components/molecules/profile/NotLoggedInProfileComponent';
 type props = {
   navigation: any;
 };
@@ -20,6 +22,7 @@ const SelectItemTypeScreen: React.FC<props> = ({ navigation }) => {
     );
     navigation.navigate('AddItemDetailsScreen');
   };
+
   return (
     <SafeAreaView mode="margin">
       <AnimatedObject style={{ opacity: 0.5, zIndex: 0 }} source={object2} />

@@ -455,13 +455,16 @@ const messageSchema = yup.object().shape({
     .min(3, 'Too Short!')
     .max(30, 'Too Long!'),
   message: yup.string().required('Message is required').min(10, 'Too Short!'),
-  isFound: yup.number().required('isFound is required'),
-  isPhoneNoShared: yup.number().required('isPhoneNoShared is required'),
+  isFound: yup.number().required('isFound is required').optional(),
+  isPhoneNoShared: yup
+    .number()
+    .required('isPhoneNoShared is required')
+    .optional(),
   location: yup
     .object()
     .shape({
-      latitude: yup.number().required('latitude is required').notOneOf([0]),
-      longitude: yup.number().required('longitude is required').notOneOf([0]),
+      latitude: yup.number().required('latitude is required').optional(),
+      longitude: yup.number().required('longitude is required').optional(),
     })
     .optional(),
 });

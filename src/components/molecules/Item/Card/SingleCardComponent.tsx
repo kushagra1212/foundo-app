@@ -208,6 +208,7 @@ const styles = StyleSheet.create({
   thumbnail: {
     width: '100%',
     height: 150,
+    backgroundColor: COLORS.white,
   },
   item_name: {
     margin: 5,

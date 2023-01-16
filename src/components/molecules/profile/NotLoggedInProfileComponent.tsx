@@ -7,29 +7,24 @@ import object3 from '../../../assets/images/object3.png';
 import AnimatedObject from '../Animation/AnimatedObject';
 import LogInButtonComponent from '../../atoms/LogInButtonComponent';
 import { View } from 'react-native';
+import { ImageSourcePropType } from 'react-native';
+import NotLoggedInComponent from '../../atoms/NotLoggedInComponent';
 type props = {
   navigation: any;
+  characterSource?: ImageSourcePropType;
 };
-const NotLoggedInProfileComponent: React.FC<props> = ({ navigation }) => {
-  console.log('NotLoggedInProfileComponent', navigation);
+const NotLoggedInProfileComponent: React.FC<props> = ({
+  navigation,
+  characterSource = character5,
+}) => {
   return (
-    <SafeAreaView
-      style={{
-        height: '100%',
-        backgroundColor: COLORS.lightGrayPrePrimary,
-        zIndex: 10,
-      }}
-    >
-      <AnimatedComponent
-        title="Not Logged In"
-        description="Please login to see your profile"
-        source={character5}
-      />
-      <AnimatedObject source={object3} />
-      <View style={{ marginTop: '10%' }}>
-        <LogInButtonComponent navigation={navigation} title="Log in" />
-      </View>
-    </SafeAreaView>
+    <NotLoggedInComponent
+      navigation={navigation}
+      title="Not Logged In"
+      desciption="Please login to see your profile"
+      characterSource={characterSource}
+      objectSource={object3}
+    />
   );
 };
 

@@ -29,7 +29,7 @@ import {
 import FilterItemComponent from '../../components/molecules/Filter/FilterItemComponent';
 import BottomModal from '../../components/atoms/BottomModal';
 import { AntDesign, Feather } from '../../constants/icons';
-import { useGetPostsMutation } from '../../redux/services/post-service';
+import { useLazyGetPostsQuery } from '../../redux/services/post-service';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import MaskedView from '@react-native-masked-view/masked-view';
 
@@ -54,7 +54,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
     undefined
   );
   const { limit, offset } = useSelector(selectOffsetAndLimit);
-  const [getPost, { isLoading }] = useGetPostsMutation();
+  const [getPost, { isLoading }] = useLazyGetPostsQuery();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [postFound, setPostFound] = useState<boolean>(false);

@@ -1,4 +1,5 @@
 import { BASE_URL, LOCAL_STORAGE_ACCESS_TOKEN_KEY } from '@env';
+import { AddPost } from '../../interfaces';
 import { api } from './api-service';
 
 export const postApi = api.injectEndpoints({
@@ -13,7 +14,7 @@ export const postApi = api.injectEndpoints({
             },
         }),
 
-        getPosts: builder.mutation({
+        getPosts: builder.query({
             query: ({ offset, limit, ...rest }) => {
                 console.log(offset, limit)
                 const restArray = Object.entries(rest);
@@ -27,6 +28,7 @@ export const postApi = api.injectEndpoints({
             transformResponse: (response) => {
                 return response.items;
             },
+            providesTags: ['Posts'],
         }),
         getpost: builder.query({
             query: (id) => {
@@ -35,9 +37,20 @@ export const postApi = api.injectEndpoints({
             transformResponse: (response) => {
                 return response.item;
             }
-        })
+        }),
+        addLostItemPost: builder.mutation({
+            query: (body: AddPost) => {
+                return ({
+                    url: '/v1/item/add-lost',
+                    method: 'POST',
+                    body: body,
+                })
+            },
+            invalidatesTags: ['Posts'],
+        }),
+
     }),
     overrideExisting: true,
 });
 
-export const { useGetPostsMutation, useGetSearchedPostsMutation, useGetpostQuery } = postApi;
+export const { useLazyGetPostsQuery, useGetSearchedPostsMutation, useGetpostQuery, useAddLostItemPostMutation } = postApi;

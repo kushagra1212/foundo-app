@@ -18,7 +18,7 @@ export const profileApi = api.injectEndpoints({
 
                                 return response.user;
                         },
-                        providesTags: ['user']
+                        providesTags: ['user'],
                 }),
                 updateUserSetting: builder.mutation({
                         query: (update) => {

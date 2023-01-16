@@ -14,10 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MaskedView from '@react-native-masked-view/masked-view';
 
 import { LinearGradient } from 'expo-linear-gradient';
-import {
-  useGetContactsMutation,
-  useGetMessagesMutation,
-} from '../../redux/services/message-service';
+import { useGetMessagesMutation } from '../../redux/services/message-service';
 import { selectCurrentUser } from '../../redux/slices/authSlice';
 import ContactListComponent from '../../components/molecules/Contact/ContactListComponent';
 import { COLORS, FONTS } from '../../constants/theme';
@@ -34,7 +31,7 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
     limit: 5,
     offset: 0,
   });
-  const [getMessages, { isLoading }] = useGetMessagesMutation();
+  const [getMessages, { isLoading, isError }] = useGetMessagesMutation();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
   const [messages, setMessages] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);

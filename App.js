@@ -38,6 +38,7 @@ const Foundo = () => {
     userLoggedIn()
       .then((res) => {
         if (!flag) return;
+        console.log(res);
         if (res.isLoggedIn === true) {
           dispatch(
             setCredentials({
@@ -73,7 +74,7 @@ const Foundo = () => {
   const prefix = Linking.createURL('app');
   if (isLoading) {
     return (
-      <SafeAreaView>
+      <SafeAreaView mode="margin">
         <ActivityIndicator
           style={{ marginTop: '50%', transform: [{ scale: 3 }] }}
           size="large"

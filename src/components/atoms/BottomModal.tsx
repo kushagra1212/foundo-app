@@ -29,7 +29,7 @@ const BottomModal: React.FC<Props> = ({
   refreshAvail = false,
 }) => {
   return (
-    <SafeAreaView>
+    <SafeAreaView mode="margin">
       <Modal
         animationType={effect}
         transparent={true}

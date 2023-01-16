@@ -20,7 +20,7 @@ import {
 import { capitalizeFirstLetter } from '../../../utils';
 import { ITEM_STANDARD_COLORS } from '../../../constants/item';
 import { AntDesign, Entypo, FontAwesome } from '../../../constants/icons';
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import BottomSheet from '../Animation/BottomSheet';
 import ShowMapComponent from '../../atoms/Map/ShowMapComponent';
@@ -40,14 +40,15 @@ const ItemViewComponent: React.FC<props> = ({
   isVisible,
   navigation,
 }) => {
-  const { data: detailedItem, isLoading } = useGetpostQuery(item.id);
+  const call = useCallback(() => useGetpostQuery(item.id), [item.id]);
+  const { data: detailedItem, isLoading } = call();
+
   const { data: userWhoPosted } = useGetUserQuery({
     userId: item.userId,
   });
   const [showDetailsModal, setShowDetailsModal] = useState<boolean>(false);
   const [showMapView, setShowMapView] = useState<boolean>(false);
   const [showContactModal, setShowContactModal] = useState<boolean>(false);
-  console.log(detailedItem, userWhoPosted);
   const user = useSelector(selectCurrentUser);
   const closeDetailsModal = () => {
     setShowDetailsModal(false);

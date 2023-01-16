@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MaskedView from '@react-native-masked-view/masked-view';
 
 import { LinearGradient } from 'expo-linear-gradient';
-import { useGetContactsMutation } from '../../redux/services/message-service';
+import { useLazyGetContactsQuery } from '../../redux/services/message-service';
 import { selectCurrentUser } from '../../redux/slices/authSlice';
 import ContactListComponent from '../../components/molecules/Contact/ContactListComponent';
 import { COLORS } from '../../constants/theme';
@@ -32,7 +32,7 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
     limit: 5,
     offset: 0,
   });
-  const [getContacts, { isLoading }] = useGetContactsMutation();
+  const [getContacts, { isLoading, isError }] = useLazyGetContactsQuery();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
   const [contacts, setContacts] = useState<Array<any>>([]);
   const [loading, setLoading] = useState(false);
@@ -44,12 +44,14 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
       const res = await getContacts({
         offset: contactOption.offset,
         limit: contactOption.limit,
-        userId: user ? user?.id : null,
+        userId: user?.id,
       }).unwrap();
+      console.log(res.length);
       if (res.length === 0) {
         setLoading(false);
         setReachedEnd(true);
         if (contacts.length === 0) setContactFound(false);
+        else setContactFound(true);
         return;
       }
       setContactOption({
@@ -58,6 +60,7 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
       });
       setContacts([...contacts, ...res]);
       setLoading(false);
+      setContactFound(true);
     } catch (e: any) {
       console.log(e);
       setLoading(false);
@@ -71,8 +74,10 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
     return () => {
       unmouted = true;
     };
-  }, []);
-  if (!user) {
+  }, [user?.id]);
+
+  console.log(isError);
+  if (user === null) {
     return (
       <SafeAreaView
         style={{

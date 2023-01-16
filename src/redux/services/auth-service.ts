@@ -14,7 +14,8 @@ export const authApi = api.injectEndpoints({
                     method: 'POST',
                     body: { ...credentials }
                 })
-            }
+            },
+            invalidatesTags: ['Contacts']
         }),
         userSignup: builder.mutation({
             query: credentials => {
