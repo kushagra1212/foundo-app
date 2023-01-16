@@ -195,6 +195,7 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
           postFound={postFound}
           posts={posts}
           reachedEnd={reachedEnd}
+          navigation={navigation}
         />
       </MaskedView>
 

@@ -6,12 +6,19 @@ import ProfileScreen from './ProfileScreen';
 import { COLORS } from '../constants/theme';
 import { Ionicons, MaterialIconsCommunity } from '../constants/icons';
 import { useSelector } from 'react-redux';
-import { selectFeedSearchScreenStatus } from '../redux/slices/sreenSilce';
+import {
+  selectAddItemDetailsScreenStatus,
+  selectFeedSearchScreenStatus,
+} from '../redux/slices/sreenSilce';
 import MessageScreen from './MessageScreen';
+import AddItemScreen from './AddItemScreen';
 const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => {
   const feedSearchShow = useSelector(selectFeedSearchScreenStatus);
+  const addItemDetailsScreenShow = useSelector(
+    selectAddItemDetailsScreenStatus
+  );
   return (
     <Tab.Navigator
       screenOptions={{
@@ -20,7 +27,7 @@ const HomeScreen = () => {
         tabBarStyle: {
           backgroundColor: COLORS.white,
           height: 70,
-          display: feedSearchShow ? 'none' : 'flex',
+          display: feedSearchShow || addItemDetailsScreenShow ? 'none' : 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           padding: 10,
@@ -47,6 +54,22 @@ const HomeScreen = () => {
           },
         }}
         component={FeedScreen}
+      />
+      <Tab.Screen
+        name="AddItemScreen"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => {
+            return (
+              <Ionicons
+                name={focused ? 'add-circle' : 'add-circle-outline'}
+                size={40}
+                color={focused ? COLORS.black : COLORS.GraySecondary}
+              />
+            );
+          },
+        }}
+        component={AddItemScreen}
       />
       <Tab.Screen
         options={{

@@ -10,7 +10,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
-import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
 
 import MaskedView from '@react-native-masked-view/masked-view';
 

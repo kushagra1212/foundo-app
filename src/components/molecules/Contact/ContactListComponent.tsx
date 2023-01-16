@@ -7,19 +7,10 @@ import {
   ActivityIndicator,
   Image,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, FONTS } from '../../../constants/theme';
-
-import SingleCardComponent from '../Item/Card/SingleCardComponent';
-import { useEffect, useState } from 'react';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { boolean } from 'yup';
-import { FilterItemOn, Post } from '../../../interfaces';
-import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
-
-import ElevatedCard from '../../atoms/ElevatedCard';
 import SingleContactComponent from './SingleContactComponent';
-import NotFoundComponent from '../../atoms/NotFoundComponent';
+import AnimatedComponent from '../Animation/AnimatedComponent';
+import character4 from '../../../assets/images/character4.png';
 export type props = {
   contacts: Array<any>;
   reachedEnd: boolean;
@@ -43,7 +34,8 @@ const ContactListComponent: React.FC<props> = ({
   };
   if (!contactFound) {
     return (
-      <NotFoundComponent
+      <AnimatedComponent
+        source={character4}
         title="No Results"
         description={`You don't have any contacts yet`}
       />

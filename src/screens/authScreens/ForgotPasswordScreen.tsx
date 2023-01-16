@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 import character2 from '../../assets/images/character2.png';
-import character3 from '../../assets/images/character3.png';
+import character5 from '../../assets/images/character5.png';
 import objectEmail from '../../assets/images/email.png';
 import * as Linking from 'expo-linking';
 import { useUserForgotPasswordMutation } from '../../redux/services/auth-service';
@@ -157,7 +157,7 @@ const ForgotPasswordScreen: React.FC<props> = ({ navigation }) => {
           </View>
           <View>
             <Image
-              source={character3}
+              source={character5}
               style={{
                 width: 300,
                 height: 300,

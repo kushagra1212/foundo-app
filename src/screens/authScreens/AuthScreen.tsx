@@ -19,7 +19,12 @@ const AuthScreen = () => {
   return (
     <Stack.Navigator initialRouteName="Signin">
       <Stack.Screen
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          headerShadowVisible: false,
+          title: '',
+          headerStyle: { backgroundColor: COLORS.white },
+        }}
         name="Signin"
         component={SigninScreen}
       />

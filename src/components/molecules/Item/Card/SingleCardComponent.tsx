@@ -19,8 +19,9 @@ import { capitalizeEveryWord, capitalizeFirstLetter } from '../../../../utils';
 import ItemComponent from '../ItemViewComponent';
 export type props = {
   item: Post;
+  navigation: any;
 };
-const SingleCardComponent: React.FC<props> = ({ item }) => {
+const SingleCardComponent: React.FC<props> = ({ item, navigation }) => {
   const [isCardDetailVisible, setIsCardDetailVisible] =
     useState<boolean>(false);
 
@@ -35,6 +36,7 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
           isVisible={isCardDetailVisible}
           item={item}
           onClose={toggleCardDetail}
+          navigation={navigation}
         />
       )}
       <View style={styles.card_header}>

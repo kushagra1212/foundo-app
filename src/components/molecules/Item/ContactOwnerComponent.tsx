@@ -14,11 +14,17 @@ import object2 from '../../../assets/images/object2.png';
 import PickMapComponent from '../../atoms/Map/PickMapComponent';
 import BottomModal from '../../atoms/BottomModal';
 import { useSendMessageMutation } from '../../../redux/services/message-service';
+import NotLoggedInProfileComponent from '../profile/NotLoggedInProfileComponent';
 type props = {
   receiverId: number;
   close: () => void;
+  navigation: any;
 };
-const ContactOwnerComponent: React.FC<props> = ({ receiverId, close }) => {
+const ContactOwnerComponent: React.FC<props> = ({
+  receiverId,
+  close,
+  navigation,
+}) => {
   const [uri, setUri] = useState('./../assets/images/character1.svg');
   const [isMapVisible, setIsMapVisible] = useState<boolean>(false);
   const [coordinates, setCoordinates] = useState({
@@ -61,9 +67,15 @@ const ContactOwnerComponent: React.FC<props> = ({ receiverId, close }) => {
       close();
     }
   };
-
+  if (receiverId == null) {
+    return (
+      <SafeAreaView>
+        <NotLoggedInProfileComponent navigation={navigation} />
+      </SafeAreaView>
+    );
+  }
   return (
-    <SafeAreaView style={{}}>
+    <SafeAreaView>
       <AnimationTranslateScale scaleRange={[1, 1.01]} scaleDuration={1000}>
         <Image
           source={object2}
@@ -85,7 +97,7 @@ const ContactOwnerComponent: React.FC<props> = ({ receiverId, close }) => {
           enableReinitialize={true}
           validationSchema={messageSchema}
           initialValues={{
-            senderId: user.id,
+            senderId: user ? user.id : null,
             receiverId: receiverId,
             title: '',
             message: '',

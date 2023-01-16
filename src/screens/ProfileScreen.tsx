@@ -26,6 +26,7 @@ import UserUpdatePrivacyComponent from '../components/molecules/profile/UserUpda
 import { getBase64FromUrl } from '../utils';
 import { useUserUpdateMutation } from '../redux/services/auth-service';
 import { ScrollView } from 'react-native-gesture-handler';
+import NotLoggedInProfileComponent from '../components/molecules/profile/NotLoggedInProfileComponent';
 type props = {
   navigation: any;
 };
@@ -44,7 +45,7 @@ const intitalOpenDialog = {
 const ProfileScreen: React.FC<props> = ({ navigation }) => {
   const user = useSelector(selectCurrentUser);
   const { data: userSetting, isLoading } = useGetUserSettingQuery({
-    userId: user?.id,
+    userId: user ? user?.id : null,
   });
   const [open, setOpen] = useState<OpenDialog>(intitalOpenDialog);
   const [userUpdate] = useUserUpdateMutation();
@@ -94,6 +95,9 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       console.log(base64.length);
     }
   };
+  if (!user) {
+    return <NotLoggedInProfileComponent navigation={navigation} />;
+  }
   return (
     <SafeAreaView
       style={{

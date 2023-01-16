@@ -24,6 +24,7 @@ import * as Linking from 'expo-linking';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from './src/constants/theme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { updateAddItemDetailsScreenStatus } from './src/redux/slices/sreenSilce';
 const Foundo = () => {
   const [isfontLoaded] = useFonts(ROBOTO_FONTS);
   const [appLoaded, setAppLoaded] = useState(false);
@@ -83,7 +84,7 @@ const Foundo = () => {
   }
   return (
     <NavigationContainer linking={{ prefixes: [prefix], config: routesConfig }}>
-      <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Auth'}>
+      <Stack.Navigator initialRouteName={'Home'}>
         <Stack.Screen
           options={{ headerShown: false }}
           name="Auth"

@@ -9,19 +9,11 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, FONTS } from '../../../constants/theme';
-
-import SingleCardComponent from '../Item/Card/SingleCardComponent';
-import { useEffect, useState } from 'react';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { boolean } from 'yup';
-import { FilterItemOn, Post } from '../../../interfaces';
-import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
-
-import ElevatedCard from '../../atoms/ElevatedCard';
-import SingleContactComponent from '../Contact/SingleContactComponent';
 import SingleMessageComponent from './SingleMessageComponent';
-import NotFoundComponent from '../../atoms/NotFoundComponent';
+import NotFoundComponent from '../Animation/AnimatedComponent';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import character5 from '../../../assets/images/character5.png';
+import AnimatedComponent from '../Animation/AnimatedComponent';
 export type props = {
   messages: Array<any>;
   reachedEnd: boolean;
@@ -43,7 +35,8 @@ const MessageListComponent: React.FC<props> = ({
   };
   if (!messageFound) {
     return (
-      <NotFoundComponent
+      <AnimatedComponent
+        source={character5}
         title={'No Results'}
         description={"You don't have any messages yet"}
       />

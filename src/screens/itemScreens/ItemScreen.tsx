@@ -13,8 +13,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import FilterOptionComponent, {
   FILTER_ITEMS,
 } from '../../components/atoms/FilterOptionItem';
-import ItemSearchComponent from '../../components/atoms/ItemSearchComponent';
-import LogoutButtonComponent from '../../components/atoms/LogoutButtonComponent';
 import AdditionalFilterOptionComponent from '../../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
 import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
 import { COLORS, FONTS } from '../../constants/theme';
@@ -239,6 +237,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
           postFound={postFound}
           posts={posts}
           reachedEnd={reachedEnd}
+          navigation={navigation}
         />
       </MaskedView>
       {isModalVisible && (

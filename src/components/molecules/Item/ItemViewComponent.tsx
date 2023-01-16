@@ -26,12 +26,20 @@ import BottomSheet from '../Animation/BottomSheet';
 import ShowMapComponent from '../../atoms/Map/ShowMapComponent';
 import ItemExtraDetailCompoent from '../../atoms/ItemExtraDetailComponent';
 import ContactOwnerComponent from './ContactOwnerComponent';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../../../redux/slices/authSlice';
 type props = {
   item: any;
   onClose: () => void;
   isVisible: boolean;
+  navigation: any;
 };
-const ItemViewComponent: React.FC<props> = ({ item, onClose, isVisible }) => {
+const ItemViewComponent: React.FC<props> = ({
+  item,
+  onClose,
+  isVisible,
+  navigation,
+}) => {
   const { data: detailedItem, isLoading } = useGetpostQuery(item.id);
   const { data: userWhoPosted } = useGetUserQuery({
     userId: item.userId,
@@ -40,6 +48,7 @@ const ItemViewComponent: React.FC<props> = ({ item, onClose, isVisible }) => {
   const [showMapView, setShowMapView] = useState<boolean>(false);
   const [showContactModal, setShowContactModal] = useState<boolean>(false);
   console.log(detailedItem, userWhoPosted);
+  const user = useSelector(selectCurrentUser);
   const closeDetailsModal = () => {
     setShowDetailsModal(false);
   };
@@ -301,8 +310,9 @@ const ItemViewComponent: React.FC<props> = ({ item, onClose, isVisible }) => {
                   iconName={'close'}
                 >
                   <ContactOwnerComponent
+                    navigation={navigation}
                     close={closeContactModal}
-                    receiverId={item.userId}
+                    receiverId={user?.id ? item.userId : null}
                   />
                 </BottomModal>
               )}

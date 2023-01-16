@@ -11,19 +11,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { COLORS, FONTS } from '../../../../constants/theme';
 
 import SingleCardComponent from './SingleCardComponent';
-import { useEffect, useState } from 'react';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { boolean } from 'yup';
 import { FilterItemOn, Post } from '../../../../interfaces';
-import AnimationTranslateScale from '../../Animation/AnimationTranslateScale';
-import character13 from '../../../../assets/images/character13.png';
-import ElevatedCard from '../../../atoms/ElevatedCard';
+import character5 from '../../../../assets/images/character5.png';
+import AnimatedComponent from '../../Animation/AnimatedComponent';
 export type props = {
   postFound: boolean;
   posts: Array<Post>;
   reachedEnd: boolean;
   fetchPosts: () => void;
   loading: boolean;
+  navigation: any;
 };
 const CardsComponent: React.FC<props> = ({
   postFound,
@@ -31,6 +28,7 @@ const CardsComponent: React.FC<props> = ({
   fetchPosts,
   loading,
   posts,
+  navigation,
 }) => {
   const onScroll = (event: any) => {
     const { nativeEvent } = event;
@@ -40,47 +38,22 @@ const CardsComponent: React.FC<props> = ({
 
   if (!postFound) {
     return (
-      <View
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <View
-          style={{
-            position: 'absolute',
-            backgroundColor: COLORS.lightGraySecondary,
-            width: '100%',
-            height: '100%',
-            borderRadius: 25,
-          }}
-        >
-          <AnimationTranslateScale scaleRange={[1, 1.3]} scaleDuration={500}>
-            <Image
-              source={character13}
-              style={{
-                width: 500,
-                height: 500,
-                position: 'absolute',
-                zIndex: 0,
-                right: 1,
-              }}
-            />
-          </AnimationTranslateScale>
-        </View>
-        <ElevatedCard
-          title="No Results"
-          description={`Sorry We couldn't found anything`}
-        />
-      </View>
+      <AnimatedComponent
+        source={character5}
+        title="No Results"
+        description={`Sorry We couldn't found anything`}
+      />
     );
   }
   return (
     <FlatList
       data={posts}
       renderItem={({ item }) => (
-        <SingleCardComponent key={item.id.toString()} item={item} />
+        <SingleCardComponent
+          navigation={navigation}
+          key={item.id.toString()}
+          item={item}
+        />
       )}
       onEndReached={reachedEnd ? null : fetchPosts}
       keyExtractor={(item) => item.id.toString()}

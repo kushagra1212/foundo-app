@@ -3,8 +3,15 @@ import { Text, View } from 'react-native';
 type props = {
   title: string;
   description: string;
+  elevation?: number;
+  elevationCardStyle?: any;
 };
-const ElevatedCard: React.FC<props> = ({ title, description }) => {
+const ElevatedCard: React.FC<props> = ({
+  title,
+  description,
+  elevationCardStyle,
+  elevation = 10,
+}) => {
   return (
     <View
       style={{
@@ -12,12 +19,13 @@ const ElevatedCard: React.FC<props> = ({ title, description }) => {
         backgroundColor: COLORS.white,
         zIndex: 3,
         padding: 20,
-        elevation: 10,
+        elevation: elevation,
         borderRadius: 20,
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'stretch',
         justifyContent: 'center',
         marginTop: '80%',
+        ...elevationCardStyle,
       }}
     >
       <Text style={FONTS.h1}>{title}</Text>

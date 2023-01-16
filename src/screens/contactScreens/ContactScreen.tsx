@@ -10,8 +10,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
-import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
-
 import MaskedView from '@react-native-masked-view/masked-view';
 
 import { LinearGradient } from 'expo-linear-gradient';
@@ -19,6 +17,11 @@ import { useGetContactsMutation } from '../../redux/services/message-service';
 import { selectCurrentUser } from '../../redux/slices/authSlice';
 import ContactListComponent from '../../components/molecules/Contact/ContactListComponent';
 import { COLORS } from '../../constants/theme';
+import AnimatedComponent from '../../components/molecules/Animation/AnimatedComponent';
+import AnimatedObject from '../../components/molecules/Animation/AnimatedObject';
+import character4 from '../../assets/images/character4.png';
+import object3 from '../../assets/images/object1.png';
+import LogInButtonComponent from '../../components/atoms/LogInButtonComponent';
 export type props = {
   navigation: any;
 };
@@ -41,7 +44,7 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
       const res = await getContacts({
         offset: contactOption.offset,
         limit: contactOption.limit,
-        userId: user.id,
+        userId: user ? user?.id : null,
       }).unwrap();
       if (res.length === 0) {
         setLoading(false);
@@ -69,6 +72,28 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
       unmouted = true;
     };
   }, []);
+  if (!user) {
+    return (
+      <SafeAreaView
+        style={{
+          height: '100%',
+          backgroundColor: COLORS.lightGrayPrePrimary,
+        }}
+      >
+        <View style={{ zIndex: 1, top: '60%' }}>
+          <AnimatedObject width={300} height={300} source={object3} />
+        </View>
+        <AnimatedComponent
+          title="Not Logged In"
+          description="Please login to see your contacts"
+          source={character4}
+        />
+        <View style={{ marginTop: '10%' }}>
+          <LogInButtonComponent navigation={navigation} title="Log in" />
+        </View>
+      </SafeAreaView>
+    );
+  }
   return (
     <SafeAreaView
       style={{
