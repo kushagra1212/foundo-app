@@ -10,14 +10,14 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
-import CardsComponent from '../../components/molecules/CardsComponent';
+import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
 
 import MaskedView from '@react-native-masked-view/masked-view';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGetContactsMutation } from '../../redux/services/message-service';
 import { selectCurrentUser } from '../../redux/slices/authSlice';
-import ContactListComponent from '../../components/molecules/ContactListComponent';
+import ContactListComponent from '../../components/molecules/Contact/ContactListComponent';
 import { COLORS } from '../../constants/theme';
 export type props = {
   navigation: any;
@@ -70,7 +70,13 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
     };
   }, []);
   return (
-    <SafeAreaView style={{ width: '100%', height: '100%' }}>
+    <SafeAreaView
+      style={{
+        width: '100%',
+        height: '100%',
+        backgroundColor: COLORS.lightGrayPrePrimary,
+      }}
+    >
       <MaskedView
         style={{ flex: 1 }}
         maskElement={

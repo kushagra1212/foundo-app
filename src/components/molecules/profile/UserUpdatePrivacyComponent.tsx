@@ -3,15 +3,15 @@ import { View, StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import { COLORS, FONTS, SIZES } from '../../constants/theme';
-import { useUserUpdateMutation } from '../../redux/services/auth-service';
+import { COLORS, FONTS, SIZES } from '../../../constants/theme';
+import { useUserUpdateMutation } from '../../../redux/services/auth-service';
 import {
   useGetUserQuery,
   useUpdateUserSettingMutation,
-} from '../../redux/services/profile-service';
-import { updateUser } from '../../redux/slices/authSlice';
-import { numToBool } from '../../utils';
-import ToggleComponent from '../atoms/ToggleComponent';
+} from '../../../redux/services/profile-service';
+import { updateUser } from '../../../redux/slices/authSlice';
+import { numToBool } from '../../../utils';
+import ToggleComponent from '../../atoms/ToggleComponent';
 type props = {
   userSettings: any;
   onClose: () => void;

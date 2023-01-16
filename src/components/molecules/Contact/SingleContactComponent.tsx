@@ -12,13 +12,13 @@ import {
   FontAwesome,
   Ionicons,
   MaterialIconsCommunity,
-} from '../../constants/icons';
-import { ITEM_STANDARD_COLORS } from '../../constants/item';
-import { COLORS, FONTS, SIZES } from '../../constants/theme';
-import { Post } from '../../interfaces';
+} from '../../../constants/icons';
+import { ITEM_STANDARD_COLORS } from '../../../constants/item';
+import { COLORS, FONTS, SIZES } from '../../../constants/theme';
+import { Post } from '../../../interfaces';
 import { useState } from 'react';
-import { capitalizeFirstLetter } from '../../utils';
-import ItemComponent from './ItemComponent';
+import { capitalizeFirstLetter } from '../../../utils';
+import ItemComponent from '../Item/ItemViewComponent';
 export type props = {
   contact: any;
   navigation: any;

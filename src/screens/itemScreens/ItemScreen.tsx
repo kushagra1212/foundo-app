@@ -15,8 +15,8 @@ import FilterOptionComponent, {
 } from '../../components/atoms/FilterOptionItem';
 import ItemSearchComponent from '../../components/atoms/ItemSearchComponent';
 import LogoutButtonComponent from '../../components/atoms/LogoutButtonComponent';
-import AdditionalFilterOptionComponent from '../../components/molecules/AditionalFilterOptionComponent.tsx';
-import CardsComponent from '../../components/molecules/CardsComponent';
+import AdditionalFilterOptionComponent from '../../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
+import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
 import { COLORS, FONTS } from '../../constants/theme';
 import { FilterItemOn, Post } from '../../interfaces';
 import { filterItemOnInitial } from '../../interfaces/initials';
@@ -28,8 +28,8 @@ import {
   updateFilter,
   updatePosts,
 } from '../../redux/slices/postSlice';
-import FilterItemComponent from '../../components/molecules/FilterItemComponent';
-import BottomModal from '../../components/molecules/BottomModal';
+import FilterItemComponent from '../../components/molecules/Filter/FilterItemComponent';
+import BottomModal from '../../components/atoms/BottomModal';
 import { AntDesign, Feather } from '../../constants/icons';
 import { useGetPostsMutation } from '../../redux/services/post-service';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
@@ -40,6 +40,7 @@ import {
   selectFeedSearchScreenStatus,
   updateFeedSearchScreenStatus,
 } from '../../redux/slices/sreenSilce';
+import { ITEMCAT_TO_NUM } from '../../constants/item';
 
 export type props = {
   navigation: any;
@@ -89,12 +90,18 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
     setPostFound(true);
     if (loading || feedSearchScreenStatus) return;
     setLoading(true);
+    let cat = { ...itemFilterOption };
+    if (itemFilterOption.category) {
+      cat.category = String(
+        ITEMCAT_TO_NUM.get(String(itemFilterOption.category))
+      );
+    }
     try {
       const posts = await getPost({
         offset: offset,
         limit,
         founded: filterType,
-        ...itemFilterOption,
+        ...cat,
       }).unwrap();
       dispatch(updatePosts({ offset: offset + limit, posts: posts }));
       setLoading(false);

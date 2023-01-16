@@ -13,8 +13,8 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 import ItemSearchComponent from '../../components/atoms/ItemSearchComponent';
 import LogoutButtonComponent from '../../components/atoms/LogoutButtonComponent';
-import AnimationTranslateScale from '../../components/molecules/Animations/AnimationTranslateScale';
-import CardsComponent from '../../components/molecules/CardsComponent';
+import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
+import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
 
 import searchItemImg from '../../assets/images/searchitem.png';
 import { Ionicons } from '../../constants/icons';

@@ -2,16 +2,16 @@ import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS, FONTS } from '../../constants/theme';
-import AnimationTranslateScale from '../molecules/Animations/AnimationTranslateScale';
-import ElevatedCard from './ElevatedCard';
-import phoneimage from '../../assets/images/phone.png';
-import OTPInputBox from './OTPInputBox';
+import { COLORS, FONTS } from '../../../constants/theme';
+import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
+import ElevatedCard from '../../atoms/ElevatedCard';
+import phoneimage from '../../../assets/images/phone.png';
+import OTPInputBox from '../../atoms/OTPInputBox';
 import {
   useResetOTPMutation,
   useSendOTPMutation,
   useVerifyOTPMutation,
-} from '../../redux/services/otp-service';
+} from '../../../redux/services/otp-service';
 import { number } from 'yup';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import {
@@ -20,8 +20,8 @@ import {
   FontAwesome,
   Ionicons,
   MaterialIcons,
-} from '../../constants/icons';
-import { updateUser } from '../../redux/slices/authSlice';
+} from '../../../constants/icons';
+import { updateUser } from '../../../redux/slices/authSlice';
 import { useDispatch } from 'react-redux';
 type props = {
   email: string;

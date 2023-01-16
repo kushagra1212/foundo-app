@@ -5,12 +5,12 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { AntDesign } from '../../constants/icons';
-import { COLORS, FONTS } from '../../constants/theme';
+import { AntDesign } from '../../../constants/icons';
+import { COLORS, FONTS } from '../../../constants/theme';
 import {
   logoutUser,
   useUserVerifyResetPasswordQuery,
-} from '../../redux/services/auth-service';
+} from '../../../redux/services/auth-service';
 export type props = {
   navigation: any;
   credentials: { email: string; token: string };

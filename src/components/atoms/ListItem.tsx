@@ -11,7 +11,7 @@ import { FontAwesome, Ionicons, MaterialIcons } from '../../constants/icons';
 import { ITEMCAT_TO_NUM, ITEM_STANDARD_COLORS } from '../../constants/item';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
 import { FilterItemOn } from '../../interfaces';
-import AnimationTranslateScale from '../molecules/Animations/AnimationTranslateScale';
+import AnimationTranslateScale from '../molecules/Animation/AnimationTranslateScale';
 import MiniItemColorIcon from './MiniItemColorIcon';
 import MiniItemTextIcon from './MiniItemTextIcon';
 interface PropsType1 extends FilterItemOn {

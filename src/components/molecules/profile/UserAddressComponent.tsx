@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
-import { COLORS, FONTS, SIZES } from '../../constants/theme';
-import { useUserUpdateMutation } from '../../redux/services/auth-service';
-import { useGetUserQuery } from '../../redux/services/profile-service';
-import { updateUser } from '../../redux/slices/authSlice';
+import { COLORS, FONTS, SIZES } from '../../../constants/theme';
+import { useUserUpdateMutation } from '../../../redux/services/auth-service';
+import { useGetUserQuery } from '../../../redux/services/profile-service';
+import { updateUser } from '../../../redux/slices/authSlice';
 import * as Location from 'expo-location';
 
 type props = {

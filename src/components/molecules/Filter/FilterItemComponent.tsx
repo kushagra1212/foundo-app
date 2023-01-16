@@ -8,24 +8,24 @@ import {
 } from 'react-native';
 import React, { useMemo, useState, useEffect } from 'react';
 import { Formik } from 'formik';
-import { COLORS, FONTS, SIZES } from '../../constants/theme';
-import { FilterItemOn } from '../../interfaces';
+import { COLORS, FONTS, SIZES } from '../../../constants/theme';
+import { FilterItemOn } from '../../../interfaces';
 import {
   ListFilterItemSlideDownInput,
   ListFilterItemSlideDownList,
   ListFilterItemViewAllType,
-} from '../atoms/ListItem';
+} from '../../atoms/ListItem';
 import {
   AntDesign,
   FontAwesome,
   Ionicons,
   MaterialIcons,
-} from '../../constants/icons';
+} from '../../../constants/icons';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
-import { ITEMCAT_TO_NUM } from '../../constants/item';
-import MiniItemTextIcon from '../atoms/MiniItemTextIcon';
-import { filterItemOnInitial } from '../../interfaces/initials';
-import BottomModal from './BottomModal';
+import { ITEMCAT_TO_NUM } from '../../../constants/item';
+import MiniItemTextIcon from '../../atoms/MiniItemTextIcon';
+import { filterItemOnInitial } from '../../../interfaces/initials';
+import BottomModal from '../../atoms/BottomModal';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { LinearGradient } from 'expo-linear-gradient';
 type Props = {

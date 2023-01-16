@@ -14,7 +14,7 @@ import {
   GestureHandlerRootView,
   GestureType,
 } from 'react-native-gesture-handler';
-import BottomModal from '../BottomModal';
+import BottomModal from '../../atoms/BottomModal';
 
 interface GestureDetectorProps {
   gesture?: ComposedGesture | GestureType;

@@ -34,8 +34,8 @@ import {
   setForgotPasswordLinkSent,
 } from '../../redux/slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import VerifyUserToken from '../../components/atoms/VerifyUserToken';
-import AnimationTranslateScale from '../../components/molecules/Animations/AnimationTranslateScale';
+import VerifyUserToken from '../../components/atoms/Verify/VerifyUserToken';
+import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
 
 export type props = {
   navigation: any;

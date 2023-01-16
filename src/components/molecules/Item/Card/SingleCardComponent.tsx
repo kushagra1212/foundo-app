@@ -7,13 +7,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { boolean } from 'yup';
-import { Entypo, Ionicons } from '../../constants/icons';
-import { ITEM_STANDARD_COLORS } from '../../constants/item';
-import { COLORS, FONTS, SIZES } from '../../constants/theme';
-import { Post } from '../../interfaces';
+import { Entypo, Ionicons } from '../../../../constants/icons';
+import {
+  ITEM_STANDARD_COLORS,
+  NUM_TO_ITEMCAT,
+} from '../../../../constants/item';
+import { COLORS, FONTS, SIZES } from '../../../../constants/theme';
+import { Post } from '../../../../interfaces';
 import { useState } from 'react';
-import { capitalizeFirstLetter } from '../../utils';
-import ItemComponent from './ItemComponent';
+import { capitalizeEveryWord, capitalizeFirstLetter } from '../../../../utils';
+import ItemComponent from '../ItemViewComponent';
 export type props = {
   item: Post;
 };
@@ -35,22 +38,34 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
         />
       )}
       <View style={styles.card_header}>
-        <View style={styles.category}>
-          <Text style={{ color: COLORS.white }}>{item.category}</Text>
-        </View>
         <Image source={{ uri: item.thumbnail }} style={styles.thumbnail} />
       </View>
       <View style={styles.card_footer}>
-        <View style={styles.item_name}>
-          <Text
-            style={{
-              color: COLORS.black,
-              fontSize: SIZES.h3,
-              fontWeight: '700',
-            }}
-          >
-            {capitalizeFirstLetter(item.itemName)}
-          </Text>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
+          <View style={styles.item_name}>
+            <Text
+              style={{
+                color: COLORS.black,
+                fontSize: SIZES.h3,
+                fontWeight: '700',
+              }}
+            >
+              {capitalizeFirstLetter(item.itemName)}
+            </Text>
+          </View>
+          <View style={styles.category}>
+            <Text style={[FONTS.body3, { color: COLORS.black }]}>
+              {capitalizeEveryWord(
+                String(NUM_TO_ITEMCAT.get(Number(item.category)))
+              )}
+            </Text>
+          </View>
         </View>
         <View style={styles.description}>
           <Text
@@ -64,7 +79,6 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
             {item.description}
           </Text>
         </View>
-
         <View style={styles.lost_when}>
           <Text
             style={{
@@ -121,7 +135,6 @@ const SingleCardComponent: React.FC<props> = ({ item }) => {
             {item.brand}
           </Text>
         </View>
-
         <View
           style={{
             display: 'flex',
@@ -248,16 +261,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   category: {
-    fontSize: SIZES.h2,
-    backgroundColor: COLORS.black,
-    position: 'absolute',
     zIndex: 5,
-    elevation: 30,
     borderRadius: 5,
     padding: 1,
-    alignSelf: 'flex-end',
-    transform: [{ rotate: '15 deg' }],
-    marginTop: 10,
+    transform: [{ rotate: '0 deg' }],
+    margin: 10,
   },
 });
 export default SingleCardComponent;

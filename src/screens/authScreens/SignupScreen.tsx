@@ -20,7 +20,7 @@ import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 import object1 from '../../assets/images/object1.png';
 import { useUserSignupMutation } from '../../redux/services/auth-service';
-import AnimationTranslateScale from '../../components/molecules/Animations/AnimationTranslateScale';
+import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
 export type props = {
   navigation: any;
 };

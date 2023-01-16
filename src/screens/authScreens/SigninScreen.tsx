@@ -19,7 +19,7 @@ import character1 from '../../assets/images/character1.png';
 import { useUserLoginMutation } from '../../redux/services/auth-service';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../redux/slices/authSlice';
-import AnimationTranslateScale from '../../components/molecules/Animations/AnimationTranslateScale';
+import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
 import { updateFilter } from '../../redux/slices/postSlice';
 
 export type props = {

@@ -7,31 +7,31 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import BottomModal from './BottomModal';
-import { useGetpostQuery } from '../../redux/services/post-service';
-import { COLORS, FONTS, SIZES } from '../../constants/theme';
-import { useGetUserQuery } from '../../redux/services/profile-service';
-import AnimatedImageComponent from './Animations/AnimatedImageComponent';
+import BottomModal from '../../atoms/BottomModal';
+import { useGetpostQuery } from '../../../redux/services/post-service';
+import { COLORS, FONTS, SIZES } from '../../../constants/theme';
+import { useGetUserQuery } from '../../../redux/services/profile-service';
+import AnimatedImageComponent from '../Animation/AnimatedImageComponent';
 import {
   GestureHandlerRootView,
   ScrollView,
   Swipeable,
 } from 'react-native-gesture-handler';
-import { capitalizeFirstLetter } from '../../utils';
-import { ITEM_STANDARD_COLORS } from '../../constants/item';
-import { AntDesign, Entypo, FontAwesome } from '../../constants/icons';
+import { capitalizeFirstLetter } from '../../../utils';
+import { ITEM_STANDARD_COLORS } from '../../../constants/item';
+import { AntDesign, Entypo, FontAwesome } from '../../../constants/icons';
 import { useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import BottomSheet from './Animations/BottomSheet';
-import ShowMapComponent from '../atoms/ShowMapComponent';
-import ItemExtraDetailCompoent from '../atoms/ItemExtraDetailComponent';
+import BottomSheet from '../Animation/BottomSheet';
+import ShowMapComponent from '../../atoms/Map/ShowMapComponent';
+import ItemExtraDetailCompoent from '../../atoms/ItemExtraDetailComponent';
 import ContactOwnerComponent from './ContactOwnerComponent';
 type props = {
   item: any;
   onClose: () => void;
   isVisible: boolean;
 };
-const ItemComponent: React.FC<props> = ({ item, onClose, isVisible }) => {
+const ItemViewComponent: React.FC<props> = ({ item, onClose, isVisible }) => {
   const { data: detailedItem, isLoading } = useGetpostQuery(item.id);
   const { data: userWhoPosted } = useGetUserQuery({
     userId: item.userId,
@@ -369,4 +369,4 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
-export default ItemComponent;
+export default ItemViewComponent;

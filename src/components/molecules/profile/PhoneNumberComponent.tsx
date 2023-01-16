@@ -13,15 +13,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { COLORS, FONTS, SIZES } from '../../constants/theme';
-import { useUserUpdateMutation } from '../../redux/services/auth-service';
-import { useGetUserQuery } from '../../redux/services/profile-service';
+import { COLORS, FONTS, SIZES } from '../../../constants/theme';
+import { useUserUpdateMutation } from '../../../redux/services/auth-service';
+import { useGetUserQuery } from '../../../redux/services/profile-service';
 import PhoneInput from 'react-native-phone-number-input';
 import {
   selectCurrentUser,
   selectCurrentUserId,
   updateUser,
-} from '../../redux/slices/authSlice';
+} from '../../../redux/slices/authSlice';
 type props = {
   phoneNumber: string | undefined;
   onClose: () => void;

@@ -6,8 +6,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useEffect, useState } from 'react';
-import { AntDesign, Entypo, Feather, FontAwesome } from '../../constants/icons';
-import { COLORS, FONTS } from '../../constants/theme';
+import {
+  AntDesign,
+  Entypo,
+  Feather,
+  FontAwesome,
+} from '../../../constants/icons';
+import { COLORS, FONTS } from '../../../constants/theme';
 
 type Props = {
   isFilterOptionSelected: boolean;

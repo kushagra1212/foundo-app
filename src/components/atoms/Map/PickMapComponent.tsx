@@ -1,7 +1,7 @@
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useState } from 'react';
-import { COLORS, FONTS } from '../../constants/theme';
+import { COLORS, FONTS } from '../../../constants/theme';
 type props = {
   onChange: (coordinates: { latitude: number; longitude: number }) => void;
   coordinates: { latitude: number; longitude: number };

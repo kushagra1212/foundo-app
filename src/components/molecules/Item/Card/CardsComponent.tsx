@@ -8,40 +8,37 @@ import {
   Image,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { COLORS, FONTS } from '../../constants/theme';
+import { COLORS, FONTS } from '../../../../constants/theme';
 
 import SingleCardComponent from './SingleCardComponent';
 import { useEffect, useState } from 'react';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { boolean } from 'yup';
-import { FilterItemOn, Post } from '../../interfaces';
-import AnimationTranslateScale from './Animations/AnimationTranslateScale';
-
-import character13 from '../../assets/images/character13.png';
-import ElevatedCard from '../atoms/ElevatedCard';
-import SingleContactComponent from './SingleContactComponent';
+import { FilterItemOn, Post } from '../../../../interfaces';
+import AnimationTranslateScale from '../../Animation/AnimationTranslateScale';
+import character13 from '../../../../assets/images/character13.png';
+import ElevatedCard from '../../../atoms/ElevatedCard';
 export type props = {
-  contacts: Array<any>;
+  postFound: boolean;
+  posts: Array<Post>;
   reachedEnd: boolean;
-  fetchContacts: () => void;
+  fetchPosts: () => void;
   loading: boolean;
-  navigation: any;
-  contactFound: boolean;
 };
-const ContactListComponent: React.FC<props> = ({
+const CardsComponent: React.FC<props> = ({
+  postFound,
   reachedEnd,
-  fetchContacts,
+  fetchPosts,
   loading,
-  contacts,
-  navigation,
-  contactFound,
+  posts,
 }) => {
   const onScroll = (event: any) => {
     const { nativeEvent } = event;
     const { contentOffset } = nativeEvent;
     const { y } = contentOffset;
   };
-  if (!contactFound) {
+
+  if (!postFound) {
     return (
       <View
         style={{
@@ -74,23 +71,19 @@ const ContactListComponent: React.FC<props> = ({
         </View>
         <ElevatedCard
           title="No Results"
-          description={`You don't have any contacts yet`}
+          description={`Sorry We couldn't found anything`}
         />
       </View>
     );
   }
   return (
     <FlatList
-      data={contacts}
+      data={posts}
       renderItem={({ item }) => (
-        <SingleContactComponent
-          navigation={navigation}
-          key={item.senderId.toString()}
-          contact={item}
-        />
+        <SingleCardComponent key={item.id.toString()} item={item} />
       )}
-      onEndReached={reachedEnd ? null : fetchContacts}
-      keyExtractor={(item) => item.senderId.toString()}
+      onEndReached={reachedEnd ? null : fetchPosts}
+      keyExtractor={(item) => item.id.toString()}
       ListFooterComponent={
         loading ? (
           <ActivityIndicator
@@ -110,4 +103,4 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.GrayPrimary,
   },
 });
-export default ContactListComponent;
+export default CardsComponent;

@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
-import CardsComponent from '../../components/molecules/CardsComponent';
+import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
 
 import MaskedView from '@react-native-masked-view/masked-view';
 
@@ -20,9 +20,11 @@ import {
   useGetMessagesMutation,
 } from '../../redux/services/message-service';
 import { selectCurrentUser } from '../../redux/slices/authSlice';
-import ContactListComponent from '../../components/molecules/ContactListComponent';
-import { COLORS } from '../../constants/theme';
-import MessageListComponent from '../../components/molecules/MessageListComponent';
+import ContactListComponent from '../../components/molecules/Contact/ContactListComponent';
+import { COLORS, FONTS } from '../../constants/theme';
+import MessageListComponent from '../../components/molecules/Message/MessageListComponent';
+import { useGetUserQuery } from '../../redux/services/profile-service';
+import { Ionicons } from '../../constants/icons';
 export type props = {
   navigation?: any;
 };
@@ -69,13 +71,46 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
   };
   useEffect(() => {
     let unmouted = false;
-    if (!unmouted) fetchMessages();
+    if (!unmouted) {
+      setLoading(true);
+      fetchMessages();
+    }
+
     return () => {
       unmouted = true;
     };
   }, []);
   return (
-    <SafeAreaView style={{ width: '100%', height: '100%' }}>
+    <SafeAreaView
+      style={{
+        width: '100%',
+        height: '100%',
+        backgroundColor: COLORS.lightGrayPrePrimary,
+      }}
+    >
+      <View>
+        <View style={styles.header}>
+          <Ionicons
+            name="arrow-back"
+            size={30}
+            color="black"
+            onPress={() => navigation.goBack()}
+          />
+          <View
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              width: '90%',
+            }}
+          >
+            <Text style={FONTS.h3}>
+              {navigation.getState().routes[1].params.contact?.firstName +
+                ' ' +
+                navigation.getState().routes[1].params.contact?.lastName}
+            </Text>
+          </View>
+        </View>
+      </View>
       <MaskedView
         style={{ flex: 1 }}
         maskElement={
@@ -88,7 +123,11 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
           >
             <LinearGradient
               colors={[
-                '#FFFFFF00',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
+                '#FFFFFF',
                 '#FFFFFF',
                 '#FFFFFF',
                 '#FFFFFF',
@@ -129,13 +168,12 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  search_header: {
+  header: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  item_search_input: {
-    width: '90%',
+    height: 50,
+    padding: 10,
   },
 });
 export default ChatScreen;

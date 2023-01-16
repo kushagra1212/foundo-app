@@ -27,10 +27,7 @@ const MessageScreen: React.FC<props> = () => {
       <Stack.Screen
         options={{
           title: '',
-          headerShadowVisible: false,
-          headerStyle: {
-            backgroundColor: 'transparent',
-          },
+          headerShown: false,
         }}
         name="ChatScreen"
         component={ChatScreen}
