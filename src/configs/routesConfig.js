@@ -10,11 +10,18 @@ export const routesConfig = {
             FeedSearchScreen: 'feedsearch',
           },
         },
+        AddItemScreen: {
+          path: 'additems',
+          screens: {
+            SelectItemTypeScreen: 'selectitemtype',
+            AddItemDetailsScreen: 'additemdetails',
+          },
+        },
         ProfileScreen: {
-          path: 'profilescreen',
+          path: 'profile',
         },
         MessageScreen: {
-          path: 'MessageScreen',
+          path: 'message',
           screens: {
             ChatScreen: 'chat',
             ContactScreen: 'contact',

@@ -7,39 +7,24 @@ import AnimatedObject from '../../components/molecules/Animation/AnimatedObject'
 import { COLORS, FONTS } from '../../constants/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateAddItemDetailsScreenStatus } from '../../redux/slices/sreenSilce';
-import { useEffect } from 'react';
-import { selectCurrentUser } from '../../redux/slices/authSlice';
-import NotLoggedInProfileComponent from '../../components/molecules/profile/NotLoggedInProfileComponent';
+
 type props = {
   navigation: any;
 };
 const SelectItemTypeScreen: React.FC<props> = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  const openAddItemDetailsScreen = () => {
+  const openAddItemDetailsScreen = (isFound: boolean) => {
     dispatch(
       updateAddItemDetailsScreenStatus({ addItemDetailsScreenStatus: true })
     );
-    navigation.navigate('AddItemDetailsScreen');
+    navigation.navigate('AddItemDetailsScreen', { isFounded: isFound });
   };
 
   return (
     <SafeAreaView mode="margin">
       <AnimatedObject style={{ opacity: 0.5, zIndex: 0 }} source={object2} />
-      <Text
-        style={[
-          FONTS.body1,
-          {
-            alignSelf: 'center',
-            margin: 10,
-            zIndex: 10,
-            position: 'absolute',
-            opacity: 0.5,
-          },
-        ]}
-      >
-        Upload an Item
-      </Text>
+
       <AnimatedComponent
         elevationCardStyle={{ marginTop: '70%', elevation: 0, opacity: 0.9 }}
         transparent={true}
@@ -57,12 +42,15 @@ const SelectItemTypeScreen: React.FC<props> = ({ navigation }) => {
       />
       <View style={styles.but_view}>
         <TouchableOpacity
-          onPress={openAddItemDetailsScreen}
+          onPress={() => openAddItemDetailsScreen(false)}
           style={[styles.but, { backgroundColor: COLORS.pinkSecond }]}
         >
           <Text style={[FONTS.h2, { color: COLORS.white }]}> Lost Item </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={openAddItemDetailsScreen} style={styles.but}>
+        <TouchableOpacity
+          onPress={() => openAddItemDetailsScreen(true)}
+          style={styles.but}
+        >
           <Text style={[FONTS.h2, { color: COLORS.white }]}> Found Item </Text>
         </TouchableOpacity>
       </View>

@@ -55,6 +55,7 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
     email: currUser?.email,
     token: jwtResetToken,
   });
+  console.log(jwtResetToken, 'jwtResetToken');
   const handleSubmit = async ({ password }: { password: string }) => {
     try {
       const res = await userResetPassword({
@@ -111,6 +112,7 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
         </View>
       </SafeAreaView>
     );
+
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
       <KeyboardAvoidingView>

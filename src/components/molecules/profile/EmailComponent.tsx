@@ -94,7 +94,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
       Toast.show({
         type: 'success',
         props: {
-          text: 'Success',
+          text: 'Email verified successfully',
           message: res.message,
         },
         position: 'bottom',

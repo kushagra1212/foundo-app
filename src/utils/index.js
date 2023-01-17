@@ -22,3 +22,26 @@ export const getBase64FromUrl = async (url) => {
     };
   });
 };
+
+export const getAddress = (response) => {
+  let address = '';
+  for (let item of response) {
+    //if (item?.name) address += `${item?.name}, `;
+    if (item?.street) address += `${item?.street}, `;
+    if (item?.postalCode) address += `${item?.postalCode}, `;
+    if (item?.city) address += `${item?.city}, `;
+    if (item?.subregion) address += `${item?.subregion}, `;
+    if (item?.region) address += `${item?.region}, `;
+    if (item?.country) address += `${item?.country}`;
+  }
+  return {
+    address,
+    name: response[0]?.name,
+    street: response[0]?.street,
+    postalCode: response[0]?.postalCode,
+    city: response[0]?.city,
+    subregion: response[0]?.subregion,
+    region: response[0]?.region,
+    country: response[0]?.country,
+  };
+};

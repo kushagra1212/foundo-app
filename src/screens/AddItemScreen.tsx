@@ -19,7 +19,7 @@ const Stack = createNativeStackNavigator();
 export type props = {};
 const AddItemScreen: React.FC<props> = () => {
   return (
-    <Stack.Navigator initialRouteName="ContactScreen">
+    <Stack.Navigator initialRouteName="SelectItemTypeScreen">
       <Stack.Screen
         options={{ headerShown: false }}
         name="SelectItemTypeScreen"

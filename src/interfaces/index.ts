@@ -31,7 +31,7 @@ export interface FilterItemOn {
 export interface Picture {
   image: string;
 }
-export interface Location {
+export interface ILocation {
   latitude: number;
   longitude: number;
 }
@@ -46,5 +46,5 @@ export interface AddPost {
   userId: number;
   isFounded: boolean;
   pictures: Array<Picture>;
-  location: Location;
+  location: ILocation;
 }

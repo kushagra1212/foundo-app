@@ -89,11 +89,11 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
     if (loading || feedSearchScreenStatus) return;
     setLoading(true);
     let cat = { ...itemFilterOption };
-    if (itemFilterOption.category) {
-      cat.category = String(
-        ITEMCAT_TO_NUM.get(String(itemFilterOption.category))
-      );
-    }
+    // if (itemFilterOption.category) {
+    //   cat.category = String(
+    //     ITEMCAT_TO_NUM.get(String(itemFilterOption.category))
+    //   );
+    // }
     try {
       const posts = await getPost({
         offset: offset,
@@ -239,6 +239,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
           reachedEnd={reachedEnd}
           navigation={navigation}
         />
+        <View style={{ height: 10 }}></View>
       </MaskedView>
       {isModalVisible && (
         <BottomModal

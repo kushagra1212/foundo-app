@@ -144,7 +144,7 @@ const ItemViewComponent: React.FC<props> = ({
                   />
 
                   <Text style={{ ...FONTS.body3, lineHeight: 20 }}>
-                    {capitalizeFirstLetter(item.color)}
+                    {' ' + capitalizeFirstLetter(item.color)}
                   </Text>
                 </View>
               </View>
@@ -221,7 +221,7 @@ const ItemViewComponent: React.FC<props> = ({
                 >
                   <Text style={FONTS.body3}>Posted On </Text>
                   <Text style={{ fontWeight: '800' }}>
-                    {new Date(detailedItem.dateTime).toDateString()}
+                    {new Date(detailedItem.createdAt).toDateString()}
                   </Text>
                 </View>
               </View>

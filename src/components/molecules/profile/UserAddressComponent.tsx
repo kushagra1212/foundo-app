@@ -14,6 +14,7 @@ import { useUserUpdateMutation } from '../../../redux/services/auth-service';
 import { useGetUserQuery } from '../../../redux/services/profile-service';
 import { updateUser } from '../../../redux/slices/authSlice';
 import * as Location from 'expo-location';
+import { getAddress } from '../../../utils';
 
 type props = {
   address: string | null;
@@ -93,21 +94,10 @@ const UserAddressComponent: React.FC<props> = ({
           latitude,
           longitude,
         });
+        const { address } = getAddress(response);
 
-        for (let item of response) {
-          let address = '';
-
-          if (item?.name) address += `${item?.name}, `;
-          if (item?.street) address += `${item?.street}, `;
-          if (item?.postalCode) address += `${item?.postalCode}, `;
-          if (item?.city) address += `${item?.city}, `;
-          if (item?.subregion) address += `${item?.subregion}, `;
-          if (item?.region) address += `${item?.region}, `;
-          if (item?.country) address += `${item?.country}`;
-
-          setDisplayCurrentAddress(address);
-          await addAddress(address);
-        }
+        setDisplayCurrentAddress(address);
+        await addAddress(address);
       }
     } catch (err) {
       onClose();

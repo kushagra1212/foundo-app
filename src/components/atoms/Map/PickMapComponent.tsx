@@ -1,7 +1,10 @@
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { LatLng, Marker } from 'react-native-maps';
 import { useState } from 'react';
 import { COLORS, FONTS } from '../../../constants/theme';
+import * as Location from 'expo-location';
+import { ILocation } from '../../../interfaces';
+import { getAddress } from '../../../utils';
 type props = {
   onChange: (coordinates: { latitude: number; longitude: number }) => void;
   coordinates: { latitude: number; longitude: number };
@@ -38,6 +41,7 @@ const PickMapComponent: React.FC<props> = ({
         >
           Long press on the marker and drag it to the desired location
         </Text>
+
         <TouchableOpacity
           style={{
             backgroundColor: COLORS.black,

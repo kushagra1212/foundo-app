@@ -14,9 +14,14 @@ import {
 } from '../../../../constants/item';
 import { COLORS, FONTS, SIZES } from '../../../../constants/theme';
 import { Post } from '../../../../interfaces';
-import { useState } from 'react';
-import { capitalizeEveryWord, capitalizeFirstLetter } from '../../../../utils';
+import { useState, useEffect } from 'react';
+import {
+  capitalizeEveryWord,
+  capitalizeFirstLetter,
+  getAddress,
+} from '../../../../utils';
 import ItemComponent from '../ItemViewComponent';
+
 export type props = {
   item: Post;
   navigation: any;
@@ -24,11 +29,9 @@ export type props = {
 const SingleCardComponent: React.FC<props> = ({ item, navigation }) => {
   const [isCardDetailVisible, setIsCardDetailVisible] =
     useState<boolean>(false);
-
   const toggleCardDetail = () => {
     setIsCardDetailVisible(!isCardDetailVisible);
   };
-
   return (
     <View style={styles.card}>
       {isCardDetailVisible && (
@@ -63,9 +66,7 @@ const SingleCardComponent: React.FC<props> = ({ item, navigation }) => {
           </View>
           <View style={styles.category}>
             <Text style={[FONTS.body3, { color: COLORS.black }]}>
-              {capitalizeEveryWord(
-                String(NUM_TO_ITEMCAT.get(Number(item.category)))
-              )}
+              {capitalizeEveryWord(item.category)}
             </Text>
           </View>
         </View>
@@ -122,7 +123,7 @@ const SingleCardComponent: React.FC<props> = ({ item, navigation }) => {
             />
 
             <Text style={{ ...FONTS.body3, lineHeight: 20 }}>
-              {capitalizeFirstLetter(item.color)}
+              {' ' + capitalizeFirstLetter(item.color)}
             </Text>
           </View>
           <Text

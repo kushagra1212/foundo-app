@@ -34,7 +34,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
       Toast.show({
         type: 'success',
         props: {
-          text: 'Success',
+          text: 'Signup Success !',
           message: res.message,
         },
       });

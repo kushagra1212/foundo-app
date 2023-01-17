@@ -49,7 +49,7 @@ const ContactOwnerComponent: React.FC<props> = ({
       Toast.show({
         type: 'success',
         props: {
-          text: 'Success',
+          text: 'Message sent !',
           message: res.message,
         },
       });

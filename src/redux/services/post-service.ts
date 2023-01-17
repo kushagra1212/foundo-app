@@ -38,7 +38,7 @@ export const postApi = api.injectEndpoints({
                 return response.item;
             }
         }),
-        addLostItemPost: builder.mutation({
+        addItemPost: builder.mutation({
             query: (body: AddPost) => {
                 return ({
                     url: '/v1/item/add-lost',
@@ -53,4 +53,4 @@ export const postApi = api.injectEndpoints({
     overrideExisting: true,
 });
 
-export const { useLazyGetPostsQuery, useGetSearchedPostsMutation, useGetpostQuery, useAddLostItemPostMutation } = postApi;
+export const { useLazyGetPostsQuery, useGetSearchedPostsMutation, useGetpostQuery, useAddItemPostMutation } = postApi;

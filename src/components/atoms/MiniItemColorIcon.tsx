@@ -9,12 +9,14 @@ type Props = {
   text: string;
   color: string;
   onSelect: (options: FilterItemOn) => void;
+  style?: any;
 };
 const MiniItemColorIcon: React.FC<Props> = ({
   isSelected,
   text,
   color,
   onSelect,
+  style,
 }) => {
   return (
     <View
@@ -25,15 +27,18 @@ const MiniItemColorIcon: React.FC<Props> = ({
       onTouchEnd={() => onSelect({ color: isSelected ? '' : text })}
     >
       <View
-        style={{
-          backgroundColor: color,
-          width: 10,
-          height: 10,
-          borderRadius: 10,
-          padding: 10,
-          margin: 5,
-          elevation: 3,
-        }}
+        style={[
+          {
+            backgroundColor: color,
+            width: 10,
+            height: 10,
+            borderRadius: 10,
+            padding: 10,
+            margin: 5,
+            elevation: 3,
+          },
+          style,
+        ]}
       ></View>
       <Text
         style={{

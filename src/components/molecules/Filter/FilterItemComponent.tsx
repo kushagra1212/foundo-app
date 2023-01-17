@@ -72,7 +72,6 @@ const FilterItemComponent: React.FC<Props> = ({
   //     BackHandler.removeEventListener('hardwareBackPress', onPressBack);
   //   };
   // }, []);
-  console.log(options);
   return (
     <MaskedView
       style={{ flex: 1 }}
