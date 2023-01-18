@@ -23,8 +23,11 @@ const Stack = createNativeStackNavigator();
 import * as Linking from 'expo-linking';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from './src/constants/theme';
+import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { updateAddItemDetailsScreenStatus } from './src/redux/slices/sreenSilce';
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 const Foundo = () => {
   const [isfontLoaded] = useFonts(ROBOTO_FONTS);
   const [appLoaded, setAppLoaded] = useState(false);
@@ -60,11 +63,14 @@ const Foundo = () => {
             );
           }
         }
-        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(async () => {
+        await SplashScreen.hideAsync();
+        setIsLoading(false);
+        setAppLoaded(true);
+      });
 
-    setAppLoaded(true);
     return () => (flag = false);
   }, [url]);
   if (!isfontLoaded || !appLoaded) {
@@ -72,17 +78,17 @@ const Foundo = () => {
   }
 
   const prefix = Linking.createURL('app');
-  if (isLoading) {
-    return (
-      <SafeAreaView mode="margin">
-        <ActivityIndicator
-          style={{ marginTop: '50%', transform: [{ scale: 3 }] }}
-          size="large"
-          color={COLORS.redPrimary}
-        />
-      </SafeAreaView>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <SafeAreaView mode="margin">
+  //       <ActivityIndicator
+  //         style={{ marginTop: '50%', transform: [{ scale: 3 }] }}
+  //         size="large"
+  //         color={COLORS.redPrimary}
+  //       />
+  //     </SafeAreaView>
+  //   );
+  // }
   return (
     <NavigationContainer linking={{ prefixes: [prefix], config: routesConfig }}>
       <Stack.Navigator initialRouteName={'Home'}>
