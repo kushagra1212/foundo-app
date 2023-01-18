@@ -1,15 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import React from 'react';
+import { View, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useDispatch, useSelector } from 'react-redux';
-import { COLORS, FONTS, SIZES } from '../../../constants/theme';
-import { useUserUpdateMutation } from '../../../redux/services/auth-service';
-import {
-  useGetUserQuery,
-  useUpdateUserSettingMutation,
-} from '../../../redux/services/profile-service';
-import { updateUser } from '../../../redux/slices/authSlice';
+import { COLORS, FONTS } from '../../../constants/theme';
+import { useUpdateUserSettingMutation } from '../../../redux/services/profile-service';
 import { numToBool } from '../../../utils';
 import ToggleComponent from '../../atoms/ToggleComponent';
 type props = {
@@ -36,7 +29,6 @@ const UserUpdatePrivacyComponent: React.FC<props> = ({
         userId,
         ...state,
       }).unwrap();
-      console.log('updated');
     } catch (err) {
       console.log(err);
     }

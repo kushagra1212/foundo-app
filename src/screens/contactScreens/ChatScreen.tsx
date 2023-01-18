@@ -8,18 +8,16 @@ import {
   BackHandler,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import MaskedView from '@react-native-masked-view/masked-view';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGetMessagesMutation } from '../../redux/services/message-service';
 import { selectCurrentUser } from '../../redux/slices/authSlice';
-import ContactListComponent from '../../components/molecules/Contact/ContactListComponent';
 import { COLORS, FONTS } from '../../constants/theme';
 import MessageListComponent from '../../components/molecules/Message/MessageListComponent';
-import { useGetUserQuery } from '../../redux/services/profile-service';
+
 import { Ionicons } from '../../constants/icons';
 export type props = {
   navigation?: any;

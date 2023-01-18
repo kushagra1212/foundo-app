@@ -1,10 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SigninScreen from './SigninScreen';
 import SignupScreen from './SignupScreen';
-import { NavigationContainer } from '@react-navigation/native';
 import { COLORS } from '../../constants/theme';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
 import { useSelector } from 'react-redux';
@@ -14,7 +12,6 @@ const Stack = createNativeStackNavigator();
 
 const AuthScreen = () => {
   const forgotPasswordLinkSent = useSelector(selectorgotPasswordStatus);
-  console.log(forgotPasswordLinkSent);
 
   return (
     <Stack.Navigator initialRouteName="Signin">

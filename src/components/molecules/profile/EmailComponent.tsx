@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../../constants/theme';
 import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
-import ElevatedCard from '../../atoms/ElevatedCard';
+
 import phoneimage from '../../../assets/images/phone.png';
 import OTPInputBox from '../../atoms/OTPInputBox';
 import {
@@ -14,13 +14,7 @@ import {
 } from '../../../redux/services/otp-service';
 import { number } from 'yup';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import {
-  AntDesign,
-  Entypo,
-  FontAwesome,
-  Ionicons,
-  MaterialIcons,
-} from '../../../constants/icons';
+import { AntDesign } from '../../../constants/icons';
 import { updateUser } from '../../../redux/slices/authSlice';
 import { useDispatch } from 'react-redux';
 type props = {

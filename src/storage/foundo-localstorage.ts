@@ -21,7 +21,7 @@ export const getTokenFromLocalStorage = async (key: string) => {
 export const removeItemFromLocalStroage = async (key: string) => {
         try {
                 const res = await SecureStore.deleteItemAsync(key);
-                console.log(res, "logOut")
+
         } catch (err) {
                 console.log(err);
         }

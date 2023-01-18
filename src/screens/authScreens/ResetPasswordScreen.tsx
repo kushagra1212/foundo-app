@@ -1,6 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
 import {
-  ActivityIndicator,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -15,26 +13,21 @@ import { Formik } from 'formik';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 import { TextInput } from 'react-native-gesture-handler';
-import { useEffect, useState } from 'react';
-import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
-import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
+import { useState } from 'react';
+import { COLORS, SIZES } from '../../constants/theme';
+import { SimpleLineIcons, Ionicons } from '../../constants/icons';
 import character2 from '../../assets/images/character2.png';
 import tokenExpiredIcon from '../../assets/images/file.png';
-import * as Linking from 'expo-linking';
+
 import {
-  useUserForgotPasswordMutation,
   useUserResetPasswordMutation,
   useUserVerifyResetPasswordQuery,
 } from '../../redux/services/auth-service';
 import {
   selectCurrentResetToken,
-  selectCurrentToken,
   selectCurrentUser,
-  selectorgotPasswordStatus,
-  setForgotPasswordLinkSent,
 } from '../../redux/slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import VerifyUserToken from '../../components/atoms/Verify/VerifyUserToken';
 import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
 
 export type props = {
@@ -55,7 +48,7 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
     email: currUser?.email,
     token: jwtResetToken,
   });
-  console.log(jwtResetToken, 'jwtResetToken');
+
   const handleSubmit = async ({ password }: { password: string }) => {
     try {
       const res = await userResetPassword({

@@ -54,7 +54,6 @@ const ContactOwnerComponent: React.FC<props> = ({
         },
       });
       close();
-      console.log(res);
     } catch (e: any) {
       console.log(e);
       Toast.show({

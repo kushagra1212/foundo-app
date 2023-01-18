@@ -1,11 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
-  KeyboardAvoidingView,
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -28,7 +26,7 @@ import {
 } from '../../redux/slices/postSlice';
 import FilterItemComponent from '../../components/molecules/Filter/FilterItemComponent';
 import BottomModal from '../../components/atoms/BottomModal';
-import { AntDesign, Feather } from '../../constants/icons';
+import { Feather } from '../../constants/icons';
 import { useLazyGetPostsQuery } from '../../redux/services/post-service';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import MaskedView from '@react-native-masked-view/masked-view';
@@ -38,7 +36,6 @@ import {
   selectFeedSearchScreenStatus,
   updateFeedSearchScreenStatus,
 } from '../../redux/slices/sreenSilce';
-import { ITEMCAT_TO_NUM } from '../../constants/item';
 
 export type props = {
   navigation: any;
@@ -107,6 +104,13 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
       console.log(e);
       setLoading(false);
       setReachedEnd(true);
+      Toast.show({
+        type: 'error',
+        props: {
+          text: e.status,
+          message: e.error,
+        },
+      });
       if (posts.length !== 0)
         Toast.show({
           type: 'success',
@@ -177,7 +181,6 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
             horizontal
             refreshing={false}
             onRefresh={() => {
-              console.log('refresh');
               setRefreshing(true);
               setTimeout(() => {
                 setRefreshing(false);

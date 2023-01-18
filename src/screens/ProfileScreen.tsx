@@ -1,23 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 
 import { ListFilterItemViewAllType } from '../components/atoms/ListItem';
-import {
-  AntDesign,
-  Entypo,
-  FontAwesome,
-  Ionicons,
-  MaterialIcons,
-} from '../constants/icons';
+import { AntDesign, Entypo } from '../constants/icons';
 import { COLORS, FONTS } from '../constants/theme';
 import { selectCurrentUser, updateUser } from '../redux/slices/authSlice';
-import character from '../assets/images/Clock.png';
+
 import { useGetUserSettingQuery } from '../redux/services/profile-service';
 import LogoutButtonComponent from '../components/atoms/LogoutButtonComponent';
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 import BottomModal from '../components/atoms/BottomModal';
 import EmailComponent from '../components/molecules/profile/EmailComponent';
 import PhoneNumberComponent from '../components/molecules/profile/PhoneNumberComponent';
@@ -75,7 +68,6 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      console.log("You've refused to allow this appp to access your photos!");
       return;
     }
 
@@ -92,7 +84,6 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       } catch (err) {
         console.log(err);
       }
-      console.log(base64.length);
     }
   };
   if (!user) {

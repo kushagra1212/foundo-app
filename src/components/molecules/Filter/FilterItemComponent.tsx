@@ -1,13 +1,5 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  BackHandler,
-  TouchableOpacity,
-} from 'react-native';
-import React, { useMemo, useState, useEffect } from 'react';
-import { Formik } from 'formik';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useMemo, useState } from 'react';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
 import { FilterItemOn } from '../../../interfaces';
 import {
@@ -15,12 +7,7 @@ import {
   ListFilterItemSlideDownList,
   ListFilterItemViewAllType,
 } from '../../atoms/ListItem';
-import {
-  AntDesign,
-  FontAwesome,
-  Ionicons,
-  MaterialIcons,
-} from '../../../constants/icons';
+import { AntDesign } from '../../../constants/icons';
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { ITEMCAT_TO_NUM } from '../../../constants/item';
 import MiniItemTextIcon from '../../atoms/MiniItemTextIcon';

@@ -1,17 +1,8 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  FlatList,
-  ActivityIndicator,
-  Image,
-} from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { COLORS, FONTS } from '../../../../constants/theme';
+import { StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { COLORS } from '../../../../constants/theme';
 
 import SingleCardComponent from './SingleCardComponent';
-import { FilterItemOn, Post } from '../../../../interfaces';
+import { Post } from '../../../../interfaces';
 import character5 from '../../../../assets/images/character5.png';
 import AnimatedComponent from '../../Animation/AnimatedComponent';
 export type props = {

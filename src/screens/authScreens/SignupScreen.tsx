@@ -1,6 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
 import {
-  Animated,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -15,8 +13,8 @@ import { Formik } from 'formik';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 import { TextInput } from 'react-native-gesture-handler';
-import { useEffect, useState } from 'react';
-import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
+import { useState } from 'react';
+import { COLORS, SIZES } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 import object1 from '../../assets/images/object1.png';
 import { useUserSignupMutation } from '../../redux/services/auth-service';
@@ -50,7 +48,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
       });
     }
   };
-  console.log(navigation.getState());
+
   return (
     <SafeAreaView style={{ backgroundColor: COLORS.white }}>
       <AnimationTranslateScale scaleRange={[10, 1]} translateRange={[0, 0]}>

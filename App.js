@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { Link, NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
 import AuthScreen from './src/screens/authScreens/AuthScreen';
@@ -9,23 +9,17 @@ import { toastConfig } from './src/configs/toastConfig';
 import { useFonts } from 'expo-font';
 import { ROBOTO_FONTS } from './src/assets/fonts';
 import { store } from './src/redux/store';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import { userLoggedIn } from './src/redux/services/auth-service';
 import { useEffect, useState } from 'react';
 import { routesConfig } from './src/configs/routesConfig';
-import {
-  selectCurrentUser,
-  setCredentials,
-} from './src/redux/slices/authSlice';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
-import { BASE_URL } from '@env';
-const Stack = createNativeStackNavigator();
+import { setCredentials } from './src/redux/slices/authSlice';
+import { StyleSheet } from 'react-native';
 import * as Linking from 'expo-linking';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS } from './src/constants/theme';
+
+const Stack = createNativeStackNavigator();
+
 import * as SplashScreen from 'expo-splash-screen';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { updateAddItemDetailsScreenStatus } from './src/redux/slices/sreenSilce';
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 const Foundo = () => {
@@ -41,7 +35,6 @@ const Foundo = () => {
     userLoggedIn()
       .then((res) => {
         if (!flag) return;
-        console.log(res);
         if (res.isLoggedIn === true) {
           dispatch(
             setCredentials({
@@ -111,6 +104,7 @@ const Foundo = () => {
 export default function App() {
   return (
     <Provider store={store}>
+      <StatusBar style="dark" />
       <Foundo />
     </Provider>
   );

@@ -1,10 +1,9 @@
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { FormikProps } from 'formik';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost } from '../../../interfaces';
 import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { MaterialIcons } from '../../../constants/icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getBase64FromUrl } from '../../../utils';
@@ -27,7 +26,6 @@ const Step6UploadPicturesComponent: React.FC<props> = ({
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      console.log("You've refused to allow this appp to access your photos!");
       return;
     }
 

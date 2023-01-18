@@ -1,6 +1,5 @@
 import { FormikProps } from 'formik';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost, ILocation } from '../../../interfaces';
 import React, { useEffect } from 'react';
@@ -36,7 +35,6 @@ const Step8SetLocationComponent: React.FC<props> = ({
     setShowMap(false);
   };
   const addPost = async () => {
-    console.log(values);
     try {
       const res = await addItem(values).unwrap();
       Toast.show({
@@ -107,7 +105,9 @@ const Step8SetLocationComponent: React.FC<props> = ({
           <View style={{ marginTop: '80%', elevation: 50 }}>
             <TouchableOpacity
               style={{
-                backgroundColor: COLORS.primary,
+                backgroundColor: isLoading
+                  ? COLORS.GrayPrimary
+                  : COLORS.primary,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -117,6 +117,7 @@ const Step8SetLocationComponent: React.FC<props> = ({
                 height: 100,
                 elevation: 50,
               }}
+              disabled={isLoading}
               onPress={addPost}
             >
               <Text style={[FONTS.h1, { color: COLORS.white }]}>Post</Text>
