@@ -1,27 +1,11 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useMemo,
-  useCallback,
-} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-} from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { COLORS, FONTS, SIZES } from '../../../constants/theme';
+import React, { useState, useRef, useCallback } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { COLORS, FONTS } from '../../../constants/theme';
 import { useUserUpdateMutation } from '../../../redux/services/auth-service';
 import { useGetUserQuery } from '../../../redux/services/profile-service';
 import PhoneInput from 'react-native-phone-number-input';
-import {
-  selectCurrentUser,
-  selectCurrentUserId,
-  updateUser,
-} from '../../../redux/slices/authSlice';
+import { updateUser } from '../../../redux/slices/authSlice';
 type props = {
   phoneNumber: string | undefined;
   onClose: () => void;
@@ -113,7 +97,11 @@ const PhoneNumberComponent: React.FC<props> = ({
             </Text>
           </View>
           <TouchableOpacity
-            style={styles.verify_email_but}
+            style={[
+              styles.verify_email_but,
+              { backgroundColor: COLORS.GraySecondary },
+            ]}
+            disabled={true}
             onPress={verifyPhoneNumber}
           >
             <Text style={{ ...FONTS.h2, color: COLORS.white }}>

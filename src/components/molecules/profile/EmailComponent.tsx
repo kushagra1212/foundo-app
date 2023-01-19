@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../../constants/theme';
@@ -12,7 +19,6 @@ import {
   useSendOTPMutation,
   useVerifyOTPMutation,
 } from '../../../redux/services/otp-service';
-import { number } from 'yup';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { AntDesign } from '../../../constants/icons';
 import { updateUser } from '../../../redux/slices/authSlice';
@@ -34,7 +40,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
   const digitThirdF = useRef<TextInput>(null);
   const digitFourthF = useRef<TextInput>(null);
   const [sendOTP] = useSendOTPMutation();
-  const [verifyOTP, { isError: otpError }] = useVerifyOTPMutation();
+  const [verifyOTP, { isError: otpError, isLoading }] = useVerifyOTPMutation();
   const [resetOTP] = useResetOTPMutation();
   const verifyEmailHandler = async () => {
     try {
@@ -88,7 +94,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
       Toast.show({
         type: 'success',
         props: {
-          text: 'Email verified successfully',
+          text: 'Your is has been verified',
           message: res.message,
         },
         position: 'bottom',
@@ -178,6 +184,11 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
         </View>
       ) : !showOtpInput ? (
         <View style={styles.view}>
+          <ActivityIndicator
+            size="large"
+            color={COLORS.greenPrimary}
+            animating={isLoading}
+          />
           <AnimationTranslateScale scaleRange={[2, 2]} scaleDuration={50}>
             <Image
               source={phoneimage}
@@ -212,13 +223,17 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
             <Text>We've noticed that you haven't verified your email </Text>
           </View>
           <TouchableOpacity
-            style={{
-              ...styles.verify_email_but,
-              ...styles.btn,
-              height: 50,
-              marginTop: 10,
-            }}
+            style={[
+              {
+                ...styles.verify_email_but,
+                ...styles.btn,
+                height: 50,
+                marginTop: 10,
+              },
+              isLoading ? { backgroundColor: COLORS.GrayPrimary } : {},
+            ]}
             onPress={verifyEmailHandler}
+            disabled={isLoading}
           >
             <Text
               style={{
@@ -356,10 +371,10 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
               }}
             >
               <Text style={{ ...FONTS.h2, color: COLORS.white }}>
-                Fail to verify
+                Failed To Verify
               </Text>
               <Text style={{ ...FONTS.body3, color: COLORS.white }}>
-                OPT didn't Match
+                OTP didn't Match
               </Text>
             </View>
           )}
@@ -370,7 +385,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
               alignSelf: 'center',
               height: 50,
               marginTop: 80,
-              ...(getStringOTP().length !== 4 || !timerRunning
+              ...(getStringOTP().length !== 4 || !timerRunning || isLoading
                 ? { backgroundColor: COLORS.GraySecondary }
                 : {}),
             }}

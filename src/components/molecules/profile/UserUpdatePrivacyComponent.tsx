@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../../constants/theme';
 import { useUpdateUserSettingMutation } from '../../../redux/services/profile-service';
@@ -21,7 +21,8 @@ const UserUpdatePrivacyComponent: React.FC<props> = ({
   userId,
   isLoading,
 }) => {
-  const [updateUserSettings] = useUpdateUserSettingMutation();
+  const [updateUserSettings, { isLoading: settingUpdateLoader }] =
+    useUpdateUserSettingMutation();
 
   const updatePrivacy = async (state: any) => {
     try {
@@ -36,7 +37,14 @@ const UserUpdatePrivacyComponent: React.FC<props> = ({
   return (
     <SafeAreaView>
       <View style={styles.view}>
-        <Text style={styles.title}>Privacy Settings</Text>
+        <View>
+          <Text style={styles.title}>Privacy Settings</Text>
+          <ActivityIndicator
+            animating={settingUpdateLoader}
+            size="large"
+            color={COLORS.primary}
+          />
+        </View>
         <View style={styles.toggle_view}>
           <Text style={FONTS.body3}>Allow others to see your Phone Number</Text>
           <ToggleComponent

@@ -16,10 +16,9 @@ import { routesConfig } from './src/configs/routesConfig';
 import { setCredentials } from './src/redux/slices/authSlice';
 import { StyleSheet } from 'react-native';
 import * as Linking from 'expo-linking';
-
-const Stack = createNativeStackNavigator();
-
+import { BASE_URL } from '@env';
 import * as SplashScreen from 'expo-splash-screen';
+const Stack = createNativeStackNavigator();
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 const Foundo = () => {
@@ -69,7 +68,7 @@ const Foundo = () => {
   if (!isfontLoaded || !appLoaded) {
     return null;
   }
-
+  console.log(BASE_URL);
   const prefix = Linking.createURL('app');
   // if (isLoading) {
   //   return (

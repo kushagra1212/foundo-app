@@ -1,17 +1,17 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { BASE_URL } from '@env';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { logOut, setCredentials } from '../slices/authSlice';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${BASE_URL}`,
-  credentials: 'include',
+  mode: 'no-cors',
   prepareHeaders: (headers, { getState }: { getState: any }) => {
     const token = getState().auth.jwtToken;
 
     if (token) {
       headers.set('x-auth-token', `${token}`);
     }
-    headers.set('Content-Type', 'application/json');
+    headers.set('Accept', 'application/json');
     return headers;
   },
 });

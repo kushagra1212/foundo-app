@@ -13,12 +13,13 @@ import { Formik } from 'formik';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 import { TextInput } from 'react-native-gesture-handler';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { COLORS, SIZES } from '../../constants/theme';
 import { SimpleLineIcons, Ionicons } from '../../constants/icons';
 import character2 from '../../assets/images/character2.png';
 import tokenExpiredIcon from '../../assets/images/file.png';
 
+import * as SplashScreen from 'expo-splash-screen';
 import {
   useUserResetPasswordMutation,
   useUserVerifyResetPasswordQuery,
@@ -33,11 +34,12 @@ import AnimationTranslateScale from '../../components/molecules/Animation/Animat
 export type props = {
   navigation: any;
 };
+SplashScreen.preventAutoHideAsync();
 const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
   const dispatch = useDispatch();
   const jwtResetToken = useSelector(selectCurrentResetToken);
   const currUser = useSelector(selectCurrentUser);
-
+  const [apploading, setAppLoading] = useState(false);
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
   const [userResetPassword, {}] = useUserResetPasswordMutation();
   const {
@@ -75,6 +77,14 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
       });
     }
   };
+  useEffect(() => {
+    if (!isLoading) {
+      (async () => {
+        await SplashScreen.hideAsync();
+      })();
+    }
+  }, [isLoading]);
+  if (isLoading) return null;
   if (!userCredentials || error)
     return (
       <SafeAreaView

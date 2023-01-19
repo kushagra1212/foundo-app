@@ -1,5 +1,5 @@
 import { FormikProps } from 'formik';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost, ILocation } from '../../../interfaces';
 import React, { useEffect } from 'react';
@@ -102,6 +102,11 @@ const Step8SetLocationComponent: React.FC<props> = ({
               Reset Location
             </Text>
           </TouchableOpacity>
+          <ActivityIndicator
+            size="large"
+            color={COLORS.greenPrimary}
+            animating={isLoading}
+          />
           <View style={{ marginTop: '80%', elevation: 50 }}>
             <TouchableOpacity
               style={{
