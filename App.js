@@ -16,8 +16,9 @@ import { routesConfig } from './src/configs/routesConfig';
 import { setCredentials } from './src/redux/slices/authSlice';
 import { StyleSheet } from 'react-native';
 import * as Linking from 'expo-linking';
-import { BASE_URL } from '@env';
+
 import * as SplashScreen from 'expo-splash-screen';
+import { BASE_URL } from './key.config';
 const Stack = createNativeStackNavigator();
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();

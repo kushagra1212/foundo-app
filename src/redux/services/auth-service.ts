@@ -1,4 +1,5 @@
-import { BASE_URL, LOCAL_STORAGE_ACCESS_TOKEN_KEY } from "@env";
+
+import { BASE_URL, LOCAL_STORAGE_ACCESS_TOKEN_KEY } from "../../../key.config";
 import { getTokenFromLocalStorage, removeItemFromLocalStroage } from "../../storage/foundo-localstorage";
 
 import { api } from "./api-service";
