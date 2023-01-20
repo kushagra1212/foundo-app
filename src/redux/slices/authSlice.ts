@@ -11,6 +11,7 @@ const authSlice = createSlice({
       const { user, jwtToken, jwtResetToken } = action.payload;
       state.user = user;
       state.jwtToken = jwtToken !== undefined ? jwtToken : "";
+      console.log("jwtResetToken", jwtToken);
       if (jwtResetToken) state.jwtResetToken = jwtResetToken;
       setItemToLocalStorage(jwtToken, LOCAL_STORAGE_ACCESS_TOKEN_KEY);
     },

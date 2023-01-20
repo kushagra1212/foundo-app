@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
@@ -41,7 +48,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
     userId: user ? user?.id : null,
   });
   const [open, setOpen] = useState<OpenDialog>(intitalOpenDialog);
-  const [userUpdate] = useUserUpdateMutation();
+  const [userUpdate, { isLoading: uploadLoading }] = useUserUpdateMutation();
   const dispatch = useDispatch();
   const viewAllHandler = (
     value: 'email' | 'phoneNumber' | 'Residential Address' | 'Update Privacy'
@@ -109,13 +116,44 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
             />
           </TouchableOpacity>
           <View>
-            <Image
-              source={{ uri: user?.profilePhoto ? user?.profilePhoto : null }}
-              style={{
-                ...styles.profile_img,
-                aspectRatio: 1,
-              }}
-            />
+            {user?.profilePhoto && !uploadLoading ? (
+              <Image
+                source={{ uri: user?.profilePhoto ? user?.profilePhoto : null }}
+                style={{
+                  ...styles.profile_img,
+                  aspectRatio: 1,
+                }}
+              />
+            ) : !uploadLoading ? (
+              <View
+                style={{
+                  ...styles.profile_img,
+                  aspectRatio: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ color: 'white', fontSize: 45 }}>
+                  {user?.firstName.split()[0].split('')[0] +
+                    user?.lastName.split()[0].split('')[0]}
+                </Text>
+              </View>
+            ) : (
+              <View
+                style={{
+                  ...styles.profile_img,
+                  aspectRatio: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <ActivityIndicator
+                  animating={uploadLoading}
+                  size="large"
+                  color={COLORS.white}
+                />
+              </View>
+            )}
           </View>
           <View>
             <Text style={{ ...FONTS.h3, margin: 10 }}>
@@ -281,7 +319,7 @@ const styles = StyleSheet.create({
   profile_img: {
     height: 150,
     borderRadius: 20,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.black,
   },
 });
 export default ProfileScreen;

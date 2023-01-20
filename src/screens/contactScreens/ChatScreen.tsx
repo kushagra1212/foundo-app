@@ -1,12 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  Image,
-  BackHandler,
-} from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
@@ -24,6 +17,7 @@ export type props = {
 };
 
 const ChatScreen: React.FC<props> = ({ navigation }) => {
+  const unmounted = useRef(false);
   const user = useSelector(selectCurrentUser);
   const [messageOption, setMessageOption] = useState({
     limit: 5,
@@ -44,12 +38,14 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
         receiverId: user.id,
         senderId: navigation.getState().routes[1].params.contact.senderId,
       }).unwrap();
+      if (unmounted.current) return;
       if (res.length === 0) {
         setLoading(false);
         setReachedEnd(true);
         if (messages.length === 0) setMessageFound(false);
         return;
       }
+      if (unmounted.current) return;
       setMessageOption({
         ...messageOption,
         offset: messageOption.limit + messageOption.offset,
@@ -58,20 +54,20 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
       setLoading(false);
     } catch (e: any) {
       console.log(e);
+      if (unmounted.current) return;
       setLoading(false);
       setMessageFound(false);
       setReachedEnd(true);
     }
   };
   useEffect(() => {
-    let unmouted = false;
-    if (!unmouted) {
+    if (!unmounted.current) {
       setLoading(true);
       fetchMessages();
     }
 
     return () => {
-      unmouted = true;
+      unmounted.current = true;
     };
   }, []);
   return (

@@ -104,13 +104,13 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
       console.log(e);
       setLoading(false);
       setReachedEnd(true);
-      Toast.show({
-        type: 'error',
-        props: {
-          text: e.status,
-          message: e.error,
-        },
-      });
+      // Toast.show({
+      //   type: 'error',
+      //   props: {
+      //     text: e.status,
+      //     message: e.error,
+      //   },
+      // });
       if (posts.length !== 0)
         Toast.show({
           type: 'success',
