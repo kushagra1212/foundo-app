@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "scheme": "foundo",
     "orientation": "portrait",
-    "icon": "",
+    "icon": "src/assets/icons/foundo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "src/assets/images/splash/android/splash2.png",
