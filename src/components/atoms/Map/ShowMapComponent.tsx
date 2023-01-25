@@ -1,5 +1,5 @@
 import { View, StyleSheet } from 'react-native';
-import { LeafletView } from 'react-native-leaflet-view';
+import MapView, { Marker } from 'react-native-maps';
 type props = {
   latitude: number;
   longitude: number;
@@ -7,7 +7,7 @@ type props = {
 const ShowMapComponent: React.FC<props> = ({ latitude, longitude }) => {
   return (
     <View style={{ flex: 1 }}>
-      {/* <MapView
+      <MapView
         region={{
           latitude: latitude,
           longitude: longitude,
@@ -22,11 +22,11 @@ const ShowMapComponent: React.FC<props> = ({ latitude, longitude }) => {
             longitude: longitude,
           }}
         />
-      </MapView> */}
-      <LeafletView
+      </MapView>
+      {/* <LeafletView
         mapCenterPosition={[latitude, longitude]}
         // The rest of your props, see the list below
-      />
+      /> */}
     </View>
   );
 };
