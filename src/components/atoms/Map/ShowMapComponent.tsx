@@ -23,13 +23,6 @@ const ShowMapComponent: React.FC<props> = ({ latitude, longitude }) => {
           }}
         />
       </MapView>
-<<<<<<< HEAD
-      {/* <LeafletView
-        mapCenterPosition={[latitude, longitude]}
-        // The rest of your props, see the list below
-      /> */}
-=======
->>>>>>> parent of b911212 (back)
     </View>
   );
 };
