@@ -25,6 +25,7 @@ import ItemExtraDetailCompoent from '../../atoms/ItemExtraDetailComponent';
 import ContactOwnerComponent from './ContactOwnerComponent';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
+
 type props = {
   item: any;
   onClose: () => void;
