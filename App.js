@@ -18,7 +18,7 @@ import { StyleSheet } from 'react-native';
 import * as Linking from 'expo-linking';
 
 import * as SplashScreen from 'expo-splash-screen';
-import { BASE_URL } from './key.config';
+
 const Stack = createNativeStackNavigator();
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -69,7 +69,6 @@ const Foundo = () => {
   if (!isfontLoaded || !appLoaded) {
     return null;
   }
-  console.log(BASE_URL);
   const prefix = Linking.createURL('app');
   // if (isLoading) {
   //   return (
