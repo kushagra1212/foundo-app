@@ -15,14 +15,11 @@ import AnimatedImageComponent from '../Animation/AnimatedImageComponent';
 import {
   GestureHandlerRootView,
   ScrollView,
-  Swipeable,
 } from 'react-native-gesture-handler';
 import { capitalizeFirstLetter } from '../../../utils';
 import { ITEM_STANDARD_COLORS } from '../../../constants/item';
 import { AntDesign, Entypo, FontAwesome } from '../../../constants/icons';
-import { useState, useMemo, useCallback } from 'react';
-import MapView, { Marker } from 'react-native-maps';
-import BottomSheet from '../Animation/BottomSheet';
+import { useState, useCallback } from 'react';
 import ShowMapComponent from '../../atoms/Map/ShowMapComponent';
 import ItemExtraDetailCompoent from '../../atoms/ItemExtraDetailComponent';
 import ContactOwnerComponent from './ContactOwnerComponent';

@@ -1,6 +1,5 @@
 import { FormikProps } from 'formik';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost, ILocation } from '../../../interfaces';
 import React, { useEffect } from 'react';
@@ -22,21 +21,16 @@ const Step8SetLocationComponent: React.FC<props> = ({
   navigation,
   closeThisScreen,
 }) => {
-  const [coordinates, setCoordinates] = React.useState(values.location);
   const [showMap, setShowMap] = React.useState(true);
   const [addItem, { isLoading }] = useAddItemPostMutation();
   useEffect(() => {
     isValidHandler(!errors.location);
   }, [errors.location]);
-  const onChange = (coordinates: ILocation) => {
-    setCoordinates(coordinates);
-  };
+
   const save = () => {
-    setFieldValue('location', coordinates);
     setShowMap(false);
   };
   const addPost = async () => {
-    console.log(values);
     try {
       const res = await addItem(values).unwrap();
       Toast.show({
@@ -80,9 +74,12 @@ const Step8SetLocationComponent: React.FC<props> = ({
       {showMap ? (
         <View>
           <PickMapComponent
-            coordinates={coordinates}
-            onChange={onChange}
-            onConfirm={save}
+            coordinates={values.location}
+            onConfirm={async (coordinates: ILocation) => {
+              setFieldValue('location', coordinates);
+              await Promise.resolve();
+              save();
+            }}
           />
         </View>
       ) : (
@@ -104,10 +101,17 @@ const Step8SetLocationComponent: React.FC<props> = ({
               Reset Location
             </Text>
           </TouchableOpacity>
+          <ActivityIndicator
+            size="large"
+            color={COLORS.greenPrimary}
+            animating={isLoading}
+          />
           <View style={{ marginTop: '80%', elevation: 50 }}>
             <TouchableOpacity
               style={{
-                backgroundColor: COLORS.primary,
+                backgroundColor: isLoading
+                  ? COLORS.GrayPrimary
+                  : COLORS.primary,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -117,6 +121,7 @@ const Step8SetLocationComponent: React.FC<props> = ({
                 height: 100,
                 elevation: 50,
               }}
+              disabled={isLoading}
               onPress={addPost}
             >
               <Text style={[FONTS.h1, { color: COLORS.white }]}>Post</Text>

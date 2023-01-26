@@ -1,6 +1,6 @@
-import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
+import Toast from 'react-native-toast-message';
 import { COLORS } from '../constants/theme';
-import { Entypo, AntDesign, MaterialIcons } from '../constants/icons';
+import { Entypo, AntDesign } from '../constants/icons';
 import { Text, View } from 'react-native';
 export const toastConfig = {
   warning: ({ props }) => (

@@ -1,5 +1,6 @@
-import { LOCAL_STORAGE_ACCESS_TOKEN_KEY } from '@env';
+
 import { createSlice } from '@reduxjs/toolkit';
+import { LOCAL_STORAGE_ACCESS_TOKEN_KEY } from '../../../constants.js';
 import { setItemToLocalStorage } from '../../storage/foundo-localstorage';
 const initialState = { user: null, jwtToken: null, forgotPasswordLinkSent: false, jwtResetToken: null };
 const authSlice = createSlice({
@@ -10,6 +11,7 @@ const authSlice = createSlice({
       const { user, jwtToken, jwtResetToken } = action.payload;
       state.user = user;
       state.jwtToken = jwtToken !== undefined ? jwtToken : "";
+      console.log("jwtResetToken", jwtToken);
       if (jwtResetToken) state.jwtResetToken = jwtResetToken;
       setItemToLocalStorage(jwtToken, LOCAL_STORAGE_ACCESS_TOKEN_KEY);
     },

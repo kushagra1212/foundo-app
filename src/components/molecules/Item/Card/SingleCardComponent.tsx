@@ -1,25 +1,10 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
-import { boolean } from 'yup';
-import { Entypo, Ionicons } from '../../../../constants/icons';
-import {
-  ITEM_STANDARD_COLORS,
-  NUM_TO_ITEMCAT,
-} from '../../../../constants/item';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { Entypo } from '../../../../constants/icons';
+import { ITEM_STANDARD_COLORS } from '../../../../constants/item';
 import { COLORS, FONTS, SIZES } from '../../../../constants/theme';
 import { Post } from '../../../../interfaces';
-import { useState, useEffect } from 'react';
-import {
-  capitalizeEveryWord,
-  capitalizeFirstLetter,
-  getAddress,
-} from '../../../../utils';
+import { useState } from 'react';
+import { capitalizeEveryWord, capitalizeFirstLetter } from '../../../../utils';
 import ItemComponent from '../ItemViewComponent';
 
 export type props = {

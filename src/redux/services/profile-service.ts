@@ -1,4 +1,4 @@
-import { BASE_URL, LOCAL_STORAGE_ACCESS_TOKEN_KEY } from '@env';
+
 import { api } from './api-service';
 
 export const profileApi = api.injectEndpoints({

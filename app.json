@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "scheme": "foundo",
     "orientation": "portrait",
-    "icon": "",
+    "icon": "src/assets/icons/foundo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "src/assets/images/splash/android/splash2.png",
@@ -36,10 +36,17 @@
           ],
           "category": ["BROWSABLE", "DEFAULT"]
         }
-      ]
+      ],
+      "package": "com.kushagra711.foundoapp",
+      "versionCode": 1
     },
     "web": {
       "favicon": ""
+    },
+    "extra": {
+      "eas": {
+        "projectId": "af36c27f-df6e-487d-8cc5-8a686849bc66"
+      }
     }
   }
 }

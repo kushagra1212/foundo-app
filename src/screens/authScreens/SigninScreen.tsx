@@ -1,18 +1,11 @@
-import {
-  Animated,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Formik } from 'formik';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
 import { TextInput } from 'react-native-gesture-handler';
-import { useEffect, useState } from 'react';
-import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
+import { useState } from 'react';
+import { COLORS, SIZES } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 
 import character1 from '../../assets/images/character1.png';
@@ -42,7 +35,6 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
           message: res.message,
         },
       });
-      console.log(res);
 
       dispatch(updateFilter({ filterType: 0 }));
       dispatch(setCredentials({ user: res.user, jwtToken: res.jwtToken }));

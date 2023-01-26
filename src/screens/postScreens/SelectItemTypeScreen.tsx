@@ -7,17 +7,20 @@ import AnimatedObject from '../../components/molecules/Animation/AnimatedObject'
 import { COLORS, FONTS } from '../../constants/theme';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateAddItemDetailsScreenStatus } from '../../redux/slices/sreenSilce';
+import { selectCurrentUser } from '../../redux/slices/authSlice';
 
 type props = {
   navigation: any;
 };
 const SelectItemTypeScreen: React.FC<props> = ({ navigation }) => {
   const dispatch = useDispatch();
-
+  const user = useSelector(selectCurrentUser);
   const openAddItemDetailsScreen = (isFound: boolean) => {
-    dispatch(
-      updateAddItemDetailsScreenStatus({ addItemDetailsScreenStatus: true })
-    );
+    if (user) {
+      dispatch(
+        updateAddItemDetailsScreenStatus({ addItemDetailsScreenStatus: true })
+      );
+    }
     navigation.navigate('AddItemDetailsScreen', { isFounded: isFound });
   };
 

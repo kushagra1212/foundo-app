@@ -1,11 +1,9 @@
-import React, { useRef } from 'react';
-import { View, StyleSheet, Image, Dimensions } from 'react-native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import { COLORS } from '../../../constants/theme';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
-  withTiming,
 } from 'react-native-reanimated';
 import {
   ComposedGesture,
@@ -14,7 +12,6 @@ import {
   GestureHandlerRootView,
   GestureType,
 } from 'react-native-gesture-handler';
-import BottomModal from '../../atoms/BottomModal';
 
 interface GestureDetectorProps {
   gesture?: ComposedGesture | GestureType;
@@ -41,13 +38,7 @@ const BottomSheet: React.FC<props> = ({ children, onClose }) => {
       position.value = e.translationY;
     })
     .onEnd((e) => {});
-  const dragGesture = Gesture.Pan()
-    .activeOffsetX(10)
-    .onUpdate((e) => {
-      console.log(e.translationX);
-    });
 
-  console.log(position.value);
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: position.value }],
   }));

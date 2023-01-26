@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { AntDesign, FontAwesome, Ionicons } from '../../constants/icons';
-import { COLORS, FONTS, SIZES } from '../../constants/theme';
+import { AntDesign } from '../../constants/icons';
+import { COLORS, FONTS } from '../../constants/theme';
 import { FilterItemOn } from '../../interfaces';
 
 type Props = {

@@ -1,13 +1,16 @@
 import { View, StyleSheet } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import { WebView } from 'react-native-webview';
+import { webViewTemplate } from './showMapTemplate';
 type props = {
   latitude: number;
   longitude: number;
 };
 const ShowMapComponent: React.FC<props> = ({ latitude, longitude }) => {
+  let webRef: any = undefined;
+
   return (
     <View style={{ flex: 1 }}>
-      <MapView
+      {/* <MapView
         region={{
           latitude: latitude,
           longitude: longitude,
@@ -22,7 +25,15 @@ const ShowMapComponent: React.FC<props> = ({ latitude, longitude }) => {
             longitude: longitude,
           }}
         />
-      </MapView>
+      </MapView> */}
+      <WebView
+        ref={(r) => (webRef = r)}
+        style={styles.map}
+        originWhitelist={['*']}
+        source={{
+          html: webViewTemplate({ latitude: latitude, longitude: longitude }),
+        }}
+      />
     </View>
   );
 };

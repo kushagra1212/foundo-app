@@ -1,15 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  Image,
-  BackHandler,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import MaskedView from '@react-native-masked-view/masked-view';
 
 import { LinearGradient } from 'expo-linear-gradient';
@@ -46,7 +38,7 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
         limit: contactOption.limit,
         userId: user?.id,
       }).unwrap();
-      console.log(res.length);
+
       if (res.length === 0) {
         setLoading(false);
         setReachedEnd(true);
@@ -76,7 +68,6 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
     };
   }, [user?.id]);
 
-  console.log(isError);
   if (user === null) {
     return (
       <SafeAreaView

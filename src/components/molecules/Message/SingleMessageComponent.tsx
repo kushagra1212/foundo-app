@@ -2,24 +2,15 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
-  Image,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import { boolean } from 'yup';
-import {
-  Entypo,
-  FontAwesome,
-  Ionicons,
-  MaterialIconsCommunity,
-} from '../../../constants/icons';
-import { ITEM_STANDARD_COLORS } from '../../../constants/item';
+import { FontAwesome } from '../../../constants/icons';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
-import { Post } from '../../../interfaces';
+
 import { useState } from 'react';
-import { capitalizeEveryWord, capitalizeFirstLetter } from '../../../utils';
-import ItemComponent from '../Item/ItemViewComponent';
+import { capitalizeEveryWord } from '../../../utils';
+
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
 import BottomModal from '../../atoms/BottomModal';

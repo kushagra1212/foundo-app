@@ -1,18 +1,9 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
-import { Foundation } from '../constants/icons';
+import { StyleSheet } from 'react-native';
 import { COLORS } from '../constants/theme';
 import ChatScreen from './contactScreens/ChatScreen';
 import ContactScreen from './contactScreens/ContactScreen';
-import FeedSearchSceen from './itemScreens/FeedSearchScreen';
-import ItemScreen from './itemScreens/ItemScreen';
 const Stack = createNativeStackNavigator();
 
 export type props = {};

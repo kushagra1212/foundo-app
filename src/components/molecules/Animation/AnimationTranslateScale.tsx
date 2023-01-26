@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Animated } from 'react-native';
+import { StyleSheet, Animated } from 'react-native';
 import { useEffect, useRef } from 'react';
 export type props = {
   children: any;

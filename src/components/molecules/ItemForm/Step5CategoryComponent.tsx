@@ -1,12 +1,11 @@
 import { FormikProps } from 'formik';
 import { View, Text } from 'react-native';
-import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost } from '../../../interfaces';
 import React, { useEffect, useMemo } from 'react';
 import { ITEMCAT_TO_NUM } from '../../../constants/item';
 import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
-import MiniItemColorIcon from '../../atoms/MiniItemColorIcon';
 import MiniItemTextIcon from '../../atoms/MiniItemTextIcon';
 type props = FormikProps<AddPost> & {
   isValidHandler: (isValid: boolean) => void;

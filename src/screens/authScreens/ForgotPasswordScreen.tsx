@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import {
   Image,
   Keyboard,
@@ -20,7 +19,6 @@ import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
 import character2 from '../../assets/images/character2.png';
 import character5 from '../../assets/images/character5.png';
 import objectEmail from '../../assets/images/email.png';
-import * as Linking from 'expo-linking';
 import { useUserForgotPasswordMutation } from '../../redux/services/auth-service';
 import {
   selectorgotPasswordStatus,

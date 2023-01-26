@@ -1,19 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
-import { useDispatch } from 'react-redux';
-import { Foundation } from '../constants/icons';
+import { StyleSheet } from 'react-native';
 import { COLORS } from '../constants/theme';
-import { updateAddItemDetailsScreenStatus } from '../redux/slices/sreenSilce';
 import AddItemDetailsScreen from './postScreens/AddItemDetailsScreen';
 import SelectItemTypeScreen from './postScreens/SelectItemTypeScreen';
-import { useEffect } from 'react';
+
 const Stack = createNativeStackNavigator();
 
 export type props = {};

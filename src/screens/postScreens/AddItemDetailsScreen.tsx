@@ -1,5 +1,5 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, View, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, Dimensions, BackHandler } from 'react-native';
 import { Ionicons } from '../../constants/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateAddItemDetailsScreenStatus } from '../../redux/slices/sreenSilce';
@@ -7,7 +7,7 @@ import { selectCurrentUser } from '../../redux/slices/authSlice';
 import character2 from '../../assets/images/character1.png';
 import { COLORS } from '../../constants/theme';
 import NotLoggedInComponent from '../../components/atoms/NotLoggedInComponent';
-import { useState, useRef, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Step1ItemNameComponent from '../../components/molecules/ItemForm/Step1ItemNameComponent';
 import Step2SelectColorComponent from '../../components/molecules/ItemForm/Step2SelectColorComponent';
 import Step3DateTimeComponent from '../../components/molecules/ItemForm/Step3DateTimeComponent';
@@ -17,9 +17,8 @@ import Step6UploadPicturesComponent from '../../components/molecules/ItemForm/St
 import PrevStepButton from '../../components/molecules/ItemForm/PrevStepButton';
 import NextStepButton from '../../components/molecules/ItemForm/NextStepButton';
 import StepWiseProgress from '../../components/atoms/ProgressBar/StepWiseProgress';
-import { Formik, FormikProps, FormikSharedConfig } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import * as yup from 'yup';
-import { Value } from 'react-native-reanimated';
 import { AddPost } from '../../interfaces';
 import Step8SetLocationComponent from '../../components/molecules/ItemForm/Step8SetLocationComponent';
 import Step7BrandandCityComponent from '../../components/molecules/ItemForm/Step7BrandandCityComponent';
@@ -53,6 +52,7 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
       updateAddItemDetailsScreenStatus({ addItemDetailsScreenStatus: false })
     );
     navigation.goBack();
+    return true;
   };
   const nextStep = () => {
     setCurrentStep(currentStep + 1);
@@ -61,9 +61,7 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
     isValidHander(true);
     setCurrentStep(currentStep - 1);
   };
-  const handleSubmit = (values: any) => {
-    console.log(values);
-  };
+  const handleSubmit = (values: any) => {};
   const isValidHander = (value: boolean) => {
     setValid(value);
   };
@@ -104,6 +102,7 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
         );
     }
   };
+
   const CurrentStepComponent = useCallback(stepComponent, [currentStep]);
   if (!user) {
     return (
@@ -123,6 +122,12 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
       </SafeAreaView>
     );
   }
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', closeThisScreen);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', closeThisScreen);
+    };
+  }, []);
   return (
     <SafeAreaView>
       <View style={[styles.container, { height: height }]}>

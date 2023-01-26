@@ -1,16 +1,6 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  FlatList,
-  ActivityIndicator,
-  Image,
-} from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { COLORS, FONTS } from '../../../constants/theme';
+import { StyleSheet, FlatList, ActivityIndicator, Image } from 'react-native';
+import { COLORS } from '../../../constants/theme';
 import SingleMessageComponent from './SingleMessageComponent';
-import NotFoundComponent from '../Animation/AnimatedComponent';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import character5 from '../../../assets/images/character5.png';
 import AnimatedComponent from '../Animation/AnimatedComponent';

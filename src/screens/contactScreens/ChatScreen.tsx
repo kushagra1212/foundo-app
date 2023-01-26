@@ -1,31 +1,23 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  Image,
-  BackHandler,
-} from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import MaskedView from '@react-native-masked-view/masked-view';
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGetMessagesMutation } from '../../redux/services/message-service';
 import { selectCurrentUser } from '../../redux/slices/authSlice';
-import ContactListComponent from '../../components/molecules/Contact/ContactListComponent';
 import { COLORS, FONTS } from '../../constants/theme';
 import MessageListComponent from '../../components/molecules/Message/MessageListComponent';
-import { useGetUserQuery } from '../../redux/services/profile-service';
+
 import { Ionicons } from '../../constants/icons';
 export type props = {
   navigation?: any;
 };
 
 const ChatScreen: React.FC<props> = ({ navigation }) => {
+  const unmounted = useRef(false);
   const user = useSelector(selectCurrentUser);
   const [messageOption, setMessageOption] = useState({
     limit: 5,
@@ -46,12 +38,14 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
         receiverId: user.id,
         senderId: navigation.getState().routes[1].params.contact.senderId,
       }).unwrap();
+      if (unmounted.current) return;
       if (res.length === 0) {
         setLoading(false);
         setReachedEnd(true);
         if (messages.length === 0) setMessageFound(false);
         return;
       }
+      if (unmounted.current) return;
       setMessageOption({
         ...messageOption,
         offset: messageOption.limit + messageOption.offset,
@@ -60,20 +54,20 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
       setLoading(false);
     } catch (e: any) {
       console.log(e);
+      if (unmounted.current) return;
       setLoading(false);
       setMessageFound(false);
       setReachedEnd(true);
     }
   };
   useEffect(() => {
-    let unmouted = false;
-    if (!unmouted) {
+    if (!unmounted.current) {
       setLoading(true);
       fetchMessages();
     }
 
     return () => {
-      unmouted = true;
+      unmounted.current = true;
     };
   }, []);
   return (

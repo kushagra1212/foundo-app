@@ -1,4 +1,4 @@
-import { LOCAL_STORAGE_ACCESS_TOKEN_KEY } from '@env';
+
 import { createSlice } from '@reduxjs/toolkit';
 import { Post } from '../../interfaces';
 interface PostState {

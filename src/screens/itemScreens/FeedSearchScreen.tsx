@@ -1,24 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  Image,
-  BackHandler,
-} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, Image, BackHandler } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 import ItemSearchComponent from '../../components/atoms/ItemSearchComponent';
-import LogoutButtonComponent from '../../components/atoms/LogoutButtonComponent';
 import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
 import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
 
 import searchItemImg from '../../assets/images/searchitem.png';
 import { Ionicons } from '../../constants/icons';
-import { COLORS, FONTS } from '../../constants/theme';
+import { FONTS } from '../../constants/theme';
 import { Post } from '../../interfaces';
 import { useGetSearchedPostsMutation } from '../../redux/services/post-service';
 import {

@@ -1,7 +1,8 @@
-import { BASE_URL, LOCAL_STORAGE_ACCESS_TOKEN_KEY } from "@env";
+
+import { BASE_URL, LOCAL_STORAGE_ACCESS_TOKEN_KEY } from "../../../constants.js";
 import { getTokenFromLocalStorage, removeItemFromLocalStroage } from "../../storage/foundo-localstorage";
-import { setCredentials } from "../slices/authSlice";
-import { api } from "./api-service"
+
+import { api } from "./api-service";
 type Response = {
     data: any;
 }
@@ -33,7 +34,7 @@ export const authApi = api.injectEndpoints({
             query: ({ email, token }) => {
                 return `/v1/app-auth/verify-reset-password-token/${email}/${token}`
             }, transformResponse: (response) => {
-                console.log(response, "Verify Token")
+
                 if (response?.id)
                     return { userCredentials: response };
                 else return { userCredentials: null };
@@ -70,7 +71,7 @@ export const userLoggedIn = async () => {
         if (resJson?.error) return { isLoggedIn: false }
         return { ...resJson, isLoggedIn: true, token };
     } catch (err) {
-        console.log(err, "Handle: UserLoggedIn ");
+
         return { isLoggedIn: false };;
     }
 }
