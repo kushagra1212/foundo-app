@@ -21,17 +21,13 @@ const Step8SetLocationComponent: React.FC<props> = ({
   navigation,
   closeThisScreen,
 }) => {
-  const [coordinates, setCoordinates] = React.useState(values.location);
   const [showMap, setShowMap] = React.useState(true);
   const [addItem, { isLoading }] = useAddItemPostMutation();
   useEffect(() => {
     isValidHandler(!errors.location);
   }, [errors.location]);
-  const onChange = (coordinates: ILocation) => {
-    setCoordinates(coordinates);
-  };
+
   const save = () => {
-    setFieldValue('location', coordinates);
     setShowMap(false);
   };
   const addPost = async () => {
@@ -78,9 +74,12 @@ const Step8SetLocationComponent: React.FC<props> = ({
       {showMap ? (
         <View>
           <PickMapComponent
-            coordinates={coordinates}
-            onChange={onChange}
-            onConfirm={save}
+            coordinates={values.location}
+            onConfirm={async (coordinates: ILocation) => {
+              setFieldValue('location', coordinates);
+              await Promise.resolve();
+              save();
+            }}
           />
         </View>
       ) : (

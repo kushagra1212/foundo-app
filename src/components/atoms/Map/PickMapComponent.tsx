@@ -1,33 +1,36 @@
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import { useState } from 'react';
 import { COLORS, FONTS } from '../../../constants/theme';
 
 import { WebView } from 'react-native-webview';
 import { webViewTemplateSelect } from './pickMapTemplate';
 type props = {
-  onChange: (coordinates: { latitude: number; longitude: number }) => void;
+  onConfirm: (coordinates: { latitude: number; longitude: number }) => void;
   coordinates: { latitude: number; longitude: number };
-  onConfirm: () => void;
 };
-const PickMapComponent: React.FC<props> = ({
-  onChange,
-  coordinates,
-  onConfirm,
-}) => {
+const PickMapComponent: React.FC<props> = ({ coordinates, onConfirm }) => {
   let webRef2: any = undefined;
+  const [isUpdating, setIsUpdating] = useState(false);
   let [mapCenter, setMapCenter] = useState(
     `${coordinates.longitude}, ${coordinates.latitude}`
   );
 
-  const onButtonPress = () => {
+  const onButtonPress = async () => {
     const [lng, lat] = mapCenter.split(',');
     console.log(mapCenter);
-    webRef2.injectJavaScript(
-      `map.setCenter([${parseFloat(lng)}, ${parseFloat(lat)}])`
-    );
+    // webRef2.injectJavaScript(
+    //   `map.setCenter([${parseFloat(lng)}, ${parseFloat(lat)}])`
+    // );
+    setIsUpdating(true);
+    onConfirm({ latitude: parseFloat(lat), longitude: parseFloat(lng) });
 
-    onChange({ latitude: parseFloat(lat), longitude: parseFloat(lng) });
-    onConfirm();
+    setIsUpdating(false);
   };
 
   const handleMapEvent = (event: any) => {
@@ -46,6 +49,7 @@ const PickMapComponent: React.FC<props> = ({
           }}
         />
       </MapView> */}
+      {isUpdating && <ActivityIndicator size="large" color={COLORS.primary} />}
       <WebView
         ref={(r) => (webRef2 = r)}
         style={styles.map}

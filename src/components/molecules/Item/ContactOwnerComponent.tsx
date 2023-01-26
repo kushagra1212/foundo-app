@@ -1,4 +1,11 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -27,16 +34,6 @@ const ContactOwnerComponent: React.FC<props> = ({
 }) => {
   const [uri, setUri] = useState('./../assets/images/character1.svg');
   const [isMapVisible, setIsMapVisible] = useState<boolean>(false);
-  const [coordinates, setCoordinates] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
-  const changeCoordinates = (coordinates: {
-    latitude: number;
-    longitude: number;
-  }) => {
-    setCoordinates(coordinates);
-  };
   const user = useSelector(selectCurrentUser);
   const [sendMessage, { isLoading, isSuccess, isError, error }] =
     useSendMessageMutation();
@@ -44,6 +41,7 @@ const ContactOwnerComponent: React.FC<props> = ({
     setIsMapVisible(false);
   };
   const handleLoginSubmit = async (data: object) => {
+    console.log(data);
     try {
       const res = await sendMessage(data).unwrap();
       Toast.show({
@@ -88,6 +86,9 @@ const ContactOwnerComponent: React.FC<props> = ({
           }}
         />
       </AnimationTranslateScale>
+      {isLoading ? (
+        <ActivityIndicator size="large" color={COLORS.redPrimary} />
+      ) : null}
       <View style={styles.login_container}>
         <Text style={styles.login_text}>
           Send a message to the owner of this item
@@ -343,9 +344,11 @@ const ContactOwnerComponent: React.FC<props> = ({
 
               <TouchableOpacity
                 style={
-                  isValid ? styles.login_btn_active : styles.login_btn_inactive
+                  !isValid || isLoading
+                    ? styles.login_btn_inactive
+                    : styles.login_btn_active
                 }
-                disabled={!isValid}
+                disabled={!isValid || isLoading}
                 onPress={() => handleSubmit()}
               >
                 <Text style={styles.login_btn_text}>Send Message</Text>
@@ -360,10 +363,13 @@ const ContactOwnerComponent: React.FC<props> = ({
                 titleText="Select Location        "
               >
                 <PickMapComponent
-                  coordinates={coordinates}
-                  onChange={changeCoordinates}
-                  onConfirm={() => {
+                  coordinates={values.location}
+                  onConfirm={async (coordinates: {
+                    latitude: number;
+                    longitude: number;
+                  }) => {
                     setFieldValue('location', coordinates);
+
                     handleMapClose();
                   }}
                 />
