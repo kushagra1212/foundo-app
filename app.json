@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "foundo-app",
+    "name": "foundo",
     "slug": "foundo-app",
     "version": "1.0.0",
     "scheme": "foundo",
     "orientation": "portrait",
-    "icon": "src/assets/icons/foundo.png",
+    "icon": "",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "src/assets/images/splash/android/splash2.png",
@@ -21,7 +21,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "",
+        "foregroundImage": "src/assets/icons/foundo.png",
         "backgroundColor": "#FFFFFF"
       },
       "intentFilters": [
