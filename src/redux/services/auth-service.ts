@@ -1,5 +1,5 @@
 
-import { BASE_URL, LOCAL_STORAGE_ACCESS_TOKEN_KEY } from "../../../constants.js";
+import { BASE_URL, LOCAL_STORAGE_ACCESS_TOKEN_KEY } from "../../constants/key.config.js";
 import { getTokenFromLocalStorage, removeItemFromLocalStroage } from "../../storage/foundo-localstorage";
 
 import { api } from "./api-service";

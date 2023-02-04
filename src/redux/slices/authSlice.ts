@@ -1,6 +1,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
-import { LOCAL_STORAGE_ACCESS_TOKEN_KEY } from '../../../constants.js';
+import { LOCAL_STORAGE_ACCESS_TOKEN_KEY } from '../../constants/key.config';
+
 import { setItemToLocalStorage } from '../../storage/foundo-localstorage';
 const initialState = { user: null, jwtToken: null, forgotPasswordLinkSent: false, jwtResetToken: null };
 const authSlice = createSlice({
