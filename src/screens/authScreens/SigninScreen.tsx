@@ -60,7 +60,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: COLORS.white }}>
+    <SafeAreaView style={{ backgroundColor: COLORS.white, height: '100%' }}>
       <AnimationTranslateScale scaleRange={[1, 1.01]} scaleDuration={1000}>
         <Image
           source={character1}
@@ -69,9 +69,9 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
             height: 500,
             position: 'absolute',
             zIndex: -1,
-            top: -100,
+            top: -50,
+            opacity: 0.5,
           }}
-          blurRadius={5}
         />
       </AnimationTranslateScale>
       <KeyboardAvoidingView>
@@ -192,11 +192,10 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   login_container: {
     margin: '3%',
-    height: '100%',
+    marginTop: '40%',
     justifySelf: 'center',
     alignSelf: 'center',
-    backgroundColor: 'transparent',
-    blurRadius: 5,
+    // little transprenet white background
   },
   login_text: {
     fontSize: 40,
@@ -207,7 +206,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 2,
-    borderBottomColor: COLORS.blackSecondary,
+    borderBottomColor: COLORS.GraySecondary,
     paddingBottom: 10,
     marginBottom: 30,
 
@@ -219,7 +218,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 2,
-    borderBottomColor: COLORS.blackSecondary,
+    borderBottomColor: COLORS.GraySecondary,
     paddingBottom: 10,
     marginBottom: 20,
     width: '100%',
