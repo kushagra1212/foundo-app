@@ -1,4 +1,13 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Formik } from 'formik';
 import Toast from 'react-native-toast-message';
@@ -7,7 +16,6 @@ import { TextInput } from 'react-native-gesture-handler';
 import { useState } from 'react';
 import { COLORS, SIZES } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
-
 import character1 from '../../assets/images/character1.png';
 import { useUserLoginMutation } from '../../redux/services/auth-service';
 import { useDispatch } from 'react-redux';
@@ -57,129 +65,138 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
         <Image
           source={character1}
           style={{
-            width: 300,
-            height: 300,
+            width: 500,
+            height: 500,
             position: 'absolute',
             zIndex: -1,
-            right: 1,
+            top: -100,
           }}
+          blurRadius={5}
         />
       </AnimationTranslateScale>
-      <View style={styles.login_container}>
-        <Text style={styles.login_text}>Login</Text>
-        <Formik
-          validationSchema={loginValidationSchema}
-          initialValues={{ email: '', password: '' }}
-          onSubmit={handleLoginSubmit}
-        >
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            isValid,
-          }) => (
-            <View style={styles.formik_view}>
-              <View style={styles.email_input}>
-                <Entypo
-                  style={{ width: '10%', fontWeight: '100', opacity: 0.6 }}
-                  name="email"
-                  size={20}
-                />
-                <TextInput
-                  style={{
-                    width: '80%',
-                    fontSize: 20,
-                    fontFamily: 'Roboto_400Regular',
-                  }}
-                  placeholder="Email ID"
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                  keyboardType="email-address"
-                />
-              </View>
-              <View style={styles.password_input}>
-                <SimpleLineIcons
-                  style={{ width: '10%' }}
-                  name="lock"
-                  size={20}
-                />
-                <TextInput
-                  style={{ width: '80%', fontSize: 20 }}
-                  placeholder="Password"
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  value={values.password}
-                  secureTextEntry={secureTextEntry.password}
-                />
-                <Ionicons
-                  onPress={() =>
-                    setSecureTextEntry({
-                      ...secureTextEntry,
-                      password: !secureTextEntry.password,
-                    })
-                  }
-                  style={{ width: '10%' }}
-                  name={secureTextEntry.password ? 'eye-off' : 'eye'}
-                  size={20}
-                />
-              </View>
-              <TouchableOpacity
-                style={isValid ? styles.login_btn_active : styles.login_btn_off}
-                disabled={!isValid}
-                onPress={() => handleSubmit()}
+      <KeyboardAvoidingView>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.login_container}>
+            <Text style={styles.login_text}>Login</Text>
+            <Formik
+              validationSchema={loginValidationSchema}
+              initialValues={{ email: '', password: '' }}
+              onSubmit={handleLoginSubmit}
+            >
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                isValid,
+              }) => (
+                <View style={styles.formik_view}>
+                  <View style={styles.email_input}>
+                    <Entypo
+                      style={{ width: '10%', fontWeight: '100', opacity: 0.6 }}
+                      name="email"
+                      size={20}
+                    />
+                    <TextInput
+                      style={{
+                        width: '80%',
+                        fontSize: 20,
+                        fontFamily: 'Roboto_400Regular',
+                      }}
+                      placeholder="Email ID"
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      value={values.email}
+                      keyboardType="email-address"
+                    />
+                  </View>
+                  <View style={styles.password_input}>
+                    <SimpleLineIcons
+                      style={{ width: '10%' }}
+                      name="lock"
+                      size={20}
+                    />
+                    <TextInput
+                      style={{ width: '80%', fontSize: 20 }}
+                      placeholder="Password"
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                      secureTextEntry={secureTextEntry.password}
+                    />
+                    <Ionicons
+                      onPress={() =>
+                        setSecureTextEntry({
+                          ...secureTextEntry,
+                          password: !secureTextEntry.password,
+                        })
+                      }
+                      style={{ width: '10%' }}
+                      name={secureTextEntry.password ? 'eye-off' : 'eye'}
+                      size={20}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    style={
+                      isValid ? styles.login_btn_active : styles.login_btn_off
+                    }
+                    disabled={!isValid}
+                    onPress={() => handleSubmit()}
+                  >
+                    <Text style={styles.login_btn_text}>Login</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Forgotpassword')}
+                  >
+                    <Text
+                      style={{
+                        color: COLORS.blueSecondary,
+                        fontSize: SIZES.h4,
+                        marginTop: 20,
+                        marginLeft: '50%',
+                      }}
+                    >
+                      Forgot Password ?
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </Formik>
+            <View style={styles.register_view}>
+              <Text
+                style={{
+                  fontSize: SIZES.h4,
+                }}
               >
-                <Text style={styles.login_btn_text}>Login</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Forgotpassword')}
-              >
+                New to Foundo ?
+              </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
                 <Text
                   style={{
                     color: COLORS.blueSecondary,
                     fontSize: SIZES.h4,
-                    marginTop: 20,
-                    marginLeft: '50%',
                   }}
                 >
-                  Forgot Password ?
+                  {'  '}Register here
                 </Text>
               </TouchableOpacity>
             </View>
-          )}
-        </Formik>
-        <View style={styles.register_view}>
-          <Text
-            style={{
-              fontSize: SIZES.h4,
-            }}
-          >
-            New to Foundo ?
-          </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-            <Text
-              style={{
-                color: COLORS.blueSecondary,
-                fontSize: SIZES.h4,
-              }}
-            >
-              {'  '}Register here
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   login_container: {
-    margin: 20,
-    marginTop: 200,
-    marginBottom: 100,
+    margin: '3%',
     height: '100%',
+    justifySelf: 'center',
+    alignSelf: 'center',
+    backgroundColor: 'transparent',
+    blurRadius: 5,
   },
   login_text: {
     fontSize: 40,
@@ -190,7 +207,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 2,
-    borderBottomColor: COLORS.GrayPrimary,
+    borderBottomColor: COLORS.blackSecondary,
     paddingBottom: 10,
     marginBottom: 30,
 
@@ -202,7 +219,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomWidth: 2,
-    borderBottomColor: COLORS.GrayPrimary,
+    borderBottomColor: COLORS.blackSecondary,
     paddingBottom: 10,
     marginBottom: 20,
     width: '100%',

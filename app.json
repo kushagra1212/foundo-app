@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "foundo-app",
-    "slug": "foundo-app",
+    "slug": "foundo",
     "version": "1.0.0",
     "scheme": "foundo",
     "orientation": "portrait",
@@ -17,11 +17,12 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kushagra711.foundoapp"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "",
+        "foregroundImage": "src/assets/icons/foundo.png",
         "backgroundColor": "#FFFFFF"
       },
       "intentFilters": [
@@ -45,8 +46,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "af36c27f-df6e-487d-8cc5-8a686849bc66"
+        "projectId": "14dc1de5-6c6a-4163-8488-b4977b56f03e"
       }
-    }
+    },
+    "owner": "kushagra711"
   }
 }
