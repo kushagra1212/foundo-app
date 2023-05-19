@@ -41,7 +41,6 @@ const ContactOwnerComponent: React.FC<props> = ({
     setIsMapVisible(false);
   };
   const handleLoginSubmit = async (data: object) => {
-    console.log(data);
     try {
       const res = await sendMessage(data).unwrap();
       Toast.show({

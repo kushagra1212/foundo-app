@@ -23,7 +23,7 @@ const PickMapComponent: React.FC<props> = ({ coordinates, onConfirm }) => {
 
   const onButtonPress = async () => {
     const [lng, lat] = mapCenter.split(',');
-    console.log(mapCenter);
+
     // webRef2.injectJavaScript(
     //   `map.setCenter([${parseFloat(lng)}, ${parseFloat(lat)}])`
     // );
