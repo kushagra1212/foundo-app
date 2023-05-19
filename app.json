@@ -2,7 +2,7 @@
   "expo": {
     "name": "foundo",
     "slug": "foundo",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "scheme": "foundo",
     "orientation": "portrait",
     "icon": "src/assets/icons/foundo.png",
