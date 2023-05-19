@@ -2,7 +2,7 @@
   "expo": {
     "name": "foundo",
     "slug": "foundo",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "scheme": "foundo",
     "orientation": "portrait",
     "icon": "src/assets/icons/foundo.png",
@@ -21,6 +21,7 @@
       "bundleIdentifier": "com.kushagra711.foundoapp"
     },
     "android": {
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "src/assets/icons/foundo.png",
         "backgroundColor": "#FFFFFF"
