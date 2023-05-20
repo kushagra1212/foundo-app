@@ -3,15 +3,8 @@
 
   
  # Foundo: Lost and Found (React-Native Application)
-
-
-
-## Demo Video  
-Click the Youtube Icon to watch the demo video on YouTube:
-
-[<img src="https://www.iconpacks.net/icons/2/free-youtube-logo-icon-2431-thumb.png" width="50">](https://www.youtube.com/watch?v=FFfxGZapPZE)
-
 ## Screenshots
+
 <div align="center">
   <img src="https://m.media-amazon.com/images/I/81Zw3hm2L+L.jpg" width="200" alt="Screenshot 1">
   <img src="https://m.media-amazon.com/images/I/81SSA5pUNML.jpg" width="200" alt="Screenshot 2">
@@ -19,6 +12,12 @@ Click the Youtube Icon to watch the demo video on YouTube:
   <img src="https://m.media-amazon.com/images/I/81cdDVuNBhL.jpg" width="200" alt="Screenshot 4">
   
 </div>
+
+## Demo Video  
+Click the Youtube Icon to watch the demo video on YouTube:
+
+[<img src="https://www.iconpacks.net/icons/2/free-youtube-logo-icon-2431-thumb.png" width="50">](https://www.youtube.com/watch?v=FFfxGZapPZE)
+
 
 
 ## Overview
