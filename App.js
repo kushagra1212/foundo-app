@@ -70,17 +70,7 @@ const Foundo = () => {
     return null;
   }
   const prefix = Linking.createURL('app');
-  // if (isLoading) {
-  //   return (
-  //     <SafeAreaView mode="margin">
-  //       <ActivityIndicator
-  //         style={{ marginTop: '50%', transform: [{ scale: 3 }] }}
-  //         size="large"
-  //         color={COLORS.redPrimary}
-  //       />
-  //     </SafeAreaView>
-  //   );
-  // }
+
   return (
     <NavigationContainer linking={{ prefixes: [prefix], config: routesConfig }}>
       <Stack.Navigator initialRouteName={'Home'}>
