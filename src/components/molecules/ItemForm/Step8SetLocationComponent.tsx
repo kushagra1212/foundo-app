@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import PickMapComponent from '../../atoms/Map/PickMapComponent';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useAddItemPostMutation } from '../../../redux/services/post-service';
+import { MaterialIcons } from '../../../constants/icons';
 type props = FormikProps<AddPost> & {
   isValidHandler: (isValid: boolean) => void;
   closeThisScreen: () => void; // <--- Add this line
@@ -19,7 +20,9 @@ const Step8SetLocationComponent: React.FC<props> = ({
   setFieldValue,
   errors,
   navigation,
+  setValues,
   closeThisScreen,
+  resetForm,
 }) => {
   const [showMap, setShowMap] = React.useState(true);
   const [addItem, { isLoading }] = useAddItemPostMutation();
@@ -33,6 +36,7 @@ const Step8SetLocationComponent: React.FC<props> = ({
   const addPost = async () => {
     try {
       const res = await addItem(values).unwrap();
+
       Toast.show({
         type: 'success',
         props: {
@@ -92,13 +96,30 @@ const Step8SetLocationComponent: React.FC<props> = ({
               alignItems: 'center',
               padding: 10,
               margin: 10,
-              borderRadius: 10,
-              elevation: 10,
+              borderRadius: 30,
+              elevation: 30,
+              alignSelf: 'center',
             }}
             onPress={() => setShowMap(true)}
           >
-            <Text style={[FONTS.h2, { color: COLORS.black }]}>
-              Reset Location
+            <Text
+              style={[
+                FONTS.h2,
+                {
+                  color: COLORS.black,
+                  justifyContent: 'center',
+                  textAlign: 'center',
+                  alignSelf: 'center',
+                  alignItems: 'center',
+                },
+              ]}
+            >
+              Reset Location{' '}
+              <MaterialIcons
+                name="location-pin"
+                size={25}
+                color={COLORS.redPrimary}
+              />
             </Text>
           </TouchableOpacity>
           <ActivityIndicator
@@ -106,25 +127,26 @@ const Step8SetLocationComponent: React.FC<props> = ({
             color={COLORS.greenPrimary}
             animating={isLoading}
           />
-          <View style={{ marginTop: '80%', elevation: 50 }}>
+          <View
+            style={{ marginTop: '40%', elevation: 50, alignSelf: 'center' }}
+          >
             <TouchableOpacity
               style={{
-                backgroundColor: isLoading
-                  ? COLORS.GrayPrimary
-                  : COLORS.primary,
+                backgroundColor: isLoading ? COLORS.GrayPrimary : COLORS.black,
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 padding: 10,
                 margin: 10,
-                borderRadius: 10,
-                height: 100,
+                borderRadius: 100,
+                height: 150,
+                width: 150,
                 elevation: 50,
               }}
               disabled={isLoading}
               onPress={addPost}
             >
-              <Text style={[FONTS.h1, { color: COLORS.white }]}>Post</Text>
+              <Text style={[FONTS.h1, { color: COLORS.white }]}>Add Post</Text>
             </TouchableOpacity>
           </View>
         </View>

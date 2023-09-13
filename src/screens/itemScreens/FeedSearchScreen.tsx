@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, BackHandler } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
@@ -14,7 +14,8 @@ import { Post } from '../../interfaces';
 import { useGetSearchedPostsMutation } from '../../redux/services/post-service';
 import {
   selectFilterType,
-  selectOffsetAndLimit,
+  selectLimit,
+  selectOffset,
   selectPosts,
   updateFilter,
   updatePosts,
@@ -44,7 +45,9 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
   const [searchString, setSearchString] = useState<string>('');
   const posts: Array<Post> = useSelector(selectPosts);
   const filterType = useSelector(selectFilterType);
-  const { limit, offset } = useSelector(selectOffsetAndLimit);
+  const limit = useSelector(selectLimit);
+  const offset = useSelector(selectOffset);
+
   const [getSearchedPosts, { isLoading }] = useGetSearchedPostsMutation();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
   const [totalPosts, setTotalPosts] = useState<null | number>(null);

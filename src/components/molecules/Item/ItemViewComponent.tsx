@@ -6,16 +6,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 import BottomModal from '../../atoms/BottomModal';
 import { useGetpostQuery } from '../../../redux/services/post-service';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
 import { useGetUserQuery } from '../../../redux/services/profile-service';
 import AnimatedImageComponent from '../Animation/AnimatedImageComponent';
-import {
-  GestureHandlerRootView,
-  ScrollView,
-} from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { capitalizeFirstLetter } from '../../../utils';
 import { ITEM_STANDARD_COLORS } from '../../../constants/item';
 import { AntDesign, Entypo, FontAwesome } from '../../../constants/icons';

@@ -7,12 +7,12 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Formik } from 'formik';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
-import { TextInput } from 'react-native-gesture-handler';
 import { useState } from 'react';
 import { COLORS, SIZES } from '../../constants/theme';
 import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';

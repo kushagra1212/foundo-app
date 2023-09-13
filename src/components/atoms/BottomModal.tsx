@@ -1,8 +1,7 @@
 import { Modal, View, Text, Pressable, StyleSheet } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { Entypo, Ionicons } from '../../constants/icons';
+import React from 'react';
+import { Ionicons } from '../../constants/icons';
 import { COLORS, SIZES } from '../../constants/theme';
-import { SafeAreaView } from 'react-native-safe-area-context';
 type AnimationType = 'slide' | 'none' | 'fade' | undefined;
 type Props = {
   isVisible: boolean;
@@ -29,45 +28,41 @@ const BottomModal: React.FC<Props> = ({
   refreshAvail = false,
 }) => {
   return (
-    <SafeAreaView mode="margin">
-      <Modal
-        animationType={effect}
-        transparent={true}
-        visible={isVisible}
-        statusBarTranslucent={true}
-        style={{ backgroundColor: COLORS.lightGrayPrePrimary }}
-      >
-        <View
-          style={backgroundFilter ? styles.modal : { height: '100%' }}
-        ></View>
-        <View style={{ ...styles.modalContent, height }}>
-          <View style={styles.titleContainer}>
-            <Pressable onPress={onClose}>
+    <Modal
+      animationType={effect}
+      transparent={true}
+      visible={isVisible}
+      statusBarTranslucent={true}
+      style={{ backgroundColor: COLORS.lightGrayPrePrimary }}
+    >
+      <View style={backgroundFilter ? styles.modal : { height: '100%' }}></View>
+      <View style={[styles.modalContent, { height }]}>
+        <View style={styles.titleContainer}>
+          <Pressable onPress={onClose}>
+            <Ionicons
+              style={{
+                fontWeight: '500',
+              }}
+              name={iconName !== 'chevron-back' ? iconName : 'chevron-back'}
+              size={35}
+            />
+          </Pressable>
+          <Text style={styles.title}>{titleText}</Text>
+          {refreshAvail && (
+            <Pressable onPress={reset}>
               <Ionicons
                 style={{
                   fontWeight: '500',
                 }}
-                name={iconName !== 'chevron-back' ? iconName : 'chevron-back'}
+                name="refresh"
                 size={35}
               />
             </Pressable>
-            <Text style={styles.title}>{titleText}</Text>
-            {refreshAvail && (
-              <Pressable onPress={reset}>
-                <Ionicons
-                  style={{
-                    fontWeight: '500',
-                  }}
-                  name="refresh"
-                  size={35}
-                />
-              </Pressable>
-            )}
-          </View>
-          {children}
+          )}
         </View>
-      </Modal>
-    </SafeAreaView>
+        {children}
+      </View>
+    </Modal>
   );
 };
 const styles = StyleSheet.create({

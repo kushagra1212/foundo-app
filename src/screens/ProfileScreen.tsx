@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,7 +26,6 @@ import UserAddressComponent from '../components/molecules/profile/UserAddressCom
 import UserUpdatePrivacyComponent from '../components/molecules/profile/UserUpdatePrivacyComponent';
 import { getBase64FromUrl } from '../utils';
 import { useUserUpdateMutation } from '../redux/services/auth-service';
-import { ScrollView } from 'react-native-gesture-handler';
 import NotLoggedInProfileComponent from '../components/molecules/profile/NotLoggedInProfileComponent';
 type props = {
   navigation: any;
@@ -80,8 +80,8 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
 
     const result = await ImagePicker.launchImageLibraryAsync();
 
-    if (!result.cancelled) {
-      const base64 = await getBase64FromUrl(result.uri);
+    if (!result.canceled) {
+      const base64 = await getBase64FromUrl(result.assets[0].uri);
       try {
         const result = await userUpdate({
           userId: user?.id,

@@ -19,7 +19,8 @@ import { filterItemOnInitial } from '../../interfaces/initials';
 import {
   resetPosts,
   selectFilterType,
-  selectOffsetAndLimit,
+  selectLimit,
+  selectOffset,
   selectPosts,
   updateFilter,
   updatePosts,
@@ -50,7 +51,8 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
   const [advFilterOn, setAdvFilterOn] = useState<boolean | undefined>(
     undefined
   );
-  const { limit, offset } = useSelector(selectOffsetAndLimit);
+  const limit = useSelector(selectLimit);
+  const offset = useSelector(selectOffset);
   const [getPost, { isLoading }] = useLazyGetPostsQuery();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);

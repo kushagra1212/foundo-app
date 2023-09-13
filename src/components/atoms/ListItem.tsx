@@ -1,19 +1,23 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  KeyboardAvoidingView,
   TouchableOpacity,
+  FlatList,
+  TextInput,
+  Keyboard,
+  Platform,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler';
-import { FontAwesome, Ionicons, MaterialIcons } from '../../constants/icons';
-import { ITEMCAT_TO_NUM, ITEM_STANDARD_COLORS } from '../../constants/item';
+import { FontAwesome, Ionicons } from '../../constants/icons';
+import { ITEM_STANDARD_COLORS } from '../../constants/item';
 import { COLORS, FONTS, SIZES } from '../../constants/theme';
 import { FilterItemOn } from '../../interfaces';
 import AnimationTranslateScale from '../molecules/Animation/AnimationTranslateScale';
 import MiniItemColorIcon from './MiniItemColorIcon';
 import MiniItemTextIcon from './MiniItemTextIcon';
+import { KeyboardAvoidingView } from 'react-native';
 interface PropsType1 extends FilterItemOn {
   text: string;
   arrowText: string;
@@ -91,7 +95,7 @@ const ListFilterItemSlideDownList: React.FC<PropsType2> = ({
     updateItemFilterOption(options);
   };
   return (
-    <ScrollView
+    <View
       style={{
         elevation: 10,
         borderRadius: 20,
@@ -166,7 +170,7 @@ const ListFilterItemSlideDownList: React.FC<PropsType2> = ({
           />
         </View>
       )}
-    </ScrollView>
+    </View>
   );
 };
 interface PropsType3 extends FilterItemOn {
@@ -225,28 +229,6 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = ({
           />
         )}
       </View>
-      {open && (
-        <KeyboardAvoidingView keyboardVerticalOffset={520} behavior="position">
-          <TextInput
-            placeholder={desc}
-            onChangeText={(value) => setBrandName(value.split(' ').join(''))}
-            value={brandName}
-            placeholderTextColor={COLORS.GraySecondary}
-            autoFocus={true}
-            maxLength={14}
-            onBlur={() => onSelect({ brand: brandName })}
-            style={{
-              backgroundColor: COLORS.black,
-              elevation: 100,
-              borderRadius: 10,
-              padding: 10,
-              fontSize: SIZES.h3,
-              margin: 10,
-              color: COLORS.white,
-            }}
-          />
-        </KeyboardAvoidingView>
-      )}
       <View style={{ width: '100%' }}>
         {options?.brand !== undefined && options?.brand !== '' && (
           <View
@@ -284,6 +266,33 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = ({
           </View>
         )}
       </View>
+      {open && (
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <TextInput
+              placeholder={desc}
+              onChangeText={(value) => setBrandName(value.split(' ').join(''))}
+              value={brandName}
+              placeholderTextColor={COLORS.GraySecondary}
+              autoFocus={true}
+              maxLength={14}
+              onBlur={() => onSelect({ brand: brandName })}
+              style={{
+                backgroundColor: COLORS.black,
+                elevation: 100,
+                borderRadius: 10,
+                padding: 10,
+                fontSize: SIZES.h3,
+                margin: 10,
+                color: COLORS.white,
+                height: 50,
+              }}
+            />
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
+      )}
     </View>
   );
 };

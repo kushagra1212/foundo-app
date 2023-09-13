@@ -1,6 +1,5 @@
 import { FormikProps } from 'formik';
-import { View, Text } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { View, Text, TextInput } from 'react-native';
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost } from '../../../interfaces';
 import React, { useEffect } from 'react';

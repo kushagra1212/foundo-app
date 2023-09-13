@@ -51,7 +51,10 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
     dispatch(
       updateAddItemDetailsScreenStatus({ addItemDetailsScreenStatus: false })
     );
-    navigation.goBack();
+
+    // Clean up the Current Screen from the stack
+    navigation.pop();
+
     return true;
   };
   const nextStep = () => {
