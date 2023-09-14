@@ -11,6 +11,7 @@ import {
 } from '../redux/slices/sreenSilce';
 import MessageScreen from './MessageScreen';
 import AddItemScreen from './AddItemScreen';
+import UserPostsScreen from './UserPostsScreen';
 const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => {
@@ -129,6 +130,36 @@ const HomeScreen = () => {
         }}
         name="MessageScreen"
         component={MessageScreen}
+      />
+            <Tab.Screen
+        options={{
+          title: '',
+          headerShown: false,
+          headerTitleAlign: 'center',
+          headerLeft: () => null,
+          // <TouchableOpacity
+          //   style={styles.left_btn}
+          //   onPress={() => console.log('left-btn')}
+          // >
+          //   <Foundation name="indent-more" size={30} />
+          // </TouchableOpacity>
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          tabBarLabel: '',
+          tabBarIcon: ({ focused }) => {
+            return (
+              <MaterialIconsCommunity
+                name={focused ? 'post' : 'post-outline'}
+                size={30}
+                color={focused ? COLORS.black : COLORS.GraySecondary}
+              />
+            );
+          },
+        }}
+        name="userPosts"
+        component={UserPostsScreen}
       />
     </Tab.Navigator>
   );

@@ -8,12 +8,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useLazyGetContactsQuery } from '../../redux/services/message-service';
 import { selectCurrentUser } from '../../redux/slices/authSlice';
 import ContactListComponent from '../../components/molecules/Contact/ContactListComponent';
-import { COLORS } from '../../constants/theme';
+import { COLORS, SIZES } from '../../constants/theme';
 import AnimatedComponent from '../../components/molecules/Animation/AnimatedComponent';
 import AnimatedObject from '../../components/molecules/Animation/AnimatedObject';
 import character4 from '../../assets/images/character4.png';
 import object3 from '../../assets/images/object1.png';
 import LogInButtonComponent from '../../components/atoms/LogInButtonComponent';
+import { Text } from 'react-native';
 export type props = {
   navigation: any;
 };
@@ -120,9 +121,6 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
                 '#FFFFFF',
                 '#FFFFFF',
                 '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
               ]}
               style={{
                 flex: 1,
@@ -132,6 +130,8 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
           </View>
         }
       >
+          <Text style={styles.chat_text}>Chats             
+          </Text>
         <View
           style={{
             marginTop: 20,
@@ -161,5 +161,6 @@ const styles = StyleSheet.create({
   item_search_input: {
     width: '90%',
   },
+  chat_text:{margin:10,fontSize:SIZES.h1,marginBottom:0,width:'90%',alignSelf:'center'}
 });
 export default ContactScreen;

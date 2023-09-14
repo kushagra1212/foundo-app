@@ -31,7 +31,7 @@ const SelectItemTypeScreen: React.FC<props> = ({ navigation }) => {
       <AnimatedComponent
         elevationCardStyle={{ marginTop: '70%', elevation: 0, opacity: 0.9 }}
         transparent={true}
-        title="Select Item Type"
+        title="Create a Post"
         description="Please select the type of item you want to post"
         source={character3}
         {...{

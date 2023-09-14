@@ -1,14 +1,10 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { COLORS, FONTS } from '../../constants/theme';
+export const LOST_ITEM = 0;
+export const FOUND_ITEM = 1;
 export const FILTER_ITEMS = [
-  { id: 0, text: 'Lost' },
-  { id: 1, text: 'Found' },
+  { id: LOST_ITEM, text: 'Lost' },
+  { id: FOUND_ITEM, text: 'Found' },
 ];
 const FilterOptionComponent = ({
   item,

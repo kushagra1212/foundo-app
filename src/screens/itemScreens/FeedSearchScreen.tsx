@@ -25,6 +25,7 @@ import { updateFeedSearchScreenStatus } from '../../redux/slices/sreenSilce';
 import MaskedView from '@react-native-masked-view/masked-view';
 
 import { LinearGradient } from 'expo-linear-gradient';
+import SingleCardComponent from '../../components/molecules/Item/Card/SingleCardComponent';
 export type props = {
   navigation?: any;
 };
@@ -190,6 +191,7 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
           posts={posts}
           reachedEnd={reachedEnd}
           navigation={navigation}
+          SingleCardComponent={SingleCardComponent}
         />
       </MaskedView>
 

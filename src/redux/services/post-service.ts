@@ -27,6 +27,20 @@ export const postApi = api.injectEndpoints({
       },
       providesTags: ['Posts'],
     }),
+    getUserPosts: builder.query({
+      query: ({ offset, limit,userId, ...rest }) => {
+               const restArray = Object.entries(rest);
+        let queryString: string = '';
+        restArray.forEach((element) => {
+          queryString += `&${element[0]}=${element[1]}`;
+        });
+        return `/v1/item/all-by-user?offset=${offset}&limit=${limit}&userId=${userId}${queryString}`;
+      },
+      transformResponse: (response) => {
+        return response.items;
+      },
+      providesTags: ['Posts'],
+    }),
     getpost: builder.query({
       query: (id) => {
         return `/v1/item/${id}`;
@@ -36,14 +50,24 @@ export const postApi = api.injectEndpoints({
       },
     }),
     addItemPost: builder.mutation({
-      query: (body: AddPost) => {
+      query: (body:AddPost) => {
         return {
-          url: '/v1/item/add-lost',
+          url: `/v1/item`,
           method: 'POST',
           body: body,
         };
-      },
+      },  
       invalidatesTags: ['Posts'],
+    }),
+    getMatches: builder.query({
+      query: (itemId) => {
+
+        return `/v1/item/${itemId}/matches`;
+      },
+      transformResponse: (response) => {
+        return response.matches;
+      },
+      providesTags: ['Posts'],
     }),
   }),
   overrideExisting: true,
@@ -51,7 +75,10 @@ export const postApi = api.injectEndpoints({
 
 export const {
   useLazyGetPostsQuery,
-  useGetSearchedPostsMutation,
+  useLazyGetUserPostsQuery
+,  useGetSearchedPostsMutation,
   useGetpostQuery,
+  useGetUserPostsQuery,
+  useGetMatchesQuery,
   useAddItemPostMutation,
 } = postApi;

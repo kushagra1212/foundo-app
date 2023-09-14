@@ -47,6 +47,7 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
   const [isValid, setValid] = useState<boolean>(false);
   const user = useSelector(selectCurrentUser);
   const [currentStep, setCurrentStep] = useState<number>(1);
+  const _isFounded =navigation.getState().routes[1].params.isFounded;
   const closeThisScreen = () => {
     dispatch(
       updateAddItemDetailsScreenStatus({ addItemDetailsScreenStatus: false })
@@ -144,7 +145,7 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
             initialValues={{
               ...initialPost,
               userId: user.id,
-              isFounded: navigation.getState().routes[1].params.isFounded,
+              isFounded: _isFounded,
             }}
             onSubmit={handleSubmit}
           >

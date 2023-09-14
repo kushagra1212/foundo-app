@@ -21,7 +21,7 @@ const BottomModal: React.FC<Props> = ({
   onClose,
   backgroundFilter,
   reset,
-  iconName = 'chevron-back',
+  iconName = 'close-circle',
   height = '80%',
   effect = 'slide',
   titleText = '',
@@ -38,16 +38,6 @@ const BottomModal: React.FC<Props> = ({
       <View style={backgroundFilter ? styles.modal : { height: '100%' }}></View>
       <View style={[styles.modalContent, { height }]}>
         <View style={styles.titleContainer}>
-          <Pressable onPress={onClose}>
-            <Ionicons
-              style={{
-                fontWeight: '500',
-              }}
-              name={iconName !== 'chevron-back' ? iconName : 'chevron-back'}
-              size={35}
-            />
-          </Pressable>
-          <Text style={styles.title}>{titleText}</Text>
           {refreshAvail && (
             <Pressable onPress={reset}>
               <Ionicons
@@ -59,6 +49,17 @@ const BottomModal: React.FC<Props> = ({
               />
             </Pressable>
           )}
+          <Text style={styles.title}>{titleText}</Text>
+          
+          <Pressable onPress={onClose}>
+            <Ionicons
+              style={{
+                fontWeight: '500',
+              }}
+              name={iconName !== 'close-circle' ? iconName : 'close-circle'}
+              size={45}
+            />
+          </Pressable>
         </View>
         {children}
       </View>
@@ -76,11 +77,12 @@ const styles = StyleSheet.create({
     width: '100%',
     opacity: 1,
     backgroundColor: COLORS.lightGrayPrePrimary,
-    borderTopRightRadius: 18,
+    borderTopRightRadius:18,
     borderTopLeftRadius: 18,
     position: 'absolute',
     bottom: 0,
     elevation: 5,
+    alignSelf: 'center',
   },
   titleContainer: {
     height: 60,

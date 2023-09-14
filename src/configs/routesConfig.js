@@ -27,6 +27,9 @@ export const routesConfig = {
             ContactScreen: 'contact',
           },
         },
+        UserPostsScreen: {
+          path: 'userposts',
+        },
       },
     },
     Auth: {

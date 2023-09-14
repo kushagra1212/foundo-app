@@ -1,74 +1,67 @@
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import FilterOptionComponent, {
-  FILTER_ITEMS,
-} from '../../components/atoms/FilterOptionItem';
-import AdditionalFilterOptionComponent from '../../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
-import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
-import { COLORS, FONTS } from '../../constants/theme';
-import { FilterItemOn, Post } from '../../interfaces';
-import { filterItemOnInitial } from '../../interfaces/initials';
+  FILTER_ITEMS, LOST_ITEM,
+} from '../components/atoms/FilterOptionItem';
+import AdditionalFilterOptionComponent from '../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
+import CardsComponent from '../components/molecules/Item/Card/CardsComponent';
+import { COLORS, FONTS } from '../constants/theme';
+import { FilterItemOn, Post } from '../interfaces';
+import { filterItemOnInitial } from '../interfaces/initials';
 import {
-  resetPosts,
-  selectFilterType,
-  selectLimit,
-  selectOffset,
-  selectPosts,
-  updateFilter,
-  updatePosts,
-} from '../../redux/slices/postSlice';
-import FilterItemComponent from '../../components/molecules/Filter/FilterItemComponent';
-import BottomModal from '../../components/atoms/BottomModal';
-import { Feather } from '../../constants/icons';
-import { useLazyGetPostsQuery } from '../../redux/services/post-service';
+  resetUserPosts,
+  selectUserPosts,
+  selectUserPostsFilterType,
+  selectUserPostsLimit,
+  selectUserPostsOffset,
+  updateUserPosts,
+  updateUsersPostsFilter,
+} from '../redux/slices/postSlice';
+import FilterItemComponent from '../components/molecules/Filter/FilterItemComponent';
+import BottomModal from '../components/atoms/BottomModal';
+import { useLazyGetUserPostsQuery } from '../redux/services/post-service';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import MaskedView from '@react-native-masked-view/masked-view';
 
 import { LinearGradient } from 'expo-linear-gradient';
-import {
-  selectFeedSearchScreenStatus,
-  updateFeedSearchScreenStatus,
-} from '../../redux/slices/sreenSilce';
-import SingleCardComponent from '../../components/molecules/Item/Card/SingleCardComponent';
+import { selectCurrentUserId } from '../redux/slices/authSlice';
+import SingleCardComponentWithMatch from '../components/molecules/Item/Card/SingleCardComponentWithMatch';
+
+
+
 
 export type props = {
   navigation: any;
 };
-const ItemScreen: React.FC<props> = ({ navigation }) => {
-  const filterType = useSelector(selectFilterType);
-  const posts: Array<Post> = useSelector(selectPosts);
-  const feedSearchScreenStatus = useSelector(selectFeedSearchScreenStatus);
+const UserPostsScreen: React.FC<props> = ({ navigation }) => {
+  const filterType = useSelector(selectUserPostsFilterType);
+  const posts: Array<Post> = useSelector(selectUserPosts);
+  const currentUserId = useSelector(selectCurrentUserId);
   const [itemFilterOption, setItemFilterOption] =
     useState<FilterItemOn>(filterItemOnInitial);
   const [backgroundFilter, setBackgroundFilter] = useState<boolean>(false);
   const [advFilterOn, setAdvFilterOn] = useState<boolean | undefined>(
     undefined
   );
-  const limit = useSelector(selectLimit);
-  const offset = useSelector(selectOffset);
-  const [getPost, { isLoading }] = useLazyGetPostsQuery();
+  const limit = useSelector(selectUserPostsLimit);
+  const offset = useSelector(selectUserPostsOffset);
+  const [getPost, { isLoading }] = useLazyGetUserPostsQuery();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [postFound, setPostFound] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const handleChangeFilter = (id: number) => {
-    dispatch(updateFilter({ filterType: id }));
+    dispatch(updateUsersPostsFilter({ filterType: id }));
   };
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const onModalClose = () => {
     setBackgroundFilter(false);
     if (advFilterOn === undefined) setAdvFilterOn(true);
     else setAdvFilterOn(!advFilterOn);
-    dispatch(updateFilter({ filterType: filterType }));
+    dispatch(updateUsersPostsFilter({ filterType: filterType }));
     setTimeout(() => {
       setIsModalVisible(false);
     }, 10);
@@ -76,7 +69,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
   const onModalOpen = () => {
     setIsModalVisible(true);
     setBackgroundFilter(true);
-    dispatch(resetPosts());
+    dispatch(resetUserPosts());
   };
   const updateItemFilterOption = (options: FilterItemOn): void => {
     setItemFilterOption({ ...itemFilterOption, ...options });
@@ -86,34 +79,25 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
   };
   const fetchPosts = async () => {
     setPostFound(true);
-    if (loading || feedSearchScreenStatus) return;
+    if (loading ) return;
     setLoading(true);
     let cat = { ...itemFilterOption };
-    // if (itemFilterOption.category) {
-    //   cat.category = String(
-    //     ITEMCAT_TO_NUM.get(String(itemFilterOption.category))
-    //   );
-    // }
+
     try {
       const posts = await getPost({
         offset: offset,
         limit,
+        userId:currentUserId,
         founded: filterType,
         ...cat,
       }).unwrap();
-      dispatch(updatePosts({ offset: offset + limit, posts: posts }));
+      dispatch(updateUserPosts({ offset: offset + limit, posts: posts }));
       setLoading(false);
     } catch (e: any) {
       console.log(e);
       setLoading(false);
       setReachedEnd(true);
-      // Toast.show({
-      //   type: 'error',
-      //   props: {
-      //     text: e.status,
-      //     message: e.error,
-      //   },
-      // });
+      
       if (posts.length !== 0)
         Toast.show({
           type: 'success',
@@ -127,42 +111,38 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
   };
   useEffect(() => {
     let flag: boolean = true;
-    if (!feedSearchScreenStatus) {
+    if (flag) {
       setReachedEnd(false);
-      if (flag && offset === 0) {
+      if (offset === 0) {
         fetchPosts();
       }
-      return () => {
-        flag = true;
-      };
     }
+      return () => {
+        flag = false;
+      };
   }, [filterType, advFilterOn, offset]);
 
   const handleOnFocus = () => {
-    dispatch(updateFeedSearchScreenStatus({ feedSearchScreenStatus: true }));
-    dispatch(updateFilter({ filterType: !filterType }));
-    navigation.navigate('FeedSearchScreen');
+   
   };
   return (
     <SafeAreaView style={styles.feed}>
       <View>
-        <TouchableOpacity
-          onPress={handleOnFocus}
+        <View
           style={styles.item_search_input}
         >
-          <View style={{ marginLeft: 10 }}>
+          <View style={{ marginLeft: 10,marginTop:10 }}>
             <Text style={{ ...FONTS.body2 }}>
-              <Text style={FONTS.h1}>Find </Text>Things you Lost
+             
+              <Text style={FONTS.h1}> Items You </Text>
+             {filterType===LOST_ITEM?
+              <Text>have Lost </Text>
+            : <Text>have Found </Text>
+            }
+
             </Text>
           </View>
-          <Feather style={styles.item_search} name="search" size={35} />
-          {/* 
-          <TextInput
-            style={[styles.item_text_ip, FONTS.body3]}
-            placeholder="Search Items here.."
-          />
-        </View> */}
-        </TouchableOpacity>
+        </View>
         <View
           style={{
             display: 'flex',
@@ -244,7 +224,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
           posts={posts}
           reachedEnd={reachedEnd}
           navigation={navigation}
-          SingleCardComponent={SingleCardComponent}
+          SingleCardComponent={SingleCardComponentWithMatch}
         />
         <View style={{ height: 10 }}></View>
       </MaskedView>
@@ -306,4 +286,4 @@ const styles = StyleSheet.create({
     width: '90%',
   },
 });
-export default ItemScreen;
+export default UserPostsScreen;

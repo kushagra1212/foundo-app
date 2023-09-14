@@ -1,7 +1,6 @@
 import { StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { COLORS } from '../../../../constants/theme';
 
-import SingleCardComponent from './SingleCardComponent';
 import { Post } from '../../../../interfaces';
 import character5 from '../../../../assets/images/character5.png';
 import AnimatedComponent from '../../Animation/AnimatedComponent';
@@ -12,6 +11,7 @@ export type props = {
   fetchPosts: () => void;
   loading: boolean;
   navigation: any;
+  SingleCardComponent: React.FC<any>;
 };
 const CardsComponent: React.FC<props> = ({
   postFound,
@@ -20,6 +20,7 @@ const CardsComponent: React.FC<props> = ({
   loading,
   posts,
   navigation,
+  SingleCardComponent,
 }) => {
   const onScroll = (event: any) => {
     const { nativeEvent } = event;

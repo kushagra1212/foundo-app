@@ -6,17 +6,22 @@ import { Post } from '../../../../interfaces';
 import { useState } from 'react';
 import { capitalizeEveryWord, capitalizeFirstLetter } from '../../../../utils';
 import ItemComponent from '../ItemViewComponent';
+import { selectCurrentUserId } from '../../../../redux/slices/authSlice';
+import { useSelector } from 'react-redux';
 
-export type props = {
+export type SingleCardProps = {
   item: Post;
   navigation: any;
 };
-const SingleCardComponent: React.FC<props> = ({ item, navigation }) => {
+const SingleCardComponent: React.FC<SingleCardProps> = ({ item, navigation }) => {
   const [isCardDetailVisible, setIsCardDetailVisible] =
     useState<boolean>(false);
+  const currentUserId =    useSelector(selectCurrentUserId);
   const toggleCardDetail = () => {
     setIsCardDetailVisible(!isCardDetailVisible);
   };
+
+  const firstName = item.userId==currentUserId?"You":item.firstName;
   return (
     <View style={styles.card}>
       {isCardDetailVisible && (
@@ -166,7 +171,7 @@ const SingleCardComponent: React.FC<props> = ({ item, navigation }) => {
               >
                 posted by
               </Text>{' '}
-              {item.firstName}
+              {firstName}
             </Text>
           </View>
         </View>
