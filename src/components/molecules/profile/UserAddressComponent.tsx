@@ -1,15 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  KeyboardAvoidingView,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-import { useDispatch, useSelector } from 'react-redux';
-import { COLORS, FONTS, SIZES } from '../../../constants/theme';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { COLORS, FONTS } from '../../../constants/theme';
 import { useUserUpdateMutation } from '../../../redux/services/auth-service';
 import { useGetUserQuery } from '../../../redux/services/profile-service';
 import { updateUser } from '../../../redux/slices/authSlice';

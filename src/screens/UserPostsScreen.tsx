@@ -1,15 +1,30 @@
+import MaskedView from '@react-native-masked-view/masked-view';
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
+
+import character4 from '../assets/images/character4.png';
+import object3 from '../assets/images/object1.png';
+import BottomModal from '../components/atoms/BottomModal';
 import FilterOptionComponent, {
-  FILTER_ITEMS, LOST_ITEM,
+  FILTER_ITEMS,
+  LOST_ITEM,
 } from '../components/atoms/FilterOptionItem';
+import LogInButtonComponent from '../components/atoms/LogInButtonComponent';
+import AnimatedComponent from '../components/molecules/Animation/AnimatedComponent';
+import AnimatedObject from '../components/molecules/Animation/AnimatedObject';
 import AdditionalFilterOptionComponent from '../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
+import FilterItemComponent from '../components/molecules/Filter/FilterItemComponent';
 import CardsComponent from '../components/molecules/Item/Card/CardsComponent';
+import SingleCardComponentWithMatch from '../components/molecules/Item/Card/SingleCardComponentWithMatch';
 import { COLORS, FONTS } from '../constants/theme';
 import { FilterItemOn, Post } from '../interfaces';
 import { filterItemOnInitial } from '../interfaces/initials';
+import { useLazyGetUserPostsQuery } from '../redux/services/post-service';
+import { selectCurrentUserId } from '../redux/slices/authSlice';
 import {
   resetUserPosts,
   selectUserPosts,
@@ -19,22 +34,6 @@ import {
   updateUserPosts,
   updateUsersPostsFilter,
 } from '../redux/slices/postSlice';
-import FilterItemComponent from '../components/molecules/Filter/FilterItemComponent';
-import BottomModal from '../components/atoms/BottomModal';
-import { useLazyGetUserPostsQuery } from '../redux/services/post-service';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import MaskedView from '@react-native-masked-view/masked-view';
-import character4 from '../assets/images/character4.png';
-import object3 from '../assets/images/object1.png';
-import { LinearGradient } from 'expo-linear-gradient';
-import { selectCurrentUserId } from '../redux/slices/authSlice';
-import SingleCardComponentWithMatch from '../components/molecules/Item/Card/SingleCardComponentWithMatch';
-import AnimatedObject from '../components/molecules/Animation/AnimatedObject';
-import AnimatedComponent from '../components/molecules/Animation/AnimatedComponent';
-import LogInButtonComponent from '../components/atoms/LogInButtonComponent';
-
-
-
 
 export type props = {
   navigation: any;
@@ -42,13 +41,13 @@ export type props = {
 const UserPostsScreen: React.FC<props> = ({ navigation }) => {
   const filterType = useSelector(selectUserPostsFilterType);
   const _currentUserId = useSelector(selectCurrentUserId);
-  const posts: Array<Post> = useSelector(selectUserPosts);
+  const posts: Post[] = useSelector(selectUserPosts);
   const currentUserId = useSelector(selectCurrentUserId);
   const [itemFilterOption, setItemFilterOption] =
     useState<FilterItemOn>(filterItemOnInitial);
   const [backgroundFilter, setBackgroundFilter] = useState<boolean>(false);
   const [advFilterOn, setAdvFilterOn] = useState<boolean | undefined>(
-    undefined
+    undefined,
   );
   const limit = useSelector(selectUserPostsLimit);
   const offset = useSelector(selectUserPostsOffset);
@@ -66,7 +65,7 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
     setBackgroundFilter(false);
     if (advFilterOn === undefined) setAdvFilterOn(true);
     else setAdvFilterOn(!advFilterOn);
-    dispatch(updateUsersPostsFilter({ filterType: filterType }));
+    dispatch(updateUsersPostsFilter({ filterType }));
     setTimeout(() => {
       setIsModalVisible(false);
     }, 10);
@@ -84,25 +83,25 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
   };
   const fetchPosts = async () => {
     setPostFound(true);
-    if (loading ) return;
+    if (loading) return;
     setLoading(true);
-    let cat = { ...itemFilterOption };
+    const cat = { ...itemFilterOption };
 
     try {
       const posts = await getPost({
-        offset: offset,
+        offset,
         limit,
-        userId:currentUserId,
+        userId: currentUserId,
         founded: filterType,
         ...cat,
       }).unwrap();
-      dispatch(updateUserPosts({ offset: offset + limit, posts: posts }));
+      dispatch(updateUserPosts({ offset: offset + limit, posts }));
       setLoading(false);
     } catch (e: any) {
       console.log(e);
       setLoading(false);
       setReachedEnd(true);
-      
+
       if (posts.length !== 0)
         Toast.show({
           type: 'success',
@@ -122,23 +121,20 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
         fetchPosts();
       }
     }
-      return () => {
-        flag = false;
-      };
+    return () => {
+      flag = false;
+    };
   }, [filterType, advFilterOn, offset]);
 
-  const handleOnFocus = () => {
-   
-  };
+  const handleOnFocus = () => {};
 
-    if (_currentUserId === null) {
+  if (_currentUserId === null) {
     return (
       <SafeAreaView
         style={{
           height: '100%',
           backgroundColor: COLORS.lightGrayPrePrimary,
-        }}
-      >
+        }}>
         <View style={{ zIndex: 1, top: '60%' }}>
           <AnimatedObject width={300} height={300} source={object3} />
         </View>
@@ -156,18 +152,15 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.feed}>
       <View>
-        <View
-          style={styles.item_search_input}
-        >
-          <View style={{ marginLeft: 10,marginTop:10 }}>
+        <View style={styles.item_search_input}>
+          <View style={{ marginLeft: 10, marginTop: 10 }}>
             <Text style={{ ...FONTS.body2 }}>
-             
               <Text style={FONTS.h1}> Items You </Text>
-             {filterType===LOST_ITEM?
-              <Text>have Lost </Text>
-            : <Text>have Found </Text>
-            }
-
+              {filterType === LOST_ITEM ? (
+                <Text>have Lost </Text>
+              ) : (
+                <Text>have Found </Text>
+              )}
             </Text>
           </View>
         </View>
@@ -176,8 +169,7 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-          }}
-        >
+          }}>
           <FlatList
             data={FILTER_ITEMS}
             contentContainerStyle={styles.option_flatlist}
@@ -215,8 +207,7 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
               backgroundColor: 'transparent',
               flex: 1,
               marginTop: 0,
-            }}
-          >
+            }}>
             <LinearGradient
               colors={[
                 '#FFFFFF00',
@@ -238,11 +229,9 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
               style={{
                 flex: 1,
                 borderRadius: 5,
-              }}
-            ></LinearGradient>
+              }}></LinearGradient>
           </View>
-        }
-      >
+        }>
         {/* Shows behind the mask, you can put anything here, such as an image */}
 
         <CardsComponent
@@ -263,8 +252,7 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
           onClose={onModalClose}
           titleText="Filter"
           reset={resetItemFilter}
-          refreshAvail
-        >
+          refreshAvail>
           <FilterItemComponent
             options={itemFilterOption}
             updateItemFilterOption={updateItemFilterOption}

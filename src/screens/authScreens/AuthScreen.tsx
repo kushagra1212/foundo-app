@@ -25,7 +25,7 @@ const AuthScreen = () => {
         name="Signin"
         component={SigninScreen}
       />
-      <Stack.Screen
+        <Stack.Screen
         options={{
           title: '',
           headerShadowVisible: false,
