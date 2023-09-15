@@ -21,7 +21,7 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({ item, navigation }) =>
     setIsCardDetailVisible(!isCardDetailVisible);
   };
 
-  const firstName = item.userId==currentUserId?"You":item.firstName;
+  const firstName =currentUserId && item.userId==currentUserId?"You":item.firstName;
   return (
     <View style={styles.card}>
       {isCardDetailVisible && (

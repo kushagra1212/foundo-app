@@ -44,4 +44,7 @@ export const selectCurrentToken = (state: any) => state.auth.jwtToken;
 export const selectCurrentResetToken = (state: any) => state.auth.jwtResetToken;
 export const selectorgotPasswordStatus = (state: any) =>
   state.auth.forgotPasswordLinkSent;
-export const selectCurrentUserId = (state: any) => state.auth.user.id;
+export const selectCurrentUserId = (state: any) => {
+  const user = state.auth.user;
+  return user ? user.id : null;
+};

@@ -24,10 +24,14 @@ import BottomModal from '../components/atoms/BottomModal';
 import { useLazyGetUserPostsQuery } from '../redux/services/post-service';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import MaskedView from '@react-native-masked-view/masked-view';
-
+import character4 from '../assets/images/character4.png';
+import object3 from '../assets/images/object1.png';
 import { LinearGradient } from 'expo-linear-gradient';
 import { selectCurrentUserId } from '../redux/slices/authSlice';
 import SingleCardComponentWithMatch from '../components/molecules/Item/Card/SingleCardComponentWithMatch';
+import AnimatedObject from '../components/molecules/Animation/AnimatedObject';
+import AnimatedComponent from '../components/molecules/Animation/AnimatedComponent';
+import LogInButtonComponent from '../components/atoms/LogInButtonComponent';
 
 
 
@@ -37,6 +41,7 @@ export type props = {
 };
 const UserPostsScreen: React.FC<props> = ({ navigation }) => {
   const filterType = useSelector(selectUserPostsFilterType);
+  const _currentUserId = useSelector(selectCurrentUserId);
   const posts: Array<Post> = useSelector(selectUserPosts);
   const currentUserId = useSelector(selectCurrentUserId);
   const [itemFilterOption, setItemFilterOption] =
@@ -125,6 +130,29 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
   const handleOnFocus = () => {
    
   };
+
+    if (_currentUserId === null) {
+    return (
+      <SafeAreaView
+        style={{
+          height: '100%',
+          backgroundColor: COLORS.lightGrayPrePrimary,
+        }}
+      >
+        <View style={{ zIndex: 1, top: '60%' }}>
+          <AnimatedObject width={300} height={300} source={object3} />
+        </View>
+        <AnimatedComponent
+          title="Not Logged In"
+          description="Please login to see your posts"
+          source={character4}
+        />
+        <View style={{ marginTop: '10%' }}>
+          <LogInButtonComponent navigation={navigation} title="Log in" />
+        </View>
+      </SafeAreaView>
+    );
+  }
   return (
     <SafeAreaView style={styles.feed}>
       <View>
