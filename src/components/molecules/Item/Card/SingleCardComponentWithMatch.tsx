@@ -13,7 +13,7 @@ const SingleCardComponentWithMatch: React.FC<SingleCardProps> = props => {
 
   const handleMatchPress = () => {
     props.navigation.navigate('UserPostsRecommendation', {
-      postId: item.id,
+      data,
     });
   };
 

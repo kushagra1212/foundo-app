@@ -5,7 +5,7 @@ import * as Linking from 'expo-linking';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 import { Provider, useDispatch } from 'react-redux';
@@ -18,6 +18,9 @@ import { setCredentials } from './src/redux/slices/authSlice';
 import { store } from './src/redux/store';
 import HomeScreen from './src/screens/HomeScreen';
 import AuthScreen from './src/screens/authScreens/AuthScreen';
+
+export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
+  Dimensions.get('window');
 
 const Stack = createNativeStackNavigator();
 // Keep the splash screen visible while we fetch resources

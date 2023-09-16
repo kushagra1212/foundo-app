@@ -1,12 +1,13 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { StyleSheet } from 'react-native';
+
 import { COLORS } from '../constants/theme';
 import FeedSearchSceen from './itemScreens/FeedSearchScreen';
 import ItemScreen from './itemScreens/ItemScreen';
 const Stack = createNativeStackNavigator();
 
-export type props = {};
+export type props = object;
 const FeedScreen: React.FC<props> = () => {
   return (
     <Stack.Navigator initialRouteName="ItemScreen">

@@ -21,10 +21,9 @@ const UserPostsHomeScreen = () => {
       <Stack.Screen
         options={{
           title: '',
+          headerShown: false,
           headerShadowVisible: false,
-          headerStyle: {
-            backgroundColor: COLORS.white,
-          },
+          headerStyle: { backgroundColor: COLORS.white },
         }}
         name="UserPostsRecommendation"
         component={UserPostsRecommendationScreen}

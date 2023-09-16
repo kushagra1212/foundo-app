@@ -1,26 +1,27 @@
+import { Formik } from 'formik';
+import { useState } from 'react';
 import {
   Image,
+  Keyboard,
+  KeyboardAvoidingView,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard,
   TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Formik } from 'formik';
 import Toast from 'react-native-toast-message';
-import * as yup from 'yup';
-import { useState } from 'react';
-import { COLORS, SIZES } from '../../constants/theme';
-import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
-import character1 from '../../assets/images/character1.png';
-import { useUserLoginMutation } from '../../redux/services/auth-service';
 import { useDispatch } from 'react-redux';
-import { setCredentials } from '../../redux/slices/authSlice';
+import * as yup from 'yup';
+
+import character1 from '../../assets/images/character1.png';
 import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
+import { Entypo, Ionicons, SimpleLineIcons } from '../../constants/icons';
+import { COLORS, SIZES } from '../../constants/theme';
+import { useUserLoginMutation } from '../../redux/services/auth-service';
+import { setCredentials } from '../../redux/slices/authSlice';
 import { updateFilter } from '../../redux/slices/postSlice';
 
 export type props = {
@@ -81,8 +82,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
             <Formik
               validationSchema={loginValidationSchema}
               initialValues={{ email: '', password: '' }}
-              onSubmit={handleLoginSubmit}
-            >
+              onSubmit={handleLoginSubmit}>
               {({
                 handleChange,
                 handleBlur,
@@ -142,21 +142,18 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
                       isValid ? styles.login_btn_active : styles.login_btn_off
                     }
                     disabled={!isValid}
-                    onPress={() => handleSubmit()}
-                  >
+                    onPress={() => handleSubmit()}>
                     <Text style={styles.login_btn_text}>Login</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('Forgotpassword')}
-                  >
+                    onPress={() => navigation.navigate('Forgotpassword')}>
                     <Text
                       style={{
                         color: COLORS.blueSecondary,
                         fontSize: SIZES.h4,
                         marginTop: 20,
                         marginLeft: '50%',
-                      }}
-                    >
+                      }}>
                       Forgot Password ?
                     </Text>
                   </TouchableOpacity>
@@ -167,8 +164,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
               <Text
                 style={{
                   fontSize: SIZES.h4,
-                }}
-              >
+                }}>
                 New to Foundo ?
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
@@ -176,8 +172,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
                   style={{
                     color: COLORS.blueSecondary,
                     fontSize: SIZES.h4,
-                  }}
-                >
+                  }}>
                   {'  '}Register here
                 </Text>
               </TouchableOpacity>

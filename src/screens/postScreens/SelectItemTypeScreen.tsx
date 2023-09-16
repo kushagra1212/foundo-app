@@ -1,13 +1,14 @@
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import AnimatedComponent from '../../components/molecules/Animation/AnimatedComponent';
+import { useDispatch, useSelector } from 'react-redux';
+
 import character3 from '../../assets/images/character3.png';
 import object2 from '../../assets/images/object4.png';
+import AnimatedComponent from '../../components/molecules/Animation/AnimatedComponent';
 import AnimatedObject from '../../components/molecules/Animation/AnimatedObject';
 import { COLORS, FONTS } from '../../constants/theme';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateAddItemDetailsScreenStatus } from '../../redux/slices/sreenSilce';
 import { selectCurrentUser } from '../../redux/slices/authSlice';
+import { updateAddItemDetailsScreenStatus } from '../../redux/slices/sreenSilce';
 
 type props = {
   navigation: any;
@@ -18,7 +19,7 @@ const SelectItemTypeScreen: React.FC<props> = ({ navigation }) => {
   const openAddItemDetailsScreen = (isFound: boolean) => {
     if (user) {
       dispatch(
-        updateAddItemDetailsScreenStatus({ addItemDetailsScreenStatus: true })
+        updateAddItemDetailsScreenStatus({ addItemDetailsScreenStatus: true }),
       );
     }
     navigation.navigate('AddItemDetailsScreen', { isFounded: isFound });
@@ -46,14 +47,12 @@ const SelectItemTypeScreen: React.FC<props> = ({ navigation }) => {
       <View style={styles.but_view}>
         <TouchableOpacity
           onPress={() => openAddItemDetailsScreen(false)}
-          style={[styles.but, { backgroundColor: COLORS.pinkSecond }]}
-        >
+          style={[styles.but, { backgroundColor: COLORS.pinkSecond }]}>
           <Text style={[FONTS.h2, { color: COLORS.white }]}> Lost Item </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => openAddItemDetailsScreen(true)}
-          style={styles.but}
-        >
+          style={styles.but}>
           <Text style={[FONTS.h2, { color: COLORS.white }]}> Found Item </Text>
         </TouchableOpacity>
       </View>
