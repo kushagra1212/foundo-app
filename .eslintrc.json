@@ -1,5 +1,7 @@
 {
 
-  "extends": ["universe", "plugin:react-hooks/recommended"]
+  "extends": ["universe", "plugin:react-hooks/recommended"],"globals": {
+    "__dirname": true
+}
 
 }

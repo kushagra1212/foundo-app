@@ -6,15 +6,15 @@ import {
   getTokenFromLocalStorage,
   removeItemFromLocalStroage,
 } from '../../storage/foundo-localstorage';
-
 import { api } from './api-service';
+
 type Response = {
   data: any;
 };
 export const authApi = api.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     userLogin: builder.mutation({
-      query: (credentials) => {
+      query: credentials => {
         return {
           url: '/v1/user/signin',
           method: 'POST',
@@ -24,7 +24,7 @@ export const authApi = api.injectEndpoints({
       invalidatesTags: ['Contacts'],
     }),
     userSignup: builder.mutation({
-      query: (credentials) => {
+      query: credentials => {
         return {
           url: '/v1/user/signup',
           method: 'POST',
@@ -39,7 +39,7 @@ export const authApi = api.injectEndpoints({
       query: ({ email, token }) => {
         return `/v1/app-auth/verify-reset-password-token/${email}/${token}`;
       },
-      transformResponse: (response) => {
+      transformResponse: response => {
         if (response?.id) return { userCredentials: response };
         else return { userCredentials: null };
       },
@@ -49,12 +49,12 @@ export const authApi = api.injectEndpoints({
         return {
           url: `/v1/app-auth/reset-password/${email}/${token}`,
           method: 'POST',
-          body: { password: password },
+          body: { password },
         };
       },
     }),
     userUpdate: builder.mutation({
-      query: (update) => {
+      query: update => {
         return {
           url: `v1/user/update`,
           method: 'PATCH',
@@ -66,18 +66,21 @@ export const authApi = api.injectEndpoints({
   }),
   overrideExisting: true,
 });
-export const userLoggedIn = async () => {
-  const token = await getTokenFromLocalStorage(LOCAL_STORAGE_ACCESS_TOKEN_KEY);
-
-  if (!token) return { isLoggedIn: false };
-  try {
-    const res = await fetch(`${BASE_URL}/v1/app-auth/verify-token/${token}`);
-    const resJson = await res.json();
-    if (resJson?.error) return { isLoggedIn: false };
-    return { ...resJson, isLoggedIn: true, token };
-  } catch (err) {
-    return { isLoggedIn: false };
-  }
+export const userLoggedIn = () => {
+  return new Promise(async (resolve, reject) => {
+    const token = await getTokenFromLocalStorage(
+      LOCAL_STORAGE_ACCESS_TOKEN_KEY,
+    );
+    if (!token) return reject({ isLoggedIn: false });
+    try {
+      const res = await fetch(`${BASE_URL}/v1/app-auth/verify-token/${token}`);
+      const resJson = await res.json();
+      if (resJson?.error) reject({ isLoggedIn: false });
+      resolve({ ...resJson, isLoggedIn: true, token });
+    } catch (err) {
+      reject({ isLoggedIn: false });
+    }
+  });
 };
 export const logoutUser = () => {
   removeItemFromLocalStroage(LOCAL_STORAGE_ACCESS_TOKEN_KEY);

@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<App /> should renders correctly 1`] = `
+<RCTSafeAreaView
+  style={
+    {
+      "backgroundColor": "#fafafa",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <View
+    style={
+      {
+        "marginHorizontal": 16,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#000",
+          "fontSize": 48,
+          "fontWeight": "300",
+          "paddingBottom": 16,
+        }
+      }
+    >
+      Oops!
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#000",
+          "fontSize": 32,
+          "fontWeight": "800",
+        }
+      }
+    >
+      There's an error
+    </Text>
+    <Text
+      style={
+        {
+          "paddingVertical": 16,
+        }
+      }
+    >
+      Error: expo-linking needs access to the expo-constants manifest (app.json or app.config.js) to determine what URI scheme to use. Setup the manifest and rebuild: https://github.com/expo/expo/blob/main/packages/expo-constants/README.md
+    </Text>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#2196f3",
+          "borderRadius": 50,
+          "opacity": 1,
+          "padding": 16,
+        }
+      }
+    >
+      <Text
+        style={
+          {
+            "color": "#fff",
+            "fontWeight": "600",
+            "textAlign": "center",
+          }
+        }
+      >
+        Try again
+      </Text>
+    </View>
+  </View>
+</RCTSafeAreaView>
+`;
