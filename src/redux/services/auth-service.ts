@@ -71,14 +71,16 @@ export const userLoggedIn = () => {
     const token = await getTokenFromLocalStorage(
       LOCAL_STORAGE_ACCESS_TOKEN_KEY,
     );
-    if (!token) return reject({ isLoggedIn: false });
+    if (!token) return resolve({ isLoggedIn: false });
     try {
       const res = await fetch(`${BASE_URL}/v1/app-auth/verify-token/${token}`);
       const resJson = await res.json();
-      if (resJson?.error) reject({ isLoggedIn: false });
+      if (resJson?.error) resolve({ isLoggedIn: false });
       resolve({ ...resJson, isLoggedIn: true, token });
     } catch (err) {
-      reject({ isLoggedIn: false });
+      resolve(
+        new Error('Something went wrong while trying to verify your token'),
+      );
     }
   });
 };

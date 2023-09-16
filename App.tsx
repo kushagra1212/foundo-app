@@ -1,13 +1,14 @@
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { Dimensions, Text } from 'react-native';
+import { ActivityIndicator, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 
 import Error from './src/components/Error';
 import Foundo from './src/components/Foundo';
 import { LoadFoundo } from './src/components/LoadFoundo';
+import { COLORS } from './src/constants/theme';
 import { store } from './src/redux/store';
 // Re-export the default UI
 
@@ -23,7 +24,6 @@ SplashScreen.preventAutoHideAsync();
 const App = () => {
   const [isLoaded, error, credentials] = LoadFoundo();
 
-  console.log(isLoaded, error, credentials);
   useEffect(() => {
     if (isLoaded) {
       (async () => {
@@ -36,7 +36,7 @@ const App = () => {
     return (
       <SafeAreaView>
         <StatusBar style="dark" />
-        <Text>Loading...</Text>
+        <ActivityIndicator size="large" color={COLORS.redPrimary} />
       </SafeAreaView>
     );
   }

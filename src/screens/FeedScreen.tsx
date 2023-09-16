@@ -20,12 +20,6 @@ const FeedScreen: React.FC<props> = () => {
           headerShown: false,
           headerShadowVisible: false,
           headerLeft: () => null,
-          // <TouchableOpacity
-          //   style={styles.left_btn}
-          //   onPress={() => console.log('left-btn')}
-          // >
-          //   <Foundation name="indent-more" size={30} />
-          // </TouchableOpacity>
           headerTintColor: 'black',
           headerTitleStyle: {
             fontWeight: 'bold',

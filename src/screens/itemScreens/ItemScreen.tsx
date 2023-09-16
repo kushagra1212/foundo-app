@@ -38,6 +38,7 @@ import {
   selectFeedSearchScreenStatus,
   updateFeedSearchScreenStatus,
 } from '../../redux/slices/sreenSilce';
+import { LinearGradientColorBlackToWhite } from '../../utils';
 
 export type props = {
   navigation: any;
@@ -57,7 +58,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
   const [getPost, { isLoading }] = useLazyGetPostsQuery();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [postFound, setPostFound] = useState<boolean>(false);
+  const [postFound, setPostFound] = useState<boolean>(true);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const handleChangeFilter = (id: number) => {
@@ -89,11 +90,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
     if (loading || feedSearchScreenStatus) return;
     setLoading(true);
     const cat = { ...itemFilterOption };
-    // if (itemFilterOption.category) {
-    //   cat.category = String(
-    //     ITEMCAT_TO_NUM.get(String(itemFilterOption.category))
-    //   );
-    // }
+
     try {
       const posts = await getPost({
         offset,
@@ -107,13 +104,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
       console.log(e);
       setLoading(false);
       setReachedEnd(true);
-      // Toast.show({
-      //   type: 'error',
-      //   props: {
-      //     text: e.status,
-      //     message: e.error,
-      //   },
-      // });
+
       if (posts.length !== 0)
         Toast.show({
           type: 'success',
@@ -155,12 +146,6 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
             </Text>
           </View>
           <Feather style={styles.item_search} name="search" size={35} />
-          {/* 
-          <TextInput
-            style={[styles.item_text_ip, FONTS.body3]}
-            placeholder="Search Items here.."
-          />
-        </View> */}
         </TouchableOpacity>
         <View
           style={{
@@ -207,23 +192,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
               marginTop: 0,
             }}>
             <LinearGradient
-              colors={[
-                '#FFFFFF00',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-              ]}
+              colors={LinearGradientColorBlackToWhite}
               style={{
                 flex: 1,
                 borderRadius: 5,
@@ -258,9 +227,6 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
           />
         </BottomModal>
       )}
-      {/* <View>
-        <LogoutButtonComponent navigation={navigation} />
-      </View> */}
     </SafeAreaView>
   );
 };

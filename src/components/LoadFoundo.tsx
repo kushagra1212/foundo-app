@@ -18,11 +18,10 @@ export function LoadFoundo(): [boolean, Error | null, credentialsType] {
 
   const [credentials, setCredentials] = useState<credentialsType>(null);
   const url = Linking.useURL();
-  console.log(isfontLoaded, 'isfontLoaded');
 
   useEffect(() => {
-    const flag = true;
-    if (isfontLoaded) {
+    let flag = true;
+    if (isfontLoaded && flag) {
       userLoggedIn()
         .then((res: any) => {
           if (!flag) return;
@@ -31,7 +30,6 @@ export function LoadFoundo(): [boolean, Error | null, credentialsType] {
               user: res.user,
               jwtToken: res.token,
             });
-            setLoaded(true);
           } else if (url) {
             const { path } = Linking.parse(url);
             const pathArray = path?.split('/');
@@ -41,18 +39,21 @@ export function LoadFoundo(): [boolean, Error | null, credentialsType] {
                 jwtResetToken: pathArray[pathArray?.length - 1],
                 jwtToken: '',
               });
-              setLoaded(true);
             }
-          } else {
-            setLoaded(true);
           }
         })
         .catch(err => {
           console.log(err);
-
+          setError(err);
+        })
+        .finally(() => {
           setLoaded(true);
         });
     }
+
+    return () => {
+      flag = false;
+    };
   }, [isfontLoaded]);
 
   return [loaded, error, credentials];
