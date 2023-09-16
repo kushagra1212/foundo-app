@@ -1,5 +1,6 @@
-import { Modal, View, Text, Pressable, StyleSheet } from 'react-native';
 import React from 'react';
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+
 import { Ionicons } from '../../constants/icons';
 import { COLORS, SIZES } from '../../constants/theme';
 type AnimationType = 'slide' | 'none' | 'fade' | undefined;
@@ -33,8 +34,7 @@ const BottomModal: React.FC<Props> = ({
       transparent={true}
       visible={isVisible}
       statusBarTranslucent={true}
-      style={{ backgroundColor: COLORS.lightGrayPrePrimary }}
-    >
+      style={{ backgroundColor: COLORS.lightGrayPrePrimary }}>
       <View style={backgroundFilter ? styles.modal : { height: '100%' }}></View>
       <View style={[styles.modalContent, { height }]}>
         <View style={styles.titleContainer}>
@@ -50,7 +50,7 @@ const BottomModal: React.FC<Props> = ({
             </Pressable>
           )}
           <Text style={styles.title}>{titleText}</Text>
-          
+
           <Pressable onPress={onClose}>
             <Ionicons
               style={{
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     width: '100%',
     opacity: 1,
     backgroundColor: COLORS.lightGrayPrePrimary,
-    borderTopRightRadius:18,
+    borderTopRightRadius: 18,
     borderTopLeftRadius: 18,
     position: 'absolute',
     bottom: 0,

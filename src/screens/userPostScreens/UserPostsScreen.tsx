@@ -6,25 +6,25 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 
-import character4 from '../assets/images/character4.png';
-import object3 from '../assets/images/object1.png';
-import BottomModal from '../components/atoms/BottomModal';
+import character4 from '../../assets/images/character4.png';
+import object3 from '../../assets/images/object1.png';
+import BottomModal from '../../components/atoms/BottomModal';
 import FilterOptionComponent, {
   FILTER_ITEMS,
   LOST_ITEM,
-} from '../components/atoms/FilterOptionItem';
-import LogInButtonComponent from '../components/atoms/LogInButtonComponent';
-import AnimatedComponent from '../components/molecules/Animation/AnimatedComponent';
-import AnimatedObject from '../components/molecules/Animation/AnimatedObject';
-import AdditionalFilterOptionComponent from '../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
-import FilterItemComponent from '../components/molecules/Filter/FilterItemComponent';
-import CardsComponent from '../components/molecules/Item/Card/CardsComponent';
-import SingleCardComponentWithMatch from '../components/molecules/Item/Card/SingleCardComponentWithMatch';
-import { COLORS, FONTS } from '../constants/theme';
-import { FilterItemOn, Post } from '../interfaces';
-import { filterItemOnInitial } from '../interfaces/initials';
-import { useLazyGetUserPostsQuery } from '../redux/services/post-service';
-import { selectCurrentUserId } from '../redux/slices/authSlice';
+} from '../../components/atoms/FilterOptionItem';
+import LogInButtonComponent from '../../components/atoms/LogInButtonComponent';
+import AnimatedComponent from '../../components/molecules/Animation/AnimatedComponent';
+import AnimatedObject from '../../components/molecules/Animation/AnimatedObject';
+import AdditionalFilterOptionComponent from '../../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
+import FilterItemComponent from '../../components/molecules/Filter/FilterItemComponent';
+import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
+import SingleCardComponentWithMatch from '../../components/molecules/Item/Card/SingleCardComponentWithMatch';
+import { COLORS, FONTS } from '../../constants/theme';
+import { FilterItemOn, Post } from '../../interfaces';
+import { filterItemOnInitial } from '../../interfaces/initials';
+import { useLazyGetUserPostsQuery } from '../../redux/services/post-service';
+import { selectCurrentUserId } from '../../redux/slices/authSlice';
 import {
   resetUserPosts,
   selectUserPosts,
@@ -33,7 +33,7 @@ import {
   selectUserPostsOffset,
   updateUserPosts,
   updateUsersPostsFilter,
-} from '../redux/slices/postSlice';
+} from '../../redux/slices/postSlice';
 
 export type props = {
   navigation: any;

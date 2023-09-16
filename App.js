@@ -1,23 +1,23 @@
-import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Toast from 'react-native-toast-message';
-import AuthScreen from './src/screens/authScreens/AuthScreen';
-import HomeScreen from './src/screens/HomeScreen';
-import { toastConfig } from './src/configs/toastConfig';
 import { useFonts } from 'expo-font';
-import { ROBOTO_FONTS } from './src/assets/fonts';
-import { store } from './src/redux/store';
-import { Provider, useDispatch } from 'react-redux';
-import { userLoggedIn } from './src/redux/services/auth-service';
-import { useEffect, useState } from 'react';
-import { routesConfig } from './src/configs/routesConfig';
-import { setCredentials } from './src/redux/slices/authSlice';
-import { StyleSheet } from 'react-native';
 import * as Linking from 'expo-linking';
-
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
+import { Provider, useDispatch } from 'react-redux';
+
+import { ROBOTO_FONTS } from './src/assets/fonts';
+import { routesConfig } from './src/configs/routesConfig';
+import { toastConfig } from './src/configs/toastConfig';
+import { userLoggedIn } from './src/redux/services/auth-service';
+import { setCredentials } from './src/redux/slices/authSlice';
+import { store } from './src/redux/store';
+import HomeScreen from './src/screens/HomeScreen';
+import AuthScreen from './src/screens/authScreens/AuthScreen';
 
 const Stack = createNativeStackNavigator();
 // Keep the splash screen visible while we fetch resources
@@ -33,14 +33,14 @@ const Foundo = () => {
     let flag = true;
 
     userLoggedIn()
-      .then((res) => {
+      .then(res => {
         if (!flag) return;
         if (res.isLoggedIn === true) {
           dispatch(
             setCredentials({
               user: res.user,
               jwtToken: res.token,
-            })
+            }),
           );
           setIsloggedIn(res.isLoggedIn);
         } else if (url) {
@@ -52,12 +52,12 @@ const Foundo = () => {
                 user: { email: pathArray[pathArray?.length - 2] },
                 jwtResetToken: pathArray[pathArray?.length - 1],
                 jwtToken: '',
-              })
+              }),
             );
           }
         }
       })
-      .catch((err) => console.log(err))
+      .catch(err => console.log(err))
       .finally(async () => {
         await SplashScreen.hideAsync();
         setIsLoading(false);
@@ -72,22 +72,25 @@ const Foundo = () => {
   const prefix = Linking.createURL('app');
 
   return (
-    <NavigationContainer linking={{ prefixes: [prefix], config: routesConfig }}>
-      <Stack.Navigator initialRouteName={'Home'}>
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Auth"
-          component={AuthScreen}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="Home"
-          component={HomeScreen}
-        />
-      </Stack.Navigator>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer
+        linking={{ prefixes: [prefix], config: routesConfig }}>
+        <Stack.Navigator initialRouteName={'Home'}>
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Auth"
+            component={AuthScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Home"
+            component={HomeScreen}
+          />
+        </Stack.Navigator>
 
-      <Toast config={toastConfig} visibilityTime={2000} />
-    </NavigationContainer>
+        <Toast config={toastConfig} visibilityTime={2000} />
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 };
 export default function App() {

@@ -1,29 +1,30 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
-import BottomSheetInteractive, { BottomSheetRef } from '../Sheet/BottomSheetInteractive';
-import { View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-export type RecommendationSheetParamList = {
-}
+import BottomSheetInteractive, {
+  BottomSheetRef,
+} from '../Sheet/BottomSheetInteractive';
+
+export type RecommendationSheetParamList = object;
 
 export type RecommendationSheetProps = {
-    navigation: any;
+  navigation: any;
 };
 
 const TabBarStyle = {};
-const RecommendationSheet: React.FC<RecommendationSheetProps> = ({navigation}) => {
-
+const RecommendationSheet: React.FC<RecommendationSheetProps> = ({
+  navigation,
+}) => {
   const sheetRef = React.useRef<BottomSheetRef>(null);
-  const [showBottomSheet, setShowBottomSheet] = useState<boolean>(false);
+  const [showBottomSheet, setShowBottomSheet] = useState<boolean>(true);
   const bottomSheetToggle = () => {
     if (sheetRef.current?.isActive()) {
       sheetRef.current?.hideBottomSheet();
 
-
       navigation?.getParent()?.setOptions({
         tabBarStyle: { ...TabBarStyle, display: 'flex' },
       });
-     // opacity.value = 0;
+      // opacity.value = 0;
       setTimeout(() => {
         setShowBottomSheet(false);
       }, 500);
@@ -31,7 +32,7 @@ const RecommendationSheet: React.FC<RecommendationSheetProps> = ({navigation}) =
       setShowBottomSheet(true);
       setTimeout(() => {
         sheetRef.current?.showBottomSheet();
-       // opacity.value = 0.5;
+        // opacity.value = 0.5;
         navigation?.getParent()?.setOptions({
           tabBarStyle: { ...TabBarStyle, display: 'none' },
         });
@@ -39,17 +40,15 @@ const RecommendationSheet: React.FC<RecommendationSheetProps> = ({navigation}) =
     }
   };
 
-  if(!showBottomSheet) return null;
-
   return (
-    <BottomSheetInteractive bottomSheetToggle={bottomSheetToggle} ref={sheetRef}>
-        <View>
-            <Text>Recommendation Sheet</Text>
-        </View>
+    <BottomSheetInteractive
+      bottomSheetToggle={bottomSheetToggle}
+      ref={sheetRef}>
+      <View>
+        <Text>Recommendation Sheet</Text>
+      </View>
     </BottomSheetInteractive>
   );
 };
-const styles = StyleSheet.create({
- 
-});
+const styles = StyleSheet.create({});
 export default RecommendationSheet;

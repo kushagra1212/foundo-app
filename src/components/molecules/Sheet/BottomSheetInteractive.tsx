@@ -1,14 +1,15 @@
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import { useImperativeHandle, useRef } from 'react';
-import { forwardRef } from 'react';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import WebView from 'react-native-webview';
+
+import { COLORS } from '../../../constants/theme';
 const { width: SCREEN_WIDTH, height: SCREEEN_HEIGHT } =
   Dimensions.get('window');
 
@@ -59,10 +60,10 @@ const BottomSheetInteractive = forwardRef<BottomSheetRef, BottomSheetProps>(
       };
     });
     const gesture = Gesture.Pan()
-      .onBegin((e) => {
+      .onBegin(e => {
         contextY.value = offsetY.value;
       })
-      .onUpdate((e) => {
+      .onUpdate(e => {
         offsetY.value = e.translationY + contextY.value;
       })
       .onEnd(() => {
@@ -77,25 +78,24 @@ const BottomSheetInteractive = forwardRef<BottomSheetRef, BottomSheetProps>(
     return (
       <GestureDetector gesture={gesture}>
         <Animated.View
-          style={[styles.sheetContainer, AnimatedBottomSheetStyle]}
-        >
+          style={[styles.sheetContainer, AnimatedBottomSheetStyle]}>
           <View
             style={{
               ...StyleSheet.absoluteFillObject,
               backgroundColor: 'transparent',
-            }}
-          >
+            }}>
             <WebView
               style={{ flex: 1, backgroundColor: 'transparent' }}
               originWhitelist={['*']}
               source={{
                 html: `<div style="
         position: absolute;
+
         left: 0;
         right: 0;
         top: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.17);
+        background-color: ${COLORS.lightGrayPrePrimary};
         backdrop-filter: blur(30px);
         "/>`,
               }}
@@ -108,7 +108,7 @@ const BottomSheetInteractive = forwardRef<BottomSheetRef, BottomSheetProps>(
         </Animated.View>
       </GestureDetector>
     );
-  }
+  },
 );
 const styles = StyleSheet.create({
   sheetContainer: {
@@ -120,21 +120,18 @@ const styles = StyleSheet.create({
     zIndex: 5,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
   },
   wrapper: {
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-
     // justifyContent: 'center',
     alignItems: 'center',
   },
   dragger: {
-    width: 50,
-    height: 5,
+    width: 70,
+    height: 6,
     borderRadius: 5,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.blackPrimary,
     margin: 10,
   },
   content: {

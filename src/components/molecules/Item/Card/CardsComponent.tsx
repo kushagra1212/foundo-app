@@ -1,12 +1,12 @@
-import { StyleSheet, FlatList, ActivityIndicator } from 'react-native';
-import { COLORS } from '../../../../constants/theme';
+import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 
-import { Post } from '../../../../interfaces';
 import character5 from '../../../../assets/images/character5.png';
+import { COLORS } from '../../../../constants/theme';
+import { Post } from '../../../../interfaces';
 import AnimatedComponent from '../../Animation/AnimatedComponent';
 export type props = {
   postFound: boolean;
-  posts: Array<Post>;
+  posts: Post[];
   reachedEnd: boolean;
   fetchPosts: () => void;
   loading: boolean;
@@ -48,7 +48,7 @@ const CardsComponent: React.FC<props> = ({
         />
       )}
       onEndReached={reachedEnd ? null : fetchPosts}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={item => item.id.toString()}
       ListFooterComponent={
         loading ? (
           <ActivityIndicator

@@ -1,27 +1,32 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
+
 import { Entypo } from '../../../../constants/icons';
 import { ITEM_STANDARD_COLORS } from '../../../../constants/item';
 import { COLORS, FONTS, SIZES } from '../../../../constants/theme';
 import { Post } from '../../../../interfaces';
-import { useState } from 'react';
+import { selectCurrentUserId } from '../../../../redux/slices/authSlice';
 import { capitalizeEveryWord, capitalizeFirstLetter } from '../../../../utils';
 import ItemComponent from '../ItemViewComponent';
-import { selectCurrentUserId } from '../../../../redux/slices/authSlice';
-import { useSelector } from 'react-redux';
 
 export type SingleCardProps = {
   item: Post;
   navigation: any;
 };
-const SingleCardComponent: React.FC<SingleCardProps> = ({ item, navigation }) => {
+const SingleCardComponent: React.FC<SingleCardProps> = ({
+  item,
+  navigation,
+}) => {
   const [isCardDetailVisible, setIsCardDetailVisible] =
     useState<boolean>(false);
-  const currentUserId =    useSelector(selectCurrentUserId);
+  const currentUserId = useSelector(selectCurrentUserId);
   const toggleCardDetail = () => {
     setIsCardDetailVisible(!isCardDetailVisible);
   };
 
-  const firstName =currentUserId && item.userId==currentUserId?"You":item.firstName;
+  const firstName =
+    currentUserId && item.userId == currentUserId ? 'You' : item.firstName;
   return (
     <View style={styles.card}>
       {isCardDetailVisible && (
@@ -41,16 +46,14 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({ item, navigation }) =>
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
-          }}
-        >
+          }}>
           <View style={styles.item_name}>
             <Text
               style={{
                 color: COLORS.black,
                 fontSize: SIZES.h3,
                 fontWeight: '700',
-              }}
-            >
+              }}>
               {capitalizeFirstLetter(item.itemName)}
             </Text>
           </View>
@@ -67,8 +70,7 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({ item, navigation }) =>
               fontSize: SIZES.body3,
               fontWeight: '400',
               textAlign: 'left',
-            }}
-          >
+            }}>
             {item.description}
           </Text>
         </View>
@@ -78,8 +80,7 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({ item, navigation }) =>
               color: COLORS.black,
               fontSize: SIZES.body3,
               fontWeight: '400',
-            }}
-          >
+            }}>
             <Entypo
               style={{ width: '10%', fontWeight: '100', opacity: 0.6 }}
               name="clock"
@@ -93,8 +94,7 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({ item, navigation }) =>
               fontSize: SIZES.body3,
               fontWeight: '400',
               marginRight: 10,
-            }}
-          >
+            }}>
             <Entypo
               style={{ width: '10%', fontWeight: '100', opacity: 0.8 }}
               name="location-pin"
@@ -123,8 +123,7 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({ item, navigation }) =>
               fontWeight: '600',
               textAlign: 'center',
               margin: 5,
-            }}
-          >
+            }}>
             {item.brand}
           </Text>
         </View>
@@ -134,19 +133,16 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({ item, navigation }) =>
             flexDirection: 'row',
             justifyContent: 'flex-start',
             alignItems: 'center',
-          }}
-        >
+          }}>
           <TouchableOpacity
             onPress={toggleCardDetail}
-            style={styles.view_details}
-          >
+            style={styles.view_details}>
             <Text
               style={{
                 ...FONTS.h3,
                 color: COLORS.white,
                 textAlign: 'center',
-              }}
-            >
+              }}>
               View
             </Text>
           </TouchableOpacity>
@@ -157,18 +153,15 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({ item, navigation }) =>
               justifyContent: 'flex-end',
               alignItems: 'center',
               width: '45%',
-            }}
-          >
+            }}>
             <Text
               style={{
                 fontSize: SIZES.body4,
-              }}
-            >
+              }}>
               <Text
                 style={{
                   fontWeight: '300',
-                }}
-              >
+                }}>
                 posted by
               </Text>{' '}
               {firstName}

@@ -1,4 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+
 import { COLORS, FONTS } from '../../constants/theme';
 export const LOST_ITEM = 0;
 export const FOUND_ITEM = 1;
@@ -11,7 +12,7 @@ const FilterOptionComponent = ({
   selectedFilterId,
   handleChangeFilter,
 }) => {
-  const isItemSelected = (id) => {
+  const isItemSelected = id => {
     return id === selectedFilterId;
   };
 
@@ -24,16 +25,14 @@ const FilterOptionComponent = ({
           ? styles.selected_option
           : styles.not_selected_option,
       ]}
-      disabled={isItemSelected(item.id)}
-    >
+      disabled={isItemSelected(item.id)}>
       <Text
         style={[
           FONTS.h4,
           isItemSelected(item.id)
             ? styles.selected_option_text
             : styles.not_selected_option_text,
-        ]}
-      >
+        ]}>
         {item.text}
       </Text>
     </TouchableOpacity>
@@ -44,7 +43,6 @@ const styles = StyleSheet.create({
   base_option: {
     borderRadius: 10,
     display: 'flex',
-    padding: 10,
     padding: 15,
     elevation: 15,
     height: '80%',

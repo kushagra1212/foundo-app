@@ -1,25 +1,26 @@
+import React, { useMemo, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
+  Dimensions,
   FlatList,
   ScrollView,
-  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import React, { useMemo, useState } from 'react';
+
+import { AntDesign } from '../../../constants/icons';
+import { ITEMCAT_TO_NUM } from '../../../constants/item';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
 import { FilterItemOn } from '../../../interfaces';
+import { filterItemOnInitial } from '../../../interfaces/initials';
+import BottomModal from '../../atoms/BottomModal';
 import {
   ListFilterItemSlideDownInput,
   ListFilterItemSlideDownList,
   ListFilterItemViewAllType,
 } from '../../atoms/ListItem';
-import { AntDesign } from '../../../constants/icons';
-import { ITEMCAT_TO_NUM } from '../../../constants/item';
 import MiniItemTextIcon from '../../atoms/MiniItemTextIcon';
-import { filterItemOnInitial } from '../../../interfaces/initials';
-import BottomModal from '../../atoms/BottomModal';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 type Props = {
@@ -35,8 +36,8 @@ const FilterItemComponent: React.FC<Props> = ({
   const [viewAll, setViewAll] = useState<boolean>(false);
   const [slideDownButton, setSlideDownButton] = useState<boolean>(false);
   const categories = useMemo(() => {
-    let categories: Array<[string, number]> = [];
-    for (let element of ITEMCAT_TO_NUM.entries()) {
+    const categories: [string, number][] = [];
+    for (const element of ITEMCAT_TO_NUM.entries()) {
       categories.push(element);
     }
     return categories;
@@ -106,8 +107,7 @@ const FilterItemComponent: React.FC<Props> = ({
                 ? '0'
                 : '1',
           })
-        }
-      >
+        }>
         <AntDesign
           style={{
             backgroundColor: COLORS.white,
@@ -130,8 +130,7 @@ const FilterItemComponent: React.FC<Props> = ({
             ...(options.latest === undefined || options.latest === '0'
               ? { color: COLORS.GrayPrimary }
               : {}),
-          }}
-        >
+          }}>
           Get Lastest At Top
         </Text>
       </TouchableOpacity>
@@ -146,16 +145,14 @@ const FilterItemComponent: React.FC<Props> = ({
           JSON.stringify(options) === JSON.stringify(filterItemOnInitial)
             ? () => {}
             : getItems()
-        }
-      >
+        }>
         <Text style={{ ...FONTS.h3, color: COLORS.white }}>Find</Text>
       </TouchableOpacity>
       <BottomModal
         backgroundFilter={false}
         isVisible={viewAll}
         onClose={closeModal}
-        effect="fade"
-      >
+        effect="fade">
         <View style={styles.view_container}>
           <FlatList
             data={categories}
@@ -171,7 +168,7 @@ const FilterItemComponent: React.FC<Props> = ({
                 updateItemFilterOption={updateItemFilterOption}
               />
             )}
-            keyExtractor={(item) => {
+            keyExtractor={item => {
               return item[0].toString();
             }}
           />
@@ -182,15 +179,13 @@ const FilterItemComponent: React.FC<Props> = ({
                 ? {}
                 : { backgroundColor: COLORS.GraySecondary }),
             }}
-            onPress={options.category !== '' ? viewAllHandler : () => ({})}
-          >
+            onPress={options.category !== '' ? viewAllHandler : () => ({})}>
             <Text
               style={{
                 color: COLORS.white,
                 fontSize: SIZES.h3,
                 fontWeight: '600',
-              }}
-            >
+              }}>
               Add
             </Text>
           </TouchableOpacity>

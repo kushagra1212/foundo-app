@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import { Post } from '../../interfaces';
 interface PostState {
   posts: Post[];
@@ -27,16 +28,17 @@ const postSlice = createSlice({
   reducers: {
     updatePosts: (state, action) => {
       state.offset = action.payload.offset;
-      let set = new Set([...state.posts, ...action.payload.posts]);
-      let post = [];
-      for (let ele of set) post.push(ele);
+      const set = new Set([...state.posts, ...action.payload.posts]);
+      const post = [];
+      for (const ele of set) post.push(ele);
       state.posts = post;
-    },  updateFilter: (state, action) => {
+    },
+    updateFilter: (state, action) => {
       state.posts = [];
       state.filterType = action.payload.filterType;
       state.offset = 0;
     },
-    resetPosts: (state) => {
+    resetPosts: state => {
       state.posts = [];
       state.offset = 0;
     },
@@ -49,15 +51,21 @@ const postSlice = createSlice({
       state.userPostsFilterType = action.payload.filterType;
       state.userPostsOffset = 0;
     },
-    resetUserPosts: (state) => {
+    resetUserPosts: state => {
       state.userPosts = [];
       state.userPostsOffset = 0;
     },
-  
   },
 });
 
-export const { updatePosts, updateFilter, resetPosts ,updateUserPosts,updateUsersPostsFilter,resetUserPosts} = postSlice.actions;
+export const {
+  updatePosts,
+  updateFilter,
+  resetPosts,
+  updateUserPosts,
+  updateUsersPostsFilter,
+  resetUserPosts,
+} = postSlice.actions;
 
 export default postSlice.reducer;
 export const selectLimit = (state: any) => state.post.limit;
@@ -65,12 +73,10 @@ export const selectOffset = (state: any) => state.post.offset;
 export const selectPosts = (state: any) => state.post.posts;
 export const selectFilterType = (state: any) => state.post.filterType;
 
-
 // User Posts Selectors
 
 export const selectUserPostsLimit = (state: any) => state.post.userPostsLimit;
 export const selectUserPostsOffset = (state: any) => state.post.userPostsOffset;
 export const selectUserPosts = (state: any) => state.post.userPosts;
-export const selectUserPostsFilterType = (state: any) => state.post.userPostsFilterType;
-
-
+export const selectUserPostsFilterType = (state: any) =>
+  state.post.userPostsFilterType;
