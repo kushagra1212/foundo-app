@@ -1,4 +1,10 @@
-import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  StyleSheet,
+} from 'react-native';
 
 import character5 from '../../../../assets/images/character5.png';
 import { COLORS } from '../../../../constants/theme';
@@ -22,7 +28,7 @@ const CardsComponent: React.FC<props> = ({
   navigation,
   SingleCardComponent,
 }) => {
-  const onScroll = (event: any) => {
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { nativeEvent } = event;
     const { contentOffset } = nativeEvent;
     const { y } = contentOffset;
@@ -39,6 +45,7 @@ const CardsComponent: React.FC<props> = ({
   }
   return (
     <FlatList
+      testID="card-list"
       data={posts}
       renderItem={({ item }) => (
         <SingleCardComponent
@@ -58,7 +65,6 @@ const CardsComponent: React.FC<props> = ({
           />
         ) : null
       }
-      onScroll={onScroll}
     />
   );
 };

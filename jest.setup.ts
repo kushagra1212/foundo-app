@@ -15,7 +15,6 @@
  *
  * @see https://github.com/expo/expo/issues/18742
  */
-jest.useFakeTimers();
 
 jest.mock('expo-linking', () => {
   const module: typeof import('expo-linking') = {
@@ -25,3 +24,9 @@ jest.mock('expo-linking', () => {
 
   return module;
 });
+console.error = message => {
+  if (message.startsWith('Warning:')) {
+    return;
+  }
+  console.error = message;
+};

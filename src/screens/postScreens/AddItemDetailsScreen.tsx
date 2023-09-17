@@ -1,27 +1,28 @@
+import { Formik, FormikProps } from 'formik';
+import { useCallback, useEffect, useState } from 'react';
+import { BackHandler, Dimensions, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, View, StyleSheet, Dimensions, BackHandler } from 'react-native';
-import { Ionicons } from '../../constants/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateAddItemDetailsScreenStatus } from '../../redux/slices/sreenSilce';
-import { selectCurrentUser } from '../../redux/slices/authSlice';
+import * as yup from 'yup';
+
 import character2 from '../../assets/images/character1.png';
-import { COLORS } from '../../constants/theme';
 import NotLoggedInComponent from '../../components/atoms/NotLoggedInComponent';
-import { useState, useCallback, useEffect } from 'react';
+import StepWiseProgress from '../../components/atoms/ProgressBar/StepWiseProgress';
+import NextStepButton from '../../components/molecules/ItemForm/NextStepButton';
+import PrevStepButton from '../../components/molecules/ItemForm/PrevStepButton';
 import Step1ItemNameComponent from '../../components/molecules/ItemForm/Step1ItemNameComponent';
 import Step2SelectColorComponent from '../../components/molecules/ItemForm/Step2SelectColorComponent';
 import Step3DateTimeComponent from '../../components/molecules/ItemForm/Step3DateTimeComponent';
 import Step4DescriptionComponent from '../../components/molecules/ItemForm/Step4DescriptionComponent';
 import Step5CategoryComponent from '../../components/molecules/ItemForm/Step5CategoryComponent';
 import Step6UploadPicturesComponent from '../../components/molecules/ItemForm/Step6UploadPicturesComponent';
-import PrevStepButton from '../../components/molecules/ItemForm/PrevStepButton';
-import NextStepButton from '../../components/molecules/ItemForm/NextStepButton';
-import StepWiseProgress from '../../components/atoms/ProgressBar/StepWiseProgress';
-import { Formik, FormikProps } from 'formik';
-import * as yup from 'yup';
-import { AddPost } from '../../interfaces';
-import Step8SetLocationComponent from '../../components/molecules/ItemForm/Step8SetLocationComponent';
 import Step7BrandandCityComponent from '../../components/molecules/ItemForm/Step7BrandandCityComponent';
+import Step8SetLocationComponent from '../../components/molecules/ItemForm/Step8SetLocationComponent';
+import { Ionicons } from '../../constants/icons';
+import { COLORS } from '../../constants/theme';
+import { AddPost } from '../../interfaces';
+import { selectCurrentUser } from '../../redux/slices/authSlice';
+import { updateAddItemDetailsScreenStatus } from '../../redux/slices/sreenSilce';
 type props = {
   navigation: any;
 };
@@ -41,16 +42,16 @@ const initialPost: AddPost = {
   isFounded: false,
   userId: 1,
 };
-let { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
   const dispatch = useDispatch();
   const [isValid, setValid] = useState<boolean>(false);
   const user = useSelector(selectCurrentUser);
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const _isFounded =navigation.getState().routes[1].params.isFounded;
+  const _isFounded = navigation.getState().routes[1].params.isFounded;
   const closeThisScreen = () => {
     dispatch(
-      updateAddItemDetailsScreenStatus({ addItemDetailsScreenStatus: false })
+      updateAddItemDetailsScreenStatus({ addItemDetailsScreenStatus: false }),
     );
 
     // Clean up the Current Screen from the stack
@@ -74,7 +75,7 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
   };
   const stepComponent: React.FC<
     FormikProps<AddPost> & currentStepComponentProps
-  > = (props) => {
+  > = props => {
     switch (currentStep) {
       case 1:
         return <Step1ItemNameComponent {...props} />;
@@ -108,6 +109,14 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
   };
 
   const CurrentStepComponent = useCallback(stepComponent, [currentStep]);
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', closeThisScreen);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', closeThisScreen);
+    };
+  }, []);
+
   if (!user) {
     return (
       <SafeAreaView mode="margin">
@@ -126,15 +135,10 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
       </SafeAreaView>
     );
   }
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', closeThisScreen);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', closeThisScreen);
-    };
-  }, []);
+
   return (
     <SafeAreaView>
-      <View style={[styles.container, { height: height }]}>
+      <View style={[styles.container, { height }]}>
         <PrevStepButton
           close={() => (currentStep === 1 ? closeThisScreen() : previousStep())}
         />
@@ -147,8 +151,7 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
               userId: user.id,
               isFounded: _isFounded,
             }}
-            onSubmit={handleSubmit}
-          >
+            onSubmit={handleSubmit}>
             {(props: FormikProps<AddPost>) => (
               <CurrentStepComponent isValidHandler={isValidHander} {...props} />
             )}
@@ -212,7 +215,7 @@ const ItemValidationSchema = yup.object().shape({
   pictures: yup.array().of(
     yup.object().shape({
       image: yup.string().required('Image is required').min(100),
-    })
+    }),
   ),
   location: yup.object().shape({
     latitude: yup.number().required('Location is required'),

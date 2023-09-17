@@ -2,7 +2,8 @@ import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export type ErrorProps = {
-  error: Error | null;
+  error: Error;
+  resetError: () => void;
 };
 
 const Error: React.FC<ErrorProps> = ({ error }) => {

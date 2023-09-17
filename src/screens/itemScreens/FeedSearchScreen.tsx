@@ -1,7 +1,14 @@
 import MaskedView from '@react-native-masked-view/masked-view';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
-import { BackHandler, Image, StyleSheet, Text, View } from 'react-native';
+import {
+  BackHandler,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
@@ -124,9 +131,9 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
   return (
     <SafeAreaView style={{ width: '100%', height: '100%' }}>
       <View style={styles.search_header}>
-        <View>
-          <Ionicons onPress={onPressBack} name="arrow-back" size={35} />
-        </View>
+        <TouchableOpacity onPress={onPressBack} testID="backFromSearchToFeed">
+          <Ionicons name="arrow-back" size={35} />
+        </TouchableOpacity>
         <View style={styles.item_search_input}>
           <ItemSearchComponent
             handleOnFocus={handleOnFocus}

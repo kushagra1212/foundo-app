@@ -61,7 +61,9 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: COLORS.white, height: '100%' }}>
+    <SafeAreaView
+      style={{ backgroundColor: COLORS.white, height: '100%' }}
+      testID="Signin">
       <AnimationTranslateScale scaleRange={[1, 1.01]} scaleDuration={1000}>
         <Image
           source={character1}
@@ -109,6 +111,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
                       onBlur={handleBlur('email')}
                       value={values.email}
                       keyboardType="email-address"
+                      testID="emailInput"
                     />
                   </View>
                   <View style={styles.password_input}>
@@ -124,6 +127,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
                       onBlur={handleBlur('password')}
                       value={values.password}
                       secureTextEntry={secureTextEntry.password}
+                      testID="passwordInput"
                     />
                     <Ionicons
                       onPress={() =>
@@ -142,11 +146,13 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
                       isValid ? styles.login_btn_active : styles.login_btn_off
                     }
                     disabled={!isValid}
-                    onPress={() => handleSubmit()}>
+                    onPress={() => handleSubmit()}
+                    testID="loginButton">
                     <Text style={styles.login_btn_text}>Login</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('Forgotpassword')}>
+                    onPress={() => navigation.navigate('Forgotpassword')}
+                    testID="gotToForgotPasswordButton">
                     <Text
                       style={{
                         color: COLORS.blueSecondary,
@@ -167,7 +173,9 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
                 }}>
                 New to Foundo ?
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Signup')}
+                testID="gotToSignupButton">
                 <Text
                   style={{
                     color: COLORS.blueSecondary,

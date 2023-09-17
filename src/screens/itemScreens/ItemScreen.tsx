@@ -139,7 +139,8 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
       <View>
         <TouchableOpacity
           onPress={handleOnFocus}
-          style={styles.item_search_input}>
+          style={styles.item_search_input}
+          testID="searchButton">
           <View style={{ marginLeft: 10 }}>
             <Text style={{ ...FONTS.body2 }}>
               <Text style={FONTS.h1}>Find </Text>Things you Lost

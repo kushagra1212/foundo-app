@@ -10,7 +10,9 @@ import SigninScreen from './SigninScreen';
 import SignupScreen from './SignupScreen';
 const Stack = createNativeStackNavigator();
 
-const AuthScreen = () => {
+type AuthScreenProps = object;
+
+const AuthScreen: React.FC<AuthScreenProps> = () => {
   const forgotPasswordLinkSent = useSelector(selectorgotPasswordStatus);
 
   return (

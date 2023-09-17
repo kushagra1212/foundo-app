@@ -51,7 +51,7 @@ const BottomModal: React.FC<Props> = ({
           )}
           <Text style={styles.title}>{titleText}</Text>
 
-          <Pressable onPress={onClose}>
+          <Pressable onPress={onClose} testID={`closeButton`}>
             <Ionicons
               style={{
                 fontWeight: '500',

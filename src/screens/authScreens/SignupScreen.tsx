@@ -51,7 +51,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: COLORS.white }}>
+    <SafeAreaView style={{ backgroundColor: COLORS.white }} testID="Signup">
       <AnimationTranslateScale scaleRange={[10, 1]} translateRange={[0, 0]}>
         <Image
           source={object1}

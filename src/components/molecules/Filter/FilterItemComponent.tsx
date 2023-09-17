@@ -145,7 +145,8 @@ const FilterItemComponent: React.FC<Props> = ({
           JSON.stringify(options) === JSON.stringify(filterItemOnInitial)
             ? () => {}
             : getItems()
-        }>
+        }
+        testID="findButton">
         <Text style={{ ...FONTS.h3, color: COLORS.white }}>Find</Text>
       </TouchableOpacity>
       <BottomModal

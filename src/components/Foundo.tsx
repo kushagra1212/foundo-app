@@ -12,14 +12,13 @@ import { setCredentials } from '../redux/slices/authSlice';
 import HomeScreen from '../screens/HomeScreen';
 import AuthScreen from '../screens/authScreens/AuthScreen';
 import { credentialsType } from './LoadFoundo';
-
+export const prefix = Linking.createURL('app');
 const Stack = createNativeStackNavigator();
 
 export type FoundoProps = {
   credentials: credentialsType;
 };
 const Foundo: React.FC<FoundoProps> = ({ credentials }) => {
-  const prefix = Linking.createURL('app');
   const dispatch = useDispatch();
 
   useEffect(() => {

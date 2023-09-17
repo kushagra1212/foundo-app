@@ -1,8 +1,9 @@
 import { FormikProps } from 'formik';
-import { View, Text, TextInput } from 'react-native';
+import React, { useEffect } from 'react';
+import { Text, TextInput, View } from 'react-native';
+
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost } from '../../../interfaces';
-import React, { useEffect } from 'react';
 import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
 type props = FormikProps<AddPost> & {
   isValidHandler: (isValid: boolean) => void;
@@ -28,8 +29,7 @@ const Step1ItemNameComponent: React.FC<props> = ({
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
-      }}
-    >
+      }}>
       <View style={{}}>
         <Text style={{ ...FONTS.h1 }}>
           Write <Text style={{ color: COLORS.primary }}>Name</Text> of the Item{' '}
@@ -39,8 +39,7 @@ const Step1ItemNameComponent: React.FC<props> = ({
         translateRange={[500, 0]}
         translateDuration={500}
         scaleRange={[0.5, 1]}
-        scaleDuration={1000}
-      >
+        scaleDuration={1000}>
         <View>
           <TextInput
             focusable={true}
@@ -62,6 +61,7 @@ const Step1ItemNameComponent: React.FC<props> = ({
             onBlur={handleBlur('itemName')}
             value={values.itemName.substring(0, 14)}
             keyboardType="email-address"
+            testID="itemNameInput"
           />
         </View>
       </AnimationTranslateScale>

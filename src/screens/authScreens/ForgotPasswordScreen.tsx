@@ -62,7 +62,9 @@ const ForgotPasswordScreen: React.FC<props> = () => {
     dispatch(setForgotPasswordLinkSent({ forgotPasswordLinkSent: false }));
   };
   return (
-    <SafeAreaView style={{ backgroundColor: COLORS.white }}>
+    <SafeAreaView
+      style={{ backgroundColor: COLORS.white }}
+      testID="Forgotpassword">
       {!forgotPasswordLinkSent ? (
         <KeyboardAvoidingView>
           <AnimationTranslateScale>

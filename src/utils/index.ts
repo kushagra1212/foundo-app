@@ -1,16 +1,17 @@
-export const capitalizeFirstLetter = string => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+import * as Location from 'expo-location';
+export const capitalizeFirstLetter = (str: string): string => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 };
-export const capitalizeEveryWord = string => {
-  return string
+export const capitalizeEveryWord = (str: string) => {
+  return str
     .split(' ')
-    .map(word => capitalizeFirstLetter(word))
+    .map((word: string) => capitalizeFirstLetter(word))
     .join(' ');
 };
-export const numToBool = num => {
+export const numToBool = (num: number): boolean => {
   return num === 1;
 };
-export const getBase64FromUrl = async url => {
+export const getBase64FromUrl = async (url: string): Promise<unknown> => {
   const data = await fetch(url);
   const blob = await data.blob();
   return new Promise(resolve => {
@@ -22,7 +23,7 @@ export const getBase64FromUrl = async url => {
     };
   });
 };
-export const LinearGradientColorBlackToWhite = [
+export const LinearGradientColorBlackToWhite: string[] = [
   '#FFFFFF00',
   '#FFFFFF',
   '#FFFFFF',
@@ -39,7 +40,7 @@ export const LinearGradientColorBlackToWhite = [
   '#FFFFFF',
   '#FFFFFF',
 ];
-export const getAddress = response => {
+export const getAddress = (response: Location.LocationGeocodedAddress[]) => {
   let address = '';
   for (const item of response) {
     //if (item?.name) address += `${item?.name}, `;
@@ -60,4 +61,12 @@ export const getAddress = response => {
     region: response[0]?.region,
     country: response[0]?.country,
   };
+};
+
+export const handleErrors = (
+  error: Error,
+  stackTrace: string,
+): void | undefined => {
+  console.log('error', error);
+  console.log('stackTrace', stackTrace);
 };

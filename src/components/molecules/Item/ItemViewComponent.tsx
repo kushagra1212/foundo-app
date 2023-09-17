@@ -1,28 +1,30 @@
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useCallback, useState } from 'react';
 import {
-  View,
-  Text,
   ActivityIndicator,
-  StyleSheet,
-  TouchableOpacity,
   Dimensions,
   ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import BottomModal from '../../atoms/BottomModal';
-import { useGetpostQuery } from '../../../redux/services/post-service';
-import { COLORS, FONTS, SIZES } from '../../../constants/theme';
-import { useGetUserQuery } from '../../../redux/services/profile-service';
-import AnimatedImageComponent from '../Animation/AnimatedImageComponent';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { capitalizeFirstLetter } from '../../../utils';
-import { ITEM_STANDARD_COLORS } from '../../../constants/item';
-import { AntDesign, Entypo, FontAwesome } from '../../../constants/icons';
-import { useState, useCallback } from 'react';
-import ShowMapComponent from '../../atoms/Map/ShowMapComponent';
-import ItemExtraDetailCompoent from '../../atoms/ItemExtraDetailComponent';
-import ContactOwnerComponent from './ContactOwnerComponent';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
+
+import { AntDesign, Entypo, FontAwesome } from '../../../constants/icons';
+import { ITEM_STANDARD_COLORS } from '../../../constants/item';
+import { COLORS, FONTS, SIZES } from '../../../constants/theme';
+import { useGetpostQuery } from '../../../redux/services/post-service';
+import { useGetUserQuery } from '../../../redux/services/profile-service';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
+import { capitalizeFirstLetter } from '../../../utils';
+import BottomModal from '../../atoms/BottomModal';
+import ItemExtraDetailCompoent from '../../atoms/ItemExtraDetailComponent';
+import ShowMapComponent from '../../atoms/Map/ShowMapComponent';
+import AnimatedImageComponent from '../Animation/AnimatedImageComponent';
+import ContactOwnerComponent from './ContactOwnerComponent';
+
 type props = {
   item: any;
   onClose: () => void;
@@ -63,8 +65,7 @@ const ItemViewComponent: React.FC<props> = ({
         isVisible={isVisible}
         effect={'fade'}
         onClose={onClose}
-        iconName={'close'}
-      >
+        iconName={'close'}>
         {isLoading ? (
           <ActivityIndicator size="large" color={COLORS.primary} />
         ) : (
@@ -77,8 +78,7 @@ const ItemViewComponent: React.FC<props> = ({
                 alignSelf: 'center',
                 backgroundColor: 'transparent',
                 height: '10%',
-              }}
-            >
+              }}>
               <TouchableOpacity
                 style={[
                   styles.btn_active,
@@ -88,18 +88,16 @@ const ItemViewComponent: React.FC<props> = ({
                     margin: 0,
                   },
                 ]}
-                onPress={() => setShowContactModal(true)}
-              >
+                onPress={() => setShowContactModal(true)}>
                 <Text
                   style={{
                     color: COLORS.white,
                     fontSize: SIZES.h3,
                     fontWeight: '600',
-                  }}
-                >
+                  }}>
                   <Entypo name="email" size={20} color={COLORS.white} />
                   {'   '}
-                  Contact Owner
+                  <Text>Contact Owner</Text>
                 </Text>
               </TouchableOpacity>
             </View>
@@ -127,8 +125,7 @@ const ItemViewComponent: React.FC<props> = ({
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                }}
-              >
+                }}>
                 <Text style={FONTS.h3}>{detailedItem.itemName}</Text>
                 <View style={styles.color_view}>
                   <View
@@ -153,14 +150,12 @@ const ItemViewComponent: React.FC<props> = ({
                 <ScrollView
                   style={{
                     maxHeight: 100,
-                  }}
-                >
+                  }}>
                   <Text
                     style={{
                       fontWeight: '300',
                       textAlign: 'justify',
-                    }}
-                  >
+                    }}>
                     {detailedItem.description}
                   </Text>
                 </ScrollView>
@@ -168,21 +163,19 @@ const ItemViewComponent: React.FC<props> = ({
               <View>
                 <TouchableOpacity
                   style={styles.btn_active}
-                  onPress={() => setShowMapView(true)}
-                >
+                  onPress={() => setShowMapView(true)}>
                   <Text
                     style={{
                       color: COLORS.black,
                       fontSize: SIZES.h3,
                       fontWeight: '600',
-                    }}
-                  >
+                    }}>
                     <FontAwesome
                       name="location-arrow"
                       size={20}
                       color={COLORS.black}
-                    />{' '}
-                    See on map
+                    />
+                    <Text>See on map</Text>
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -193,15 +186,13 @@ const ItemViewComponent: React.FC<props> = ({
                   justifyContent: 'space-between',
                   marginLeft: 5,
                   marginRight: 5,
-                }}
-              >
+                }}>
                 <View
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                  }}
-                >
+                  }}>
                   <Text style={FONTS.body3}>Lost On </Text>
                   <Text style={{ fontWeight: '800' }}>
                     {new Date(detailedItem.dateTime).toDateString()}
@@ -212,8 +203,7 @@ const ItemViewComponent: React.FC<props> = ({
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                  }}
-                >
+                  }}>
                   <Text style={FONTS.body3}>Posted On </Text>
                   <Text style={{ fontWeight: '800' }}>
                     {new Date(detailedItem.createdAt).toDateString()}
@@ -227,15 +217,13 @@ const ItemViewComponent: React.FC<props> = ({
                   justifyContent: 'space-between',
                   marginLeft: 5,
                   marginRight: 5,
-                }}
-              >
+                }}>
                 <View
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'center',
-                  }}
-                >
+                  }}>
                   <Text style={FONTS.body4}>
                     {detailedItem.isFounded === 0 ? 'Not Found yet' : 'found'}
                   </Text>
@@ -245,8 +233,7 @@ const ItemViewComponent: React.FC<props> = ({
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'center',
-                  }}
-                >
+                  }}>
                   <Entypo
                     name="location-pin"
                     size={25}
@@ -262,8 +249,7 @@ const ItemViewComponent: React.FC<props> = ({
                   alignItems: 'center',
                   flexDirection: 'row',
                 }}
-                onTouchStart={() => setShowDetailsModal(true)}
-              >
+                onTouchStart={() => setShowDetailsModal(true)}>
                 <AntDesign name="upcircle" size={20} color={COLORS.primary} />
                 <Text style={{ fontWeight: '800', marginLeft: 10 }}>
                   View Details
@@ -276,8 +262,7 @@ const ItemViewComponent: React.FC<props> = ({
                   isVisible={true}
                   effect={'fade'}
                   onClose={closeMapView}
-                  iconName={'close'}
-                >
+                  iconName={'close'}>
                   <ShowMapComponent
                     latitude={detailedItem.itemLocation.latitude}
                     longitude={detailedItem.itemLocation.longitude}
@@ -291,8 +276,7 @@ const ItemViewComponent: React.FC<props> = ({
                   isVisible={true}
                   effect={'fade'}
                   onClose={closeDetailsModal}
-                  iconName={'close'}
-                >
+                  iconName={'close'}>
                   <ItemExtraDetailCompoent detailedItem={detailedItem} />
                 </BottomModal>
               )}
@@ -303,8 +287,7 @@ const ItemViewComponent: React.FC<props> = ({
                   isVisible={true}
                   effect={'fade'}
                   onClose={closeContactModal}
-                  iconName={'close'}
-                >
+                  iconName={'close'}>
                   <ContactOwnerComponent
                     navigation={navigation}
                     close={closeContactModal}

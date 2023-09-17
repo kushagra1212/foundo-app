@@ -1,18 +1,17 @@
+import { useState } from 'react';
 import {
+  ScrollView,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
-  ScrollView,
+  View,
 } from 'react-native';
+import { useSelector } from 'react-redux';
+
 import { FontAwesome } from '../../../constants/icons';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
-
-import { useState } from 'react';
-import { capitalizeEveryWord } from '../../../utils';
-
-import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
+import { capitalizeEveryWord } from '../../../utils';
 import BottomModal from '../../atoms/BottomModal';
 import ShowMapComponent from '../../atoms/Map/ShowMapComponent';
 export type props = {
@@ -36,20 +35,17 @@ const SingleMessageComponent: React.FC<props> = ({ message }) => {
               marginLeft: '15%',
             }
           : { width: '85%', marginRight: '15%' },
-      ]}
-    >
+      ]}>
       <View
         style={[
           { borderBottomWidth: 1, width: '100%' },
           user.id === message.senderId ? { borderColor: COLORS.white } : {},
-        ]}
-      >
+        ]}>
         <Text
           style={[
             { ...FONTS.h4, margin: 10 },
             user.id === message.senderId ? { color: COLORS.white } : {},
-          ]}
-        >
+          ]}>
           {capitalizeEveryWord(message.title)}
         </Text>
       </View>
@@ -57,20 +53,17 @@ const SingleMessageComponent: React.FC<props> = ({ message }) => {
         style={{
           width: '100%',
           maxHeight: readMore ? '100%' : 200,
-        }}
-      >
+        }}>
         {message.message.length > 100 && !readMore ? (
           <Text
             style={[
               { ...FONTS.body3, ...{ margin: 10 } },
               user.id === message.senderId ? { color: COLORS.white } : {},
-            ]}
-          >
+            ]}>
             {message.message.substring(0, 100)}
             <Text
               style={{ color: COLORS.redPrimary }}
-              onPress={() => setReadMore(true)}
-            >
+              onPress={() => setReadMore(true)}>
               {' '}
               read more
             </Text>
@@ -80,13 +73,11 @@ const SingleMessageComponent: React.FC<props> = ({ message }) => {
             style={[
               { ...FONTS.body3, ...{ margin: 10 } },
               user.id === message.senderId ? { color: COLORS.white } : {},
-            ]}
-          >
+            ]}>
             {message.message}
             <Text
               style={{ color: COLORS.redPrimary }}
-              onPress={() => setReadMore(false)}
-            >
+              onPress={() => setReadMore(false)}>
               {' '}
               read less
             </Text>
@@ -96,8 +87,7 @@ const SingleMessageComponent: React.FC<props> = ({ message }) => {
             style={[
               { ...FONTS.body3, ...{ margin: 10 } },
               user.id === message.senderId ? { color: COLORS.white } : {},
-            ]}
-          >
+            ]}>
             {message.message}
           </Text>
         )}
@@ -107,21 +97,19 @@ const SingleMessageComponent: React.FC<props> = ({ message }) => {
               style={styles.btn_active}
               onPress={() => {
                 setShowMapView(true);
-              }}
-            >
+              }}>
               <Text
                 style={{
                   color: COLORS.black,
                   fontSize: SIZES.h3,
                   fontWeight: '600',
-                }}
-              >
+                }}>
                 <FontAwesome
                   name="location-arrow"
                   size={20}
                   color={COLORS.black}
-                />{' '}
-                <Text> See on map</Text>
+                />
+                <Text>See on map</Text>
               </Text>
             </TouchableOpacity>
           ) : null}
@@ -134,8 +122,7 @@ const SingleMessageComponent: React.FC<props> = ({ message }) => {
           isVisible={true}
           effect={'fade'}
           onClose={closeMapView}
-          iconName={'close'}
-        >
+          iconName={'close'}>
           <ShowMapComponent
             latitude={message.latitude}
             longitude={message.longitude}

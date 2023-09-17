@@ -47,12 +47,14 @@ const SelectItemTypeScreen: React.FC<props> = ({ navigation }) => {
       <View style={styles.but_view}>
         <TouchableOpacity
           onPress={() => openAddItemDetailsScreen(false)}
-          style={[styles.but, { backgroundColor: COLORS.pinkSecond }]}>
+          style={[styles.but, { backgroundColor: COLORS.pinkSecond }]}
+          testID="lostItemButton">
           <Text style={[FONTS.h2, { color: COLORS.white }]}> Lost Item </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => openAddItemDetailsScreen(true)}
-          style={styles.but}>
+          style={styles.but}
+          testID="foundItemButton">
           <Text style={[FONTS.h2, { color: COLORS.white }]}> Found Item </Text>
         </TouchableOpacity>
       </View>

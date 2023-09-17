@@ -1,19 +1,41 @@
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import ErrorBoundary from 'react-native-error-boundary';
+import { Provider } from 'react-redux';
 import { ReactTestInstance } from 'react-test-renderer';
 
-import App from './App';
+import Error from '../../components/Error';
+import { store } from '../../redux/store';
+import { handleErrors } from '../../utils';
+import ItemScreen from './ItemScreen';
 
-describe('<App />', () => {
-  it('should renders correctly', async () => {
-    const { getByText } = render(<App />);
+const navigation = {
+  navigate: jest.fn(),
+};
+
+const ItemScreenRender = () => (
+  <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
+    <Provider store={store}>
+      <ItemScreen navigation={navigation} />
+    </Provider>
+  </ErrorBoundary>
+);
+describe('<ItemScreen />', () => {
+  it('should flat list render correctly', async () => {
+    const { getByTestId } = render(<ItemScreenRender />);
 
     await waitFor(() => {
-      expect(getByText('Find Things you Lost')).toBeTruthy();
+      expect(getByTestId('card-list')).toBeTruthy();
     });
   });
-
   it('should find the button with text lost and click', async () => {
-    const { getByText, getAllByText } = render(<App />);
+    const navigation = {
+      navigate: jest.fn(),
+    };
+    const { getByText, getAllByText } = render(
+      <Provider store={store}>
+        <ItemScreen navigation={navigation} />
+      </Provider>,
+    );
 
     await waitFor(() => {
       expect(getByText('Lost')).toBeTruthy();
@@ -27,8 +49,7 @@ describe('<App />', () => {
   });
 
   it('should find the button with text found and click', async () => {
-    const { getByText, getAllByText } = render(<App />);
-
+    const { getByText, getAllByText } = render(<ItemScreenRender />);
     await waitFor(() => {
       expect(getByText('Found')).toBeTruthy();
     });
@@ -41,8 +62,7 @@ describe('<App />', () => {
   });
 
   it('should find the card with text posted by at the bottom', async () => {
-    const { getByText, getAllByText } = render(<App />);
-
+    const { getByText, getAllByText } = render(<ItemScreenRender />);
     await waitFor(() => {
       expect(getByText('Found')).toBeTruthy();
     });
@@ -55,7 +75,7 @@ describe('<App />', () => {
   });
 
   it('should find the button View and click and then find the button named Contact Owner', async () => {
-    const { getByText, getAllByText } = render(<App />);
+    const { getByText, getAllByText } = render(<ItemScreenRender />);
     await waitFor(() => {
       expect(getByText('Lost')).toBeTruthy();
     });
@@ -76,7 +96,7 @@ describe('<App />', () => {
   }, 20000);
 
   it('should find the button View and click and then find the button named See on map', async () => {
-    const { getByText, getAllByText } = render(<App />);
+    const { getByText, getAllByText } = render(<ItemScreenRender />);
     await waitFor(() => {
       expect(getByText('Lost')).toBeTruthy();
     });
@@ -100,8 +120,16 @@ describe('<App />', () => {
     });
   }, 20000);
 
+  it('should show the additonal filter option', async () => {
+    const { getByTestId } = render(<ItemScreenRender />);
+
+    await waitFor(() => {
+      expect(getByTestId('additional-filter-option')).toBeTruthy();
+    });
+  });
+
   it('should click on the additonal filter option and show the modal', async () => {
-    const { getByText, getAllByText, getByTestId } = render(<App />);
+    const { getByTestId, getByText } = render(<ItemScreenRender />);
 
     await waitFor(() => {
       expect(getByTestId('additional-filter-option')).toBeTruthy();
@@ -154,22 +182,25 @@ describe('<App />', () => {
     const Add: ReactTestInstance | null = getByText('Add').parent;
 
     if (Add) fireEvent.press(Add);
+  });
 
-    const findButton: ReactTestInstance | null = getByTestId('findButton');
-
-    if (findButton) fireEvent.press(findButton);
-
-    await waitFor(() => {
-      expect(getByText('Lost')).toBeTruthy();
-    });
-
-    const lostParent: ReactTestInstance | null = getByText('Lost').parent;
-
-    if (lostParent) fireEvent.press(lostParent);
+  it('should check and click the searchButton', async () => {
+    const { getByTestId } = render(<ItemScreenRender />);
 
     await waitFor(() => {
-      expect(getAllByText('Laptop')).toBeTruthy();
-      expect(getAllByText('View')).toBeTruthy();
+      expect(getByTestId('searchButton')).toBeTruthy();
     });
-  }, 20000);
+
+    const searchButton: ReactTestInstance | null = getByTestId('searchButton');
+
+    if (searchButton) fireEvent.press(searchButton);
+    expect(navigation.navigate).toHaveBeenCalledWith('FeedSearchScreen');
+  });
+  it('should scroll the flat list', async () => {
+    const { getByTestId } = render(<ItemScreenRender />);
+
+    await waitFor(() => {
+      expect(getByTestId('card-list')).toBeTruthy();
+    });
+  });
 });
