@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 import { BASE_URL } from '../../configs/key.config';
 import { logOut, setCredentials } from '../slices/authSlice';
 
@@ -38,6 +39,6 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
 
 export const api = createApi({
   baseQuery: baseQueryWithReauth,
-  endpoints: (builder) => ({}),
+  endpoints: builder => ({}),
   tagTypes: ['user', 'user-setting', 'Contacts', 'Posts'],
 });

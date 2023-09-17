@@ -1,7 +1,10 @@
 import { fireEvent, render } from '@testing-library/react-native';
+import ErrorBoundary from 'react-native-error-boundary';
 import { Provider } from 'react-redux';
 
+import Error from '../../components/Error';
 import { store } from '../../redux/store';
+import { handleErrors } from '../../utils';
 import SelectItemTypeScreen from './SelectItemTypeScreen';
 
 describe('<SelectItemTypeScreen />', () => {
@@ -12,7 +15,9 @@ describe('<SelectItemTypeScreen />', () => {
     };
     const { getByTestId } = render(
       <Provider store={store}>
-        <SelectItemTypeScreen navigation={navigation} />
+        <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
+          <SelectItemTypeScreen navigation={navigation} />
+        </ErrorBoundary>
       </Provider>,
     );
 
@@ -58,4 +63,8 @@ describe('<SelectItemTypeScreen />', () => {
       isFounded: true,
     });
   });
+});
+afterEach(() => {
+  // Tear down global state or variables
+  jest.clearAllMocks();
 });

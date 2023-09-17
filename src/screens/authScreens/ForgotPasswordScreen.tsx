@@ -119,6 +119,7 @@ const ForgotPasswordScreen: React.FC<props> = () => {
                           onBlur={handleBlur('email')}
                           value={values.email}
                           keyboardType="email-address"
+                          testID="emailInputForgotPassword"
                         />
                       </View>
 
@@ -129,7 +130,8 @@ const ForgotPasswordScreen: React.FC<props> = () => {
                             : styles.login_btn_off
                         }
                         disabled={!isValid}
-                        onPress={() => handleSubmit()}>
+                        onPress={() => handleSubmit()}
+                        testID="sendButtonForgotPassword">
                         <Text style={styles.login_btn_text}>Send Email</Text>
                       </TouchableOpacity>
                     </View>

@@ -13,11 +13,11 @@ const navigation = {
 };
 
 const ItemScreenRender = () => (
-  <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
-    <Provider store={store}>
+  <Provider store={store}>
+    <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
       <ItemScreen navigation={navigation} />
-    </Provider>
-  </ErrorBoundary>
+    </ErrorBoundary>
+  </Provider>
 );
 describe('<ItemScreen />', () => {
   it('should flat list render correctly', async () => {
@@ -93,7 +93,7 @@ describe('<ItemScreen />', () => {
     await waitFor(() => {
       expect(getByText('Contact Owner')).toBeTruthy();
     });
-  }, 20000);
+  });
 
   it('should find the button View and click and then find the button named See on map', async () => {
     const { getByText, getAllByText } = render(<ItemScreenRender />);
@@ -118,7 +118,7 @@ describe('<ItemScreen />', () => {
     await waitFor(() => {
       expect(getByText('See on map')).toBeTruthy();
     });
-  }, 20000);
+  });
 
   it('should show the additonal filter option', async () => {
     const { getByTestId } = render(<ItemScreenRender />);
@@ -203,4 +203,8 @@ describe('<ItemScreen />', () => {
       expect(getByTestId('card-list')).toBeTruthy();
     });
   });
+});
+afterEach(() => {
+  // Tear down global state or variables
+  jest.clearAllMocks();
 });

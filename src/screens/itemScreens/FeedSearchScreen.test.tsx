@@ -13,11 +13,11 @@ const navigation = {
   goBack: jest.fn(),
 };
 const FeedSearchSceenRender = () => (
-  <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
-    <Provider store={store}>
+  <Provider store={store}>
+    <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
       <FeedSearchSceen navigation={navigation} />
-    </Provider>
-  </ErrorBoundary>
+    </ErrorBoundary>
+  </Provider>
 );
 
 describe('<FeedSearchSceen />', () => {
@@ -44,4 +44,8 @@ describe('<FeedSearchSceen />', () => {
 
     expect(navigation.goBack).toHaveBeenCalledTimes(1);
   });
+});
+afterEach(() => {
+  // Tear down global state or variables
+  jest.clearAllMocks();
 });

@@ -137,7 +137,7 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView testID="AddItemDetails">
       <View style={[styles.container, { height }]}>
         <PrevStepButton
           close={() => (currentStep === 1 ? closeThisScreen() : previousStep())}

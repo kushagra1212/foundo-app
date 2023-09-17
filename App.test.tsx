@@ -98,7 +98,7 @@ describe('<App />', () => {
     await waitFor(() => {
       expect(getByText('See on map')).toBeTruthy();
     });
-  }, 20000);
+  });
 
   it('should click on the additonal filter option and show the modal', async () => {
     const { getByText, getAllByText, getByTestId } = render(<App />);
@@ -171,5 +171,9 @@ describe('<App />', () => {
       expect(getAllByText('Laptop')).toBeTruthy();
       expect(getAllByText('View')).toBeTruthy();
     });
-  }, 20000);
+  });
+});
+afterEach(() => {
+  // Tear down global state or variables
+  jest.clearAllMocks();
 });

@@ -13,3 +13,4 @@ web-build/
 src/configs/test.key.config.js
 # macOS
 .DS_Store
+coverage/

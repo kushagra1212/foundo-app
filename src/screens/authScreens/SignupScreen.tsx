@@ -104,6 +104,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                         onBlur={handleBlur('firstName')}
                         value={values.firstName}
                         keyboardType="name-phone-pad"
+                        testID="firstNameInput"
                       />
                     </View>
                     <View style={styles.name_input}>
@@ -123,6 +124,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                         onBlur={handleBlur('lastName')}
                         value={values.lastName}
                         keyboardType="name-phone-pad"
+                        testID="lastNameInput"
                       />
                     </View>
                     <View style={styles.email_input}>
@@ -142,6 +144,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                         onBlur={handleBlur('email')}
                         value={values.email}
                         keyboardType="email-address"
+                        testID="emailInput"
                       />
                     </View>
                     <View style={styles.password_input}>
@@ -157,6 +160,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                         onBlur={handleBlur('password')}
                         value={values.password}
                         secureTextEntry={secureTextEntry.password}
+                        testID="passwordInput"
                       />
                       <Ionicons
                         onPress={() =>
@@ -175,7 +179,8 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                         isValid ? styles.login_btn_active : styles.login_btn_off
                       }
                       disabled={!isValid}
-                      onPress={() => handleSubmit()}>
+                      onPress={() => handleSubmit()}
+                      testID="signupButton">
                       <Text style={styles.login_btn_text}>Signup</Text>
                     </TouchableOpacity>
                   </View>
@@ -189,7 +194,9 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                   }}>
                   Already have an account
                 </Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Signin')}
+                  testID="gotToSigninButton">
                   <Text
                     style={{
                       color: COLORS.blueSecondary,

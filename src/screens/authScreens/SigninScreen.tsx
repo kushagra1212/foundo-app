@@ -147,7 +147,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
                     }
                     disabled={!isValid}
                     onPress={() => handleSubmit()}
-                    testID="loginButton">
+                    testID="signinButton">
                     <Text style={styles.login_btn_text}>Login</Text>
                   </TouchableOpacity>
                   <TouchableOpacity

@@ -12,19 +12,19 @@ import { handleErrors } from '../../utils';
 import AuthScreen from './AuthScreen';
 
 const AuthScreenRender = () => (
-  <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
-    <Provider store={store}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <NavigationContainer
-          linking={{
-            prefixes: [prefix],
-            config: routesConfig,
-          }}>
+  <Provider store={store}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer
+        linking={{
+          prefixes: [prefix],
+          config: routesConfig,
+        }}>
+        <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
           <AuthScreen />
-        </NavigationContainer>
-      </GestureHandlerRootView>
-    </Provider>
-  </ErrorBoundary>
+        </ErrorBoundary>
+      </NavigationContainer>
+    </GestureHandlerRootView>
+  </Provider>
 );
 
 describe('<AuthScreen />', () => {
@@ -36,7 +36,7 @@ describe('<AuthScreen />', () => {
     });
   });
 });
-
 afterEach(() => {
+  // Tear down global state or variables
   jest.clearAllMocks();
 });
