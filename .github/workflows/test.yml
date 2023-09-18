@@ -18,7 +18,7 @@ jobs:
           node-version: 18.x  # Adjust the Node.js version as needed
 
       - name: Install dependencies
-        run: npm ci  # Use npm ci for faster and consistent dependency installation
+        run: npm install  # Use npm ci for faster and consistent dependency installation
 
       - name: Run tests
-        run: npm test  # Modify this command if your test command is different
+        run: npm run test  # Modify this command if your test command is different
