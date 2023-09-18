@@ -39,7 +39,7 @@
           "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
-      "package": "com.kushagra711.foundoapp",
+      "package": "com.kushagra711.foundoapp"
     },
     "web": {
       "favicon": ""
