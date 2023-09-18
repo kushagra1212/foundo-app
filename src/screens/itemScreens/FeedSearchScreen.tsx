@@ -1,29 +1,37 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { StyleSheet, Text, View, Image, BackHandler } from 'react-native';
+import MaskedView from '@react-native-masked-view/masked-view';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect, useState } from 'react';
+import {
+  BackHandler,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
+
+import searchItemImg from '../../assets/images/searchitem.png';
+import ElevatedCard from '../../components/atoms/ElevatedCard';
 import ItemSearchComponent from '../../components/atoms/ItemSearchComponent';
 import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
 import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
-
-import searchItemImg from '../../assets/images/searchitem.png';
+import SingleCardComponent from '../../components/molecules/Item/Card/SingleCardComponent';
 import { Ionicons } from '../../constants/icons';
 import { FONTS } from '../../constants/theme';
 import { Post } from '../../interfaces';
 import { useGetSearchedPostsMutation } from '../../redux/services/post-service';
 import {
   selectFilterType,
-  selectOffsetAndLimit,
+  selectLimit,
+  selectOffset,
   selectPosts,
   updateFilter,
   updatePosts,
 } from '../../redux/slices/postSlice';
-import ElevatedCard from '../../components/atoms/ElevatedCard';
 import { updateFeedSearchScreenStatus } from '../../redux/slices/sreenSilce';
-import MaskedView from '@react-native-masked-view/masked-view';
-
-import { LinearGradient } from 'expo-linear-gradient';
 export type props = {
   navigation?: any;
 };
@@ -42,9 +50,11 @@ const debounce = (fetchPostsHandle: Function, time: number) => {
 const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
   const dispatch = useDispatch();
   const [searchString, setSearchString] = useState<string>('');
-  const posts: Array<Post> = useSelector(selectPosts);
+  const posts: Post[] = useSelector(selectPosts);
   const filterType = useSelector(selectFilterType);
-  const { limit, offset } = useSelector(selectOffsetAndLimit);
+  const limit = useSelector(selectLimit);
+  const offset = useSelector(selectOffset);
+
   const [getSearchedPosts, { isLoading }] = useGetSearchedPostsMutation();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
   const [totalPosts, setTotalPosts] = useState<null | number>(null);
@@ -57,7 +67,7 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
     setLoading(true);
     try {
       const res = await getSearchedPosts({
-        offset: offset,
+        offset,
         limit,
         searchString,
       }).unwrap();
@@ -87,7 +97,7 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
     dispatch(
       updateFeedSearchScreenStatus({
         feedSearchScreenStatus: false,
-      })
+      }),
     );
     dispatch(updateFilter({ filterType: !filterType }));
     navigation.goBack();
@@ -103,7 +113,7 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
 
     BackHandler.addEventListener('hardwareBackPress', onPressBack);
 
-    dispatch(updateFilter({ filterType: filterType }));
+    dispatch(updateFilter({ filterType }));
     let timer: NodeJS.Timeout;
     if (flag && searchString !== '') {
       timer = setTimeout(() => {
@@ -121,9 +131,9 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
   return (
     <SafeAreaView style={{ width: '100%', height: '100%' }}>
       <View style={styles.search_header}>
-        <View>
-          <Ionicons onPress={onPressBack} name="arrow-back" size={35} />
-        </View>
+        <TouchableOpacity onPress={onPressBack} testID="backFromSearchToFeed">
+          <Ionicons name="arrow-back" size={35} />
+        </TouchableOpacity>
         <View style={styles.item_search_input}>
           <ItemSearchComponent
             handleOnFocus={handleOnFocus}
@@ -139,8 +149,7 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-          }}
-        >
+          }}>
           <Text style={FONTS.body3}>
             We've found {totalPosts} Posts for you ❤️
           </Text>
@@ -154,8 +163,7 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
               backgroundColor: 'transparent',
               flex: 1,
               marginTop: 0,
-            }}
-          >
+            }}>
             <LinearGradient
               colors={[
                 '#FFFFFF00',
@@ -175,11 +183,9 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
               style={{
                 flex: 1,
                 borderRadius: 5,
-              }}
-            ></LinearGradient>
+              }}></LinearGradient>
           </View>
-        }
-      >
+        }>
         <CardsComponent
           fetchPosts={fetchPosts}
           loading={loading}
@@ -187,6 +193,7 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
           posts={posts}
           reachedEnd={reachedEnd}
           navigation={navigation}
+          SingleCardComponent={SingleCardComponent}
         />
       </MaskedView>
 

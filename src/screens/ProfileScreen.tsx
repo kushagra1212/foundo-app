@@ -1,35 +1,35 @@
+import * as ImagePicker from 'expo-image-picker';
+import { useState } from 'react';
 import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
-  Image,
   TouchableOpacity,
-  ActivityIndicator,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
-import * as ImagePicker from 'expo-image-picker';
 
-import { ListFilterItemViewAllType } from '../components/atoms/ListItem';
-import { AntDesign, Entypo } from '../constants/icons';
-import { COLORS, FONTS } from '../constants/theme';
-import { selectCurrentUser, updateUser } from '../redux/slices/authSlice';
-
-import { useGetUserSettingQuery } from '../redux/services/profile-service';
-import LogoutButtonComponent from '../components/atoms/LogoutButtonComponent';
-import { useState } from 'react';
 import BottomModal from '../components/atoms/BottomModal';
+import { ListFilterItemViewAllType } from '../components/atoms/ListItem';
+import LogoutButtonComponent from '../components/atoms/LogoutButtonComponent';
 import EmailComponent from '../components/molecules/profile/EmailComponent';
+import NotLoggedInProfileComponent from '../components/molecules/profile/NotLoggedInProfileComponent';
 import PhoneNumberComponent from '../components/molecules/profile/PhoneNumberComponent';
 import UserAddressComponent from '../components/molecules/profile/UserAddressComponent';
 import UserUpdatePrivacyComponent from '../components/molecules/profile/UserUpdatePrivacyComponent';
-import { getBase64FromUrl } from '../utils';
+import { AntDesign, Entypo } from '../constants/icons';
+import { COLORS, FONTS } from '../constants/theme';
 import { useUserUpdateMutation } from '../redux/services/auth-service';
-import { ScrollView } from 'react-native-gesture-handler';
-import NotLoggedInProfileComponent from '../components/molecules/profile/NotLoggedInProfileComponent';
+import { useGetUserSettingQuery } from '../redux/services/profile-service';
+import { selectCurrentUser, updateUser } from '../redux/slices/authSlice';
+import { getBase64FromUrl } from '../utils';
 type props = {
   navigation: any;
 };
+
 interface OpenDialog {
   email: boolean;
   phoneNumber: boolean;
@@ -51,7 +51,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
   const [userUpdate, { isLoading: uploadLoading }] = useUserUpdateMutation();
   const dispatch = useDispatch();
   const viewAllHandler = (
-    value: 'email' | 'phoneNumber' | 'Residential Address' | 'Update Privacy'
+    value: 'email' | 'phoneNumber' | 'Residential Address' | 'Update Privacy',
   ) => {
     switch (value) {
       case 'email':
@@ -80,8 +80,8 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
 
     const result = await ImagePicker.launchImageLibraryAsync();
 
-    if (!result.cancelled) {
-      const base64 = await getBase64FromUrl(result.uri);
+    if (!result.canceled) {
+      const base64 = await getBase64FromUrl(result.assets[0].uri);
       try {
         const result = await userUpdate({
           userId: user?.id,
@@ -101,14 +101,12 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       style={{
         height: '100%',
         backgroundColor: COLORS.lightGrayPrePrimary,
-      }}
-    >
+      }}>
       <ScrollView>
         <View style={styles.profile_view}>
           <TouchableOpacity
             style={{ alignSelf: 'flex-end' }}
-            onPress={showImagePicker}
-          >
+            onPress={showImagePicker}>
             <AntDesign
               name="edit"
               size={25}
@@ -131,8 +129,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
                   aspectRatio: 1,
                   justifyContent: 'center',
                   alignItems: 'center',
-                }}
-              >
+                }}>
                 <Text style={{ color: 'white', fontSize: 45 }}>
                   {user?.firstName.split()[0].split('')[0] +
                     user?.lastName.split()[0].split('')[0]}
@@ -145,8 +142,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
                   aspectRatio: 1,
                   justifyContent: 'center',
                   alignItems: 'center',
-                }}
-              >
+                }}>
                 <ActivityIndicator
                   animating={uploadLoading}
                   size="large"
@@ -164,15 +160,13 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
         <View
           style={{
             margin: 10,
-          }}
-        >
+          }}>
           <Text style={{ ...FONTS.h4, opacity: 0.6 }}>Contact Details</Text>
           <View
             style={{
               backgroundColor: COLORS.lightGrayPrePrimary,
               marginTop: 5,
-            }}
-          >
+            }}>
             <ListFilterItemViewAllType
               arrowText=""
               items={undefined}
@@ -211,14 +205,12 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
         <View
           style={{
             margin: 10,
-          }}
-        >
+          }}>
           <Text style={{ ...FONTS.h4, opacity: 0.6 }}>Privacy Setting</Text>
           <View
             style={{
               marginTop: 5,
-            }}
-          >
+            }}>
             <ListFilterItemViewAllType
               arrowText=""
               items={undefined}
@@ -240,8 +232,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
             isVisible={true}
             effect={'fade'}
             iconName="close"
-            onClose={() => setOpen(intitalOpenDialog)}
-          >
+            onClose={() => setOpen(intitalOpenDialog)}>
             <EmailComponent
               onClose={() => setOpen(intitalOpenDialog)}
               email={user?.email}
@@ -255,8 +246,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
             backgroundFilter={true}
             isVisible={true}
             effect={'fade'}
-            onClose={() => setOpen(intitalOpenDialog)}
-          >
+            onClose={() => setOpen(intitalOpenDialog)}>
             <PhoneNumberComponent
               onClose={() => setOpen(intitalOpenDialog)}
               phoneNumber={user?.phoneNo}
@@ -271,8 +261,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
             isVisible={true}
             effect={'fade'}
             iconName="close"
-            onClose={() => setOpen(intitalOpenDialog)}
-          >
+            onClose={() => setOpen(intitalOpenDialog)}>
             <UserAddressComponent
               onClose={() => setOpen(intitalOpenDialog)}
               address={user?.address}
@@ -286,8 +275,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
             backgroundFilter={true}
             isVisible={true}
             effect={'fade'}
-            onClose={() => setOpen(intitalOpenDialog)}
-          >
+            onClose={() => setOpen(intitalOpenDialog)}>
             <UserUpdatePrivacyComponent
               onClose={() => setOpen(intitalOpenDialog)}
               userSettings={userSetting}

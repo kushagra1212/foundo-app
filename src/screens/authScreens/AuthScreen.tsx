@@ -1,16 +1,18 @@
-import { StyleSheet } from 'react-native';
-
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
+
+import { COLORS } from '../../constants/theme';
+import { selectorgotPasswordStatus } from '../../redux/slices/authSlice';
+import ForgotPasswordScreen from './ForgotPasswordScreen';
+import ResetPasswordScreen from './ResetPasswordScreen';
 import SigninScreen from './SigninScreen';
 import SignupScreen from './SignupScreen';
-import { COLORS } from '../../constants/theme';
-import ForgotPasswordScreen from './ForgotPasswordScreen';
-import { useSelector } from 'react-redux';
-import { selectorgotPasswordStatus } from '../../redux/slices/authSlice';
-import ResetPasswordScreen from './ResetPasswordScreen';
 const Stack = createNativeStackNavigator();
 
-const AuthScreen = () => {
+type AuthScreenProps = object;
+
+const AuthScreen: React.FC<AuthScreenProps> = () => {
   const forgotPasswordLinkSent = useSelector(selectorgotPasswordStatus);
 
   return (

@@ -1,3 +1,6 @@
+import * as SplashScreen from 'expo-splash-screen';
+import { Formik } from 'formik';
+import { useEffect, useState } from 'react';
 import {
   Image,
   Keyboard,
@@ -8,18 +11,17 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Formik } from 'formik';
-import Toast from 'react-native-toast-message';
-import * as yup from 'yup';
 import { TextInput } from 'react-native-gesture-handler';
-import { useState, useEffect } from 'react';
-import { COLORS, SIZES } from '../../constants/theme';
-import { SimpleLineIcons, Ionicons } from '../../constants/icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import { useDispatch, useSelector } from 'react-redux';
+import * as yup from 'yup';
+
 import character2 from '../../assets/images/character2.png';
 import tokenExpiredIcon from '../../assets/images/file.png';
-
-import * as SplashScreen from 'expo-splash-screen';
+import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
+import { Ionicons, SimpleLineIcons } from '../../constants/icons';
+import { COLORS, SIZES } from '../../constants/theme';
 import {
   useUserResetPasswordMutation,
   useUserVerifyResetPasswordQuery,
@@ -28,8 +30,6 @@ import {
   selectCurrentResetToken,
   selectCurrentUser,
 } from '../../redux/slices/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
 
 export type props = {
   navigation: any;
@@ -89,7 +89,7 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
     return (
       <SafeAreaView
         style={{ backgroundColor: COLORS.redPrimary, ...styles.inner }}
-      >
+        testID="ResetPassword">
         <View>
           <AnimationTranslateScale>
             <Image
@@ -109,8 +109,7 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
           style={{
             ...styles.login_container,
             alignItems: 'center',
-          }}
-        >
+          }}>
           <Text style={{ fontSize: 25 }}> Token Expired </Text>
         </View>
       </SafeAreaView>
@@ -143,8 +142,7 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
                 initialValues={{
                   password: '',
                 }}
-                onSubmit={handleSubmit}
-              >
+                onSubmit={handleSubmit}>
                 {({
                   handleChange,
                   handleBlur,
@@ -185,8 +183,7 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
                         isValid ? styles.login_btn_active : styles.login_btn_off
                       }
                       disabled={!isValid}
-                      onPress={() => handleSubmit()}
-                    >
+                      onPress={() => handleSubmit()}>
                       <Text style={styles.login_btn_text}>Update Password</Text>
                     </TouchableOpacity>
                   </View>

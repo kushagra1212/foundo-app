@@ -20,6 +20,8 @@ export interface Post {
   color: string;
   brand: string;
   firstName: string;
+  userId?: number;
+  isFounded?: boolean;
 }
 export interface FilterItemOn {
   category?: string;

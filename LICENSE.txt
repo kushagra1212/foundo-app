@@ -1,0 +1,20 @@
+Kushagra Rathore's Proprietary License
+
+Version 1.0,18/09/2023 
+
+1. Ownership: The code and associated documentation ("the Software") is the proprietary property of Kushagra Rathore. Kushagra Rathore retains all rights, title, and interest in and to the Software.
+
+2. License Grant: Kushagra Rathore grants you a non-exclusive, non-transferable, revocable license to use the Software for personal or internal business purposes only, strictly in accordance with the terms and conditions of this license.
+
+3. Restrictions:
+   a. You may not modify, adapt, reverse engineer, decompile, or disassemble the Software in any way.
+   b. You may not distribute, sublicense, or transfer the Software or any portion thereof to any third party without the prior written consent of Kushagra Rathore.
+   c. You may not remove or alter any copyright, trademark, or proprietary rights notice contained in or on the Software.
+
+4. No Warranty: The Software is provided "as is" without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement. Kushagra Rathore shall not be liable for any damages, whether direct, indirect, incidental, or consequential, arising out of the use or inability to use the Software.
+
+5. Governing Law: This license shall be governed by and construed in accordance with the laws of [Jurisdiction]. Any legal action or proceeding arising under this license shall be brought exclusively in the courts of [Jurisdiction].
+
+6. Entire Agreement: This license constitutes the entire agreement between the parties concerning the subject matter hereof and supersedes all prior or contemporaneous agreements, understandings, and representations.
+
+Kushagra Rathore

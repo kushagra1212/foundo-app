@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
-  ActivityIndicator,
+  ActivityIndicator, TextInput
 } from 'react-native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useState } from 'react';
@@ -13,7 +13,7 @@ import { COLORS, FONTS, SIZES } from '../../../constants/theme';
 import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
 import { Formik } from 'formik';
 import { AntDesign, Feather, MaterialIcons } from '../../../constants/icons';
-import { TextInput } from 'react-native-gesture-handler';
+
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
 import * as yup from 'yup';
@@ -41,7 +41,6 @@ const ContactOwnerComponent: React.FC<props> = ({
     setIsMapVisible(false);
   };
   const handleLoginSubmit = async (data: object) => {
-    console.log(data);
     try {
       const res = await sendMessage(data).unwrap();
       Toast.show({

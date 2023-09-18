@@ -1,12 +1,13 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { StyleSheet } from 'react-native';
+
 import { COLORS } from '../constants/theme';
 import FeedSearchSceen from './itemScreens/FeedSearchScreen';
 import ItemScreen from './itemScreens/ItemScreen';
 const Stack = createNativeStackNavigator();
 
-export type props = {};
+export type props = object;
 const FeedScreen: React.FC<props> = () => {
   return (
     <Stack.Navigator initialRouteName="ItemScreen">
@@ -19,12 +20,6 @@ const FeedScreen: React.FC<props> = () => {
           headerShown: false,
           headerShadowVisible: false,
           headerLeft: () => null,
-          // <TouchableOpacity
-          //   style={styles.left_btn}
-          //   onPress={() => console.log('left-btn')}
-          // >
-          //   <Foundation name="indent-more" size={30} />
-          // </TouchableOpacity>
           headerTintColor: 'black',
           headerTitleStyle: {
             fontWeight: 'bold',

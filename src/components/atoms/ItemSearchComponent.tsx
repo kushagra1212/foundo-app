@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
+
 import { Feather } from '../../constants/icons';
 import { COLORS, FONTS } from '../../constants/theme';
-import { resetPosts } from '../../redux/slices/postSlice';
 export type props = {
   navigation?: any;
   handleOnFocus?: () => void;
@@ -26,6 +25,7 @@ const ItemSearchComponent: React.FC<props> = ({
         onFocus={handleOnFocus}
         autoFocus={true}
         onChangeText={registerString}
+        testID="searchInput"
       />
     </View>
   );

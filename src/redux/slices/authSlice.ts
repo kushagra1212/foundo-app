@@ -1,9 +1,13 @@
-
 import { createSlice } from '@reduxjs/toolkit';
-import { LOCAL_STORAGE_ACCESS_TOKEN_KEY } from '../../constants/key.config';
 
+import { LOCAL_STORAGE_ACCESS_TOKEN_KEY } from '../../configs/key.config';
 import { setItemToLocalStorage } from '../../storage/foundo-localstorage';
-const initialState = { user: null, jwtToken: null, forgotPasswordLinkSent: false, jwtResetToken: null };
+const initialState = {
+  user: null,
+  jwtToken: null,
+  forgotPasswordLinkSent: false,
+  jwtResetToken: null,
+};
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -11,12 +15,12 @@ const authSlice = createSlice({
     setCredentials: (state, action) => {
       const { user, jwtToken, jwtResetToken } = action.payload;
       state.user = user;
-      state.jwtToken = jwtToken !== undefined ? jwtToken : "";
-      console.log("jwtResetToken", jwtToken);
+      state.jwtToken = jwtToken !== undefined ? jwtToken : '';
+
       if (jwtResetToken) state.jwtResetToken = jwtResetToken;
       setItemToLocalStorage(jwtToken, LOCAL_STORAGE_ACCESS_TOKEN_KEY);
     },
-    logOut: (state) => {
+    logOut: state => {
       state.user = null;
       state.jwtToken = null;
     },
@@ -26,17 +30,21 @@ const authSlice = createSlice({
     updateUser: (state, action) => {
       const { user } = action.payload;
       state.user = user;
-    }
+    },
   },
-
 });
 
-export const { setCredentials, logOut, setForgotPasswordLinkSent, updateUser } = authSlice.actions;
+export const { setCredentials, logOut, setForgotPasswordLinkSent, updateUser } =
+  authSlice.actions;
 
 export default authSlice.reducer;
 
 export const selectCurrentUser = (state: any) => state.auth.user;
 export const selectCurrentToken = (state: any) => state.auth.jwtToken;
 export const selectCurrentResetToken = (state: any) => state.auth.jwtResetToken;
-export const selectorgotPasswordStatus = (state: any) => state.auth.forgotPasswordLinkSent;
-export const selectCurrentUserId = (state: any) => state.auth.user.id;
+export const selectorgotPasswordStatus = (state: any) =>
+  state.auth.forgotPasswordLinkSent;
+export const selectCurrentUserId = (state: any) => {
+  const user = state.auth.user;
+  return user ? user.id : null;
+};

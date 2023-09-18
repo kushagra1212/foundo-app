@@ -27,6 +27,13 @@ export const routesConfig = {
             ContactScreen: 'contact',
           },
         },
+        UserPostsHomeScreen: {
+          path: 'userpostshome',
+          screens: {
+            UserPostsScreen: 'userposts',
+            UserPostsRecommendationScreen: 'userpostsrecommendation',
+          },
+        },
       },
     },
     Auth: {

@@ -70,7 +70,7 @@ export const ITEMCAT_TO_NUM = new Map([
 export const NUM_TO_ITEMCAT = new Map([...ITEMCAT_TO_NUM.entries()].map(
   ([key, value]) => ([value, key]))
 );
-export enum FILTERTYPE {
+export enum   FILTERTYPE {
   LOST = 1,
   FOUNDED,
   ADDMORE

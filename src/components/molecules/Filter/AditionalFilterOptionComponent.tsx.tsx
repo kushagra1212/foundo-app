@@ -1,4 +1,5 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
+
 import { AntDesign, FontAwesome } from '../../../constants/icons';
 import { COLORS } from '../../../constants/theme';
 
@@ -11,7 +12,10 @@ const AdditionalFilterOptionComponent: React.FC<Props> = ({
   onModalOpen,
 }) => {
   return (
-    <TouchableOpacity style={[styles.base_option]} onPress={onModalOpen}>
+    <TouchableOpacity
+      style={[styles.base_option]}
+      onPress={onModalOpen}
+      testID="additional-filter-option">
       {isFilterOptionSelected ? (
         <FontAwesome style={{ fontWeight: '100' }} name="filter" size={40} />
       ) : (

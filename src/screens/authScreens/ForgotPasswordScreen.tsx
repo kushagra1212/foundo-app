@@ -1,3 +1,4 @@
+import { Formik } from 'formik';
 import {
   Image,
   Keyboard,
@@ -8,32 +9,30 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Formik } from 'formik';
-import Toast from 'react-native-toast-message';
-import * as yup from 'yup';
 import { TextInput } from 'react-native-gesture-handler';
-import { useEffect, useState } from 'react';
-import { COLORS, FONTS, SIZES, STYLE } from '../../constants/theme';
-import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
+import { useDispatch, useSelector } from 'react-redux';
+import * as yup from 'yup';
+
 import character2 from '../../assets/images/character2.png';
 import character5 from '../../assets/images/character5.png';
 import objectEmail from '../../assets/images/email.png';
+import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
+import { Entypo } from '../../constants/icons';
+import { COLORS, SIZES } from '../../constants/theme';
 import { useUserForgotPasswordMutation } from '../../redux/services/auth-service';
 import {
   selectorgotPasswordStatus,
   setForgotPasswordLinkSent,
 } from '../../redux/slices/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
 
-export type props = {
+interface props {
   navigation: any;
-};
-const ForgotPasswordScreen: React.FC<props> = ({ navigation }) => {
-  const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
+}
 
-  const [userForgotPassword, { isLoading }] = useUserForgotPasswordMutation();
+const ForgotPasswordScreen: React.FC<props> = () => {
+  const [userForgotPassword] = useUserForgotPasswordMutation();
   const forgotPasswordLinkSent = useSelector(selectorgotPasswordStatus);
   const dispatch = useDispatch();
 
@@ -63,7 +62,9 @@ const ForgotPasswordScreen: React.FC<props> = ({ navigation }) => {
     dispatch(setForgotPasswordLinkSent({ forgotPasswordLinkSent: false }));
   };
   return (
-    <SafeAreaView style={{ backgroundColor: COLORS.white }}>
+    <SafeAreaView
+      style={{ backgroundColor: COLORS.white }}
+      testID="Forgotpassword">
       {!forgotPasswordLinkSent ? (
         <KeyboardAvoidingView>
           <AnimationTranslateScale>
@@ -91,8 +92,7 @@ const ForgotPasswordScreen: React.FC<props> = ({ navigation }) => {
                   initialValues={{
                     email: '',
                   }}
-                  onSubmit={handleSubmit}
-                >
+                  onSubmit={handleSubmit}>
                   {({
                     handleChange,
                     handleBlur,
@@ -119,6 +119,7 @@ const ForgotPasswordScreen: React.FC<props> = ({ navigation }) => {
                           onBlur={handleBlur('email')}
                           value={values.email}
                           keyboardType="email-address"
+                          testID="emailInputForgotPassword"
                         />
                       </View>
 
@@ -130,7 +131,7 @@ const ForgotPasswordScreen: React.FC<props> = ({ navigation }) => {
                         }
                         disabled={!isValid}
                         onPress={() => handleSubmit()}
-                      >
+                        testID="sendButtonForgotPassword">
                         <Text style={styles.login_btn_text}>Send Email</Text>
                       </TouchableOpacity>
                     </View>
@@ -177,8 +178,7 @@ const ForgotPasswordScreen: React.FC<props> = ({ navigation }) => {
                 ? styles.login_btn_active
                 : styles.login_btn_off
             }
-            onPress={resendEmail}
-          >
+            onPress={resendEmail}>
             <Text style={styles.login_btn_text}>Resend Email</Text>
           </TouchableOpacity>
         </View>

@@ -31,8 +31,8 @@ const Step6UploadPicturesComponent: React.FC<props> = ({
 
     const result = await ImagePicker.launchImageLibraryAsync();
 
-    if (!result.cancelled) {
-      const base64 = await getBase64FromUrl(result.uri);
+    if (!result.canceled) {
+      const base64 = await getBase64FromUrl(result.assets[0].uri);
       let temp = [...values.pictures];
       temp[id].image = base64;
       setFieldValue('pictures', temp);
@@ -60,6 +60,8 @@ const Step6UploadPicturesComponent: React.FC<props> = ({
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
+          paddingLeft: 10,
+          paddingRight: 10,
         }}
       >
         <Text style={{ ...FONTS.h1, lineHeight: 40 }}>
@@ -73,7 +75,7 @@ const Step6UploadPicturesComponent: React.FC<props> = ({
           </Text>{' '}
         </Text>
       </View>
-      <View style={{ margin: 50, marginBottom: 60 }}>
+      <View style={{ margin: 100, marginTop: 50, marginBottom: 60 }}>
         <AnimationTranslateScale
           translateRange={[0, 0]}
           translateDuration={500}
@@ -98,11 +100,7 @@ const Step6UploadPicturesComponent: React.FC<props> = ({
                   style={{ width: 200, height: 200, borderRadius: 10 }}
                 />
               ) : (
-                <MaterialIcons
-                  name="image"
-                  size={150}
-                  color={COLORS.orangePrimary}
-                />
+                <MaterialIcons name="image" size={150} color={COLORS.black} />
               )}
             </TouchableOpacity>
           </View>
@@ -123,11 +121,7 @@ const Step6UploadPicturesComponent: React.FC<props> = ({
                   style={{ width: 200, height: 200, borderRadius: 10 }}
                 />
               ) : (
-                <MaterialIcons
-                  name="image"
-                  size={150}
-                  color={COLORS.greenPrimary}
-                />
+                <MaterialIcons name="image" size={150} color={'lightblue'} />
               )}
             </TouchableOpacity>
           </View>

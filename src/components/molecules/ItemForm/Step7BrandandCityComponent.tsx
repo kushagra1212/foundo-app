@@ -1,6 +1,5 @@
 import { FormikProps } from 'formik';
-import { View, Text } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { View, Text, TextInput } from 'react-native';
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost } from '../../../interfaces';
 import React, { useEffect } from 'react';
@@ -36,7 +35,12 @@ const Step7BrandandCityComponent: React.FC<props> = ({
         alignItems: 'center',
       }}
     >
-      <View style={{}}>
+      <View
+        style={{
+          paddingLeft: 10,
+          paddingRight: 10,
+        }}
+      >
         <Text style={{ ...FONTS.h1 }}>
           Write <Text style={{ color: COLORS.primary }}>Brand </Text>
           of the Item and{' '}
@@ -59,7 +63,7 @@ const Step7BrandandCityComponent: React.FC<props> = ({
               fontFamily: 'Roboto_400Regular',
               backgroundColor: COLORS.lightGrayPrePrimary,
               alignSelf: 'center',
-              marginTop: 100,
+              marginTop: 50,
               height: 100,
               borderRadius: 10,
               padding: 20,

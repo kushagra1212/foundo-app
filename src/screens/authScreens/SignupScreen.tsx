@@ -1,3 +1,5 @@
+import { Formik } from 'formik';
+import { useState } from 'react';
 import {
   Image,
   Keyboard,
@@ -8,23 +10,22 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Formik } from 'formik';
 import Toast from 'react-native-toast-message';
 import * as yup from 'yup';
-import { TextInput } from 'react-native-gesture-handler';
-import { useState } from 'react';
-import { COLORS, SIZES } from '../../constants/theme';
-import { SimpleLineIcons, Entypo, Ionicons } from '../../constants/icons';
+
 import object1 from '../../assets/images/object1.png';
-import { useUserSignupMutation } from '../../redux/services/auth-service';
 import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
-export type props = {
+import { Entypo, Ionicons, SimpleLineIcons } from '../../constants/icons';
+import { COLORS, SIZES } from '../../constants/theme';
+import { useUserSignupMutation } from '../../redux/services/auth-service';
+interface props {
   navigation: any;
-};
+}
 const SignupScreen: React.FC<props> = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
-  const [userSignup, { isLoading }] = useUserSignupMutation();
+  const [userSignup] = useUserSignupMutation();
 
   const handleSignupSubmit = async (data: any) => {
     try {
@@ -50,7 +51,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: COLORS.white }}>
+    <SafeAreaView style={{ backgroundColor: COLORS.white }} testID="Signup">
       <AnimationTranslateScale scaleRange={[10, 1]} translateRange={[0, 0]}>
         <Image
           source={object1}
@@ -76,8 +77,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                   email: '',
                   password: '',
                 }}
-                onSubmit={handleSignupSubmit}
-              >
+                onSubmit={handleSignupSubmit}>
                 {({
                   handleChange,
                   handleBlur,
@@ -104,6 +104,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                         onBlur={handleBlur('firstName')}
                         value={values.firstName}
                         keyboardType="name-phone-pad"
+                        testID="firstNameInput"
                       />
                     </View>
                     <View style={styles.name_input}>
@@ -123,6 +124,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                         onBlur={handleBlur('lastName')}
                         value={values.lastName}
                         keyboardType="name-phone-pad"
+                        testID="lastNameInput"
                       />
                     </View>
                     <View style={styles.email_input}>
@@ -142,6 +144,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                         onBlur={handleBlur('email')}
                         value={values.email}
                         keyboardType="email-address"
+                        testID="emailInput"
                       />
                     </View>
                     <View style={styles.password_input}>
@@ -157,6 +160,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                         onBlur={handleBlur('password')}
                         value={values.password}
                         secureTextEntry={secureTextEntry.password}
+                        testID="passwordInput"
                       />
                       <Ionicons
                         onPress={() =>
@@ -176,7 +180,7 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                       }
                       disabled={!isValid}
                       onPress={() => handleSubmit()}
-                    >
+                      testID="signupButton">
                       <Text style={styles.login_btn_text}>Signup</Text>
                     </TouchableOpacity>
                   </View>
@@ -187,17 +191,17 @@ const SignupScreen: React.FC<props> = ({ navigation }) => {
                   style={{
                     fontSize: SIZES.h4,
                     marginRight: 10,
-                  }}
-                >
+                  }}>
                   Already have an account
                 </Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Signin')}
+                  testID="gotToSigninButton">
                   <Text
                     style={{
                       color: COLORS.blueSecondary,
                       fontSize: SIZES.h4,
-                    }}
-                  >
+                    }}>
                     Login
                   </Text>
                 </TouchableOpacity>

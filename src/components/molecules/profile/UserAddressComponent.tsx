@@ -1,19 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  KeyboardAvoidingView,
-  Alert,
-  TouchableOpacity,
-} from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
-import { useDispatch, useSelector } from 'react-redux';
-import { COLORS, FONTS, SIZES } from '../../../constants/theme';
+import * as Location from 'expo-location';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+
+import { COLORS, FONTS } from '../../../constants/theme';
 import { useUserUpdateMutation } from '../../../redux/services/auth-service';
 import { useGetUserQuery } from '../../../redux/services/profile-service';
 import { updateUser } from '../../../redux/slices/authSlice';
-import * as Location from 'expo-location';
 import { getAddress } from '../../../utils';
 
 type props = {
@@ -48,7 +41,7 @@ const UserAddressComponent: React.FC<props> = ({
   };
   const CheckIfLocationEnabled = async () => {
     try {
-      let enabled = await Location.hasServicesEnabledAsync();
+      const enabled = await Location.hasServicesEnabledAsync();
 
       if (enabled) {
         setLocationServiceEnabled(enabled);
@@ -71,7 +64,7 @@ const UserAddressComponent: React.FC<props> = ({
   }, []);
   const makeLocationRequest = async () => {
     try {
-      let { coords } = await Location.getCurrentPositionAsync();
+      const { coords } = await Location.getCurrentPositionAsync();
 
       CheckIfLocationEnabled();
     } catch (err) {
@@ -80,17 +73,17 @@ const UserAddressComponent: React.FC<props> = ({
   };
   const GetCurrentLocation = async () => {
     try {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         onClose();
         return;
       }
 
-      let { coords } = await Location.getCurrentPositionAsync();
+      const { coords } = await Location.getCurrentPositionAsync();
 
       if (coords) {
         const { latitude, longitude } = coords;
-        let response = await Location.reverseGeocodeAsync({
+        const response = await Location.reverseGeocodeAsync({
           latitude,
           longitude,
         });
@@ -109,8 +102,7 @@ const UserAddressComponent: React.FC<props> = ({
         <View
           style={{
             width: '100%',
-          }}
-        >
+          }}>
           {!locationServiceEnabled ? (
             <View>
               <Text style={{ ...FONTS.body3, margin: 10 }}>
@@ -120,8 +112,7 @@ const UserAddressComponent: React.FC<props> = ({
                 style={{ ...styles.verify_email_but, width: '80%' }}
                 onPress={() => {
                   makeLocationRequest();
-                }}
-              >
+                }}>
                 <Text style={{ ...FONTS.body3, color: COLORS.white }}>
                   Enable Location Service
                 </Text>
@@ -131,8 +122,7 @@ const UserAddressComponent: React.FC<props> = ({
             <View>
               <TouchableOpacity
                 style={{ ...styles.verify_email_but, width: '80%' }}
-                onPress={GetCurrentLocation}
-              >
+                onPress={GetCurrentLocation}>
                 <Text style={{ ...FONTS.body3, color: COLORS.white }}>
                   Get Your Adddress
                 </Text>
@@ -150,8 +140,7 @@ const UserAddressComponent: React.FC<props> = ({
             marginTop: 20,
             justifyContent: 'center',
             alignItems: 'center',
-          }}
-        >
+          }}>
           <Text style={{ ...FONTS.h2, margin: 10 }}>
             Your current address is
           </Text>

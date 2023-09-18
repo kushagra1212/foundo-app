@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+
 import { AntDesign } from '../../constants/icons';
 import { COLORS, FONTS } from '../../constants/theme';
 import { FilterItemOn } from '../../interfaces';
@@ -23,13 +24,12 @@ const MiniItemTextIcon: React.FC<Props> = ({
       onTouchEnd={() =>
         updateItemFilterOption({ category: isSelected ? '' : text })
       }
-    >
+      testID={text}>
       <Text
         style={{
           ...FONTS.h4,
           ...(isSelected ? { color: COLORS.white } : { color: COLORS.black }),
-        }}
-      >
+        }}>
         {text}
       </Text>
       {isSelected ? (

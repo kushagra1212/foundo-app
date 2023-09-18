@@ -1,5 +1,4 @@
-import { StyleSheet, View } from 'react-native';
-import { Switch } from 'react-native-gesture-handler';
+import { StyleSheet, View, Switch } from 'react-native';
 import { COLORS } from '../../constants/theme';
 type props = {
   value: boolean;

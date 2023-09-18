@@ -86,6 +86,7 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
             color="black"
             onPress={() => navigation.goBack()}
           />
+          
           <View
             style={{
               display: 'flex',

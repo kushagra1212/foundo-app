@@ -1,17 +1,23 @@
-import { StyleSheet, FlatList, ActivityIndicator } from 'react-native';
-import { COLORS } from '../../../../constants/theme';
+import {
+  ActivityIndicator,
+  FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  StyleSheet,
+} from 'react-native';
 
-import SingleCardComponent from './SingleCardComponent';
-import { Post } from '../../../../interfaces';
 import character5 from '../../../../assets/images/character5.png';
+import { COLORS } from '../../../../constants/theme';
+import { Post } from '../../../../interfaces';
 import AnimatedComponent from '../../Animation/AnimatedComponent';
 export type props = {
   postFound: boolean;
-  posts: Array<Post>;
+  posts: Post[];
   reachedEnd: boolean;
   fetchPosts: () => void;
   loading: boolean;
   navigation: any;
+  SingleCardComponent: React.FC<any>;
 };
 const CardsComponent: React.FC<props> = ({
   postFound,
@@ -20,8 +26,9 @@ const CardsComponent: React.FC<props> = ({
   loading,
   posts,
   navigation,
+  SingleCardComponent,
 }) => {
-  const onScroll = (event: any) => {
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const { nativeEvent } = event;
     const { contentOffset } = nativeEvent;
     const { y } = contentOffset;
@@ -38,6 +45,7 @@ const CardsComponent: React.FC<props> = ({
   }
   return (
     <FlatList
+      testID="card-list"
       data={posts}
       renderItem={({ item }) => (
         <SingleCardComponent
@@ -47,7 +55,7 @@ const CardsComponent: React.FC<props> = ({
         />
       )}
       onEndReached={reachedEnd ? null : fetchPosts}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={item => item.id.toString()}
       ListFooterComponent={
         loading ? (
           <ActivityIndicator
@@ -57,7 +65,6 @@ const CardsComponent: React.FC<props> = ({
           />
         ) : null
       }
-      onScroll={onScroll}
     />
   );
 };

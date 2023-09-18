@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { BASE_URL } from '../../constants/key.config';
+
+import { BASE_URL } from '../../configs/key.config';
 import { logOut, setCredentials } from '../slices/authSlice';
 
 const baseQuery = fetchBaseQuery({
@@ -19,7 +20,6 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
   let result: any = await baseQuery(args, api, extraOptions);
   if (result?.error?.originalStatus === 403) {
-
     // send refresh token to get new access token
     const refreshResult = await baseQuery('/refresh', api, extraOptions);
 
@@ -39,6 +39,6 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
 
 export const api = createApi({
   baseQuery: baseQueryWithReauth,
-  endpoints: (builder) => ({}),
-  tagTypes: ['user', 'user-setting', 'Contacts', 'Posts']
+  endpoints: builder => ({}),
+  tagTypes: ['user', 'user-setting', 'Contacts', 'Posts'],
 });

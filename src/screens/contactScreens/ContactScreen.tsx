@@ -1,19 +1,20 @@
+import MaskedView from '@react-native-masked-view/masked-view';
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
-import MaskedView from '@react-native-masked-view/masked-view';
 
-import { LinearGradient } from 'expo-linear-gradient';
-import { useLazyGetContactsQuery } from '../../redux/services/message-service';
-import { selectCurrentUser } from '../../redux/slices/authSlice';
-import ContactListComponent from '../../components/molecules/Contact/ContactListComponent';
-import { COLORS } from '../../constants/theme';
-import AnimatedComponent from '../../components/molecules/Animation/AnimatedComponent';
-import AnimatedObject from '../../components/molecules/Animation/AnimatedObject';
 import character4 from '../../assets/images/character4.png';
 import object3 from '../../assets/images/object1.png';
 import LogInButtonComponent from '../../components/atoms/LogInButtonComponent';
+import AnimatedComponent from '../../components/molecules/Animation/AnimatedComponent';
+import AnimatedObject from '../../components/molecules/Animation/AnimatedObject';
+import ContactListComponent from '../../components/molecules/Contact/ContactListComponent';
+import { COLORS, SIZES } from '../../constants/theme';
+import { useLazyGetContactsQuery } from '../../redux/services/message-service';
+import { selectCurrentUser } from '../../redux/slices/authSlice';
+
 export type props = {
   navigation: any;
 };
@@ -26,7 +27,7 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
   });
   const [getContacts, { isLoading, isError }] = useLazyGetContactsQuery();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
-  const [contacts, setContacts] = useState<Array<any>>([]);
+  const [contacts, setContacts] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [contactFound, setContactFound] = useState<boolean>(true);
   const fetchContacts = async () => {
@@ -74,8 +75,7 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
         style={{
           height: '100%',
           backgroundColor: COLORS.lightGrayPrePrimary,
-        }}
-      >
+        }}>
         <View style={{ zIndex: 1, top: '60%' }}>
           <AnimatedObject width={300} height={300} source={object3} />
         </View>
@@ -96,8 +96,7 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
         width: '100%',
         height: '100%',
         backgroundColor: COLORS.lightGrayPrePrimary,
-      }}
-    >
+      }}>
       <MaskedView
         style={{ flex: 1 }}
         maskElement={
@@ -106,14 +105,10 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
               backgroundColor: 'transparent',
               flex: 1,
               marginTop: 0,
-            }}
-          >
+            }}>
             <LinearGradient
               colors={[
                 '#FFFFFF00',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
                 '#FFFFFF',
                 '#FFFFFF',
                 '#FFFFFF',
@@ -127,17 +122,15 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
               style={{
                 flex: 1,
                 borderRadius: 5,
-              }}
-            ></LinearGradient>
+              }}></LinearGradient>
           </View>
-        }
-      >
+        }>
+        <Text style={styles.chat_text}>Chats</Text>
         <View
           style={{
             marginTop: 20,
             marginBottom: 20,
-          }}
-        >
+          }}>
           <ContactListComponent
             fetchContacts={fetchContacts}
             loading={isLoading}
@@ -160,6 +153,13 @@ const styles = StyleSheet.create({
   },
   item_search_input: {
     width: '90%',
+  },
+  chat_text: {
+    margin: 10,
+    fontSize: SIZES.h1,
+    marginBottom: 0,
+    width: '90%',
+    alignSelf: 'center',
   },
 });
 export default ContactScreen;

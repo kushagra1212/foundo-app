@@ -10,6 +10,7 @@ npm-debug.*
 *.orig.*
 .env
 web-build/
-src/Dummy/not-to-share.js
+src/configs/test.key.config.js
 # macOS
 .DS_Store
+coverage/

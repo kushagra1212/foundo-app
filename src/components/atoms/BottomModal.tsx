@@ -1,8 +1,8 @@
-import { Modal, View, Text, Pressable, StyleSheet } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { Entypo, Ionicons } from '../../constants/icons';
+import React from 'react';
+import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+
+import { Ionicons } from '../../constants/icons';
 import { COLORS, SIZES } from '../../constants/theme';
-import { SafeAreaView } from 'react-native-safe-area-context';
 type AnimationType = 'slide' | 'none' | 'fade' | undefined;
 type Props = {
   isVisible: boolean;
@@ -22,52 +22,48 @@ const BottomModal: React.FC<Props> = ({
   onClose,
   backgroundFilter,
   reset,
-  iconName = 'chevron-back',
+  iconName = 'close-circle',
   height = '80%',
   effect = 'slide',
   titleText = '',
   refreshAvail = false,
 }) => {
   return (
-    <SafeAreaView mode="margin">
-      <Modal
-        animationType={effect}
-        transparent={true}
-        visible={isVisible}
-        statusBarTranslucent={true}
-        style={{ backgroundColor: COLORS.lightGrayPrePrimary }}
-      >
-        <View
-          style={backgroundFilter ? styles.modal : { height: '100%' }}
-        ></View>
-        <View style={{ ...styles.modalContent, height }}>
-          <View style={styles.titleContainer}>
-            <Pressable onPress={onClose}>
+    <Modal
+      animationType={effect}
+      transparent={true}
+      visible={isVisible}
+      statusBarTranslucent={true}
+      style={{ backgroundColor: COLORS.lightGrayPrePrimary }}>
+      <View style={backgroundFilter ? styles.modal : { height: '100%' }}></View>
+      <View style={[styles.modalContent, { height }]}>
+        <View style={styles.titleContainer}>
+          {refreshAvail && (
+            <Pressable onPress={reset}>
               <Ionicons
                 style={{
                   fontWeight: '500',
                 }}
-                name={iconName !== 'chevron-back' ? iconName : 'chevron-back'}
+                name="refresh"
                 size={35}
               />
             </Pressable>
-            <Text style={styles.title}>{titleText}</Text>
-            {refreshAvail && (
-              <Pressable onPress={reset}>
-                <Ionicons
-                  style={{
-                    fontWeight: '500',
-                  }}
-                  name="refresh"
-                  size={35}
-                />
-              </Pressable>
-            )}
-          </View>
-          {children}
+          )}
+          <Text style={styles.title}>{titleText}</Text>
+
+          <Pressable onPress={onClose} testID={`closeButton`}>
+            <Ionicons
+              style={{
+                fontWeight: '500',
+              }}
+              name={iconName !== 'close-circle' ? iconName : 'close-circle'}
+              size={45}
+            />
+          </Pressable>
         </View>
-      </Modal>
-    </SafeAreaView>
+        {children}
+      </View>
+    </Modal>
   );
 };
 const styles = StyleSheet.create({
@@ -86,6 +82,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     elevation: 5,
+    alignSelf: 'center',
   },
   titleContainer: {
     height: 60,

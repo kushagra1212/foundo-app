@@ -1,22 +1,34 @@
-import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import FeedScreen from './FeedScreen';
-import ProfileScreen from './ProfileScreen';
-import { COLORS } from '../constants/theme';
-import { Ionicons, MaterialIconsCommunity } from '../constants/icons';
+import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+
+import { Ionicons, MaterialIconsCommunity } from '../constants/icons';
+import { COLORS } from '../constants/theme';
 import {
   selectAddItemDetailsScreenStatus,
   selectFeedSearchScreenStatus,
 } from '../redux/slices/sreenSilce';
-import MessageScreen from './MessageScreen';
 import AddItemScreen from './AddItemScreen';
+import FeedScreen from './FeedScreen';
+import MessageScreen from './MessageScreen';
+import ProfileScreen from './ProfileScreen';
+import UserPostsHomeScreen from './userPostScreens/UserPostsHomeScreen';
 const Tab = createBottomTabNavigator();
-
+export const TAB_BAR_STYLE: any = {
+  backgroundColor: COLORS.white,
+  height: 70,
+  justifyContent: 'center',
+  display: 'flex',
+  alignItems: 'center',
+  padding: 10,
+  elevation: 50,
+  borderRadius: 20,
+  marginTop: -20,
+};
 const HomeScreen = () => {
   const feedSearchShow = useSelector(selectFeedSearchScreenStatus);
   const addItemDetailsScreenShow = useSelector(
-    selectAddItemDetailsScreenStatus
+    selectAddItemDetailsScreenStatus,
   );
   return (
     <Tab.Navigator
@@ -24,20 +36,12 @@ const HomeScreen = () => {
         tabBarHideOnKeyboard: true,
         title: 'FeedScreen',
         tabBarStyle: {
-          backgroundColor: COLORS.white,
-          height: 70,
+          ...TAB_BAR_STYLE,
           display: feedSearchShow || addItemDetailsScreenShow ? 'none' : 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: 10,
-          elevation: 50,
-          borderRadius: 20,
-          marginTop: -20,
         },
         tabBarLabel: '',
       }}
-      initialRouteName="FeedScreen"
-    >
+      initialRouteName="FeedScreen">
       <Tab.Screen
         name="FeedScreen"
         options={{
@@ -129,6 +133,36 @@ const HomeScreen = () => {
         }}
         name="MessageScreen"
         component={MessageScreen}
+      />
+      <Tab.Screen
+        options={{
+          title: '',
+          headerShown: false,
+          headerTitleAlign: 'center',
+          headerLeft: () => null,
+          // <TouchableOpacity
+          //   style={styles.left_btn}
+          //   onPress={() => console.log('left-btn')}
+          // >
+          //   <Foundation name="indent-more" size={30} />
+          // </TouchableOpacity>
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          tabBarLabel: '',
+          tabBarIcon: ({ focused }) => {
+            return (
+              <MaterialIconsCommunity
+                name={focused ? 'post' : 'post-outline'}
+                size={30}
+                color={focused ? COLORS.black : COLORS.GraySecondary}
+              />
+            );
+          },
+        }}
+        name="UserPostsHomeScreen"
+        component={UserPostsHomeScreen}
       />
     </Tab.Navigator>
   );

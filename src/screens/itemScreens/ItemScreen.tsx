@@ -1,60 +1,64 @@
+import MaskedView from '@react-native-masked-view/masked-view';
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
 import {
+  FlatList,
   StyleSheet,
   Text,
-  View,
-  FlatList,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
+
+import BottomModal from '../../components/atoms/BottomModal';
 import FilterOptionComponent, {
   FILTER_ITEMS,
 } from '../../components/atoms/FilterOptionItem';
 import AdditionalFilterOptionComponent from '../../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
+import FilterItemComponent from '../../components/molecules/Filter/FilterItemComponent';
 import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
+import SingleCardComponent from '../../components/molecules/Item/Card/SingleCardComponent';
+import { Feather } from '../../constants/icons';
 import { COLORS, FONTS } from '../../constants/theme';
 import { FilterItemOn, Post } from '../../interfaces';
 import { filterItemOnInitial } from '../../interfaces/initials';
+import { useLazyGetPostsQuery } from '../../redux/services/post-service';
 import {
   resetPosts,
   selectFilterType,
-  selectOffsetAndLimit,
+  selectLimit,
+  selectOffset,
   selectPosts,
   updateFilter,
   updatePosts,
 } from '../../redux/slices/postSlice';
-import FilterItemComponent from '../../components/molecules/Filter/FilterItemComponent';
-import BottomModal from '../../components/atoms/BottomModal';
-import { Feather } from '../../constants/icons';
-import { useLazyGetPostsQuery } from '../../redux/services/post-service';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import MaskedView from '@react-native-masked-view/masked-view';
-
-import { LinearGradient } from 'expo-linear-gradient';
 import {
   selectFeedSearchScreenStatus,
   updateFeedSearchScreenStatus,
 } from '../../redux/slices/sreenSilce';
+import { LinearGradientColorBlackToWhite } from '../../utils';
 
 export type props = {
   navigation: any;
 };
 const ItemScreen: React.FC<props> = ({ navigation }) => {
   const filterType = useSelector(selectFilterType);
-  const posts: Array<Post> = useSelector(selectPosts);
+  const posts: Post[] = useSelector(selectPosts);
   const feedSearchScreenStatus = useSelector(selectFeedSearchScreenStatus);
   const [itemFilterOption, setItemFilterOption] =
     useState<FilterItemOn>(filterItemOnInitial);
   const [backgroundFilter, setBackgroundFilter] = useState<boolean>(false);
   const [advFilterOn, setAdvFilterOn] = useState<boolean | undefined>(
-    undefined
+    undefined,
   );
-  const { limit, offset } = useSelector(selectOffsetAndLimit);
+  const limit = useSelector(selectLimit);
+  const offset = useSelector(selectOffset);
   const [getPost, { isLoading }] = useLazyGetPostsQuery();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [postFound, setPostFound] = useState<boolean>(false);
+  const [postFound, setPostFound] = useState<boolean>(true);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const handleChangeFilter = (id: number) => {
@@ -65,7 +69,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
     setBackgroundFilter(false);
     if (advFilterOn === undefined) setAdvFilterOn(true);
     else setAdvFilterOn(!advFilterOn);
-    dispatch(updateFilter({ filterType: filterType }));
+    dispatch(updateFilter({ filterType }));
     setTimeout(() => {
       setIsModalVisible(false);
     }, 10);
@@ -85,32 +89,22 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
     setPostFound(true);
     if (loading || feedSearchScreenStatus) return;
     setLoading(true);
-    let cat = { ...itemFilterOption };
-    // if (itemFilterOption.category) {
-    //   cat.category = String(
-    //     ITEMCAT_TO_NUM.get(String(itemFilterOption.category))
-    //   );
-    // }
+    const cat = { ...itemFilterOption };
+
     try {
       const posts = await getPost({
-        offset: offset,
+        offset,
         limit,
         founded: filterType,
         ...cat,
       }).unwrap();
-      dispatch(updatePosts({ offset: offset + limit, posts: posts }));
+      dispatch(updatePosts({ offset: offset + limit, posts }));
       setLoading(false);
     } catch (e: any) {
       console.log(e);
       setLoading(false);
       setReachedEnd(true);
-      // Toast.show({
-      //   type: 'error',
-      //   props: {
-      //     text: e.status,
-      //     message: e.error,
-      //   },
-      // });
+
       if (posts.length !== 0)
         Toast.show({
           type: 'success',
@@ -146,27 +140,20 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
         <TouchableOpacity
           onPress={handleOnFocus}
           style={styles.item_search_input}
-        >
+          testID="searchButton">
           <View style={{ marginLeft: 10 }}>
             <Text style={{ ...FONTS.body2 }}>
               <Text style={FONTS.h1}>Find </Text>Things you Lost
             </Text>
           </View>
           <Feather style={styles.item_search} name="search" size={35} />
-          {/* 
-          <TextInput
-            style={[styles.item_text_ip, FONTS.body3]}
-            placeholder="Search Items here.."
-          />
-        </View> */}
         </TouchableOpacity>
         <View
           style={{
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-          }}
-        >
+          }}>
           <FlatList
             data={FILTER_ITEMS}
             contentContainerStyle={styles.option_flatlist}
@@ -204,34 +191,15 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
               backgroundColor: 'transparent',
               flex: 1,
               marginTop: 0,
-            }}
-          >
+            }}>
             <LinearGradient
-              colors={[
-                '#FFFFFF00',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-              ]}
+              colors={LinearGradientColorBlackToWhite}
               style={{
                 flex: 1,
                 borderRadius: 5,
-              }}
-            ></LinearGradient>
+              }}></LinearGradient>
           </View>
-        }
-      >
+        }>
         {/* Shows behind the mask, you can put anything here, such as an image */}
 
         <CardsComponent
@@ -241,6 +209,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
           posts={posts}
           reachedEnd={reachedEnd}
           navigation={navigation}
+          SingleCardComponent={SingleCardComponent}
         />
         <View style={{ height: 10 }}></View>
       </MaskedView>
@@ -251,8 +220,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
           onClose={onModalClose}
           titleText="Filter"
           reset={resetItemFilter}
-          refreshAvail
-        >
+          refreshAvail>
           <FilterItemComponent
             options={itemFilterOption}
             updateItemFilterOption={updateItemFilterOption}
@@ -260,9 +228,6 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
           />
         </BottomModal>
       )}
-      {/* <View>
-        <LogoutButtonComponent navigation={navigation} />
-      </View> */}
     </SafeAreaView>
   );
 };
