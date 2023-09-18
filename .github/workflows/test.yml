@@ -2,8 +2,6 @@ name: Run Tests
 
 on:
   push:
-    branches:
-      - main  # Replace with your main branch name
 
 jobs:
   test:
