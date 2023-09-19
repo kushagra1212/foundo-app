@@ -29,7 +29,7 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({
     currentUserId && item.userId == currentUserId ? 'You' : item.firstName;
   return (
     <View style={styles.card}>
-      {isCardDetailVisible && (
+      {isCardDetailVisible && item?.id && (
         <ItemComponent
           isVisible={isCardDetailVisible}
           item={item}

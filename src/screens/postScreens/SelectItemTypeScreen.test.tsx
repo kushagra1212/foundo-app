@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react-native';
+import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import { Provider } from 'react-redux';
 
@@ -8,63 +8,66 @@ import { handleErrors } from '../../utils';
 import SelectItemTypeScreen from './SelectItemTypeScreen';
 
 describe('<SelectItemTypeScreen />', () => {
-  it('should SelectItemTypeScreen works', async () => {
-    const navigation = {
+  let SelectItemTypeScreenRender: React.ReactElement;
+  let navigation: any;
+  beforeEach(() => {
+    navigation = {
       navigate: jest.fn(),
       goBack: jest.fn(),
     };
-    const { getByTestId } = render(
+    SelectItemTypeScreenRender = (
       <Provider store={store}>
         <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
           <SelectItemTypeScreen navigation={navigation} />
         </ErrorBoundary>
-      </Provider>,
+      </Provider>
     );
+  });
 
-    expect(getByTestId('lostItemButton')).toBeTruthy();
-    expect(getByTestId('foundItemButton')).toBeTruthy();
+  it('should SelectItemTypeScreen works', async () => {
+    const { getByTestId } = render(SelectItemTypeScreenRender);
+
+    await waitFor(() => {
+      expect(getByTestId('lostItemButton')).toBeTruthy();
+    });
+
+    await waitFor(() => {
+      expect(getByTestId('foundItemButton')).toBeTruthy();
+    });
   });
 
   it('should goto AddItemDetailsScreen when click on lostItemButton', async () => {
-    const navigation = {
-      navigate: jest.fn(),
-      goBack: jest.fn(),
-    };
-    const { getByTestId } = render(
-      <Provider store={store}>
-        <SelectItemTypeScreen navigation={navigation} />
-      </Provider>,
-    );
+    const { getByTestId } = render(SelectItemTypeScreenRender);
 
-    const lostItemButton = getByTestId('lostItemButton');
+    await waitFor(() => {
+      expect(getByTestId('lostItemButton')).toBeTruthy();
+    });
 
-    fireEvent.press(lostItemButton);
+    fireEvent.press(getByTestId('lostItemButton'));
 
-    expect(navigation.navigate).toHaveBeenCalledWith('AddItemDetailsScreen', {
-      isFounded: false,
+    await waitFor(() => {
+      expect(navigation.navigate).toHaveBeenCalledWith('AddItemDetailsScreen', {
+        isFounded: false,
+      });
     });
   });
   it('should goto AddItemDetailsScreen when click on foundItemButton', async () => {
-    const navigation = {
-      navigate: jest.fn(),
-      goBack: jest.fn(),
-    };
-    const { getByTestId } = render(
-      <Provider store={store}>
-        <SelectItemTypeScreen navigation={navigation} />
-      </Provider>,
-    );
+    const { getByTestId } = render(SelectItemTypeScreenRender);
+    await waitFor(() => {
+      expect(getByTestId('foundItemButton')).toBeTruthy();
+    });
 
-    const foundItemButton = getByTestId('foundItemButton');
+    fireEvent.press(getByTestId('foundItemButton'));
 
-    fireEvent.press(foundItemButton);
-
-    expect(navigation.navigate).toHaveBeenCalledWith('AddItemDetailsScreen', {
-      isFounded: true,
+    await waitFor(() => {
+      expect(navigation.navigate).toHaveBeenCalledWith('AddItemDetailsScreen', {
+        isFounded: true,
+      });
     });
   });
-});
-afterEach(() => {
-  // Tear down global state or variables
-  jest.clearAllMocks();
+  afterEach(() => {
+    // Tear down global state or variables
+    jest.clearAllMocks();
+    jest.useFakeTimers();
+  });
 });
