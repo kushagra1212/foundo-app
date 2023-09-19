@@ -5,38 +5,47 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Provider } from 'react-redux';
 
 import Error from '../../components/Error';
-import { prefix } from '../../components/Foundo';
 import { routesConfig } from '../../configs/routesConfig';
+import { logOut } from '../../redux/slices/authSlice';
 import { store } from '../../redux/store';
 import { handleErrors } from '../../utils';
 import AuthScreen from './AuthScreen';
 
-const AuthScreenRender = () => (
-  <Provider store={store}>
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer
-        linking={{
-          prefixes: [prefix],
-          config: routesConfig,
-        }}>
-        <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
-          <AuthScreen />
-        </ErrorBoundary>
-      </NavigationContainer>
-    </GestureHandlerRootView>
-  </Provider>
-);
-
 describe('<AuthScreen />', () => {
-  it('should AuthScreen works', async () => {
-    const { getByTestId } = render(<AuthScreenRender />);
+  let AuthScreenRender: React.ReactElement;
+  beforeAll(() => {
+    store.dispatch(logOut);
 
-    waitFor(() => {
+    AuthScreenRender = (
+      <Provider store={store}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <NavigationContainer
+            linking={{
+              prefixes: ['foundo//app'],
+              config: routesConfig,
+            }}>
+            <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
+              <AuthScreen />
+            </ErrorBoundary>
+          </NavigationContainer>
+        </GestureHandlerRootView>
+      </Provider>
+    );
+  });
+
+  it('should AuthScreen works', async () => {
+    const { getByTestId } = render(AuthScreenRender);
+
+    await waitFor(() => {
       expect(getByTestId('Signin')).toBeTruthy();
     });
   });
-});
-afterEach(() => {
-  // Tear down global state or variables
-  jest.clearAllMocks();
+  afterEach(() => {
+    // Tear down global state or variables
+    jest.useFakeTimers();
+  });
+  beforeEach(() => {
+    // Set up global state or variables
+    jest.useFakeTimers();
+  });
 });

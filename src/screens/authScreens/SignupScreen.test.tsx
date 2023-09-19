@@ -20,7 +20,7 @@ describe('<SignupScreen/>', () => {
   let signupButton: ReactTestInstance;
   let gotToSigninButton: ReactTestInstance;
 
-  beforeEach(() => {
+  beforeAll(async () => {
     WrapperSignupScreen = (
       <Provider store={store}>
         <ErrorBoundary FallbackComponent={Error}>
@@ -29,7 +29,11 @@ describe('<SignupScreen/>', () => {
       </Provider>
     );
     const { getByTestId } = render(WrapperSignupScreen);
-    emailInput = getByTestId('emailInput');
+
+    await waitFor(() => {
+      emailInput = getByTestId('emailInput');
+    });
+
     passwordInput = getByTestId('passwordInput');
     firstNameInput = getByTestId('firstNameInput');
     lastNameInput = getByTestId('lastNameInput');
@@ -108,6 +112,6 @@ describe('<SignupScreen/>', () => {
 
   afterEach(() => {
     // Tear down global state or variables
-    jest.clearAllMocks();
+    jest.useFakeTimers();
   });
 });

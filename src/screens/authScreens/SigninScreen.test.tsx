@@ -118,8 +118,6 @@ describe('<SigninScreenRender />', () => {
 
   afterEach(() => {
     // Tear down global state or variables
-    navigation.navigate.mockReset();
-    navigation.goBack.mockReset();
-    jest.clearAllMocks();
+    jest.useFakeTimers();
   });
 });
