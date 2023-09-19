@@ -1,7 +1,7 @@
 import {
   BASE_URL,
   LOCAL_STORAGE_ACCESS_TOKEN_KEY,
-} from '../../configs/key.config.js';
+} from '../../configs/key.config';
 import {
   getTokenFromLocalStorage,
   removeItemFromLocalStroage,
