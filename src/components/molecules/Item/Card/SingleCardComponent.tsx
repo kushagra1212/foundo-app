@@ -136,7 +136,8 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({
           }}>
           <TouchableOpacity
             onPress={toggleCardDetail}
-            style={styles.view_details}>
+            style={styles.view_details}
+            testID="viewDetailsButton">
             <Text
               style={{
                 ...FONTS.h3,
