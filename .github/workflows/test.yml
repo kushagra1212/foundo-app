@@ -18,7 +18,7 @@ jobs:
           node-version: 18.x  # Adjust the Node.js version as needed
 
       - name: Install dependencies
-        run: npm install  # Use npm ci for faster and consistent dependency installation
+        run: npm install  
 
       - name: Setup environment variables
         run: |
@@ -31,4 +31,4 @@ jobs:
           echo "TEST_USER_LAST_NAME=${{ secrets.TEST_USER_LAST_NAME }}" >> .env
 
       - name: Run tests
-        run: npm run test  # Modify this command if your test command is different
+        run: node run-tests.js  

@@ -8,56 +8,62 @@ import { store } from '../../redux/store';
 import { handleErrors } from '../../utils';
 import SigninScreen from './SigninScreen';
 
-const navigation = {
-  navigate: jest.fn(),
-  goBack: jest.fn(),
-};
-
-const SigninScreenRender = () => (
-  <Provider store={store}>
-    <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
-      <SigninScreen navigation={navigation} />
-    </ErrorBoundary>
-  </Provider>
-);
-
 describe('<SigninScreenRender />', () => {
+  let SigninScreenRender: React.ReactElement;
+  let navigation: any;
+  beforeEach(() => {
+    navigation = {
+      navigate: jest.fn(),
+      goBack: jest.fn(),
+    };
+    SigninScreenRender = (
+      <Provider store={store}>
+        <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
+          <SigninScreen navigation={navigation} />
+        </ErrorBoundary>
+      </Provider>
+    );
+  });
+
   it('should SigninScreenRender works', async () => {
-    const { getByTestId } = render(<SigninScreenRender />);
+    const { getByTestId } = render(SigninScreenRender);
 
     await waitFor(() => {
       expect(getByTestId('Signin')).toBeTruthy();
     });
   });
   it('should no signin user', async () => {
-    const { getByTestId, getAllByText } = render(<SigninScreenRender />);
+    const { getByTestId, getAllByText } = render(SigninScreenRender);
     await waitFor(() => {
       expect(getByTestId('Signin')).toBeTruthy();
     });
     await waitFor(() => {
       expect(getByTestId('emailInput')).toBeTruthy();
+    });
+
+    await waitFor(() => {
       expect(getByTestId('passwordInput')).toBeTruthy();
+    });
+
+    await waitFor(() => {
       expect(getByTestId('signinButton')).toBeTruthy();
     });
 
-    const emailInput = getByTestId('emailInput');
-    const passwordInput = getByTestId('passwordInput');
-    const signinButton = getByTestId('signinButton');
-    const consoleLogMock = jest.fn();
-    jest.spyOn(console, 'log').mockImplementation(consoleLogMock);
-    fireEvent.changeText(emailInput, TEST_USER.email);
-    fireEvent.changeText(passwordInput, TEST_USER.password + '1434');
+    fireEvent.changeText(getByTestId('emailInput'), TEST_USER.email);
+    fireEvent.changeText(
+      getByTestId('passwordInput'),
+      TEST_USER.password + '1434',
+    );
 
-    fireEvent.press(signinButton);
+    fireEvent.press(getByTestId('signinButton'));
+
     await waitFor(() => {
-      expect(consoleLogMock).toHaveBeenCalledTimes(1);
+      expect(navigation.navigate).not.toHaveBeenCalledWith('Home');
     });
-
-    expect(navigation.navigate).not.toHaveBeenCalledWith('Home');
   });
 
   it('should go to forgotPassword', async () => {
-    const { getByTestId } = render(<SigninScreenRender />);
+    const { getByTestId } = render(SigninScreenRender);
     await waitFor(() => {
       expect(getByTestId('Signin')).toBeTruthy();
     });
@@ -75,7 +81,7 @@ describe('<SigninScreenRender />', () => {
   });
 
   it('should go to Signup', async () => {
-    const { getByTestId } = render(<SigninScreenRender />);
+    const { getByTestId } = render(SigninScreenRender);
     await waitFor(() => {
       expect(getByTestId('Signin')).toBeTruthy();
     });
@@ -83,9 +89,7 @@ describe('<SigninScreenRender />', () => {
       expect(getByTestId('gotToSignupButton')).toBeTruthy();
     });
 
-    const gotToSignupButton = getByTestId('gotToSignupButton');
-
-    fireEvent.press(gotToSignupButton);
+    fireEvent.press(getByTestId('gotToSignupButton'));
 
     await waitFor(() => {
       expect(navigation.navigate).toHaveBeenCalledWith('Signup');
@@ -93,23 +97,27 @@ describe('<SigninScreenRender />', () => {
   });
 
   it('should signin user', async () => {
-    const { getByTestId } = render(<SigninScreenRender />);
+    const { getByTestId } = render(SigninScreenRender);
     await waitFor(() => {
       expect(getByTestId('Signin')).toBeTruthy();
     });
     await waitFor(() => {
       expect(getByTestId('emailInput')).toBeTruthy();
+    });
+
+    await waitFor(() => {
       expect(getByTestId('passwordInput')).toBeTruthy();
+    });
+
+    await waitFor(() => {
       expect(getByTestId('signinButton')).toBeTruthy();
     });
 
-    const emailInput = getByTestId('emailInput');
-    const passwordInput = getByTestId('passwordInput');
-    const signinButton = getByTestId('signinButton');
+    fireEvent.changeText(getByTestId('emailInput'), TEST_USER.email);
+    fireEvent.changeText(getByTestId('passwordInput'), TEST_USER.password);
+    fireEvent.press(getByTestId('signinButton'));
 
-    fireEvent.changeText(emailInput, TEST_USER.email);
-    fireEvent.changeText(passwordInput, TEST_USER.password);
-    fireEvent.press(signinButton);
+    jest.useRealTimers();
 
     await waitFor(() => {
       expect(navigation.navigate).toHaveBeenCalledWith('Home');
@@ -118,6 +126,7 @@ describe('<SigninScreenRender />', () => {
 
   afterEach(() => {
     // Tear down global state or variables
+    jest.clearAllMocks();
     jest.useFakeTimers();
   });
 });

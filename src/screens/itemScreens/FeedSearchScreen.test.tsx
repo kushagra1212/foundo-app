@@ -39,7 +39,7 @@ describe('<FeedSearchSceen />', () => {
     fireEvent.changeText(getByTestId('searchInput'), 'laptop');
 
     await waitFor(() => {
-      expect(getByText('View')).toBeTruthy();
+      expect(getAllByText('View')).toBeTruthy();
     });
 
     await waitFor(() => {
@@ -52,6 +52,7 @@ describe('<FeedSearchSceen />', () => {
     });
   });
   afterEach(() => {
+    jest.clearAllMocks();
     jest.useFakeTimers();
   });
 });

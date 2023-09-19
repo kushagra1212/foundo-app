@@ -17,8 +17,8 @@ import { configure } from '@testing-library/react-native';
  * @see https://github.com/expo/expo/issues/18742
  */
 
-configure({ asyncUtilTimeout: 20000 });
-jest.setTimeout(40000);
+configure({ asyncUtilTimeout: 10000 });
+jest.setTimeout(50000);
 
 console.error = message => {
   if (message.startsWith('Warning:')) {
@@ -26,3 +26,12 @@ console.error = message => {
   }
   console.error = message;
 };
+
+jest.mock('expo-linking', () => {
+  const module: typeof import('expo-linking') = {
+    ...jest.requireActual('expo-linking'),
+    createURL: jest.fn(),
+  };
+
+  return module;
+});

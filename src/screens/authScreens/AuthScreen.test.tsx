@@ -13,7 +13,7 @@ import AuthScreen from './AuthScreen';
 
 describe('<AuthScreen />', () => {
   let AuthScreenRender: React.ReactElement;
-  beforeAll(() => {
+  beforeEach(() => {
     store.dispatch(logOut);
 
     AuthScreenRender = (
@@ -42,10 +42,7 @@ describe('<AuthScreen />', () => {
   });
   afterEach(() => {
     // Tear down global state or variables
-    jest.useFakeTimers();
-  });
-  beforeEach(() => {
-    // Set up global state or variables
+    jest.clearAllMocks();
     jest.useFakeTimers();
   });
 });

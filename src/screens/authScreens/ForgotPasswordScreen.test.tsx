@@ -1,7 +1,6 @@
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import { Provider } from 'react-redux';
-import { ReactTestInstance } from 'react-test-renderer';
 
 import Error from '../../components/Error';
 import { TEST_USER } from '../../configs/test.key.config';
@@ -15,10 +14,8 @@ const navigation = {
 
 describe('<ForgotPasswordScreen />', () => {
   let WrapperForgotPasswordScreen: React.ReactElement;
-  let emailInputForgotPassword: ReactTestInstance;
-  let sendButtonForgotPassword: ReactTestInstance;
 
-  beforeAll(() => {
+  beforeEach(() => {
     WrapperForgotPasswordScreen = (
       <Provider store={store}>
         <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
@@ -26,37 +23,45 @@ describe('<ForgotPasswordScreen />', () => {
         </ErrorBoundary>
       </Provider>
     );
-
-    const { getByTestId } = render(WrapperForgotPasswordScreen);
-
-    emailInputForgotPassword = getByTestId('emailInputForgotPassword');
-
-    sendButtonForgotPassword = getByTestId('sendButtonForgotPassword');
   });
 
   it('should render correctly', async () => {
+    const { getByTestId } = render(WrapperForgotPasswordScreen);
     await waitFor(() => {
-      expect(emailInputForgotPassword).toBeTruthy();
+      expect(getByTestId('emailInputForgotPassword')).toBeTruthy();
     });
   });
   it('should have email input', async () => {
+    const { getByTestId } = render(WrapperForgotPasswordScreen);
     await waitFor(() => {
-      expect(emailInputForgotPassword).toBeTruthy();
+      expect(getByTestId('emailInputForgotPassword')).toBeTruthy();
     });
   });
-  it('should change email input', async () => {
-    fireEvent.changeText(emailInputForgotPassword, TEST_USER.email);
-
-    await waitFor(() => {
-      expect(emailInputForgotPassword.props.value).toBe(TEST_USER.email);
-    });
-  });
-
   it('should have send button', async () => {
-    expect(sendButtonForgotPassword).toBeTruthy();
+    const { getByTestId } = render(WrapperForgotPasswordScreen);
+    await waitFor(() => {
+      expect(getByTestId('sendButtonForgotPassword')).toBeTruthy();
+    });
+  });
+  it('should change email input & send', async () => {
+    const { getByTestId } = render(WrapperForgotPasswordScreen);
+    await waitFor(() => {
+      expect(getByTestId('emailInputForgotPassword')).toBeTruthy();
+    });
+    fireEvent.changeText(
+      getByTestId('emailInputForgotPassword'),
+      TEST_USER.email,
+    );
+
+    await waitFor(() => {
+      expect(getByTestId('emailInputForgotPassword').props.value).toBe(
+        TEST_USER.email,
+      );
+    });
   });
 
   afterEach(() => {
+    jest.clearAllMocks();
     jest.useFakeTimers();
   });
 });
