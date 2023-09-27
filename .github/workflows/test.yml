@@ -1,0 +1,34 @@
+name: Run Tests
+
+on:
+  push:
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x  # Adjust the Node.js version as needed
+
+      - name: Install dependencies
+        run: npm install  
+
+      - name: Setup environment variables
+        run: |
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env
+          echo "LOCAL_STORAGE_ACCESS_TOKEN_KEY=${{ secrets.LOCAL_STORAGE_ACCESS_TOKEN_KEY }}" >> .env
+          echo "TEST_USER_USERNAME=${{ secrets.TEST_USER_USERNAME }}" >> .env
+          echo "TEST_USER_EMAIL=${{ secrets.TEST_USER_EMAIL }}" >> .env
+          echo "TEST_USER_PASSWORD=${{ secrets.TEST_USER_PASSWORD }}" >> .env
+          echo "TEST_USER_FIRST_NAME=${{ secrets.TEST_USER_FIRST_NAME }}" >> .env
+          echo "TEST_USER_LAST_NAME=${{ secrets.TEST_USER_LAST_NAME }}" >> .env
+
+      - name: Run tests
+        run: node run-tests.js  

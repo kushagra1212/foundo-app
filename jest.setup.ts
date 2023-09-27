@@ -1,3 +1,4 @@
+import { configure } from '@testing-library/react-native';
 /**
  * Additional setup code that should run before Jest starts.
  *
@@ -16,6 +17,16 @@
  * @see https://github.com/expo/expo/issues/18742
  */
 
+configure({ asyncUtilTimeout: 10000 });
+jest.setTimeout(50000);
+
+console.error = message => {
+  if (message.startsWith('Warning:')) {
+    return;
+  }
+  console.error = message;
+};
+
 jest.mock('expo-linking', () => {
   const module: typeof import('expo-linking') = {
     ...jest.requireActual('expo-linking'),
@@ -24,9 +35,3 @@ jest.mock('expo-linking', () => {
 
   return module;
 });
-console.error = message => {
-  if (message.startsWith('Warning:')) {
-    return;
-  }
-  console.error = message;
-};

@@ -1,24 +1,7 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
-import { boolean } from 'yup';
-import {
-  Entypo,
-  FontAwesome,
-  Ionicons,
-  MaterialIconsCommunity,
-} from '../../../constants/icons';
-import { ITEM_STANDARD_COLORS } from '../../../constants/item';
-import { COLORS, FONTS, SIZES } from '../../../constants/theme';
-import { Post } from '../../../interfaces';
-import { useState } from 'react';
-import { capitalizeFirstLetter } from '../../../utils';
-import ItemComponent from '../Item/ItemViewComponent';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import { Ionicons } from '../../../constants/icons';
+import { COLORS, FONTS } from '../../../constants/theme';
 export type props = {
   contact: any;
   navigation: any;

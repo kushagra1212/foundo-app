@@ -9,7 +9,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test:eslint": "echo \"\\033[33mRunning eslint check\" &&  eslint .",
-    "test": "jest --detectOpenHandles --verbose --cache --forceExit --maxWorkers=8",
+    "test": "jest --detectOpenHandles --verbose --no-cache --runInBand",
     "test-coverage": "jest --detectOpenHandles --verbose --cache --forceExit --coverage"
   },
   "dependencies": {

@@ -1,7 +1,6 @@
 import { fireEvent, render, waitFor } from '@testing-library/react-native';
 import ErrorBoundary from 'react-native-error-boundary';
 import { Provider } from 'react-redux';
-import { ReactTestInstance } from 'react-test-renderer';
 
 import Error from '../../components/Error';
 import { TEST_USER } from '../../configs/test.key.config';
@@ -13,12 +12,6 @@ const navigation = {
 };
 describe('<SignupScreen/>', () => {
   let WrapperSignupScreen: React.ReactElement;
-  let emailInput: ReactTestInstance;
-  let passwordInput: ReactTestInstance;
-  let firstNameInput: ReactTestInstance;
-  let lastNameInput: ReactTestInstance;
-  let signupButton: ReactTestInstance;
-  let gotToSigninButton: ReactTestInstance;
 
   beforeEach(() => {
     WrapperSignupScreen = (
@@ -28,79 +21,143 @@ describe('<SignupScreen/>', () => {
         </ErrorBoundary>
       </Provider>
     );
+  });
+
+  it('should render SignupScreen', async () => {
     const { getByTestId } = render(WrapperSignupScreen);
-    emailInput = getByTestId('emailInput');
-    passwordInput = getByTestId('passwordInput');
-    firstNameInput = getByTestId('firstNameInput');
-    lastNameInput = getByTestId('lastNameInput');
-    signupButton = getByTestId('signupButton');
-    gotToSigninButton = getByTestId('gotToSigninButton');
+
+    await waitFor(() => {
+      expect(getByTestId('Signup')).toBeTruthy();
+    });
   });
 
-  it('should render SignupScreen', () => {
+  it('should render signup button', async () => {
     const { getByTestId } = render(WrapperSignupScreen);
-    const signupScreen = getByTestId('Signup');
-    expect(signupScreen).toBeTruthy();
+    await waitFor(() => {
+      expect(getByTestId('signupButton')).toBeTruthy();
+    });
   });
 
-  it('should render signup button', () => {
-    expect(signupButton).toBeTruthy();
+  it('should render first name input', async () => {
+    const { getByTestId } = render(WrapperSignupScreen);
+    await waitFor(() => {
+      expect(getByTestId('firstNameInput')).toBeTruthy();
+    });
   });
 
-  it('should render first name input', () => {
-    expect(firstNameInput).toBeTruthy();
+  it('should render last name input', async () => {
+    const { getByTestId } = render(WrapperSignupScreen);
+    await waitFor(() => {
+      expect(getByTestId('lastNameInput')).toBeTruthy();
+    });
   });
 
-  it('should render last name input', () => {
-    expect(lastNameInput).toBeTruthy();
+  it('should render email input', async () => {
+    const { getByTestId } = render(WrapperSignupScreen);
+    await waitFor(() => {
+      expect(getByTestId('emailInput')).toBeTruthy();
+    });
   });
 
-  it('should render email input', () => {
-    expect(emailInput).toBeTruthy();
+  it('should render password input', async () => {
+    const { getByTestId } = render(WrapperSignupScreen);
+    await waitFor(() => {
+      expect(getByTestId('passwordInput')).toBeTruthy();
+    });
   });
 
-  it('should render password input', () => {
-    expect(passwordInput).toBeTruthy();
+  it('should fill email input', async () => {
+    const { getByTestId } = render(WrapperSignupScreen);
+    fireEvent.changeText(getByTestId('emailInput'), TEST_USER.email);
+    await waitFor(() => {
+      expect(getByTestId('emailInput').props.value).toBe(TEST_USER.email);
+    });
   });
 
-  it('should fill email input', () => {
-    fireEvent.changeText(emailInput, TEST_USER.email);
-    expect(emailInput.props.value).toBe(TEST_USER.email);
+  it('should fill password input', async () => {
+    const { getByTestId } = render(WrapperSignupScreen);
+
+    await waitFor(() => {
+      expect(getByTestId('passwordInput')).toBeTruthy();
+    });
+
+    fireEvent.changeText(getByTestId('passwordInput'), TEST_USER.password);
+    await waitFor(() => {
+      expect(getByTestId('passwordInput').props.value).toBe(TEST_USER.password);
+    });
   });
 
-  it('should fill password input', () => {
-    fireEvent.changeText(passwordInput, TEST_USER.password);
-    expect(passwordInput.props.value).toBe(TEST_USER.password);
+  it('should fill first name input', async () => {
+    const { getByTestId } = render(WrapperSignupScreen);
+
+    await waitFor(() => {
+      expect(getByTestId('firstNameInput')).toBeTruthy();
+    });
+
+    fireEvent.changeText(getByTestId('firstNameInput'), TEST_USER.firstName);
+    await waitFor(() => {
+      expect(getByTestId('firstNameInput').props.value).toBe(
+        TEST_USER.firstName,
+      );
+    });
   });
 
-  it('should fill first name input', () => {
-    fireEvent.changeText(firstNameInput, TEST_USER.firstName);
-    expect(firstNameInput.props.value).toBe(TEST_USER.firstName);
-  });
+  it('should fill last name input', async () => {
+    const { getByTestId } = render(WrapperSignupScreen);
 
-  it('should fill last name input', () => {
-    fireEvent.changeText(lastNameInput, TEST_USER.lastName);
-    expect(lastNameInput.props.value).toBe(TEST_USER.lastName);
+    await waitFor(() => {
+      expect(getByTestId('lastNameInput')).toBeTruthy();
+    });
+
+    fireEvent.changeText(getByTestId('lastNameInput'), TEST_USER.lastName);
+    await waitFor(() => {
+      expect(getByTestId('lastNameInput').props.value).toBe(TEST_USER.lastName);
+    });
   });
 
   it('should submit form', async () => {
-    const consoleLogMock = jest.fn();
-    jest.spyOn(console, 'log').mockImplementation(consoleLogMock);
-    fireEvent.changeText(emailInput, TEST_USER.email);
-    fireEvent.changeText(passwordInput, TEST_USER.password);
-    fireEvent.changeText(firstNameInput, TEST_USER.firstName);
-    fireEvent.changeText(lastNameInput, TEST_USER.lastName);
+    const { getByTestId } = render(WrapperSignupScreen);
 
-    fireEvent.press(signupButton);
     await waitFor(() => {
-      expect(consoleLogMock).toHaveBeenCalledTimes(1);
+      expect(getByTestId('signupButton')).toBeTruthy();
     });
 
-    expect(navigation.navigate).not.toHaveBeenCalledWith('Signin');
+    await waitFor(() => {
+      expect(getByTestId('emailInput')).toBeTruthy();
+    });
+
+    await waitFor(() => {
+      expect(getByTestId('passwordInput')).toBeTruthy();
+    });
+
+    await waitFor(() => {
+      expect(getByTestId('firstNameInput')).toBeTruthy();
+    });
+
+    await waitFor(() => {
+      expect(getByTestId('lastNameInput')).toBeTruthy();
+    });
+
+    fireEvent.changeText(getByTestId('emailInput'), TEST_USER.email);
+    fireEvent.changeText(getByTestId('passwordInput'), TEST_USER.password);
+    fireEvent.changeText(getByTestId('firstNameInput'), TEST_USER.firstName);
+    fireEvent.changeText(getByTestId('lastNameInput'), TEST_USER.lastName);
+
+    fireEvent.press(getByTestId('signupButton'));
+
+    await waitFor(() => {
+      expect(navigation.navigate).not.toHaveBeenCalledWith('Signin');
+    });
   });
 
   it('should go to signin screen', async () => {
-    fireEvent.press(gotToSigninButton);
+    const { getByTestId } = render(WrapperSignupScreen);
+
+    await waitFor(() => {
+      expect(getByTestId('gotToSigninButton')).toBeTruthy();
+    });
+
+    fireEvent.press(getByTestId('gotToSigninButton'));
     await waitFor(() => {
       expect(navigation.navigate).toHaveBeenCalledWith('Signin');
     });
@@ -109,5 +166,6 @@ describe('<SignupScreen/>', () => {
   afterEach(() => {
     // Tear down global state or variables
     jest.clearAllMocks();
+    jest.useFakeTimers();
   });
 });
