@@ -15,7 +15,7 @@ export interface Post {
   thumbnail: string;
   itemName: string;
   description: string;
-  dateTime: string
+  dateTime: string;
   city: string;
   color: string;
   brand: string;
@@ -45,8 +45,8 @@ export interface AddPost {
   brand: string;
   city: string;
   category: string;
-  userId: number;
+  fk_userId: number;
   isFounded: boolean;
-  pictures: Array<Picture>;
+  pictures: Picture[];
   location: ILocation;
 }

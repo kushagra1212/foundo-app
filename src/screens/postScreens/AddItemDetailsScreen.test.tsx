@@ -10,24 +10,26 @@ import { updateFilter } from '../../redux/slices/postSlice';
 import { store } from '../../redux/store';
 import { handleErrors } from '../../utils';
 import AddItemDetailsScreen from './AddItemDetailsScreen';
-const getState = jest.fn();
-getState.mockReturnValue({
-  routes: [{}, { params: { isFounded: true } }],
-});
-const navigation = {
-  navigate: jest.fn(),
-  goBack: jest.fn(),
-  getState,
-};
-describe('<AddItemDetailsScreen />', () => {
-  let WrapperAddItemDetailsScreen: React.FC;
 
-  beforeAll(async () => {
+describe('<AddItemDetailsScreen />', () => {
+  let WrapperAddItemDetailsScreen: React.ReactElement;
+  let navigation: any;
+
+  beforeEach(async () => {
+    const getState = jest.fn();
+    getState.mockReturnValue({
+      routes: [{}, { params: { isFounded: true } }],
+    });
+    navigation = {
+      navigate: jest.fn(),
+      goBack: jest.fn(),
+      getState,
+    };
     const data = {
       email: TEST_USER.email,
       password: TEST_USER.password,
     };
-    const res: any = await fetch(`${BASE_URL}/v1/user/signin`, {
+    const res: any = await fetch(`${BASE_URL}/v1/users/signin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,19 +44,17 @@ describe('<AddItemDetailsScreen />', () => {
       setCredentials({ user: resJson?.user, jwtToken: resJson?.jwtToken }),
     );
 
-    WrapperAddItemDetailsScreen = () => {
-      return (
-        <Provider store={store}>
-          <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
-            <AddItemDetailsScreen navigation={navigation} />
-          </ErrorBoundary>
-        </Provider>
-      );
-    };
+    WrapperAddItemDetailsScreen = (
+      <Provider store={store}>
+        <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
+          <AddItemDetailsScreen navigation={navigation} />
+        </ErrorBoundary>
+      </Provider>
+    );
   });
 
   it('should AddItemDetailsScreen works', async () => {
-    const { getByTestId } = render(<WrapperAddItemDetailsScreen />);
+    const { getByTestId } = render(WrapperAddItemDetailsScreen);
 
     await waitFor(() => {
       expect(getByTestId('AddItemDetails')).toBeTruthy();
@@ -62,7 +62,7 @@ describe('<AddItemDetailsScreen />', () => {
   });
 
   it('should have itemNameInput', async () => {
-    const { getByTestId } = render(<WrapperAddItemDetailsScreen />);
+    const { getByTestId } = render(WrapperAddItemDetailsScreen);
 
     await waitFor(() => {
       expect(getByTestId('itemNameInput')).toBeTruthy();
@@ -72,5 +72,7 @@ describe('<AddItemDetailsScreen />', () => {
   afterEach(() => {
     // Tear down global state or variables
     jest.clearAllMocks();
+    jest.useFakeTimers();
+    store.dispatch({ type: 'RESET' });
   });
 });

@@ -29,7 +29,7 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({
     currentUserId && item.userId == currentUserId ? 'You' : item.firstName;
   return (
     <View style={styles.card}>
-      {isCardDetailVisible && (
+      {isCardDetailVisible && item?.id && (
         <ItemComponent
           isVisible={isCardDetailVisible}
           item={item}
@@ -136,7 +136,8 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({
           }}>
           <TouchableOpacity
             onPress={toggleCardDetail}
-            style={styles.view_details}>
+            style={styles.view_details}
+            testID="viewDetailsButton">
             <Text
               style={{
                 ...FONTS.h3,

@@ -1,26 +1,27 @@
+import { Formik } from 'formik';
+import { useState } from 'react';
 import {
-  View,
-  Text,
-  TouchableOpacity,
+  ActivityIndicator,
   Image,
   StyleSheet,
-  ActivityIndicator, TextInput
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS, FONTS, SIZES } from '../../../constants/theme';
-import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
-import { Formik } from 'formik';
-import { AntDesign, Feather, MaterialIcons } from '../../../constants/icons';
-
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '../../../redux/slices/authSlice';
 import * as yup from 'yup';
+
 import object2 from '../../../assets/images/object2.png';
-import PickMapComponent from '../../atoms/Map/PickMapComponent';
-import BottomModal from '../../atoms/BottomModal';
+import { AntDesign, Feather, MaterialIcons } from '../../../constants/icons';
+import { COLORS, FONTS, SIZES } from '../../../constants/theme';
 import { useSendMessageMutation } from '../../../redux/services/message-service';
+import { selectCurrentUser } from '../../../redux/slices/authSlice';
+import BottomModal from '../../atoms/BottomModal';
+import PickMapComponent from '../../atoms/Map/PickMapComponent';
+import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
 import NotLoggedInProfileComponent from '../profile/NotLoggedInProfileComponent';
 type props = {
   receiverId: number;
@@ -94,21 +95,22 @@ const ContactOwnerComponent: React.FC<props> = ({
         </Text>
         <Formik
           enableReinitialize={true}
-          validationSchema={messageSchema}
+          validationSchema={contactMessageSchema}
           initialValues={{
-            senderId: user ? user.id : null,
-            receiverId: receiverId,
-            title: '',
-            message: '',
+            baseMessage: {
+              fk_senderId: user ? user.id : null,
+              fk_receiverId: receiverId,
+              title: '',
+              message: '',
+            },
             isFound: 0,
+            isPhoneNoShared: 0,
             location: {
               latitude: 0,
               longitude: 0,
             },
-            isPhoneNoShared: 0,
           }}
-          onSubmit={handleLoginSubmit}
-        >
+          onSubmit={handleLoginSubmit}>
           {({
             handleChange,
             handleBlur,
@@ -134,11 +136,13 @@ const ContactOwnerComponent: React.FC<props> = ({
                   placeholder="write a title"
                   onChangeText={handleChange('title')}
                   onBlur={handleBlur('title')}
-                  value={values.title}
+                  value={values.baseMessage.title}
                 />
               </View>
-              {values.title.length > 0 && (
-                <Text style={{ color: COLORS.redPrimary }}>{errors.title}</Text>
+              {values.baseMessage.title.length > 0 && (
+                <Text style={{ color: COLORS.redPrimary }}>
+                  {errors.baseMessage && errors.baseMessage.title}
+                </Text>
               )}
               <View style={styles.password_input}>
                 <AntDesign style={{ width: '10%' }} name="message1" size={20} />
@@ -150,12 +154,12 @@ const ContactOwnerComponent: React.FC<props> = ({
                   placeholder="write a message"
                   onChangeText={handleChange('message')}
                   onBlur={handleBlur('message')}
-                  value={values.message}
+                  value={values.baseMessage.message}
                 />
               </View>
-              {values.message.length > 0 && (
+              {values.baseMessage.message.length > 0 && (
                 <Text style={{ color: COLORS.redPrimary }}>
-                  {errors.message}
+                  {errors.baseMessage && errors.baseMessage.message}
                 </Text>
               )}
               <View
@@ -165,8 +169,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   width: '100%',
-                }}
-              >
+                }}>
                 <View>
                   <Text>Is this item found ?</Text>
                 </View>
@@ -177,8 +180,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     marginHorizontal: 10,
-                  }}
-                >
+                  }}>
                   <TouchableOpacity
                     style={{
                       display: 'flex',
@@ -196,8 +198,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                     }}
                     onPress={() => {
                       setFieldValue('isFound', 1);
-                    }}
-                  >
+                    }}>
                     <Text
                       style={[
                         FONTS.body3,
@@ -205,8 +206,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                           color:
                             values.isFound === 1 ? COLORS.white : COLORS.black,
                         },
-                      ]}
-                    >
+                      ]}>
                       Yes
                     </Text>
                   </TouchableOpacity>
@@ -226,8 +226,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                     }}
                     onPress={() => {
                       setFieldValue('isFound', 0);
-                    }}
-                  >
+                    }}>
                     <Text
                       style={[
                         FONTS.body3,
@@ -235,8 +234,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                           color:
                             values.isFound === 0 ? COLORS.white : COLORS.black,
                         },
-                      ]}
-                    >
+                      ]}>
                       No
                     </Text>
                   </TouchableOpacity>
@@ -247,8 +245,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                   style={[styles.login_btn_active, { margin: 10 }]}
                   onPress={() => {
                     setIsMapVisible(true);
-                  }}
-                >
+                  }}>
                   <Text style={[FONTS.h4, { color: COLORS.white }]}>
                     <Feather
                       style={{ marginRight: 10 }}
@@ -272,8 +269,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                     flexDirection: 'row',
                     justifyContent: 'space-around',
                     margin: 10,
-                  }}
-                >
+                  }}>
                   <TouchableOpacity
                     style={{
                       display: 'flex',
@@ -290,8 +286,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                     }}
                     onPress={() => {
                       setFieldValue('isPhoneNoShared', 1);
-                    }}
-                  >
+                    }}>
                     <Text
                       style={[
                         FONTS.body3,
@@ -301,8 +296,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                               ? COLORS.white
                               : COLORS.black,
                         },
-                      ]}
-                    >
+                      ]}>
                       Yes
                     </Text>
                   </TouchableOpacity>
@@ -322,8 +316,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                     }}
                     onPress={() => {
                       setFieldValue('isPhoneNoShared', 0);
-                    }}
-                  >
+                    }}>
                     <Text
                       style={[
                         FONTS.body3,
@@ -333,8 +326,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                               ? COLORS.white
                               : COLORS.black,
                         },
-                      ]}
-                    >
+                      ]}>
                       No
                     </Text>
                   </TouchableOpacity>
@@ -348,8 +340,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                     : styles.login_btn_active
                 }
                 disabled={!isValid || isLoading}
-                onPress={() => handleSubmit()}
-              >
+                onPress={() => handleSubmit()}>
                 <Text style={styles.login_btn_text}>Send Message</Text>
               </TouchableOpacity>
               <BottomModal
@@ -359,8 +350,7 @@ const ContactOwnerComponent: React.FC<props> = ({
                 iconName=""
                 effect="slide"
                 backgroundFilter={true}
-                titleText="Select Location        "
-              >
+                titleText="Select Location        ">
                 <PickMapComponent
                   coordinates={values.location}
                   onConfirm={async (coordinates: {
@@ -452,13 +442,16 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-const messageSchema = yup.object().shape({
-  title: yup
-    .string()
-    .required('Title is required')
-    .min(3, 'Too Short!')
-    .max(30, 'Too Long!'),
-  message: yup.string().required('Message is required').min(10, 'Too Short!'),
+const contactMessageSchema = yup.object().shape({
+  baseMessage: yup.object().shape({
+    fk_senderId: yup.number().required('fk_senderId is required').optional(),
+    fk_receiverId: yup
+      .number()
+      .required('fk_receiverId is required')
+      .optional(),
+    title: yup.string().required('title is required').optional(),
+    message: yup.string().required('message is required').optional(),
+  }),
   isFound: yup.number().required('isFound is required').optional(),
   isPhoneNoShared: yup
     .number()

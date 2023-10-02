@@ -5,7 +5,7 @@ export const postApi = api.injectEndpoints({
   endpoints: builder => ({
     getSearchedPosts: builder.mutation({
       query: ({ offset, limit, searchString }) => {
-        return `/v1/item/all-by-search?offset=${offset}&limit=${limit}&searchstring=${searchString}`;
+        return `/v1/posts/search?offset=${offset}&limit=${limit}&searchstring=${searchString}`;
       },
       transformResponse: response => {
         return response;
@@ -20,7 +20,7 @@ export const postApi = api.injectEndpoints({
           queryString += `&${element[0]}=${element[1]}`;
         });
 
-        return `/v1/item/all?offset=${offset}&limit=${limit}${queryString}`;
+        return `/v1/posts?offset=${offset}&limit=${limit}${queryString}`;
       },
       transformResponse: response => {
         return response.items;
@@ -34,7 +34,7 @@ export const postApi = api.injectEndpoints({
         restArray.forEach(element => {
           queryString += `&${element[0]}=${element[1]}`;
         });
-        return `/v1/item/all-by-user?offset=${offset}&limit=${limit}&userId=${userId}${queryString}`;
+        return `/v1/posts/user/${userId}?offset=${offset}&limit=${limit}${queryString}`;
       },
       transformResponse: response => {
         return response.items;
@@ -43,7 +43,7 @@ export const postApi = api.injectEndpoints({
     }),
     getpost: builder.query({
       query: id => {
-        return `/v1/item/${id}`;
+        return `/v1/posts/${id}`;
       },
       transformResponse: response => {
         return response.item;
@@ -52,7 +52,7 @@ export const postApi = api.injectEndpoints({
     addItemPost: builder.mutation({
       query: (body: AddPost) => {
         return {
-          url: `/v1/item`,
+          url: `/v1/posts`,
           method: 'POST',
           body,
         };
@@ -61,7 +61,7 @@ export const postApi = api.injectEndpoints({
     }),
     getMatches: builder.query({
       query: itemId => {
-        return `/v1/item/${itemId}/matches`;
+        return `/v1/posts/matches/${itemId}`;
       },
       transformResponse: response => {
         return response.matches;
@@ -71,7 +71,7 @@ export const postApi = api.injectEndpoints({
     getPostsByPostIds: builder.query({
       query: body => {
         return {
-          url: `/v1/item/posts`,
+          url: `/v1/item/posts/post-ids`,
           method: 'POST',
           body,
         };
