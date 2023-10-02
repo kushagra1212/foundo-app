@@ -9,7 +9,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test:eslint": "echo \"\\033[33mRunning eslint check\" &&  eslint .",
-    "jest": "jest --verbose",
+    "jest": "jest",
     "test-coverage": "jest --detectOpenHandles --verbose --cache --forceExit --coverage"
   },
   "dependencies": {

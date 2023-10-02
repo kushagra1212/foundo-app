@@ -31,4 +31,4 @@ jobs:
           echo "TEST_USER_LAST_NAME=${{ secrets.TEST_USER_LAST_NAME }}" >> .env
 
       - name: Run tests
-        run: npm run jest
+        run: node run-tests.js
