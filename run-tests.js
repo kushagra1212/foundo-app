@@ -14,7 +14,7 @@ const testPatterns = [
 
 function runTests(pattern) {
   return new Promise((resolve, reject) => {
-    const command = `npm run jest -- --verbose --no-cache --testPathPattern=${pattern} --runInBand --forceExit`;
+    const command = `npm run jest -- --testPathPattern=${pattern} --forceExit`;
     console.log(`Running tests for pattern: ${pattern}`);
     const childProcess = exec(command, (error, stdout, stderr) => {
       if (error) {
