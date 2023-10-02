@@ -13,7 +13,7 @@ export const profileApi = api.injectEndpoints({
     }),
     getUser: builder.query({
       query: ({ userId }) => {
-        return `/v1/user/${userId}`;
+        return `/v1/users/${userId}`;
       },
       transformResponse: response => {
         return response.user;
@@ -21,9 +21,9 @@ export const profileApi = api.injectEndpoints({
       providesTags: ['user'],
     }),
     updateUserSetting: builder.mutation({
-      query: update => {
+      query: ({ userId, update }) => {
         return {
-          url: `v1/user-setting/update`,
+          url: `/v1/user-setting/${userId}}`,
           method: 'PATCH',
           body: update,
         };

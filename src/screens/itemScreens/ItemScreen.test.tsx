@@ -7,14 +7,14 @@ import { store } from '../../redux/store';
 import { handleErrors } from '../../utils';
 import ItemScreen from './ItemScreen';
 
-const navigation = {
-  navigate: jest.fn(),
-};
-
 describe('<ItemScreen />', () => {
   let ItemScreenRender: React.ReactElement;
-
+  let navigation: any;
   beforeEach(() => {
+    navigation = {
+      navigate: jest.fn(),
+    };
+
     ItemScreenRender = (
       <Provider store={store}>
         <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
@@ -144,7 +144,7 @@ describe('<ItemScreen />', () => {
     fireEvent.press(getByTestId('slideDownButtonColor'));
 
     await waitFor(() => {
-      expect(getAllByText('Black')).toBeTruthy();
+      expect(getAllByText('black')).toBeTruthy();
     });
 
     await waitFor(() => {
@@ -187,9 +187,10 @@ describe('<ItemScreen />', () => {
       expect(navigation.navigate).toHaveBeenCalledWith('FeedSearchScreen');
     });
   });
-});
-afterEach(() => {
-  // Tear down global state or variables
-  jest.clearAllMocks();
-  jest.useFakeTimers();
+  afterEach(() => {
+    // Tear down global state or variables
+    jest.clearAllMocks();
+    jest.useFakeTimers();
+    store.dispatch({ type: 'RESET' });
+  });
 });

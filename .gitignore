@@ -13,3 +13,5 @@ web-build/
 # macOS
 .DS_Store
 coverage/
+.env.production
+package-lock.json

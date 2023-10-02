@@ -1,21 +1,21 @@
 import { api } from './api-service';
 
 export const OTPApi = api.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     sendOTP: builder.mutation({
       query: ({ userId }) => {
-        return `/v1/user/send-otp/${userId}`;
+        return `/v1/users/send-otp/${userId}`;
       },
     }),
     verifyOTP: builder.mutation({
       query: ({ userId, otp }) => {
-        return `/v1/user/verify-otp/${userId}/${otp}`;
+        return `/v1/users/verify-otp/${userId}/${otp}`;
       },
       invalidatesTags: ['user'],
     }),
     resetOTP: builder.mutation({
       query: ({ userId }) => {
-        return `v1/user/reset-otp/${userId}`;
+        return `/v1/users/reset-otp/${userId}`;
       },
     }),
   }),

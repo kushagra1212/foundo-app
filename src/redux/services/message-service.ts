@@ -1,34 +1,27 @@
 import { api } from './api-service';
 
 export const messageApi = api.injectEndpoints({
-  endpoints: (builder) => ({
-    getMessages: builder.mutation({
+  endpoints: builder => ({
+    getMessages: builder.query({
       query: ({ senderId, receiverId, limit, offset }) => ({
-        url:
-          '/v1/message/messages?senderId=' +
-          senderId +
-          '&receiverId=' +
-          receiverId +
-          '&limit=' +
-          limit +
-          '&offset=' +
-          offset,
+        url: `/v1/messages/${senderId}/${receiverId}/${limit}/${offset}`,
         method: 'GET',
       }),
+      providesTags: ['Messages'],
     }),
     sendMessage: builder.mutation({
-      query: (body) => {
+      query: body => {
         return {
-          url: '/v1/message/add',
+          url: '/v1/messages/contact',
           method: 'POST',
-          body: body,
+          body,
         };
       },
-      invalidatesTags: ['Contacts'],
+      invalidatesTags: ['Contacts', 'Messages'],
     }),
     getContacts: builder.query({
       query: ({ userId, limit, offset }) => ({
-        url: `/v1/message/contact-list?userId=${userId}&limit=${limit}&offset=${offset}`,
+        url: `/v1/messages/contact-list/${userId}/${limit}/${offset}`,
         method: 'GET',
       }),
       providesTags: ['Contacts'],
@@ -38,7 +31,8 @@ export const messageApi = api.injectEndpoints({
 });
 
 export const {
-  useGetMessagesMutation,
+  useGetMessagesQuery,
+  useLazyGetMessagesQuery,
   useSendMessageMutation,
   useLazyGetContactsQuery,
 } = messageApi;

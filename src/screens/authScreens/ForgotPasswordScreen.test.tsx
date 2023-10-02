@@ -7,15 +7,15 @@ import { TEST_USER } from '../../configs/test.key.config';
 import { store } from '../../redux/store';
 import { handleErrors } from '../../utils';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
-const navigation = {
-  navigate: jest.fn(),
-  goBack: jest.fn(),
-};
 
 describe('<ForgotPasswordScreen />', () => {
   let WrapperForgotPasswordScreen: React.ReactElement;
-
+  let navigation: any;
   beforeEach(() => {
+    navigation = {
+      navigate: jest.fn(),
+      goBack: jest.fn(),
+    };
     WrapperForgotPasswordScreen = (
       <Provider store={store}>
         <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
@@ -63,5 +63,6 @@ describe('<ForgotPasswordScreen />', () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
+    store.dispatch({ type: 'RESET' });
   });
 });

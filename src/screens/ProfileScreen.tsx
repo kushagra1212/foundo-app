@@ -85,7 +85,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       try {
         const result = await userUpdate({
           userId: user?.id,
-          profilePhoto: base64,
+          update: { profilePhoto: base64 },
         }).unwrap();
         dispatch(updateUser({ user: result.user }));
       } catch (err) {

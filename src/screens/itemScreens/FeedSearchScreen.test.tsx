@@ -8,17 +8,15 @@ import { store } from '../../redux/store';
 import { handleErrors } from '../../utils';
 import FeedSearchSceen from './FeedSearchScreen';
 
-const navigation = {
-  navigate: jest.fn(),
-  goBack: jest.fn(),
-};
-
 describe('<FeedSearchSceen />', () => {
   let FeedSearchSceenRender: React.ReactElement;
-
+  let navigation: any;
   beforeAll(() => {
-    store.dispatch(logOut);
-
+    store.dispatch(logOut());
+    navigation = {
+      navigate: jest.fn(),
+      goBack: jest.fn(),
+    };
     FeedSearchSceenRender = (
       <Provider store={store}>
         <ErrorBoundary onError={handleErrors} FallbackComponent={Error}>
@@ -54,5 +52,6 @@ describe('<FeedSearchSceen />', () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
+    store.dispatch({ type: 'RESET' });
   });
 });

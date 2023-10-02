@@ -6,14 +6,15 @@ import Error from '../../components/Error';
 import { TEST_USER } from '../../configs/test.key.config';
 import { store } from '../../redux/store';
 import SignupScreen from './SignupScreen';
-const navigation = {
-  navigate: jest.fn(),
-  goBack: jest.fn(),
-};
+
 describe('<SignupScreen/>', () => {
   let WrapperSignupScreen: React.ReactElement;
-
+  let navigation: any;
   beforeEach(() => {
+    navigation = {
+      navigate: jest.fn(),
+      goBack: jest.fn(),
+    };
     WrapperSignupScreen = (
       <Provider store={store}>
         <ErrorBoundary FallbackComponent={Error}>
@@ -167,5 +168,6 @@ describe('<SignupScreen/>', () => {
     // Tear down global state or variables
     jest.clearAllMocks();
     jest.useFakeTimers();
+    store.dispatch({ type: 'RESET' });
   });
 });

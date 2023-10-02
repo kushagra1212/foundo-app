@@ -29,7 +29,7 @@ describe('<AddItemDetailsScreen />', () => {
       email: TEST_USER.email,
       password: TEST_USER.password,
     };
-    const res: any = await fetch(`${BASE_URL}/v1/user/signin`, {
+    const res: any = await fetch(`${BASE_URL}/v1/users/signin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -73,5 +73,6 @@ describe('<AddItemDetailsScreen />', () => {
     // Tear down global state or variables
     jest.clearAllMocks();
     jest.useFakeTimers();
+    store.dispatch({ type: 'RESET' });
   });
 });

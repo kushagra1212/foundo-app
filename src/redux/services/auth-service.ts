@@ -16,7 +16,7 @@ export const authApi = api.injectEndpoints({
     userLogin: builder.mutation({
       query: credentials => {
         return {
-          url: '/v1/user/signin',
+          url: '/v1/users/signin',
           method: 'POST',
           body: { ...credentials },
         };
@@ -26,7 +26,7 @@ export const authApi = api.injectEndpoints({
     userSignup: builder.mutation({
       query: credentials => {
         return {
-          url: '/v1/user/signup',
+          url: '/v1/users/signup',
           method: 'POST',
           body: { ...credentials },
         };
@@ -54,9 +54,9 @@ export const authApi = api.injectEndpoints({
       },
     }),
     userUpdate: builder.mutation({
-      query: update => {
+      query: ({ userId, update }: { userId: number; update: any }) => {
         return {
-          url: `v1/user/update`,
+          url: `/v1/users/${userId}`,
           method: 'PATCH',
           body: update,
         };
@@ -77,7 +77,7 @@ export const userLoggedIn = () => {
       const resJson = await res.json();
       if (resJson?.error) resolve({ isLoggedIn: false });
       resolve({ ...resJson, isLoggedIn: true, token });
-    } catch (err) {
+    } catch (err: any) {
       resolve(
         new Error('Something went wrong while trying to verify your token'),
       );

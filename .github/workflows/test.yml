@@ -15,10 +15,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x  # Adjust the Node.js version as needed
+          node-version: 18.x # Adjust the Node.js version as needed
 
       - name: Install dependencies
-        run: npm install  
+        run: npm install
 
       - name: Setup environment variables
         run: |
@@ -31,4 +31,4 @@ jobs:
           echo "TEST_USER_LAST_NAME=${{ secrets.TEST_USER_LAST_NAME }}" >> .env
 
       - name: Run tests
-        run: node run-tests.js  
+        run: npm run jest

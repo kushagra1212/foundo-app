@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 
 import Error from '../../components/Error';
 import { routesConfig } from '../../configs/routesConfig';
-import { logOut } from '../../redux/slices/authSlice';
 import { store } from '../../redux/store';
 import { handleErrors } from '../../utils';
 import AuthScreen from './AuthScreen';
@@ -14,8 +13,6 @@ import AuthScreen from './AuthScreen';
 describe('<AuthScreen />', () => {
   let AuthScreenRender: React.ReactElement;
   beforeEach(() => {
-    store.dispatch(logOut);
-
     AuthScreenRender = (
       <Provider store={store}>
         <GestureHandlerRootView style={{ flex: 1 }}>
@@ -44,5 +41,6 @@ describe('<AuthScreen />', () => {
     // Tear down global state or variables
     jest.clearAllMocks();
     jest.useFakeTimers();
+    store.dispatch({ type: 'RESET' });
   });
 });
