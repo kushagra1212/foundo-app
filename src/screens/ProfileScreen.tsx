@@ -45,7 +45,7 @@ const intitalOpenDialog = {
 const ProfileScreen: React.FC<props> = ({ navigation }) => {
   const user = useSelector(selectCurrentUser);
   const { data: userSetting, isLoading } = useGetUserSettingQuery({
-    userId: user ? user?.id : null,
+    fk_userId: user ? user?.id : null,
   });
   const [open, setOpen] = useState<OpenDialog>(intitalOpenDialog);
   const [userUpdate, { isLoading: uploadLoading }] = useUserUpdateMutation();

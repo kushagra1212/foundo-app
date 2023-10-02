@@ -14,6 +14,21 @@ export type props = {
   navigation?: any;
 };
 
+export type ChatMessage = {
+  id: number;
+  fk_senderId: number;
+  fk_receiverId: number;
+  title: string | null;
+  message: string;
+  createdAt: string;
+  latitude: number;
+  longitude: number;
+  fk_messageId: number;
+  locationId: number;
+  isFound: number;
+  isPhoneNoShared: number;
+};
+
 const ChatScreen: React.FC<props> = ({ navigation }) => {
   const unmounted = useRef(false);
   const user = useSelector(selectCurrentUser);
@@ -23,18 +38,18 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
   });
   const [getMessages, { isLoading, isError }] = useLazyGetMessagesQuery();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(false);
   const [messageFound, setMessageFound] = useState<boolean>(true);
   const fetchMessages = async () => {
     if (loading) return;
     setLoading(true);
     try {
-      const res = await getMessages({
+      const res: ChatMessage[] = await getMessages({
         offset: messageOption.offset,
         limit: messageOption.limit,
-        receiverId: user.id,
-        senderId: navigation.getState().routes[1].params.contact.senderId,
+        receiverId: user?.id,
+        senderId: navigation.getState().routes[1].params.contact.fk_userId,
       }).unwrap();
       if (unmounted.current) return;
       if (res.length === 0) {

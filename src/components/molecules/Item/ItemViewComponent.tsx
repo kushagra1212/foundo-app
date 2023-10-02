@@ -40,7 +40,7 @@ const ItemViewComponent: React.FC<props> = ({
   const { data: detailedItem, isLoading } = useGetpostQuery(item.id);
 
   const { data: userWhoPosted } = useGetUserQuery({
-    userId: item.userId,
+    fk_userId: item.fk_userId,
   });
   const [showDetailsModal, setShowDetailsModal] = useState<boolean>(false);
   const [showMapView, setShowMapView] = useState<boolean>(false);
@@ -290,7 +290,7 @@ const ItemViewComponent: React.FC<props> = ({
                   <ContactOwnerComponent
                     navigation={navigation}
                     close={closeContactModal}
-                    receiverId={user?.id ? item.userId : null}
+                    receiverId={user?.id ? item.fk_userId : null}
                   />
                 </BottomModal>
               )}

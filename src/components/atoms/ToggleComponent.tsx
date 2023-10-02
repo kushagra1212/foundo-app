@@ -1,4 +1,5 @@
-import { StyleSheet, View, Switch } from 'react-native';
+import { StyleSheet, Switch, View } from 'react-native';
+
 import { COLORS } from '../../constants/theme';
 type props = {
   value: boolean;

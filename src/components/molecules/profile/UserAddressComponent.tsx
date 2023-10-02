@@ -1,6 +1,12 @@
 import * as Location from 'expo-location';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { memo, useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { COLORS, FONTS } from '../../../constants/theme';
@@ -14,6 +20,17 @@ type props = {
   onClose: () => void;
   userId: number;
 };
+const LocationServiceEnabledView: React.FC<any> = ({ GetCurrentLocation }) => (
+  <View>
+    <TouchableOpacity
+      style={{ ...styles.verify_email_but, width: '80%' }}
+      onPress={GetCurrentLocation}>
+      <Text style={{ ...FONTS.body3, color: COLORS.white }}>
+        Get Your Adddress
+      </Text>
+    </TouchableOpacity>
+  </View>
+);
 const UserAddressComponent: React.FC<props> = ({
   address,
   onClose,
@@ -21,22 +38,22 @@ const UserAddressComponent: React.FC<props> = ({
 }) => {
   const dispatch = useDispatch();
   const [userUpdate] = useUserUpdateMutation();
-  const { data: user } = useGetUserQuery({ userId });
+  const { data: user } = useGetUserQuery({ fk_userId: userId });
   const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
   const [displayCurrentAddress, setDisplayCurrentAddress] = useState('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const addAddress = async (address: string) => {
     try {
       const { user } = await userUpdate({
         userId,
-        address,
+        update: {
+          address,
+        },
       }).unwrap();
       dispatch(updateUser({ user }));
-
-      onClose();
     } catch (err) {
       console.log(err);
-      onClose();
     }
   };
   const CheckIfLocationEnabled = async () => {
@@ -48,7 +65,8 @@ const UserAddressComponent: React.FC<props> = ({
       }
     } catch (err) {
       console.log(err);
-      onClose();
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -64,16 +82,20 @@ const UserAddressComponent: React.FC<props> = ({
   }, []);
   const makeLocationRequest = async () => {
     try {
+      setLoading(true);
       const { coords } = await Location.getCurrentPositionAsync();
-
       CheckIfLocationEnabled();
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
   const GetCurrentLocation = async () => {
     try {
+      setLoading(true);
       const { status } = await Location.requestForegroundPermissionsAsync();
+
       if (status !== 'granted') {
         onClose();
         return;
@@ -94,8 +116,17 @@ const UserAddressComponent: React.FC<props> = ({
       }
     } catch (err) {
       onClose();
+    } finally {
+      setLoading(false);
     }
   };
+  if (loading) {
+    return (
+      <View style={styles.view}>
+        <ActivityIndicator size="large" color={COLORS.redPrimary} />
+      </View>
+    );
+  }
   return (
     <View style={styles.view}>
       {address === '' || !address ? (
@@ -110,24 +141,16 @@ const UserAddressComponent: React.FC<props> = ({
               </Text>
               <TouchableOpacity
                 style={{ ...styles.verify_email_but, width: '80%' }}
-                onPress={() => {
-                  makeLocationRequest();
-                }}>
+                onPress={makeLocationRequest}>
                 <Text style={{ ...FONTS.body3, color: COLORS.white }}>
                   Enable Location Service
                 </Text>
               </TouchableOpacity>
             </View>
           ) : (
-            <View>
-              <TouchableOpacity
-                style={{ ...styles.verify_email_but, width: '80%' }}
-                onPress={GetCurrentLocation}>
-                <Text style={{ ...FONTS.body3, color: COLORS.white }}>
-                  Get Your Adddress
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <LocationServiceEnabledView
+              GetCurrentLocation={GetCurrentLocation}
+            />
           )}
         </View>
       ) : (
@@ -173,4 +196,4 @@ const styles = StyleSheet.create({
     height: 50,
   },
 });
-export default UserAddressComponent;
+export default memo(UserAddressComponent);

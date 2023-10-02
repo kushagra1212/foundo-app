@@ -1,18 +1,15 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  FlatList,
-  ActivityIndicator,
-  Image,
-} from 'react-native';
-import { COLORS, FONTS } from '../../../constants/theme';
-import SingleContactComponent from './SingleContactComponent';
-import AnimatedComponent from '../Animation/AnimatedComponent';
+import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
+
 import character4 from '../../../assets/images/character4.png';
+import { COLORS } from '../../../constants/theme';
+import { selectCurrentUserId } from '../../../redux/slices/authSlice';
+import { contactType } from '../../../screens/contactScreens/ContactScreen';
+import AnimatedComponent from '../Animation/AnimatedComponent';
+import SingleContactComponent from './SingleContactComponent';
+
 export type props = {
-  contacts: Array<any>;
+  contacts: contactType[];
   reachedEnd: boolean;
   fetchContacts: () => void;
   loading: boolean;
@@ -27,6 +24,7 @@ const ContactListComponent: React.FC<props> = ({
   navigation,
   contactFound,
 }) => {
+  const currentUserId = useSelector(selectCurrentUserId);
   const onScroll = (event: any) => {
     const { nativeEvent } = event;
     const { contentOffset } = nativeEvent;
@@ -46,13 +44,14 @@ const ContactListComponent: React.FC<props> = ({
       data={contacts}
       renderItem={({ item }) => (
         <SingleContactComponent
+          currentUserId={currentUserId}
           navigation={navigation}
-          key={item.senderId.toString()}
+          key={item.id.toString()}
           contact={item}
         />
       )}
       onEndReached={reachedEnd ? null : fetchContacts}
-      keyExtractor={(item) => item.senderId.toString()}
+      keyExtractor={item => item.id.toString()}
       ListFooterComponent={
         loading ? (
           <ActivityIndicator

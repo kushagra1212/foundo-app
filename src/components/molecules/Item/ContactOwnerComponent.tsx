@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {
   ActivityIndicator,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -72,7 +73,7 @@ const ContactOwnerComponent: React.FC<props> = ({
     );
   }
   return (
-    <SafeAreaView>
+    <ScrollView>
       <AnimationTranslateScale scaleRange={[1, 1.01]} scaleDuration={1000}>
         <Image
           source={object2}
@@ -134,8 +135,8 @@ const ContactOwnerComponent: React.FC<props> = ({
                     fontFamily: 'Roboto_400Regular',
                   }}
                   placeholder="write a title"
-                  onChangeText={handleChange('title')}
-                  onBlur={handleBlur('title')}
+                  onChangeText={handleChange('baseMessage.title')}
+                  onBlur={handleBlur('baseMessage.title')}
                   value={values.baseMessage.title}
                 />
               </View>
@@ -150,10 +151,10 @@ const ContactOwnerComponent: React.FC<props> = ({
                 <TextInput
                   numberOfLines={4}
                   multiline={true}
-                  style={{ width: '80%', fontSize: 20 }}
+                  style={{ width: '80%', fontSize: 20, maxHeight: 200 }}
                   placeholder="write a message"
-                  onChangeText={handleChange('message')}
-                  onBlur={handleBlur('message')}
+                  onChangeText={handleChange('baseMessage.message')}
+                  onBlur={handleBlur('baseMessage.message')}
                   value={values.baseMessage.message}
                 />
               </View>
@@ -367,7 +368,7 @@ const ContactOwnerComponent: React.FC<props> = ({
           )}
         </Formik>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

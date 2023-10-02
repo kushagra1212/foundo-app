@@ -3,8 +3,8 @@ import { api } from './api-service';
 export const profileApi = api.injectEndpoints({
   endpoints: builder => ({
     getUserSetting: builder.query({
-      query: ({ userId }) => {
-        return `/v1/user-setting/${userId}`;
+      query: ({ fk_userId }) => {
+        return `/v1/user-setting/${fk_userId}`;
       },
       transformResponse: response => {
         return response.userSetting;
@@ -12,8 +12,8 @@ export const profileApi = api.injectEndpoints({
       providesTags: ['user-setting'],
     }),
     getUser: builder.query({
-      query: ({ userId }) => {
-        return `/v1/users/${userId}`;
+      query: ({ fk_userId }) => {
+        return `/v1/users/${fk_userId}`;
       },
       transformResponse: response => {
         return response.user;
@@ -21,9 +21,9 @@ export const profileApi = api.injectEndpoints({
       providesTags: ['user'],
     }),
     updateUserSetting: builder.mutation({
-      query: ({ userId, update }) => {
+      query: ({ fk_userId, update }) => {
         return {
-          url: `/v1/user-setting/${userId}}`,
+          url: `/v1/user-setting/${fk_userId}`,
           method: 'PATCH',
           body: update,
         };

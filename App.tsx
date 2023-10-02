@@ -1,3 +1,4 @@
+import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
@@ -9,6 +10,7 @@ import Error from './src/components/Error';
 import Foundo from './src/components/Foundo';
 import { LoadFoundo } from './src/components/LoadFoundo';
 import { COLORS } from './src/constants/theme';
+import { api } from './src/redux/services/api-service';
 import { store } from './src/redux/store';
 // Re-export the default UI
 
@@ -45,10 +47,12 @@ const App = () => {
     return <Error error={error} resetError={() => {}} />;
   }
   return (
-    <Provider store={store}>
-      <StatusBar style="dark" />
-      <Foundo credentials={credentials} />
-    </Provider>
+    <ApiProvider api={api}>
+      <Provider store={store}>
+        <StatusBar style="dark" />
+        <Foundo credentials={credentials} />
+      </Provider>
+    </ApiProvider>
   );
 };
 export default App;

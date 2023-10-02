@@ -1,11 +1,13 @@
-import { StyleSheet, FlatList, ActivityIndicator, Image } from 'react-native';
-import { COLORS } from '../../../constants/theme';
-import SingleMessageComponent from './SingleMessageComponent';
+import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import character5 from '../../../assets/images/character5.png';
+import { COLORS } from '../../../constants/theme';
+import { ChatMessage } from '../../../screens/contactScreens/ChatScreen';
 import AnimatedComponent from '../Animation/AnimatedComponent';
+import SingleMessageComponent from './SingleMessageComponent';
 export type props = {
-  messages: Array<any>;
+  messages: ChatMessage[];
   reachedEnd: boolean;
   fetchMessages: () => void;
   loading: boolean;
@@ -40,7 +42,7 @@ const MessageListComponent: React.FC<props> = ({
       )}
       inverted={true}
       onEndReached={reachedEnd ? null : fetchMessages}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={item => item.id.toString()}
       ListFooterComponent={
         loading ? (
           <SafeAreaView>

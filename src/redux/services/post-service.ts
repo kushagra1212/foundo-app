@@ -71,7 +71,7 @@ export const postApi = api.injectEndpoints({
     getPostsByPostIds: builder.query({
       query: body => {
         return {
-          url: `/v1/item/posts/post-ids`,
+          url: `/v1/posts/post-ids`,
           method: 'POST',
           body,
         };

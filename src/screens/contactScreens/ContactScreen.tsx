@@ -12,22 +12,30 @@ import AnimatedComponent from '../../components/molecules/Animation/AnimatedComp
 import AnimatedObject from '../../components/molecules/Animation/AnimatedObject';
 import ContactListComponent from '../../components/molecules/Contact/ContactListComponent';
 import { COLORS, SIZES } from '../../constants/theme';
-import { useLazyGetContactsQuery } from '../../redux/services/message-service';
+import { useLazyGetContactListQuery } from '../../redux/services/message-service';
 import { selectCurrentUser } from '../../redux/slices/authSlice';
 
 export type props = {
   navigation: any;
 };
-
+export type contactType = {
+  id: number;
+  fk_user_Id_1: number;
+  fk_user_Id_2: number;
+  chat_enabled: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+};
 const ContactScreen: React.FC<props> = ({ navigation }) => {
   const user = useSelector(selectCurrentUser);
   const [contactOption, setContactOption] = useState({
     limit: 5,
     offset: 0,
   });
-  const [getContacts, { isLoading, isError }] = useLazyGetContactsQuery();
+  const [getContacts, { isLoading, isError }] = useLazyGetContactListQuery();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
-  const [contacts, setContacts] = useState<any[]>([]);
+  const [contacts, setContacts] = useState<contactType[]>([]);
   const [loading, setLoading] = useState(false);
   const [contactFound, setContactFound] = useState<boolean>(true);
   const fetchContacts = async () => {
@@ -129,7 +137,7 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
         <View
           style={{
             marginTop: 20,
-            marginBottom: 20,
+            marginBottom: 75,
           }}>
           <ContactListComponent
             fetchContacts={fetchContacts}

@@ -2,14 +2,24 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Ionicons } from '../../../constants/icons';
 import { COLORS, FONTS } from '../../../constants/theme';
+import { contactType } from '../../../screens/contactScreens/ContactScreen';
 export type props = {
-  contact: any;
+  contact: contactType;
   navigation: any;
+  currentUserId: number;
 };
-const SingleContactComponent: React.FC<props> = ({ contact, navigation }) => {
+const SingleContactComponent: React.FC<props> = ({
+  contact,
+  navigation,
+  currentUserId,
+}) => {
   const handleOpen = () => {
     navigation.navigate('ChatScreen', { contact });
   };
+  contact.fk_user_Id_1 =
+    contact.fk_user_Id_1 === currentUserId
+      ? contact.fk_user_Id_2
+      : contact.fk_user_Id_1;
   return (
     <TouchableOpacity style={styles.contact} onPress={handleOpen}>
       <View>

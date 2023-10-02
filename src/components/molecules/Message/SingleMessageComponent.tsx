@@ -11,13 +11,18 @@ import { useSelector } from 'react-redux';
 import { FontAwesome } from '../../../constants/icons';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
+import { ChatMessage } from '../../../screens/contactScreens/ChatScreen';
 import { capitalizeEveryWord } from '../../../utils';
 import BottomModal from '../../atoms/BottomModal';
 import ShowMapComponent from '../../atoms/Map/ShowMapComponent';
 export type props = {
   message: any;
 };
-const SingleMessageComponent: React.FC<props> = ({ message }) => {
+const SingleMessageComponent: React.FC<props> = ({
+  message,
+}: {
+  message: ChatMessage;
+}) => {
   const user = useSelector(selectCurrentUser);
   const [readMore, setReadMore] = useState<boolean>(false);
   const [showMapView, setShowMapView] = useState<boolean>(false);
@@ -28,7 +33,7 @@ const SingleMessageComponent: React.FC<props> = ({ message }) => {
     <View
       style={[
         styles.message,
-        user.id === message.senderId
+        user.id === message.fk_senderId
           ? {
               backgroundColor: COLORS.blackPrimary,
               width: '85%',
@@ -39,14 +44,14 @@ const SingleMessageComponent: React.FC<props> = ({ message }) => {
       <View
         style={[
           { borderBottomWidth: 1, width: '100%' },
-          user.id === message.senderId ? { borderColor: COLORS.white } : {},
+          user.id === message.fk_senderId ? { borderColor: COLORS.white } : {},
         ]}>
         <Text
           style={[
             { ...FONTS.h4, margin: 10 },
-            user.id === message.senderId ? { color: COLORS.white } : {},
+            user.id === message.fk_senderId ? { color: COLORS.white } : {},
           ]}>
-          {capitalizeEveryWord(message.title)}
+          {message?.title && capitalizeEveryWord(message.title)}
         </Text>
       </View>
       <ScrollView
@@ -58,7 +63,7 @@ const SingleMessageComponent: React.FC<props> = ({ message }) => {
           <Text
             style={[
               { ...FONTS.body3, ...{ margin: 10 } },
-              user.id === message.senderId ? { color: COLORS.white } : {},
+              user.id === message.fk_senderId ? { color: COLORS.white } : {},
             ]}>
             {message.message.substring(0, 100)}
             <Text
@@ -72,7 +77,7 @@ const SingleMessageComponent: React.FC<props> = ({ message }) => {
           <Text
             style={[
               { ...FONTS.body3, ...{ margin: 10 } },
-              user.id === message.senderId ? { color: COLORS.white } : {},
+              user.id === message.fk_senderId ? { color: COLORS.white } : {},
             ]}>
             {message.message}
             <Text
@@ -86,7 +91,7 @@ const SingleMessageComponent: React.FC<props> = ({ message }) => {
           <Text
             style={[
               { ...FONTS.body3, ...{ margin: 10 } },
-              user.id === message.senderId ? { color: COLORS.white } : {},
+              user.id === message.fk_senderId ? { color: COLORS.white } : {},
             ]}>
             {message.message}
           </Text>

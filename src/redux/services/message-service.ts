@@ -11,6 +11,7 @@ export const messageApi = api.injectEndpoints({
     }),
     sendMessage: builder.mutation({
       query: body => {
+        console.log(body);
         return {
           url: '/v1/messages/contact',
           method: 'POST',
@@ -19,7 +20,7 @@ export const messageApi = api.injectEndpoints({
       },
       invalidatesTags: ['Contacts', 'Messages'],
     }),
-    getContacts: builder.query({
+    getContactList: builder.query({
       query: ({ userId, limit, offset }) => ({
         url: `/v1/messages/contact-list/${userId}/${limit}/${offset}`,
         method: 'GET',
@@ -34,5 +35,5 @@ export const {
   useGetMessagesQuery,
   useLazyGetMessagesQuery,
   useSendMessageMutation,
-  useLazyGetContactsQuery,
+  useLazyGetContactListQuery,
 } = messageApi;
