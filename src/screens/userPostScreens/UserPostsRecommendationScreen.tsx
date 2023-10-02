@@ -24,7 +24,7 @@ export type UserPostsRecommendationScreenProps = {
 const UserPostsRecommendationScreen: React.FC<
   UserPostsRecommendationScreenProps
 > = ({ navigation }) => {
-  const getUserIds = () => {
+  const getPostIds = () => {
     return navigation
       .getState()
       .routes[1].params.data.map((element: number[]) => {
@@ -32,7 +32,7 @@ const UserPostsRecommendationScreen: React.FC<
       });
   };
 
-  const [userIds, setUserIds] = useState<number[]>(getUserIds());
+  const [postIds, setPostIds] = useState<number[]>(getPostIds());
   const POST_LIMIT = 2;
   const [postFound, setPostFound] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
@@ -45,7 +45,7 @@ const UserPostsRecommendationScreen: React.FC<
     return true;
   };
   const fetchPosts = async () => {
-    if (userIds.length === 0) {
+    if (postIds.length === 0) {
       setReachedEnd(true);
       return;
     }
@@ -54,10 +54,10 @@ const UserPostsRecommendationScreen: React.FC<
     setLoading(true);
     try {
       const _posts = await getPost({
-        userIds: userIds.slice(0, Math.min(POST_LIMIT, userIds.length)),
+        postIds: postIds.slice(0, Math.min(POST_LIMIT, postIds.length)),
       }).unwrap();
-      setUserIds(userIds.slice(Math.min(POST_LIMIT, userIds.length)));
-      setPosts(prev => [...prev, ..._posts]);
+      setPostIds(postIds.slice(Math.min(POST_LIMIT, postIds.length)));
+      setPosts(prev => [...prev, ..._posts.items]);
       setLoading(false);
     } catch (e: any) {
       console.log(e);

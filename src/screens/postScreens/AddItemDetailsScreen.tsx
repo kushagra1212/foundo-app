@@ -40,7 +40,7 @@ const initialPost: AddPost = {
   brand: '',
   city: '',
   isFounded: false,
-  userId: 1,
+  fk_userId: 1,
 };
 const { width, height } = Dimensions.get('window');
 const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
@@ -148,7 +148,7 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
             validationSchema={ItemValidationSchema}
             initialValues={{
               ...initialPost,
-              userId: user.id,
+              fk_userId: user.id,
               isFounded: _isFounded,
             }}
             onSubmit={handleSubmit}>

@@ -25,7 +25,8 @@ const FilterOptionComponent = ({
           ? styles.selected_option
           : styles.not_selected_option,
       ]}
-      disabled={isItemSelected(item.id)}>
+      disabled={isItemSelected(item.id)}
+      testID={`filter_option_${item.text}`}>
       <Text
         style={[
           FONTS.h4,

@@ -1,17 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react';
+import MaskedView from '@react-native-masked-view/masked-view';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
-import MaskedView from '@react-native-masked-view/masked-view';
-
-import { LinearGradient } from 'expo-linear-gradient';
-import { useGetMessagesMutation } from '../../redux/services/message-service';
-import { selectCurrentUser } from '../../redux/slices/authSlice';
-import { COLORS, FONTS } from '../../constants/theme';
 import MessageListComponent from '../../components/molecules/Message/MessageListComponent';
-
 import { Ionicons } from '../../constants/icons';
+import { COLORS, FONTS } from '../../constants/theme';
+import { useLazyGetMessagesQuery } from '../../redux/services/message-service';
+import { selectCurrentUser } from '../../redux/slices/authSlice';
 export type props = {
   navigation?: any;
 };
@@ -23,9 +21,9 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
     limit: 5,
     offset: 0,
   });
-  const [getMessages, { isLoading, isError }] = useGetMessagesMutation();
+  const [getMessages, { isLoading, isError }] = useLazyGetMessagesQuery();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
-  const [messages, setMessages] = useState<Array<any>>([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [messageFound, setMessageFound] = useState<boolean>(true);
   const fetchMessages = async () => {
@@ -76,8 +74,7 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
         width: '100%',
         height: '100%',
         backgroundColor: COLORS.lightGrayPrePrimary,
-      }}
-    >
+      }}>
       <View>
         <View style={styles.header}>
           <Ionicons
@@ -86,14 +83,13 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
             color="black"
             onPress={() => navigation.goBack()}
           />
-          
+
           <View
             style={{
               display: 'flex',
               alignItems: 'center',
               width: '90%',
-            }}
-          >
+            }}>
             <Text style={FONTS.h3}>
               {navigation.getState().routes[1].params.contact?.firstName +
                 ' ' +
@@ -110,8 +106,7 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
               backgroundColor: 'transparent',
               flex: 1,
               marginTop: 0,
-            }}
-          >
+            }}>
             <LinearGradient
               colors={[
                 '#FFFFFF',
@@ -135,16 +130,13 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
               style={{
                 flex: 1,
                 borderRadius: 5,
-              }}
-            ></LinearGradient>
+              }}></LinearGradient>
           </View>
-        }
-      >
+        }>
         <View
           style={{
             marginBottom: 20,
-          }}
-        >
+          }}>
           <MessageListComponent
             fetchMessages={fetchMessages}
             loading={isLoading}

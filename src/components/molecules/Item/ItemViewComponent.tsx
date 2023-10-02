@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -37,8 +37,7 @@ const ItemViewComponent: React.FC<props> = ({
   isVisible,
   navigation,
 }) => {
-  const call = useCallback(() => useGetpostQuery(item.id), [item.id]);
-  const { data: detailedItem, isLoading } = call();
+  const { data: detailedItem, isLoading } = useGetpostQuery(item.id);
 
   const { data: userWhoPosted } = useGetUserQuery({
     userId: item.userId,

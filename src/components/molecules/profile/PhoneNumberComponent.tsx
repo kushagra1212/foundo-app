@@ -1,10 +1,11 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React, { useCallback, useRef, useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import PhoneInput from 'react-native-phone-number-input';
 import { useDispatch } from 'react-redux';
+
 import { COLORS, FONTS } from '../../../constants/theme';
 import { useUserUpdateMutation } from '../../../redux/services/auth-service';
 import { useGetUserQuery } from '../../../redux/services/profile-service';
-import PhoneInput from 'react-native-phone-number-input';
 import { updateUser } from '../../../redux/slices/authSlice';
 type props = {
   phoneNumber: string | undefined;
@@ -17,7 +18,7 @@ const PhoneNumberComponent: React.FC<props> = ({
   userId,
 }) => {
   const [phoneNumberState, setPhoneNumberState] = useState<string | undefined>(
-    phoneNumber
+    phoneNumber,
   );
   const dispatch = useDispatch();
   const [isValid, setIsValid] = useState<boolean>(false);
@@ -35,7 +36,7 @@ const PhoneNumberComponent: React.FC<props> = ({
       try {
         const { user } = await userUpdate({
           userId,
-          phoneNo: phoneNumberState,
+          update: { phoneNo: phoneNumberState },
         }).unwrap();
         dispatch(updateUser({ user }));
       } catch (err) {
@@ -53,7 +54,7 @@ const PhoneNumberComponent: React.FC<props> = ({
             ref={phoneInput}
             defaultValue={phoneNumberState}
             defaultCode="IN"
-            onChangeFormattedText={(text) => {
+            onChangeFormattedText={text => {
               setPhoneNumber(text);
             }}
             withShadow
@@ -66,8 +67,7 @@ const PhoneNumberComponent: React.FC<props> = ({
               ...styles.verify_email_but,
               ...(!isValid ? { backgroundColor: COLORS.GraySecondary } : {}),
             }}
-            onPress={isValid ? addPhoneNumber : undefined}
-          >
+            onPress={isValid ? addPhoneNumber : undefined}>
             <Text style={{ ...FONTS.h2, color: COLORS.white }}>Add</Text>
           </TouchableOpacity>
         </View>
@@ -79,8 +79,7 @@ const PhoneNumberComponent: React.FC<props> = ({
               margin: 20,
               opacity: 0.7,
               textAlign: 'center',
-            }}
-          >
+            }}>
             {phoneNumberState}
           </Text>
           <View
@@ -90,8 +89,7 @@ const PhoneNumberComponent: React.FC<props> = ({
               margin: 10,
               justifyContent: 'center',
               alignItems: 'center',
-            }}
-          >
+            }}>
             <Text>
               We've noticed that you haven't verified your phone number{' '}
             </Text>
@@ -102,8 +100,7 @@ const PhoneNumberComponent: React.FC<props> = ({
               { backgroundColor: COLORS.GraySecondary },
             ]}
             disabled={true}
-            onPress={verifyPhoneNumber}
-          >
+            onPress={verifyPhoneNumber}>
             <Text style={{ ...FONTS.h2, color: COLORS.white }}>
               Verify Phone Number
             </Text>
