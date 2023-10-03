@@ -10,8 +10,8 @@ import { useSelector } from 'react-redux';
 
 import { FontAwesome } from '../../../constants/icons';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
+import { ChatMessage } from '../../../interfaces';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
-import { ChatMessage } from '../../../screens/contactScreens/ChatScreen';
 import { capitalizeEveryWord } from '../../../utils';
 import BottomModal from '../../atoms/BottomModal';
 import ShowMapComponent from '../../atoms/Map/ShowMapComponent';
@@ -45,14 +45,17 @@ const SingleMessageComponent: React.FC<props> = ({
         style={[
           { borderBottomWidth: 1, width: '100%' },
           user.id === message.fk_senderId ? { borderColor: COLORS.white } : {},
+          message?.title ? {} : { borderBottomWidth: 0 },
         ]}>
-        <Text
-          style={[
-            { ...FONTS.h4, margin: 10 },
-            user.id === message.fk_senderId ? { color: COLORS.white } : {},
-          ]}>
-          {message?.title && capitalizeEveryWord(message.title)}
-        </Text>
+        {message?.title && (
+          <Text
+            style={[
+              { ...FONTS.h4, margin: 10 },
+              user.id === message.fk_senderId ? { color: COLORS.white } : {},
+            ]}>
+            {message?.title && capitalizeEveryWord(message.title)}
+          </Text>
+        )}
       </View>
       <ScrollView
         style={{
@@ -97,7 +100,7 @@ const SingleMessageComponent: React.FC<props> = ({
           </Text>
         )}
         <View>
-          {message.isFound ? (
+          {message?.locationId ? (
             <TouchableOpacity
               style={styles.btn_active}
               onPress={() => {
@@ -109,18 +112,18 @@ const SingleMessageComponent: React.FC<props> = ({
                   fontSize: SIZES.h3,
                   fontWeight: '600',
                 }}>
+                <Text>See on map </Text>
                 <FontAwesome
                   name="location-arrow"
                   size={20}
                   color={COLORS.black}
                 />
-                <Text>See on map</Text>
               </Text>
             </TouchableOpacity>
           ) : null}
         </View>
       </ScrollView>
-      {showMapView && (
+      {showMapView && message?.latitude && message?.longitude && (
         <BottomModal
           height={'90%'}
           backgroundFilter={true}
@@ -147,7 +150,7 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     margin: 10,
-    padding: 15,
+    padding: 5,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',

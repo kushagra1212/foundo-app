@@ -50,3 +50,18 @@ export interface AddPost {
   pictures: Picture[];
   location: ILocation;
 }
+export type ChatMessage = {
+  id: number;
+  fk_senderId: number;
+  fk_receiverId: number;
+  title: string | null;
+  message: string;
+  createdAt: string;
+  latitude: number | null;
+  longitude: number | null;
+  fk_messageId: number;
+  locationId: number | null;
+  isFound: number;
+  isPhoneNoShared: number;
+  total_count: number;
+};

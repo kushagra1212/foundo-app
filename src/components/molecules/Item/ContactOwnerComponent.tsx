@@ -18,7 +18,7 @@ import * as yup from 'yup';
 import object2 from '../../../assets/images/object2.png';
 import { AntDesign, Feather, MaterialIcons } from '../../../constants/icons';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
-import { useSendMessageMutation } from '../../../redux/services/message-service';
+import { useSendContacMessageMutation } from '../../../redux/services/message-service';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
 import BottomModal from '../../atoms/BottomModal';
 import PickMapComponent from '../../atoms/Map/PickMapComponent';
@@ -38,7 +38,7 @@ const ContactOwnerComponent: React.FC<props> = ({
   const [isMapVisible, setIsMapVisible] = useState<boolean>(false);
   const user = useSelector(selectCurrentUser);
   const [sendMessage, { isLoading, isSuccess, isError, error }] =
-    useSendMessageMutation();
+    useSendContacMessageMutation();
   const handleMapClose = () => {
     setIsMapVisible(false);
   };

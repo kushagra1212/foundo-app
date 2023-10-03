@@ -14,8 +14,14 @@ const SingleContactComponent: React.FC<props> = ({
   currentUserId,
 }) => {
   const handleOpen = () => {
+    navigation.getParent().setOptions({
+      tabBarStyle: {
+        display: 'none',
+      },
+    });
     navigation.navigate('ChatScreen', { contact });
   };
+
   contact.fk_user_Id_1 =
     contact.fk_user_Id_1 === currentUserId
       ? contact.fk_user_Id_2

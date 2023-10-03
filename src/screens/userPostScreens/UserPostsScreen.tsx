@@ -6,16 +6,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 
-import character4 from '../../assets/images/character4.png';
-import object3 from '../../assets/images/object1.png';
 import BottomModal from '../../components/atoms/BottomModal';
 import FilterOptionComponent, {
   FILTER_ITEMS,
   LOST_ITEM,
 } from '../../components/atoms/FilterOptionItem';
-import LogInButtonComponent from '../../components/atoms/LogInButtonComponent';
-import AnimatedComponent from '../../components/molecules/Animation/AnimatedComponent';
-import AnimatedObject from '../../components/molecules/Animation/AnimatedObject';
+import UserNotFound from '../../components/atoms/UserNotFound';
 import AdditionalFilterOptionComponent from '../../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
 import FilterItemComponent from '../../components/molecules/Filter/FilterItemComponent';
 import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
@@ -128,25 +124,12 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
 
   const handleOnFocus = () => {};
 
-  if (_currentUserId === null) {
+  if (!_currentUserId) {
     return (
-      <SafeAreaView
-        style={{
-          height: '100%',
-          backgroundColor: COLORS.lightGrayPrePrimary,
-        }}>
-        <View style={{ zIndex: 1, top: '60%' }}>
-          <AnimatedObject width={300} height={300} source={object3} />
-        </View>
-        <AnimatedComponent
-          title="Not Logged In"
-          description="Please login to see your posts"
-          source={character4}
-        />
-        <View style={{ marginTop: '10%' }}>
-          <LogInButtonComponent navigation={navigation} title="Log in" />
-        </View>
-      </SafeAreaView>
+      <UserNotFound
+        navigation={navigation}
+        message="Please Log In to view your posts"
+      />
     );
   }
   return (

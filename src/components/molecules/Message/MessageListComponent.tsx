@@ -3,7 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import character5 from '../../../assets/images/character5.png';
 import { COLORS } from '../../../constants/theme';
-import { ChatMessage } from '../../../screens/contactScreens/ChatScreen';
+import { ChatMessage } from '../../../interfaces';
 import AnimatedComponent from '../Animation/AnimatedComponent';
 import SingleMessageComponent from './SingleMessageComponent';
 export type props = {

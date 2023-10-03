@@ -1,4 +1,20 @@
 import * as Location from 'expo-location';
+import { Dimensions } from 'react-native';
+
+import { COLORS } from '../constants/theme';
+export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
+  Dimensions.get('window');
+export const TAB_BAR_STYLE: any = {
+  backgroundColor: COLORS.white,
+  height: 70,
+  justifyContent: 'center',
+  display: 'flex',
+  alignItems: 'center',
+  padding: 10,
+  elevation: 50,
+  borderRadius: 20,
+  marginTop: -20,
+};
 export const capitalizeFirstLetter = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };

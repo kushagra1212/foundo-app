@@ -1,5 +1,6 @@
+import { ChatMessage } from '../../interfaces';
+import { contactType } from '../../screens/contactScreens/ContactScreen';
 import { api } from './api-service';
-
 export const messageApi = api.injectEndpoints({
   endpoints: builder => ({
     getMessages: builder.query({
@@ -7,25 +8,73 @@ export const messageApi = api.injectEndpoints({
         url: `/v1/messages/${senderId}/${receiverId}/${limit}/${offset}`,
         method: 'GET',
       }),
-      providesTags: ['Messages'],
+      transformResponse(messages: ChatMessage[], meta, arg) {
+        return { messages, offset: arg.offset };
+      },
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCache, newItems) => {
+        if (newItems.offset > 0) {
+          currentCache.messages.push(...newItems.messages);
+          return currentCache;
+        }
+        return newItems;
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
+      providesTags: (result, error, args) => {
+        if (!result) return ['Messages'];
+        return result.messages.map(message => ({
+          type: 'Messages',
+          id: message.id,
+        }));
+      },
     }),
-    sendMessage: builder.mutation({
+    sendContacMessage: builder.mutation({
       query: body => {
-        console.log(body);
         return {
           url: '/v1/messages/contact',
           method: 'POST',
           body,
         };
       },
-      invalidatesTags: ['Contacts', 'Messages'],
+      invalidatesTags: ['Contact-list', 'Messages'],
+    }),
+    sendMessage: builder.mutation({
+      query: body => {
+        return {
+          url: '/v1/messages/',
+          method: 'POST',
+          body,
+        };
+      },
     }),
     getContactList: builder.query({
       query: ({ userId, limit, offset }) => ({
         url: `/v1/messages/contact-list/${userId}/${limit}/${offset}`,
         method: 'GET',
-      }),
-      providesTags: ['Contacts'],
+      }), // Only have one cache entry because the arg always maps to one string
+      transformResponse(contacts: contactType[], meta, arg) {
+        return { contacts, offset: arg.offset };
+      },
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      // Always merge incoming data to the cache entry
+      merge: (currentCache, newItems) => {
+        if (newItems.offset > 0) {
+          currentCache.contacts.push(...newItems.contacts);
+          return currentCache;
+        }
+        return newItems;
+      },
+      // Refetch when the page arg changes
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
+      providesTags: ['Contact-list'],
     }),
   }),
   overrideExisting: true,
@@ -33,7 +82,7 @@ export const messageApi = api.injectEndpoints({
 
 export const {
   useGetMessagesQuery,
-  useLazyGetMessagesQuery,
   useSendMessageMutation,
-  useLazyGetContactListQuery,
+  useGetContactListQuery,
+  useSendContacMessageMutation,
 } = messageApi;

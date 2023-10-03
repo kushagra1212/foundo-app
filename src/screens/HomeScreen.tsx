@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { Ionicons, MaterialIconsCommunity } from '../constants/icons';
@@ -8,25 +7,17 @@ import {
   selectAddItemDetailsScreenStatus,
   selectFeedSearchScreenStatus,
 } from '../redux/slices/sreenSilce';
+import { TAB_BAR_STYLE } from '../utils';
 import AddItemScreen from './AddItemScreen';
 import FeedScreen from './FeedScreen';
 import MessageScreen from './MessageScreen';
 import ProfileScreen from './ProfileScreen';
 import UserPostsHomeScreen from './userPostScreens/UserPostsHomeScreen';
 const Tab = createBottomTabNavigator();
-export const TAB_BAR_STYLE: any = {
-  backgroundColor: COLORS.white,
-  height: 70,
-  justifyContent: 'center',
-  display: 'flex',
-  alignItems: 'center',
-  padding: 10,
-  elevation: 50,
-  borderRadius: 20,
-  marginTop: -20,
-};
+
 const HomeScreen = () => {
-  const feedSearchShow = useSelector(selectFeedSearchScreenStatus);
+  const showFeedScreen = useSelector(selectFeedSearchScreenStatus);
+  const showChatScreen = useSelector(selectFeedSearchScreenStatus);
   const addItemDetailsScreenShow = useSelector(
     selectAddItemDetailsScreenStatus,
   );
@@ -37,7 +28,7 @@ const HomeScreen = () => {
         title: 'FeedScreen',
         tabBarStyle: {
           ...TAB_BAR_STYLE,
-          display: feedSearchShow || addItemDetailsScreenShow ? 'none' : 'flex',
+          display: showFeedScreen || addItemDetailsScreenShow ? 'none' : 'flex',
         },
         tabBarLabel: '',
       }}
@@ -80,12 +71,6 @@ const HomeScreen = () => {
           headerShown: false,
           headerTitleAlign: 'center',
           headerLeft: () => null,
-          // <TouchableOpacity
-          //   style={styles.left_btn}
-          //   onPress={() => console.log('left-btn')}
-          // >
-          //   <Foundation name="indent-more" size={30} />
-          // </TouchableOpacity>
           headerTintColor: 'black',
           headerTitleStyle: {
             fontWeight: 'bold',
@@ -110,17 +95,15 @@ const HomeScreen = () => {
           headerShown: false,
           headerTitleAlign: 'center',
           headerLeft: () => null,
-          // <TouchableOpacity
-          //   style={styles.left_btn}
-          //   onPress={() => console.log('left-btn')}
-          // >
-          //   <Foundation name="indent-more" size={30} />
-          // </TouchableOpacity>
           headerTintColor: 'black',
           headerTitleStyle: {
             fontWeight: 'bold',
           },
           tabBarLabel: '',
+          tabBarStyle: {
+            ...TAB_BAR_STYLE,
+            display: showChatScreen ? 'none' : 'flex',
+          },
           tabBarIcon: ({ focused }) => {
             return (
               <MaterialIconsCommunity
@@ -140,12 +123,6 @@ const HomeScreen = () => {
           headerShown: false,
           headerTitleAlign: 'center',
           headerLeft: () => null,
-          // <TouchableOpacity
-          //   style={styles.left_btn}
-          //   onPress={() => console.log('left-btn')}
-          // >
-          //   <Foundation name="indent-more" size={30} />
-          // </TouchableOpacity>
           headerTintColor: 'black',
           headerTitleStyle: {
             fontWeight: 'bold',
@@ -168,5 +145,4 @@ const HomeScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({});
 export default HomeScreen;

@@ -3,86 +3,98 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 
+import ChatTextComponent from '../../components/atoms/ChatTextComponent';
+import UserNotFound from '../../components/atoms/UserNotFound';
 import MessageListComponent from '../../components/molecules/Message/MessageListComponent';
 import { Ionicons } from '../../constants/icons';
 import { COLORS, FONTS } from '../../constants/theme';
-import { useLazyGetMessagesQuery } from '../../redux/services/message-service';
+import {
+  useGetMessagesQuery,
+  useSendMessageMutation,
+} from '../../redux/services/message-service';
 import { selectCurrentUser } from '../../redux/slices/authSlice';
+import { socket } from '../../socket_io/socket';
+import { TAB_BAR_STYLE } from '../../utils';
 export type props = {
   navigation?: any;
 };
-
-export type ChatMessage = {
-  id: number;
-  fk_senderId: number;
-  fk_receiverId: number;
-  title: string | null;
-  message: string;
-  createdAt: string;
-  latitude: number;
-  longitude: number;
-  fk_messageId: number;
-  locationId: number;
-  isFound: number;
-  isPhoneNoShared: number;
-};
-
+const LIMIT = 5;
 const ChatScreen: React.FC<props> = ({ navigation }) => {
   const unmounted = useRef(false);
   const user = useSelector(selectCurrentUser);
-  const [messageOption, setMessageOption] = useState({
-    limit: 5,
-    offset: 0,
-  });
-  const [getMessages, { isLoading, isError }] = useLazyGetMessagesQuery();
+  const [offset, setOffset] = useState<number>(0);
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [messageFound, setMessageFound] = useState<boolean>(true);
-  const fetchMessages = async () => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      const res: ChatMessage[] = await getMessages({
-        offset: messageOption.offset,
-        limit: messageOption.limit,
-        receiverId: user?.id,
-        senderId: navigation.getState().routes[1].params.contact.fk_userId,
-      }).unwrap();
-      if (unmounted.current) return;
-      if (res.length === 0) {
-        setLoading(false);
-        setReachedEnd(true);
-        if (messages.length === 0) setMessageFound(false);
-        return;
-      }
-      if (unmounted.current) return;
-      setMessageOption({
-        ...messageOption,
-        offset: messageOption.limit + messageOption.offset,
+  const { isLoading, isError, error, isFetching, data } = useGetMessagesQuery({
+    offset,
+    limit: LIMIT,
+    receiverId: user?.id,
+    senderId: navigation.getState().routes[1].params.contact.fk_userId,
+  });
+
+  const [sendMessage] = useSendMessageMutation();
+  const messages = data?.messages || [];
+
+  const loading = isLoading || isFetching;
+  const fetchMessages = () => {
+    if (isError) {
+      Toast.show({
+        type: 'error',
+        props: {
+          text: 'Error !',
+          message: error?.data?.message,
+        },
       });
-      setMessages([...messages, ...res]);
-      setLoading(false);
-    } catch (e: any) {
-      console.log(e);
-      if (unmounted.current) return;
-      setLoading(false);
-      setMessageFound(false);
-      setReachedEnd(true);
-    }
-  };
-  useEffect(() => {
-    if (!unmounted.current) {
-      setLoading(true);
-      fetchMessages();
     }
 
+    if (loading || isError || reachedEnd) return;
+
+    if (messages.length && messages.length === messages[0].total_count) {
+      setReachedEnd(true);
+      return;
+    }
+
+    setOffset(prev => prev + LIMIT);
+  };
+
+  const handleSendMesssage = async (message: string) => {
+    socket.emit('send-message', {
+      message,
+      senderId: user?.id,
+      receiverId: navigation.getState().routes[1].params.contact.fk_userId,
+    });
+    await sendMessage({
+      message,
+      fk_senderId: user?.id,
+      fk_receiverId: navigation.getState().routes[1].params.contact.fk_userId,
+    });
+  };
+
+  useEffect(() => {
+    socket.connect();
     return () => {
+      socket.disconnect();
+      navigation.getParent().setOptions({
+        tabBarStyle: {
+          ...TAB_BAR_STYLE,
+          display: 'flex',
+        },
+      });
       unmounted.current = true;
     };
   }, []);
+
+  if (!user) {
+    return (
+      <UserNotFound
+        navigation={navigation}
+        message="Please log in to view your messages"
+      />
+    );
+  }
+
   return (
     <SafeAreaView
       style={{
@@ -114,7 +126,7 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
         </View>
       </View>
       <MaskedView
-        style={{ flex: 1 }}
+        style={{ flex: 1, paddingBottom: 60 }}
         maskElement={
           <View
             style={{
@@ -148,19 +160,20 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
               }}></LinearGradient>
           </View>
         }>
-        <View
-          style={{
-            marginBottom: 20,
-          }}>
-          <MessageListComponent
-            fetchMessages={fetchMessages}
-            loading={isLoading}
-            messages={messages}
-            reachedEnd={reachedEnd}
-            messageFound={messageFound}
-          />
-        </View>
+        <MessageListComponent
+          fetchMessages={fetchMessages}
+          loading={loading}
+          messages={messages}
+          reachedEnd={reachedEnd}
+          messageFound={messages && messages.length > 0}
+        />
       </MaskedView>
+
+      <ChatTextComponent
+        handleOnFocus={() => {}}
+        handleSendMesssage={handleSendMesssage}
+        navigation={navigation}
+      />
     </SafeAreaView>
   );
 };

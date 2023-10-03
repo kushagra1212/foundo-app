@@ -166,7 +166,7 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
             }}>
             <LinearGradient
               colors={[
-                '#FFFFFF00',
+                ...['#FFFFFF00'],
                 '#FFFFFF',
                 '#FFFFFF',
                 '#FFFFFF',
