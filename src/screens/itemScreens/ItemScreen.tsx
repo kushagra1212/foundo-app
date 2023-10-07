@@ -142,7 +142,6 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
     dispatch(updateFilter({ filterType: !filterType }));
     navigation.navigate('FeedSearchScreen');
   };
-  console.log('render', refreshing);
   return (
     <SafeAreaView style={styles.feed}>
       <View>

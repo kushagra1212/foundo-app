@@ -22,7 +22,7 @@ import MiniItemTextIcon from './MiniItemTextIcon';
 interface PropsType1 extends FilterItemOn {
   text: string;
   arrowText: string;
-  viewAllHandler: () => void;
+  viewAllHandler?: () => void;
   items: any;
   icon?: JSX.Element;
 }
@@ -40,21 +40,23 @@ const ListFilterItemViewAllType: React.FC<PropsType1> = ({
         borderRadius: 20,
         margin: 10,
       }}
-      onPress={rest.viewAllHandler}
+      onPress={() => (rest.viewAllHandler ? rest.viewAllHandler() : {})}
       testID={`viewAllButton` + text}>
       <View style={styles.list_item}>
         <View style={styles.text}>
           {icon}
           <Text style={{ margin: 5, ...FONTS.h4 }}>{text}</Text>
         </View>
-        <View style={styles.view_all}>
-          <Text style={FONTS.h4}>{rest.arrowText}</Text>
-          <Ionicons
-            style={{ margin: 10, ...FONTS.h1 }}
-            name="chevron-forward"
-            size={30}
-          />
-        </View>
+        {rest?.viewAllHandler ? (
+          <View style={styles.view_all}>
+            <Text style={FONTS.h4}>{rest.arrowText}</Text>
+            <Ionicons
+              style={{ margin: 10, ...FONTS.h1 }}
+              name="chevron-forward"
+              size={30}
+            />
+          </View>
+        ) : null}
       </View>
       <View style={{ width: '60%' }}>
         {rest?.items !== undefined && rest?.items !== '' && (
@@ -316,6 +318,5 @@ const styles = StyleSheet.create({
 export {
   ListFilterItemSlideDownInput,
   ListFilterItemSlideDownList,
-  ListFilterItemViewAllType
+  ListFilterItemViewAllType,
 };
-

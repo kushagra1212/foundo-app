@@ -1,3 +1,4 @@
+import { User } from '../../interfaces';
 import { api } from './api-service';
 
 export const profileApi = api.injectEndpoints({
@@ -9,16 +10,20 @@ export const profileApi = api.injectEndpoints({
       transformResponse: response => {
         return response.userSetting;
       },
-      providesTags: ['user-setting'],
+      providesTags: (result, error, arg) => {
+        return [{ type: 'user-setting', id: arg.fk_userId }];
+      },
     }),
     getUser: builder.query({
       query: ({ fk_userId }) => {
         return `/v1/users/${fk_userId}`;
       },
       transformResponse: response => {
-        return response.user;
+        return response.user as User;
       },
-      providesTags: ['user'],
+      providesTags: (result, error, arg) => {
+        return [{ type: 'user', id: arg.fk_userId }];
+      },
     }),
     updateUserSetting: builder.mutation({
       query: ({ fk_userId, update }) => {
@@ -28,7 +33,12 @@ export const profileApi = api.injectEndpoints({
           body: update,
         };
       },
-      invalidatesTags: ['user-setting'],
+      invalidatesTags: (result, error, arg) => {
+        return [
+          { type: 'user-setting', id: arg.fk_userId },
+          { type: 'user', id: arg.fk_userId },
+        ];
+      },
     }),
   }),
   overrideExisting: true,

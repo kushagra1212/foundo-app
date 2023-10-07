@@ -24,13 +24,6 @@ export const messageApi = api.injectEndpoints({
       forceRefetch({ currentArg, previousArg }) {
         return currentArg !== previousArg;
       },
-      providesTags: (result, error, args) => {
-        if (!result) return ['Messages'];
-        return result.messages.map(message => ({
-          type: 'Messages',
-          id: message.id,
-        }));
-      },
     }),
     sendContacMessage: builder.mutation({
       query: body => {
@@ -42,12 +35,24 @@ export const messageApi = api.injectEndpoints({
       },
       invalidatesTags: ['Contact-list', 'Messages'],
     }),
-    sendMessage: builder.mutation({
-      query: body => {
+    sendMessage: builder.mutation<any, any>({
+      query: ({
+        fk_senderId,
+        fk_receiverId,
+        message,
+      }: {
+        fk_senderId: number;
+        fk_receiverId: number;
+        message: string;
+      }) => {
         return {
           url: '/v1/messages/',
           method: 'POST',
-          body,
+          body: {
+            fk_senderId,
+            fk_receiverId,
+            message,
+          },
         };
       },
     }),

@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
 import BottomModal from '../components/atoms/BottomModal';
@@ -97,195 +96,185 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
     return <NotLoggedInProfileComponent navigation={navigation} />;
   }
   return (
-    <SafeAreaView
-      style={{
-        height: '100%',
-        backgroundColor: COLORS.lightGrayPrePrimary,
-      }}>
-      <ScrollView>
-        <View style={styles.profile_view}>
-          <TouchableOpacity
-            style={{ alignSelf: 'flex-end' }}
-            onPress={showImagePicker}>
-            <AntDesign
-              name="edit"
-              size={25}
-              style={{ color: COLORS.primary }}
+    <ScrollView>
+      <View style={styles.profile_view}>
+        <TouchableOpacity
+          style={{ alignSelf: 'flex-end' }}
+          onPress={showImagePicker}>
+          <AntDesign name="edit" size={25} style={{ color: COLORS.primary }} />
+        </TouchableOpacity>
+        <View>
+          {user?.profilePhoto && !uploadLoading ? (
+            <Image
+              source={{ uri: user?.profilePhoto ? user?.profilePhoto : null }}
+              style={{
+                ...styles.profile_img,
+                aspectRatio: 1,
+              }}
             />
-          </TouchableOpacity>
-          <View>
-            {user?.profilePhoto && !uploadLoading ? (
-              <Image
-                source={{ uri: user?.profilePhoto ? user?.profilePhoto : null }}
-                style={{
-                  ...styles.profile_img,
-                  aspectRatio: 1,
-                }}
+          ) : !uploadLoading ? (
+            <View
+              style={{
+                ...styles.profile_img,
+                aspectRatio: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={{ color: 'white', fontSize: 45 }}>
+                {user?.firstName.split()[0].split('')[0] +
+                  user?.lastName.split()[0].split('')[0]}
+              </Text>
+            </View>
+          ) : (
+            <View
+              style={{
+                ...styles.profile_img,
+                aspectRatio: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <ActivityIndicator
+                animating={uploadLoading}
+                size="large"
+                color={COLORS.white}
               />
-            ) : !uploadLoading ? (
-              <View
-                style={{
-                  ...styles.profile_img,
-                  aspectRatio: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text style={{ color: 'white', fontSize: 45 }}>
-                  {user?.firstName.split()[0].split('')[0] +
-                    user?.lastName.split()[0].split('')[0]}
-                </Text>
-              </View>
-            ) : (
-              <View
-                style={{
-                  ...styles.profile_img,
-                  aspectRatio: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <ActivityIndicator
-                  animating={uploadLoading}
-                  size="large"
-                  color={COLORS.white}
-                />
-              </View>
-            )}
-          </View>
-          <View>
-            <Text style={{ ...FONTS.h3, margin: 10 }}>
-              {user?.firstName + ' ' + user?.lastName}
-            </Text>
-          </View>
+            </View>
+          )}
         </View>
+        <View>
+          <Text style={{ ...FONTS.h3, margin: 10 }}>
+            {user?.firstName + ' ' + user?.lastName}
+          </Text>
+        </View>
+      </View>
+      <View
+        style={{
+          margin: 10,
+        }}>
+        <Text style={{ ...FONTS.h4, opacity: 0.6 }}>Contact Details</Text>
         <View
           style={{
-            margin: 10,
+            backgroundColor: COLORS.lightGrayPrePrimary,
+            marginTop: 5,
           }}>
-          <Text style={{ ...FONTS.h4, opacity: 0.6 }}>Contact Details</Text>
-          <View
-            style={{
-              backgroundColor: COLORS.lightGrayPrePrimary,
-              marginTop: 5,
-            }}>
-            <ListFilterItemViewAllType
-              arrowText=""
-              items={undefined}
-              text="Email"
-              icon={
-                <View style={{ marginRight: 10, justifyContent: 'center' }}>
-                  <Entypo name="email" size={20} />
-                </View>
-              }
-              viewAllHandler={() => viewAllHandler('email')}
-            />
-            <ListFilterItemViewAllType
-              arrowText=""
-              items={undefined}
-              text="Phone Number"
-              icon={
-                <View style={{ marginRight: 10, justifyContent: 'center' }}>
-                  <Entypo name="phone" size={20} />
-                </View>
-              }
-              viewAllHandler={() => viewAllHandler('phoneNumber')}
-            />
-            <ListFilterItemViewAllType
-              arrowText=""
-              items={undefined}
-              text="Residential Address"
-              icon={
-                <View style={{ marginRight: 10, justifyContent: 'center' }}>
-                  <Entypo name="address" size={20} />
-                </View>
-              }
-              viewAllHandler={() => viewAllHandler('Residential Address')}
-            />
-          </View>
+          <ListFilterItemViewAllType
+            arrowText=""
+            items={undefined}
+            text="Email"
+            icon={
+              <View style={{ marginRight: 10, justifyContent: 'center' }}>
+                <Entypo name="email" size={20} />
+              </View>
+            }
+            viewAllHandler={() => viewAllHandler('email')}
+          />
+          <ListFilterItemViewAllType
+            arrowText=""
+            items={undefined}
+            text="Phone Number"
+            icon={
+              <View style={{ marginRight: 10, justifyContent: 'center' }}>
+                <Entypo name="phone" size={20} />
+              </View>
+            }
+            viewAllHandler={() => viewAllHandler('phoneNumber')}
+          />
+          <ListFilterItemViewAllType
+            arrowText=""
+            items={undefined}
+            text="Residential Address"
+            icon={
+              <View style={{ marginRight: 10, justifyContent: 'center' }}>
+                <Entypo name="address" size={20} />
+              </View>
+            }
+            viewAllHandler={() => viewAllHandler('Residential Address')}
+          />
         </View>
+      </View>
+      <View
+        style={{
+          margin: 10,
+        }}>
+        <Text style={{ ...FONTS.h4, opacity: 0.6 }}>Privacy Setting</Text>
         <View
           style={{
-            margin: 10,
+            marginTop: 5,
           }}>
-          <Text style={{ ...FONTS.h4, opacity: 0.6 }}>Privacy Setting</Text>
-          <View
-            style={{
-              marginTop: 5,
-            }}>
-            <ListFilterItemViewAllType
-              arrowText=""
-              items={undefined}
-              text="Update Privacy"
-              icon={
-                <View style={{ marginRight: 10, justifyContent: 'center' }}>
-                  <Entypo name="key" size={20} />
-                </View>
-              }
-              viewAllHandler={() => viewAllHandler('Update Privacy')}
-            />
-          </View>
+          <ListFilterItemViewAllType
+            arrowText=""
+            items={undefined}
+            text="Update Privacy"
+            icon={
+              <View style={{ marginRight: 10, justifyContent: 'center' }}>
+                <Entypo name="key" size={20} />
+              </View>
+            }
+            viewAllHandler={() => viewAllHandler('Update Privacy')}
+          />
         </View>
-        <LogoutButtonComponent navigation={navigation} />
-        {open.email && (
-          <BottomModal
-            height={user?.is_Verified ? '30%' : '90%'}
-            backgroundFilter={true}
-            isVisible={true}
-            effect={'fade'}
-            iconName="close"
-            onClose={() => setOpen(intitalOpenDialog)}>
-            <EmailComponent
-              onClose={() => setOpen(intitalOpenDialog)}
-              email={user?.email}
-              user={user}
-            />
-          </BottomModal>
-        )}
-        {open.phoneNumber && (
-          <BottomModal
-            height={user?.phoneNo ? '30%' : '60%'}
-            backgroundFilter={true}
-            isVisible={true}
-            effect={'fade'}
-            onClose={() => setOpen(intitalOpenDialog)}>
-            <PhoneNumberComponent
-              onClose={() => setOpen(intitalOpenDialog)}
-              phoneNumber={user?.phoneNo}
-              userId={user?.id}
-            />
-          </BottomModal>
-        )}
-        {open.residentialAddress && (
-          <BottomModal
-            height={user?.address ? '40%' : '30%'}
-            backgroundFilter={true}
-            isVisible={true}
-            effect={'fade'}
-            iconName="close"
-            onClose={() => setOpen(intitalOpenDialog)}>
-            <UserAddressComponent
-              onClose={() => setOpen(intitalOpenDialog)}
-              address={user?.address}
-              userId={user?.id}
-            />
-          </BottomModal>
-        )}
-        {open.updatePrivacy && (
-          <BottomModal
-            height="60%"
-            backgroundFilter={true}
-            isVisible={true}
-            effect={'fade'}
-            onClose={() => setOpen(intitalOpenDialog)}>
-            <UserUpdatePrivacyComponent
-              onClose={() => setOpen(intitalOpenDialog)}
-              userSettings={userSetting}
-              isLoading={isLoading}
-              userId={user?.id}
-            />
-          </BottomModal>
-        )}
-      </ScrollView>
-    </SafeAreaView>
+      </View>
+      <LogoutButtonComponent navigation={navigation} />
+      {open.email && (
+        <BottomModal
+          height={user?.isVerified ? '30%' : '90%'}
+          backgroundFilter={true}
+          isVisible={true}
+          effect={'fade'}
+          iconName="close"
+          onClose={() => setOpen(intitalOpenDialog)}>
+          <EmailComponent
+            onClose={() => setOpen(intitalOpenDialog)}
+            email={user?.email}
+            user={user}
+          />
+        </BottomModal>
+      )}
+      {open.phoneNumber && (
+        <BottomModal
+          height={user?.phoneNo ? '30%' : '60%'}
+          backgroundFilter={true}
+          isVisible={true}
+          effect={'fade'}
+          onClose={() => setOpen(intitalOpenDialog)}>
+          <PhoneNumberComponent
+            onClose={() => setOpen(intitalOpenDialog)}
+            phoneNumber={user?.phoneNo}
+            userId={user?.id}
+          />
+        </BottomModal>
+      )}
+      {open.residentialAddress && (
+        <BottomModal
+          height={user?.address ? '40%' : '30%'}
+          backgroundFilter={true}
+          isVisible={true}
+          effect={'fade'}
+          iconName="close"
+          onClose={() => setOpen(intitalOpenDialog)}>
+          <UserAddressComponent
+            onClose={() => setOpen(intitalOpenDialog)}
+            address={user?.address}
+            userId={user?.id}
+          />
+        </BottomModal>
+      )}
+      {open.updatePrivacy && (
+        <BottomModal
+          height="60%"
+          backgroundFilter={true}
+          isVisible={true}
+          effect={'fade'}
+          onClose={() => setOpen(intitalOpenDialog)}>
+          <UserUpdatePrivacyComponent
+            onClose={() => setOpen(intitalOpenDialog)}
+            userSettings={userSetting}
+            isLoading={isLoading}
+            userId={user?.id}
+          />
+        </BottomModal>
+      )}
+    </ScrollView>
   );
 };
 
@@ -303,6 +292,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     elevation: 5,
+    marginTop: 10,
   },
   profile_img: {
     height: 150,

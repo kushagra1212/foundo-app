@@ -8,6 +8,7 @@ export const routesConfig = {
           screens: {
             ItemScreen: 'item',
             FeedSearchScreen: 'feedsearch',
+            UserProfileScreen: 'userprofile',
           },
         },
         AddItemScreen: {

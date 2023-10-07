@@ -10,7 +10,8 @@
     "eject": "expo eject",
     "test:eslint": "echo \"\\033[33mRunning eslint check\" &&  eslint .",
     "jest": "jest",
-    "test-coverage": "jest --detectOpenHandles --verbose --cache --forceExit --coverage"
+    "test-coverage": "jest --detectOpenHandles --verbose --cache --forceExit --coverage",
+    "dev-start": "node dev-start && npm start -- -c --android"
   },
   "dependencies": {
     "@expo-google-fonts/roboto": "^0.2.2",

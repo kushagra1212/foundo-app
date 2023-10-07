@@ -8,6 +8,7 @@ export interface User {
   profilePhoto?: string;
   address?: string;
   createdAt: string;
+  isVerified?: number;
 }
 export interface Post {
   id: string;

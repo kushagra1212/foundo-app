@@ -33,7 +33,6 @@ describe('<FeedSearchSceen />', () => {
       expect(getByTestId('searchInput')).toBeTruthy();
     });
     fireEvent.changeText(getByTestId('searchInput'), 'laptop');
-    fireEvent;
 
     await waitFor(() => {
       expect(getAllByText('View')).toBeTruthy();

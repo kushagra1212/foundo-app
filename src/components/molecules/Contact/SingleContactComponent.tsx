@@ -22,10 +22,6 @@ const SingleContactComponent: React.FC<props> = ({
     navigation.navigate('ChatScreen', { contact });
   };
 
-  contact.fk_user_Id_1 =
-    contact.fk_user_Id_1 === currentUserId
-      ? contact.fk_user_Id_2
-      : contact.fk_user_Id_1;
   return (
     <TouchableOpacity style={styles.contact} onPress={handleOpen}>
       <View>

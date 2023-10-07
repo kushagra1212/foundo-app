@@ -27,12 +27,18 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
   const user = useSelector(selectCurrentUser);
   const [offset, setOffset] = useState<number>(0);
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
-  const { isLoading, isError, error, isFetching, data } = useGetMessagesQuery({
-    offset,
-    limit: LIMIT,
-    receiverId: user?.id,
-    senderId: navigation.getState().routes[1].params.contact.fk_userId,
-  });
+  const receiverId =
+    navigation.getState().routes[1].params.contact.fk_user_Id_1 === user?.id
+      ? navigation.getState().routes[1].params.contact.fk_user_Id_2
+      : navigation.getState().routes[1].params.contact.fk_user_Id_1;
+  console.log('receiverId', receiverId);
+  const { isLoading, isError, error, isFetching, data, refetch } =
+    useGetMessagesQuery({
+      offset,
+      limit: LIMIT,
+      receiverId,
+      senderId: user?.id,
+    });
 
   const [sendMessage] = useSendMessageMutation();
   const messages = data?.messages || [];
@@ -60,22 +66,22 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
   };
 
   const handleSendMesssage = async (message: string) => {
-    socket.emit('send-message', {
-      message,
-      senderId: user?.id,
-      receiverId: navigation.getState().routes[1].params.contact.fk_userId,
-    });
+    setOffset(0);
     await sendMessage({
       message,
       fk_senderId: user?.id,
-      fk_receiverId: navigation.getState().routes[1].params.contact.fk_userId,
+      fk_receiverId: receiverId,
+    });
+    await refetch();
+    socket.emit('send', {
+      id: receiverId,
+      messageBody: message,
     });
   };
 
   useEffect(() => {
-    socket.connect();
+    socket.emit('add-id', { id: user.id });
     return () => {
-      socket.disconnect();
       navigation.getParent().setOptions({
         tabBarStyle: {
           ...TAB_BAR_STYLE,
@@ -85,6 +91,12 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
       unmounted.current = true;
     };
   }, []);
+
+  socket.on('receive', async (data: any) => {
+    console.log('data', data);
+    setOffset(0);
+    await refetch();
+  });
 
   if (!user) {
     return (

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -12,7 +13,13 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
-import { AntDesign, Entypo, FontAwesome } from '../../../constants/icons';
+import {
+  AntDesign,
+  Entypo,
+  Feather,
+  FontAwesome,
+  Ionicons,
+} from '../../../constants/icons';
 import { ITEM_STANDARD_COLORS } from '../../../constants/item';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
 import { useGetpostQuery } from '../../../redux/services/post-service';
@@ -24,7 +31,6 @@ import ItemExtraDetailCompoent from '../../atoms/ItemExtraDetailComponent';
 import ShowMapComponent from '../../atoms/Map/ShowMapComponent';
 import AnimatedImageComponent from '../Animation/AnimatedImageComponent';
 import ContactOwnerComponent from './ContactOwnerComponent';
-
 type props = {
   item: any;
   onClose: () => void;
@@ -56,6 +62,15 @@ const ItemViewComponent: React.FC<props> = ({
     setShowContactModal(false);
   };
 
+  const showUserProfileHandler = () => {
+    setShowContactModal(false);
+    setShowDetailsModal(false);
+    setShowMapView(false);
+    navigation.navigate('UserProfileScreen', {
+      fk_userId: item.fk_userId,
+    });
+  };
+
   return (
     <SafeAreaView>
       <BottomModal
@@ -64,41 +79,43 @@ const ItemViewComponent: React.FC<props> = ({
         isVisible={isVisible}
         effect={'fade'}
         onClose={onClose}
-        iconName={'close'}>
+        iconName={'close-circle'}>
         {isLoading ? (
           <ActivityIndicator size="large" color={COLORS.primary} />
         ) : (
           <View style={styles.main_view}>
-            <View
-              style={{
-                width: '90%',
-                position: 'absolute',
-                zIndex: 5,
-                alignSelf: 'center',
-                backgroundColor: 'transparent',
-                height: '10%',
-              }}>
-              <TouchableOpacity
-                style={[
-                  styles.btn_active,
-                  {
-                    backgroundColor: COLORS.primary,
-                    width: '100%',
-                    margin: 0,
-                  },
-                ]}
-                onPress={() => setShowContactModal(true)}>
-                <Text
-                  style={{
-                    color: COLORS.white,
-                    fontSize: SIZES.h3,
-                    fontWeight: '600',
-                  }}>
-                  <Entypo name="email" size={20} color={COLORS.white} />
-                  {'   '}
-                  <Text>Contact Owner</Text>
-                </Text>
-              </TouchableOpacity>
+            <View style={styles.profile_view}>
+              <View style={styles.pic_container}>
+                {userWhoPosted?.profilePhoto ? (
+                  <Image
+                    source={{
+                      uri: userWhoPosted?.profilePhoto,
+                    }}
+                    style={styles.profile_icon}
+                  />
+                ) : (
+                  <View style={styles.person_icon}>
+                    <Ionicons
+                      name="person"
+                      size={35}
+                      color={COLORS.blackSecondary}
+                    />
+                  </View>
+                )}
+                <TouchableOpacity
+                  style={[styles.btn_active, styles.view_profile_btn]}
+                  onPress={showUserProfileHandler}>
+                  <Text style={styles.fullname_text_container}>
+                    <Text>
+                      {userWhoPosted?.firstName}
+                      {'  '}
+                      {userWhoPosted?.lastName}
+                    </Text>
+                    {'   '}
+                    <Feather name="send" size={25} color={COLORS.white} />
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
             {isLoading && (
               <ActivityIndicator
@@ -110,6 +127,8 @@ const ItemViewComponent: React.FC<props> = ({
             <View style={styles.courosel_view}>
               <GestureHandlerRootView>
                 <AnimatedImageComponent
+                  height={300}
+                  width={300}
                   urls={[
                     detailedItem.itemPictures[0].url,
                     detailedItem.itemPictures[1].url,
@@ -118,14 +137,12 @@ const ItemViewComponent: React.FC<props> = ({
               </GestureHandlerRootView>
             </View>
             <ScrollView style={styles.second_view}>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                <Text style={FONTS.h3}>{detailedItem.itemName}</Text>
+              <View style={styles.item_container}>
+                <View style={styles.item_name_container}>
+                  <Text style={[FONTS.body3, { color: COLORS.white }]}>
+                    {detailedItem.itemName}
+                  </Text>
+                </View>
                 <View style={styles.color_view}>
                   <View
                     style={{
@@ -174,65 +191,31 @@ const ItemViewComponent: React.FC<props> = ({
                       size={20}
                       color={COLORS.black}
                     />
-                    <Text>See on map</Text>
+                    <Text>{'  '}See on map</Text>
                   </Text>
                 </TouchableOpacity>
               </View>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginLeft: 5,
-                  marginRight: 5,
-                }}>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                  }}>
+              <View style={styles.date_outer_container}>
+                <View style={styles.date_container}>
                   <Text style={FONTS.body3}>Lost On </Text>
                   <Text style={{ fontWeight: '800' }}>
                     {new Date(detailedItem.dateTime).toDateString()}
                   </Text>
                 </View>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                  }}>
+                <View style={styles.date_container}>
                   <Text style={FONTS.body3}>Posted On </Text>
                   <Text style={{ fontWeight: '800' }}>
                     {new Date(detailedItem.createdAt).toDateString()}
                   </Text>
                 </View>
               </View>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginLeft: 5,
-                  marginRight: 5,
-                }}>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                  }}>
+              <View style={styles.item_other_details}>
+                <View style={styles.item_type_container}>
                   <Text style={FONTS.body4}>
                     {detailedItem.isFounded === 0 ? 'Not Found yet' : 'found'}
                   </Text>
                 </View>
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                  }}>
+                <View style={styles.location_pin}>
                   <Entypo
                     name="location-pin"
                     size={25}
@@ -241,13 +224,17 @@ const ItemViewComponent: React.FC<props> = ({
                   <Text>{detailedItem.city}</Text>
                 </View>
               </View>
+              <TouchableOpacity
+                style={[styles.btn_active, styles.send_message_btn]}
+                onPress={() => setShowContactModal(true)}>
+                <Text style={styles.message_btn_text}>
+                  <Entypo name="message" size={25} color={COLORS.white} />
+                  {'   '}
+                  <Text>Message {userWhoPosted?.firstName}</Text>
+                </Text>
+              </TouchableOpacity>
               <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexDirection: 'row',
-                }}
+                style={styles.view_details_btn}
                 onTouchStart={() => setShowDetailsModal(true)}>
                 <AntDesign name="upcircle" size={20} color={COLORS.primary} />
                 <Text style={{ fontWeight: '800', marginLeft: 10 }}>
@@ -310,16 +297,15 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   courosel_view: {
-    marginTop: 80,
+    marginLeft: 50,
+    height: 300,
+    width: 300,
   },
   second_view: {
     width: '100%',
     paddingLeft: 5,
     paddingRight: 5,
     alignSelf: 'center',
-    position: 'absolute',
-    marginTop: '100%',
-    height: '100%',
   },
   description_view: {
     backgroundColor: COLORS.white,
@@ -355,6 +341,101 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 50,
     margin: 10,
+  },
+  profile_view: {
+    width: '90%',
+    zIndex: 5,
+    alignSelf: 'center',
+    backgroundColor: 'transparent',
+  },
+  pic_container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  profile_icon: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+  },
+  view_profile_btn: {
+    backgroundColor: COLORS.black,
+    minWidth: '80%',
+    borderRadius: 20,
+    elevation: 10,
+  },
+  fullname_text_container: {
+    color: COLORS.white,
+    fontSize: SIZES.h3,
+    fontWeight: '600',
+  },
+  person_icon: {
+    borderRadius: 30,
+    backgroundColor: COLORS.GrayPrimary,
+    padding: 5,
+  },
+  send_message_btn: {
+    backgroundColor: COLORS.primary,
+    width: '90%',
+    margin: 5,
+    alignSelf: 'center',
+  },
+  item_container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  item_name_container: {
+    backgroundColor: COLORS.black,
+    padding: 5,
+    borderRadius: 20,
+    elevation: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginLeft: 5,
+  },
+  view_details_btn: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    margin: 10,
+  },
+  location_pin: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  item_type_container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  item_other_details: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 5,
+    marginRight: 5,
+  },
+  date_container: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  date_outer_container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 5,
+    marginRight: 5,
+  },
+  message_btn_text: {
+    color: COLORS.white,
+    fontSize: SIZES.h3,
+    fontWeight: '600',
   },
 });
 export default ItemViewComponent;
