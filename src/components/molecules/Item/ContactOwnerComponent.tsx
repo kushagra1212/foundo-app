@@ -34,11 +34,9 @@ const ContactOwnerComponent: React.FC<props> = ({
   close,
   navigation,
 }) => {
-  const [uri, setUri] = useState('./../assets/images/character1.svg');
   const [isMapVisible, setIsMapVisible] = useState<boolean>(false);
   const user = useSelector(selectCurrentUser);
-  const [sendMessage, { isLoading, isSuccess, isError, error }] =
-    useSendContacMessageMutation();
+  const [sendMessage, { isLoading }] = useSendContacMessageMutation();
   const handleMapClose = () => {
     setIsMapVisible(false);
   };
@@ -91,9 +89,7 @@ const ContactOwnerComponent: React.FC<props> = ({
         <ActivityIndicator size="large" color={COLORS.redPrimary} />
       ) : null}
       <View style={styles.login_container}>
-        <Text style={styles.login_text}>
-          Send a message to the owner of this item
-        </Text>
+        <Text style={styles.login_text}>Send a message to this person</Text>
         <Formik
           enableReinitialize={true}
           validationSchema={contactMessageSchema}
@@ -445,24 +441,18 @@ const styles = StyleSheet.create({
 });
 const contactMessageSchema = yup.object().shape({
   baseMessage: yup.object().shape({
-    fk_senderId: yup.number().required('fk_senderId is required').optional(),
-    fk_receiverId: yup
-      .number()
-      .required('fk_receiverId is required')
-      .optional(),
-    title: yup.string().required('title is required').optional(),
-    message: yup.string().required('message is required').optional(),
+    fk_senderId: yup.number().required('fk_senderId is required'),
+    fk_receiverId: yup.number().required('fk_receiverId is required'),
+    title: yup.string().required('title is required').min(3),
+    message: yup.string().required('message is required').min(3),
   }),
   isFound: yup.number().required('isFound is required').optional(),
-  isPhoneNoShared: yup
-    .number()
-    .required('isPhoneNoShared is required')
-    .optional(),
+  isPhoneNoShared: yup.number().optional(),
   location: yup
     .object()
     .shape({
-      latitude: yup.number().required('latitude is required').optional(),
-      longitude: yup.number().required('longitude is required').optional(),
+      latitude: yup.number().required('latitude is required'),
+      longitude: yup.number().required('longitude is required'),
     })
     .optional(),
 });

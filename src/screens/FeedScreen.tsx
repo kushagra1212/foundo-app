@@ -4,6 +4,7 @@ import React from 'react';
 import { COLORS } from '../constants/theme';
 import FeedSearchSceen from './itemScreens/FeedSearchScreen';
 import ItemScreen from './itemScreens/ItemScreen';
+import PostsScreen from './itemScreens/PostsScreen';
 import UserProfileScreen from './itemScreens/UserProfileScreen';
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,13 @@ const FeedScreen: React.FC<props> = () => {
         }}
         name="UserProfileScreen"
         component={UserProfileScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+        name="PostsScreen"
+        component={PostsScreen}
       />
     </Stack.Navigator>
   );

@@ -9,20 +9,7 @@ export const messageApi = api.injectEndpoints({
         method: 'GET',
       }),
       transformResponse(messages: ChatMessage[], meta, arg) {
-        return { messages, offset: arg.offset };
-      },
-      serializeQueryArgs: ({ endpointName }) => {
-        return endpointName;
-      },
-      merge: (currentCache, newItems) => {
-        if (newItems.offset > 0) {
-          currentCache.messages.push(...newItems.messages);
-          return currentCache;
-        }
-        return newItems;
-      },
-      forceRefetch({ currentArg, previousArg }) {
-        return currentArg !== previousArg;
+        return messages;
       },
     }),
     sendContacMessage: builder.mutation({
@@ -33,7 +20,7 @@ export const messageApi = api.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: ['Contact-list', 'Messages'],
+      invalidatesTags: ['Contact-list'],
     }),
     sendMessage: builder.mutation<any, any>({
       query: ({
@@ -81,6 +68,15 @@ export const messageApi = api.injectEndpoints({
       },
       providesTags: ['Contact-list'],
     }),
+    getIsAContact: builder.query({
+      query: ({ currentUserId, IdOfUserWhoPosted }) => ({
+        url: `/v1/messages/${currentUserId}/contact/${IdOfUserWhoPosted}`,
+        method: 'GET',
+      }),
+      transformResponse(data: { contact: contactType }) {
+        return data.contact;
+      },
+    }),
   }),
   overrideExisting: true,
 });
@@ -90,4 +86,6 @@ export const {
   useSendMessageMutation,
   useGetContactListQuery,
   useSendContacMessageMutation,
+  useLazyGetIsAContactQuery,
+  useLazyGetMessagesQuery,
 } = messageApi;

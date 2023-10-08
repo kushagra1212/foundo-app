@@ -1,22 +1,17 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { COLORS } from '../../../constants/theme';
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-import {
-  ComposedGesture,
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
-  GestureType,
-} from 'react-native-gesture-handler';
 
-interface GestureDetectorProps {
-  gesture?: ComposedGesture | GestureType;
-  children: React.ReactNode;
-}
+import { COLORS } from '../../../constants/theme';
+
 enum Direction {
   LEFT,
   RIGHT,
@@ -27,17 +22,15 @@ type props = {
   onClose: () => void;
 };
 const BottomSheet: React.FC<props> = ({ children, onClose }) => {
-  const NewGestureDetector: React.FC<GestureDetectorProps> = GestureDetector;
-  const END_POSITION = 250;
-  const direction = useSharedValue(Direction.CENTER);
+  const NewGestureDetector = GestureDetector;
+
   const position = useSharedValue(0);
-  const scale1 = useSharedValue(1);
 
   const panGesture = Gesture.Pan()
-    .onUpdate((e) => {
+    .onUpdate(e => {
       position.value = e.translationY;
     })
-    .onEnd((e) => {});
+    .onEnd(e => {});
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: position.value }],

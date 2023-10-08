@@ -7,7 +7,7 @@ type AnimationType = 'slide' | 'none' | 'fade' | undefined;
 type Props = {
   isVisible: boolean;
   children: JSX.Element;
-  onClose: (options: any) => void;
+  onClose: (options?: any) => void;
   backgroundFilter: boolean;
   effect?: AnimationType;
   titleText?: string;

@@ -1,7 +1,7 @@
 import MaskedView from '@react-native-masked-view/masked-view';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { memo, useEffect, useRef, useState } from 'react';
+import { BackHandler, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
@@ -11,8 +11,9 @@ import UserNotFound from '../../components/atoms/UserNotFound';
 import MessageListComponent from '../../components/molecules/Message/MessageListComponent';
 import { Ionicons } from '../../constants/icons';
 import { COLORS, FONTS } from '../../constants/theme';
+import { ChatMessage } from '../../interfaces';
 import {
-  useGetMessagesQuery,
+  useLazyGetMessagesQuery,
   useSendMessageMutation,
 } from '../../redux/services/message-service';
 import { selectCurrentUser } from '../../redux/slices/authSlice';
@@ -20,67 +21,96 @@ import { socket } from '../../socket_io/socket';
 import { TAB_BAR_STYLE } from '../../utils';
 export type props = {
   navigation?: any;
+  route?: any;
 };
-const LIMIT = 5;
-const ChatScreen: React.FC<props> = ({ navigation }) => {
+const LIMIT = 15;
+const ChatScreen: React.FC<props> = ({ navigation, route }) => {
   const unmounted = useRef(false);
   const user = useSelector(selectCurrentUser);
   const [offset, setOffset] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
+  const contact = route.params.contact;
   const receiverId =
-    navigation.getState().routes[1].params.contact.fk_user_Id_1 === user?.id
-      ? navigation.getState().routes[1].params.contact.fk_user_Id_2
-      : navigation.getState().routes[1].params.contact.fk_user_Id_1;
-  console.log('receiverId', receiverId);
-  const { isLoading, isError, error, isFetching, data, refetch } =
-    useGetMessagesQuery({
-      offset,
-      limit: LIMIT,
-      receiverId,
-      senderId: user?.id,
-    });
+    contact?.fk_user_Id_1 === user?.id
+      ? contact?.fk_user_Id_2
+      : contact?.fk_user_Id_1;
+  const messageFound = (messages && messages.length > 0) || loading;
+  const [getMessages] = useLazyGetMessagesQuery();
 
   const [sendMessage] = useSendMessageMutation();
-  const messages = data?.messages || [];
 
-  const loading = isLoading || isFetching;
-  const fetchMessages = () => {
-    if (isError) {
-      Toast.show({
-        type: 'error',
-        props: {
-          text: 'Error !',
-          message: error?.data?.message,
-        },
-      });
-    }
-
-    if (loading || isError || reachedEnd) return;
+  const fetchMessages = async () => {
+    if (loading || reachedEnd) return;
 
     if (messages.length && messages.length === messages[0].total_count) {
       setReachedEnd(true);
       return;
     }
 
+    setLoading(true);
+    const { data: _messages } = await getMessages({
+      offset: offset + LIMIT,
+      limit: LIMIT,
+      receiverId,
+      senderId: user?.id,
+    });
+    setMessages(prev => [...prev, ...(_messages ? _messages : [])]);
     setOffset(prev => prev + LIMIT);
+    setLoading(false);
+  };
+
+  const handleRefresh = async () => {
+    setLoading(true);
+    const { data: _messages } = await getMessages({
+      offset: 0,
+      limit: LIMIT,
+      receiverId,
+      senderId: user?.id,
+    });
+    setMessages(_messages ? _messages : []);
+    setOffset(0);
+    setLoading(false);
   };
 
   const handleSendMesssage = async (message: string) => {
-    setOffset(0);
-    await sendMessage({
-      message,
-      fk_senderId: user?.id,
-      fk_receiverId: receiverId,
-    });
-    await refetch();
     socket.emit('send', {
       id: receiverId,
       messageBody: message,
     });
+    try {
+      await sendMessage({
+        message,
+        fk_senderId: user?.id,
+        fk_receiverId: receiverId,
+      });
+      await handleRefresh();
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        props: {
+          text: 'Error !',
+          message: "Couldn't send message, please try again later",
+        },
+      });
+    }
   };
 
   useEffect(() => {
     socket.emit('add-id', { id: user.id });
+    navigation.getParent().setOptions({
+      tabBarStyle: {
+        ...TAB_BAR_STYLE,
+        display: 'none',
+      },
+    });
+    if (!unmounted.current) {
+      (async () => {
+        await handleRefresh();
+      })();
+    }
     return () => {
       navigation.getParent().setOptions({
         tabBarStyle: {
@@ -92,13 +122,33 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
     };
   }, []);
 
-  socket.on('receive', async (data: any) => {
-    console.log('data', data);
-    setOffset(0);
-    await refetch();
-  });
+  useEffect(() => {
+    socket.on('receive', async (data: any) => {
+      await handleRefresh();
+    });
 
-  if (!user) {
+    return () => {
+      socket.off('receive');
+    };
+  }, [socket]);
+
+  const onPressBack = (): boolean | null | undefined => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'MessageScreen' }],
+    });
+    return true;
+  };
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', onPressBack);
+
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', onPressBack);
+    };
+  }, []);
+
+  if (!user && !loading) {
     return (
       <UserNotFound
         navigation={navigation}
@@ -120,7 +170,7 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
             name="arrow-back"
             size={30}
             color="black"
-            onPress={() => navigation.goBack()}
+            onPress={onPressBack}
           />
 
           <View
@@ -130,9 +180,7 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
               width: '90%',
             }}>
             <Text style={FONTS.h3}>
-              {navigation.getState().routes[1].params.contact?.firstName +
-                ' ' +
-                navigation.getState().routes[1].params.contact?.lastName}
+              {contact?.firstName + ' ' + contact?.lastName}
             </Text>
           </View>
         </View>
@@ -177,7 +225,7 @@ const ChatScreen: React.FC<props> = ({ navigation }) => {
           loading={loading}
           messages={messages}
           reachedEnd={reachedEnd}
-          messageFound={messages && messages.length > 0}
+          messageFound={messageFound}
         />
       </MaskedView>
 
@@ -199,4 +247,4 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-export default ChatScreen;
+export default memo(ChatScreen);

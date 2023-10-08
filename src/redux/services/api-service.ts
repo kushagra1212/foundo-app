@@ -43,5 +43,12 @@ export const api = createApi({
   refetchOnFocus: true,
   refetchOnReconnect: true,
   endpoints: builder => ({}),
-  tagTypes: ['user', 'user-setting', 'Contact-list', 'Posts', 'Messages'],
+  tagTypes: [
+    'user',
+    'user-setting',
+    'Contact-list',
+    'Posts',
+    'Messages',
+    'contact',
+  ],
 });

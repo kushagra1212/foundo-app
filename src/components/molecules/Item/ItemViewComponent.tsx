@@ -22,6 +22,7 @@ import {
 } from '../../../constants/icons';
 import { ITEM_STANDARD_COLORS } from '../../../constants/item';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
+import { useLazyGetIsAContactQuery } from '../../../redux/services/message-service';
 import { useGetpostQuery } from '../../../redux/services/post-service';
 import { useGetUserQuery } from '../../../redux/services/profile-service';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
@@ -45,13 +46,16 @@ const ItemViewComponent: React.FC<props> = ({
 }) => {
   const { data: detailedItem, isLoading } = useGetpostQuery(item.id);
 
+  const [getIsAContact] = useLazyGetIsAContactQuery();
   const { data: userWhoPosted } = useGetUserQuery({
     fk_userId: item.fk_userId,
   });
   const [showDetailsModal, setShowDetailsModal] = useState<boolean>(false);
   const [showMapView, setShowMapView] = useState<boolean>(false);
   const [showContactModal, setShowContactModal] = useState<boolean>(false);
+
   const user = useSelector(selectCurrentUser);
+  const isCurrentUser = user?.id === item.fk_userId;
   const closeDetailsModal = () => {
     setShowDetailsModal(false);
   };
@@ -70,7 +74,28 @@ const ItemViewComponent: React.FC<props> = ({
       fk_userId: item.fk_userId,
     });
   };
-
+  const handleShowContactModal = async () => {
+    const { data: contact } = await getIsAContact(
+      {
+        currentUserId: user?.id,
+        IdOfUserWhoPosted: item.fk_userId,
+      },
+      false,
+    );
+    if (contact) {
+      navigation.navigate('MessageScreen', {
+        screen: 'ChatScreen',
+        params: {
+          contact,
+        },
+      });
+    } else {
+      setShowContactModal(true);
+    }
+  };
+  const userWhoPostedFullName = isCurrentUser
+    ? 'You'
+    : `${userWhoPosted?.firstName} ${userWhoPosted?.lastName}`;
   return (
     <SafeAreaView>
       <BottomModal
@@ -106,11 +131,7 @@ const ItemViewComponent: React.FC<props> = ({
                   style={[styles.btn_active, styles.view_profile_btn]}
                   onPress={showUserProfileHandler}>
                   <Text style={styles.fullname_text_container}>
-                    <Text>
-                      {userWhoPosted?.firstName}
-                      {'  '}
-                      {userWhoPosted?.lastName}
-                    </Text>
+                    <Text>{userWhoPostedFullName}</Text>
                     {'   '}
                     <Feather name="send" size={25} color={COLORS.white} />
                   </Text>
@@ -158,10 +179,7 @@ const ItemViewComponent: React.FC<props> = ({
               </View>
               <View style={styles.description_view}>
                 <Text style={FONTS.body3}>
-                  Said by{' '}
-                  <Text style={FONTS.h4}>
-                    {userWhoPosted?.firstName} {userWhoPosted?.lastName}
-                  </Text>
+                  Said by <Text style={FONTS.h4}>{userWhoPostedFullName}</Text>
                 </Text>
                 <ScrollView
                   style={{
@@ -224,15 +242,18 @@ const ItemViewComponent: React.FC<props> = ({
                   <Text>{detailedItem.city}</Text>
                 </View>
               </View>
-              <TouchableOpacity
-                style={[styles.btn_active, styles.send_message_btn]}
-                onPress={() => setShowContactModal(true)}>
-                <Text style={styles.message_btn_text}>
-                  <Entypo name="message" size={25} color={COLORS.white} />
-                  {'   '}
-                  <Text>Message {userWhoPosted?.firstName}</Text>
-                </Text>
-              </TouchableOpacity>
+              {isCurrentUser ? null : (
+                <TouchableOpacity
+                  style={[styles.btn_active, styles.send_message_btn]}
+                  onPress={handleShowContactModal}>
+                  <Text style={styles.message_btn_text}>
+                    <Entypo name="message" size={25} color={COLORS.white} />
+                    {'   '}
+                    <Text>Message {userWhoPosted?.firstName}</Text>
+                  </Text>
+                </TouchableOpacity>
+              )}
+
               <View
                 style={styles.view_details_btn}
                 onTouchStart={() => setShowDetailsModal(true)}>
@@ -306,6 +327,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 5,
     alignSelf: 'center',
+    marginTop: -19,
   },
   description_view: {
     backgroundColor: COLORS.white,

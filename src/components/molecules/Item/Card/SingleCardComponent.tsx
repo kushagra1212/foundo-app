@@ -24,9 +24,8 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({
   const toggleCardDetail = () => {
     setIsCardDetailVisible(!isCardDetailVisible);
   };
-
-  const firstName =
-    currentUserId && item.userId == currentUserId ? 'You' : item.firstName;
+  const isCurrentUser = currentUserId && item.fk_userId === currentUserId;
+  const firstName = isCurrentUser ? 'You' : item.firstName;
   return (
     <View style={styles.card}>
       {isCardDetailVisible && item?.id && (

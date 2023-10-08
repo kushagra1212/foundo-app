@@ -139,9 +139,10 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
 
   const handleOnFocus = () => {
     dispatch(updateFeedSearchScreenStatus({ feedSearchScreenStatus: true }));
-    dispatch(updateFilter({ filterType: !filterType }));
+    dispatch(updateFilter({ filterType: filterType ? 0 : 1 }));
     navigation.navigate('FeedSearchScreen');
   };
+
   return (
     <SafeAreaView style={styles.feed}>
       <View>

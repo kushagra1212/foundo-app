@@ -20,6 +20,8 @@ const ChatTextComponent: React.FC<props> = ({
     setInput(searchString);
   };
 
+  const disabled = input.length === 0;
+
   return (
     <View style={styles.chat_input}>
       <TextInput
@@ -37,8 +39,13 @@ const ChatTextComponent: React.FC<props> = ({
           setInput('');
           handleSendMesssage(prevInput);
         }}
+        disabled={disabled}
         testID="sendMessageButtonFromChat">
-        <Feather name="send" size={35} color={COLORS.primary} />
+        <Feather
+          name="send"
+          size={35}
+          color={disabled ? COLORS.GrayPrimary : COLORS.primary}
+        />
       </TouchableOpacity>
     </View>
   );

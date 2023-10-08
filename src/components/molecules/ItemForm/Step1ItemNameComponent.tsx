@@ -1,6 +1,6 @@
 import { FormikProps } from 'formik';
 import React, { useEffect } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost } from '../../../interfaces';
@@ -20,16 +20,7 @@ const Step1ItemNameComponent: React.FC<props> = ({
   }, [errors.itemName]);
 
   return (
-    <View
-      style={{
-        marginTop: '10%',
-        alignSelf: 'center',
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}>
+    <View style={styles.item_name_header}>
       <View style={{}}>
         <Text style={{ ...FONTS.h1 }}>
           Write <Text style={{ color: COLORS.primary }}>Name</Text> of the Item{' '}
@@ -44,18 +35,7 @@ const Step1ItemNameComponent: React.FC<props> = ({
           <TextInput
             focusable={true}
             autoFocus={true}
-            style={{
-              width: '100%',
-              fontFamily: 'Roboto_400Regular',
-              backgroundColor: COLORS.lightGrayPrePrimary,
-              alignSelf: 'center',
-              marginTop: 100,
-              height: 100,
-              borderRadius: 10,
-              padding: 20,
-              fontSize: 55,
-              fontWeight: '900',
-            }}
+            style={styles.item_name_input}
             placeholder="Item Name"
             onChangeText={handleChange('itemName')}
             onBlur={handleBlur('itemName')}
@@ -68,5 +48,29 @@ const Step1ItemNameComponent: React.FC<props> = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  item_name_header: {
+    marginTop: '10%',
+    alignSelf: 'center',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  item_name_input: {
+    width: '100%',
+    fontFamily: 'Roboto_400Regular',
+    backgroundColor: COLORS.lightGrayPrePrimary,
+    alignSelf: 'center',
+    marginTop: 100,
+    height: 100,
+    borderRadius: 10,
+    padding: 20,
+    fontSize: 55,
+    fontWeight: '900',
+  },
+});
 
 export default Step1ItemNameComponent;

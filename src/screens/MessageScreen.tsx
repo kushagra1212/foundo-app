@@ -10,17 +10,17 @@ const MessageScreen: React.FC<props> = () => {
   return (
     <Stack.Navigator initialRouteName="ContactScreen">
       <Stack.Screen
-        options={{ headerShown: false }}
-        name="ContactScreen"
-        component={ContactScreen}
-      />
-      <Stack.Screen
         options={{
           title: '',
           headerShown: false,
         }}
         name="ChatScreen"
         component={ChatScreen}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="ContactScreen"
+        component={ContactScreen}
       />
     </Stack.Navigator>
   );

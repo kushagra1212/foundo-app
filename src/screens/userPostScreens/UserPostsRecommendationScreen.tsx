@@ -1,7 +1,6 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
 import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
@@ -87,7 +86,7 @@ const UserPostsRecommendationScreen: React.FC<
   }, []);
 
   return (
-    <SafeAreaView>
+    <View style={styles.header}>
       <Ionicons onPress={onPressBack} name="arrow-back" size={35} />
 
       <Text style={styles.text_header}>
@@ -104,11 +103,14 @@ const UserPostsRecommendationScreen: React.FC<
           SingleCardComponent={SingleCardComponent}
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  header: {
+    margin: 10,
+  },
   text_header: { alignSelf: 'center', fontSize: SIZES.h4, margin: 10 },
   card: { paddingBottom: 230 },
 });

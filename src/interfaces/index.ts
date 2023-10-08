@@ -21,7 +21,7 @@ export interface Post {
   color: string;
   brand: string;
   firstName: string;
-  userId?: number;
+  fk_userId?: number;
   isFounded?: boolean;
 }
 export interface FilterItemOn {

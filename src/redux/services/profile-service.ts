@@ -34,10 +34,7 @@ export const profileApi = api.injectEndpoints({
         };
       },
       invalidatesTags: (result, error, arg) => {
-        return [
-          { type: 'user-setting', id: arg.fk_userId },
-          { type: 'user', id: arg.fk_userId },
-        ];
+        return [{ type: 'user-setting', id: arg.fk_userId }];
       },
     }),
   }),

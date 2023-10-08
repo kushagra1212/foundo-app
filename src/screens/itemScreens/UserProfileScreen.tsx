@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
@@ -16,33 +17,29 @@ import { COLORS, FONTS } from '../../constants/theme';
 import { useGetUserQuery } from '../../redux/services/profile-service';
 type props = {
   navigation: any;
+  route: any;
 };
-interface OpenDialog {
-  email: boolean;
-  phoneNumber: boolean;
-  residentialAddress: boolean;
-  updatePrivacy: boolean;
-}
-const intitalOpenDialog = {
-  email: false,
-  phoneNumber: false,
-  residentialAddress: false,
-  updatePrivacy: false,
-};
-const UserProfileScreen: React.FC<props> = ({ navigation }) => {
+
+const UserProfileScreen: React.FC<props> = ({ navigation, route }) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const {
     data: user,
     isLoading,
     refetch,
   } = useGetUserQuery({
-    fk_userId: navigation.getState().routes[1].params.fk_userId,
+    fk_userId: route.params.fk_userId,
   });
 
   const handleRefreshControl = async () => {
     setRefreshing(true);
     await refetch();
     setRefreshing(false);
+  };
+
+  const handleUserPostsButton = () => {
+    navigation.navigate('PostsScreen', {
+      userId: route.params.fk_userId,
+    });
   };
 
   if ((!user || user === undefined) && !isLoading) {
@@ -164,6 +161,14 @@ const UserProfileScreen: React.FC<props> = ({ navigation }) => {
                   )}
                 </View>
               </View>
+              <TouchableOpacity
+                onPress={handleUserPostsButton}
+                style={styles.user_posts_btn}>
+                <Text style={{ ...FONTS.h2, color: COLORS.white }}>
+                  {user?.firstName + "'s Posts"}
+                </Text>
+                <Entypo name="chevron-right" size={35} color={COLORS.white} />
+              </TouchableOpacity>
             </ScrollView>
           </RefreshControl>
         </View>
@@ -191,6 +196,20 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 20,
     backgroundColor: COLORS.black,
+  },
+  user_posts_btn: {
+    backgroundColor: COLORS.black,
+    padding: 10,
+    borderRadius: 30,
+    margin: 10,
+    elevation: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '80%',
+    alignSelf: 'center',
+    marginBottom: 20,
   },
 });
 export default UserProfileScreen;
