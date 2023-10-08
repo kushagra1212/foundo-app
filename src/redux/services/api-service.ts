@@ -38,7 +38,17 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
 };
 
 export const api = createApi({
+  reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
   endpoints: builder => ({}),
-  tagTypes: ['user', 'user-setting', 'Contacts', 'Posts', 'Messages'],
+  tagTypes: [
+    'user',
+    'user-setting',
+    'Contact-list',
+    'Posts',
+    'Messages',
+    'contact',
+  ],
 });

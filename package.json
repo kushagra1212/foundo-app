@@ -10,7 +10,8 @@
     "eject": "expo eject",
     "test:eslint": "echo \"\\033[33mRunning eslint check\" &&  eslint .",
     "jest": "jest",
-    "test-coverage": "jest --detectOpenHandles --verbose --cache --forceExit --coverage"
+    "test-coverage": "jest --detectOpenHandles --verbose --cache --forceExit --coverage",
+    "dev-start": "node dev-start && npm start -- -c --android"
   },
   "dependencies": {
     "@expo-google-fonts/roboto": "^0.2.2",
@@ -52,6 +53,7 @@
     "react-native-webview": "13.2.2",
     "react-redux": "^8.0.4",
     "react-test-renderer": "18.2.0",
+    "socket.io-client": "^4.7.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {

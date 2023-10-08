@@ -1,9 +1,10 @@
-import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
+import { memo } from 'react';
+import { ActivityIndicator, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import character5 from '../../../assets/images/character5.png';
 import { COLORS } from '../../../constants/theme';
-import { ChatMessage } from '../../../screens/contactScreens/ChatScreen';
+import { ChatMessage } from '../../../interfaces';
 import AnimatedComponent from '../Animation/AnimatedComponent';
 import SingleMessageComponent from './SingleMessageComponent';
 export type props = {
@@ -59,9 +60,4 @@ const MessageListComponent: React.FC<props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  cards: {
-    backgroundColor: COLORS.GrayPrimary,
-  },
-});
-export default MessageListComponent;
+export default memo(MessageListComponent);

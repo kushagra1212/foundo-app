@@ -9,18 +9,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import BottomModal from '../../components/atoms/BottomModal';
 import FilterOptionComponent, {
   FILTER_ITEMS,
-  LOST_ITEM,
 } from '../../components/atoms/FilterOptionItem';
 import UserNotFound from '../../components/atoms/UserNotFound';
 import AdditionalFilterOptionComponent from '../../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
 import FilterItemComponent from '../../components/molecules/Filter/FilterItemComponent';
 import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
-import SingleCardComponentWithMatch from '../../components/molecules/Item/Card/SingleCardComponentWithMatch';
+import SingleCardComponent from '../../components/molecules/Item/Card/SingleCardComponent';
+import { Ionicons } from '../../constants/icons';
 import { COLORS, FONTS } from '../../constants/theme';
 import { FilterItemOn, Post } from '../../interfaces';
 import { filterItemOnInitial } from '../../interfaces/initials';
 import { useLazyGetUserPostsQuery } from '../../redux/services/post-service';
-import { selectCurrentUserId } from '../../redux/slices/authSlice';
+import { useGetUserQuery } from '../../redux/services/profile-service';
 import {
   resetUserPosts,
   selectUserPosts,
@@ -33,12 +33,13 @@ import {
 
 export type props = {
   navigation: any;
+  route: any;
 };
-const UserPostsScreen: React.FC<props> = ({ navigation }) => {
+const PostsScreen: React.FC<props> = ({ navigation, route }) => {
   const filterType = useSelector(selectUserPostsFilterType);
-  const _currentUserId = useSelector(selectCurrentUserId);
   const posts: Post[] = useSelector(selectUserPosts);
-  const currentUserId = useSelector(selectCurrentUserId);
+  const userId = route.params.userId;
+  const { data: user } = useGetUserQuery({ fk_userId: userId });
   const [itemFilterOption, setItemFilterOption] =
     useState<FilterItemOn>(filterItemOnInitial);
   const [backgroundFilter, setBackgroundFilter] = useState<boolean>(false);
@@ -87,7 +88,7 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
       const posts = await getPost({
         offset,
         limit,
-        userId: currentUserId,
+        userId,
         founded: filterType,
         ...cat,
       }).unwrap();
@@ -122,7 +123,7 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
     };
   }, [filterType, advFilterOn, offset]);
 
-  if (!_currentUserId) {
+  if (!userId) {
     return (
       <UserNotFound
         navigation={navigation}
@@ -133,15 +134,32 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.feed}>
       <View>
-        <View style={styles.item_search_input}>
-          <View style={{ marginLeft: 10, marginTop: 10 }}>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            padding: 10,
+          }}>
+          <View
+            style={{
+              backgroundColor: COLORS.GraySecondary,
+              borderRadius: 50,
+              paddingLeft: 3,
+              paddingRight: 3,
+              elevation: 10,
+            }}>
+            <Ionicons
+              name="chevron-back-outline"
+              size={40}
+              color="black"
+              onPress={() => navigation.goBack()}
+            />
+          </View>
+          <View style={styles.item_search_input}>
             <Text style={{ ...FONTS.body2 }}>
-              <Text style={FONTS.h1}> Items You </Text>
-              {filterType === LOST_ITEM ? (
-                <Text>have Lost </Text>
-              ) : (
-                <Text>have Found </Text>
-              )}
+              <Text style={FONTS.h1}> {user?.firstName + "'s"} </Text>
+              Posts
             </Text>
           </View>
         </View>
@@ -222,7 +240,7 @@ const UserPostsScreen: React.FC<props> = ({ navigation }) => {
           posts={posts}
           reachedEnd={reachedEnd}
           navigation={navigation}
-          SingleCardComponent={SingleCardComponentWithMatch}
+          SingleCardComponent={SingleCardComponent}
         />
         <View style={{ height: 10 }}></View>
       </MaskedView>
@@ -263,8 +281,6 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   item_search_input: {
-    margin: 10,
-    marginRight: 20,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -283,4 +299,4 @@ const styles = StyleSheet.create({
     width: '90%',
   },
 });
-export default UserPostsScreen;
+export default PostsScreen;

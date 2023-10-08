@@ -5,6 +5,7 @@ import character4 from '../../../assets/images/character4.png';
 import { COLORS } from '../../../constants/theme';
 import { selectCurrentUserId } from '../../../redux/slices/authSlice';
 import { contactType } from '../../../screens/contactScreens/ContactScreen';
+import { SCREEN_HEIGHT } from '../../../utils';
 import AnimatedComponent from '../Animation/AnimatedComponent';
 import SingleContactComponent from './SingleContactComponent';
 
@@ -25,11 +26,6 @@ const ContactListComponent: React.FC<props> = ({
   contactFound,
 }) => {
   const currentUserId = useSelector(selectCurrentUserId);
-  const onScroll = (event: any) => {
-    const { nativeEvent } = event;
-    const { contentOffset } = nativeEvent;
-    const { y } = contentOffset;
-  };
   if (!contactFound) {
     return (
       <AnimatedComponent
@@ -61,14 +57,14 @@ const ContactListComponent: React.FC<props> = ({
           />
         ) : null
       }
-      onScroll={onScroll}
     />
   );
 };
 
 const styles = StyleSheet.create({
   cards: {
-    backgroundColor: COLORS.GrayPrimary,
+    backgroundColor: COLORS.lightGrayPrePrimary,
+    minHeight: SCREEN_HEIGHT * 0.9,
   },
 });
 export default ContactListComponent;

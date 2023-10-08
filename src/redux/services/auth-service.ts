@@ -21,7 +21,6 @@ export const authApi = api.injectEndpoints({
           body: { ...credentials },
         };
       },
-      invalidatesTags: ['Contacts'],
     }),
     userSignup: builder.mutation({
       query: credentials => {
@@ -77,7 +76,7 @@ export const userLoggedIn = () => {
       const resJson = await res.json();
       if (resJson?.error) resolve({ isLoggedIn: false });
       resolve({ ...resJson, isLoggedIn: true, token });
-    } catch (err: any) {
+    } catch (err) {
       resolve(
         new Error('Something went wrong while trying to verify your token'),
       );

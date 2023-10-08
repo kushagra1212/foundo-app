@@ -99,7 +99,7 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
         feedSearchScreenStatus: false,
       }),
     );
-    dispatch(updateFilter({ filterType: !filterType }));
+    dispatch(updateFilter({ filterType: filterType ? 0 : 1 }));
     navigation.goBack();
     return true;
   };
@@ -111,9 +111,9 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
       setTotalPosts(null);
     }
 
+    dispatch(updateFilter({ filterType }));
     BackHandler.addEventListener('hardwareBackPress', onPressBack);
 
-    dispatch(updateFilter({ filterType }));
     let timer: NodeJS.Timeout;
     if (flag && searchString !== '') {
       timer = setTimeout(() => {
@@ -166,7 +166,7 @@ const FeedSearchSceen: React.FC<props> = ({ navigation }) => {
             }}>
             <LinearGradient
               colors={[
-                '#FFFFFF00',
+                ...['#FFFFFF00'],
                 '#FFFFFF',
                 '#FFFFFF',
                 '#FFFFFF',

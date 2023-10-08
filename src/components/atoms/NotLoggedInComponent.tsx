@@ -1,11 +1,9 @@
 import React from 'react';
+import { ImageSourcePropType, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import character5 from '../../assets/images/character5.png';
 import object3 from '../../assets/images/object3.png';
-
-import { View } from 'react-native';
-import { ImageSourcePropType } from 'react-native';
 import { COLORS } from '../../constants/theme';
 import AnimatedComponent from '../molecules/Animation/AnimatedComponent';
 import AnimatedObject from '../molecules/Animation/AnimatedObject';
@@ -30,8 +28,7 @@ const NotLoggedInComponent: React.FC<props> = ({
         height: '100%',
         backgroundColor: COLORS.lightGrayPrePrimary,
         zIndex: 10,
-      }}
-    >
+      }}>
       <AnimatedComponent
         title={title}
         description={desciption}
