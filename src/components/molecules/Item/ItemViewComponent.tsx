@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -27,23 +27,17 @@ import { useGetpostQuery } from '../../../redux/services/post-service';
 import { useGetUserQuery } from '../../../redux/services/profile-service';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
 import { capitalizeFirstLetter } from '../../../utils';
-import BottomModal from '../../atoms/BottomModal';
-import ItemExtraDetailCompoent from '../../atoms/ItemExtraDetailComponent';
+import ItemExtraDetailCompoent from '../../atoms/Item/ItemExtraDetailComponent';
 import ShowMapComponent from '../../atoms/Map/ShowMapComponent';
+import BottomModal from '../../atoms/Other/BottomModal';
 import AnimatedImageComponent from '../Animation/AnimatedImageComponent';
 import ContactOwnerComponent from './ContactOwnerComponent';
 type props = {
   item: any;
-  onClose: () => void;
-  isVisible: boolean;
   navigation: any;
 };
-const ItemViewComponent: React.FC<props> = ({
-  item,
-  onClose,
-  isVisible,
-  navigation,
-}) => {
+
+const ItemViewComponent: React.FC<props> = ({ item, navigation }) => {
   const { data: detailedItem, isLoading } = useGetpostQuery(item.id);
 
   const [getIsAContact] = useLazyGetIsAContactQuery();
@@ -102,214 +96,202 @@ const ItemViewComponent: React.FC<props> = ({
     : `${userWhoPosted?.firstName} ${userWhoPosted?.lastName}`;
   return (
     <SafeAreaView>
-      <BottomModal
-        height={'90%'}
-        backgroundFilter={true}
-        isVisible={isVisible}
-        effect={'fade'}
-        onClose={onClose}
-        iconName={'close-circle'}>
-        {isLoading ? (
-          <ActivityIndicator size="large" color={COLORS.primary} />
-        ) : (
-          <View style={styles.main_view}>
-            <View style={styles.profile_view}>
-              <View style={styles.pic_container}>
-                {userWhoPosted?.profilePhoto ? (
-                  <Image
-                    source={{
-                      uri: userWhoPosted?.profilePhoto,
-                    }}
-                    style={styles.profile_icon}
-                  />
-                ) : (
-                  <View style={styles.person_icon}>
-                    <Ionicons
-                      name="person"
-                      size={35}
-                      color={COLORS.blackSecondary}
-                    />
-                  </View>
-                )}
-                <TouchableOpacity
-                  style={[styles.btn_active, styles.view_profile_btn]}
-                  onPress={showUserProfileHandler}>
-                  <Text style={styles.fullname_text_container}>
-                    <Text>{userWhoPostedFullName}</Text>
-                    {'   '}
-                    <Feather name="send" size={25} color={COLORS.white} />
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            {isLoading && (
-              <ActivityIndicator
-                size="large"
-                style={{ marginBottom: 20 }}
-                color={COLORS.primary}
-              />
-            )}
-            <View style={styles.courosel_view}>
-              <GestureHandlerRootView>
-                <AnimatedImageComponent
-                  height={300}
-                  width={300}
-                  urls={[
-                    detailedItem.itemPictures[0].url,
-                    detailedItem.itemPictures[1].url,
-                  ]}
+      {isLoading ? (
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      ) : (
+        <View style={styles.main_view}>
+          <View style={styles.profile_view}>
+            <View style={styles.pic_container}>
+              {userWhoPosted?.profilePhoto ? (
+                <Image
+                  source={{
+                    uri: userWhoPosted?.profilePhoto,
+                  }}
+                  style={styles.profile_icon}
                 />
-              </GestureHandlerRootView>
+              ) : (
+                <View style={styles.person_icon}>
+                  <Ionicons
+                    name="person"
+                    size={35}
+                    color={COLORS.blackSecondary}
+                  />
+                </View>
+              )}
+              <TouchableOpacity
+                style={[styles.btn_active, styles.view_profile_btn]}
+                onPress={showUserProfileHandler}>
+                <Text style={styles.fullname_text_container}>
+                  <Text>{userWhoPostedFullName}</Text>
+                  {'   '}
+                  <Feather name="send" size={25} color={COLORS.white} />
+                </Text>
+              </TouchableOpacity>
             </View>
-            <ScrollView style={styles.second_view}>
-              <View style={styles.item_container}>
-                <View style={styles.item_name_container}>
-                  <Text style={[FONTS.body3, { color: COLORS.white }]}>
-                    {detailedItem.itemName}
-                  </Text>
-                </View>
-                <View style={styles.color_view}>
-                  <View
-                    style={{
-                      ...styles.color,
-                      backgroundColor: ITEM_STANDARD_COLORS.get(item.color),
-                    }}
-                  />
-
-                  <Text style={{ ...FONTS.body3, lineHeight: 20 }}>
-                    {' ' + capitalizeFirstLetter(item.color)}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.description_view}>
-                <Text style={FONTS.body3}>
-                  Said by <Text style={FONTS.h4}>{userWhoPostedFullName}</Text>
-                </Text>
-                <ScrollView
-                  style={{
-                    maxHeight: 100,
-                  }}>
-                  <Text
-                    style={{
-                      fontWeight: '300',
-                      textAlign: 'justify',
-                    }}>
-                    {detailedItem.description}
-                  </Text>
-                </ScrollView>
-              </View>
-              <View>
-                <TouchableOpacity
-                  style={styles.btn_active}
-                  onPress={() => setShowMapView(true)}>
-                  <Text
-                    style={{
-                      color: COLORS.black,
-                      fontSize: SIZES.h3,
-                      fontWeight: '600',
-                    }}>
-                    <FontAwesome
-                      name="location-arrow"
-                      size={20}
-                      color={COLORS.black}
-                    />
-                    <Text>{'  '}See on map</Text>
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.date_outer_container}>
-                <View style={styles.date_container}>
-                  <Text style={FONTS.body3}>Lost On </Text>
-                  <Text style={{ fontWeight: '800' }}>
-                    {new Date(detailedItem.dateTime).toDateString()}
-                  </Text>
-                </View>
-                <View style={styles.date_container}>
-                  <Text style={FONTS.body3}>Posted On </Text>
-                  <Text style={{ fontWeight: '800' }}>
-                    {new Date(detailedItem.createdAt).toDateString()}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.item_other_details}>
-                <View style={styles.item_type_container}>
-                  <Text style={FONTS.body4}>
-                    {detailedItem.isFounded === 0 ? 'Not Found yet' : 'found'}
-                  </Text>
-                </View>
-                <View style={styles.location_pin}>
-                  <Entypo
-                    name="location-pin"
-                    size={25}
-                    color={COLORS.primary}
-                  />
-                  <Text>{detailedItem.city}</Text>
-                </View>
-              </View>
-              {isCurrentUser ? null : (
-                <TouchableOpacity
-                  style={[styles.btn_active, styles.send_message_btn]}
-                  onPress={handleShowContactModal}>
-                  <Text style={styles.message_btn_text}>
-                    <Entypo name="message" size={25} color={COLORS.white} />
-                    {'   '}
-                    <Text>Message {userWhoPosted?.firstName}</Text>
-                  </Text>
-                </TouchableOpacity>
-              )}
-
-              <View
-                style={styles.view_details_btn}
-                onTouchStart={() => setShowDetailsModal(true)}>
-                <AntDesign name="upcircle" size={20} color={COLORS.primary} />
-                <Text style={{ fontWeight: '800', marginLeft: 10 }}>
-                  View Details
-                </Text>
-              </View>
-              {showMapView && (
-                <BottomModal
-                  backgroundColor={COLORS.black}
-                  height={'90%'}
-                  backgroundFilter={true}
-                  isVisible={true}
-                  effect={'fade'}
-                  onClose={closeMapView}>
-                  <ShowMapComponent
-                    latitude={detailedItem.itemLocation.latitude}
-                    longitude={detailedItem.itemLocation.longitude}
-                  />
-                </BottomModal>
-              )}
-              {showDetailsModal && (
-                <BottomModal
-                  height={250}
-                  backgroundFilter={true}
-                  isVisible={true}
-                  effect={'fade'}
-                  onClose={closeDetailsModal}
-                  iconName={'close'}>
-                  <ItemExtraDetailCompoent detailedItem={detailedItem} />
-                </BottomModal>
-              )}
-              {showContactModal && (
-                <BottomModal
-                  height={Dimensions.get('window').height}
-                  backgroundFilter={true}
-                  isVisible={true}
-                  effect={'fade'}
-                  onClose={closeContactModal}
-                  iconName={'close'}>
-                  <ContactOwnerComponent
-                    navigation={navigation}
-                    close={closeContactModal}
-                    receiverId={user?.id ? item.fk_userId : null}
-                  />
-                </BottomModal>
-              )}
-            </ScrollView>
           </View>
-        )}
-      </BottomModal>
+          {isLoading && (
+            <ActivityIndicator
+              size="large"
+              style={{ marginBottom: 20 }}
+              color={COLORS.primary}
+            />
+          )}
+          <View style={styles.courosel_view}>
+            <GestureHandlerRootView>
+              <AnimatedImageComponent
+                height={300}
+                width={300}
+                urls={[
+                  detailedItem.itemPictures[0].url,
+                  detailedItem.itemPictures[1].url,
+                ]}
+              />
+            </GestureHandlerRootView>
+          </View>
+          <ScrollView style={styles.second_view}>
+            <View style={styles.item_container}>
+              <View style={styles.item_name_container}>
+                <Text style={[FONTS.body3, { color: COLORS.white }]}>
+                  {detailedItem.itemName}
+                </Text>
+              </View>
+              <View style={styles.color_view}>
+                <View
+                  style={{
+                    ...styles.color,
+                    backgroundColor: ITEM_STANDARD_COLORS.get(item.color),
+                  }}
+                />
+
+                <Text style={{ ...FONTS.body3, lineHeight: 20 }}>
+                  {' ' + capitalizeFirstLetter(item.color)}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.description_view}>
+              <Text style={FONTS.body3}>
+                Said by <Text style={FONTS.h4}>{userWhoPostedFullName}</Text>
+              </Text>
+              <ScrollView
+                style={{
+                  maxHeight: 100,
+                }}>
+                <Text
+                  style={{
+                    fontWeight: '300',
+                    textAlign: 'justify',
+                  }}>
+                  {detailedItem.description}
+                </Text>
+              </ScrollView>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.btn_active}
+                onPress={() => setShowMapView(true)}>
+                <Text
+                  style={{
+                    color: COLORS.black,
+                    fontSize: SIZES.h3,
+                    fontWeight: '600',
+                  }}>
+                  <FontAwesome
+                    name="location-arrow"
+                    size={20}
+                    color={COLORS.black}
+                  />
+                  <Text>{'  '}See on map</Text>
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.date_outer_container}>
+              <View style={styles.date_container}>
+                <Text style={FONTS.body3}>Lost On </Text>
+                <Text style={{ fontWeight: '800' }}>
+                  {new Date(detailedItem.dateTime).toDateString()}
+                </Text>
+              </View>
+              <View style={styles.date_container}>
+                <Text style={FONTS.body3}>Posted On </Text>
+                <Text style={{ fontWeight: '800' }}>
+                  {new Date(detailedItem.createdAt).toDateString()}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.item_other_details}>
+              <View style={styles.item_type_container}>
+                <Text style={FONTS.body4}>
+                  {detailedItem.isFounded === 0 ? 'Not Found yet' : 'found'}
+                </Text>
+              </View>
+              <View style={styles.location_pin}>
+                <Entypo name="location-pin" size={25} color={COLORS.primary} />
+                <Text>{detailedItem.city}</Text>
+              </View>
+            </View>
+            {isCurrentUser ? null : (
+              <TouchableOpacity
+                style={[styles.btn_active, styles.send_message_btn]}
+                onPress={handleShowContactModal}>
+                <Text style={styles.message_btn_text}>
+                  <Entypo name="message" size={25} color={COLORS.white} />
+                  {'   '}
+                  <Text>Message {userWhoPosted?.firstName}</Text>
+                </Text>
+              </TouchableOpacity>
+            )}
+
+            <View
+              style={styles.view_details_btn}
+              onTouchStart={() => setShowDetailsModal(true)}>
+              <AntDesign name="upcircle" size={20} color={COLORS.primary} />
+              <Text style={{ fontWeight: '800', marginLeft: 10 }}>
+                View Details
+              </Text>
+            </View>
+            {showMapView && (
+              <BottomModal
+                backgroundColor={COLORS.black}
+                height={'90%'}
+                backgroundFilter={true}
+                isVisible={true}
+                effect={'fade'}
+                onClose={closeMapView}>
+                <ShowMapComponent
+                  latitude={detailedItem.itemLocation.latitude}
+                  longitude={detailedItem.itemLocation.longitude}
+                />
+              </BottomModal>
+            )}
+            {showDetailsModal && (
+              <BottomModal
+                height={250}
+                backgroundFilter={true}
+                isVisible={true}
+                effect={'fade'}
+                onClose={closeDetailsModal}
+                iconName={'close'}>
+                <ItemExtraDetailCompoent detailedItem={detailedItem} />
+              </BottomModal>
+            )}
+            {showContactModal && (
+              <BottomModal
+                height={Dimensions.get('window').height}
+                backgroundFilter={true}
+                isVisible={true}
+                effect={'fade'}
+                onClose={closeContactModal}
+                iconName={'close'}>
+                <ContactOwnerComponent
+                  navigation={navigation}
+                  close={closeContactModal}
+                  receiverId={user?.id ? item.fk_userId : null}
+                />
+              </BottomModal>
+            )}
+          </ScrollView>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -317,7 +299,7 @@ const ItemViewComponent: React.FC<props> = ({
 const styles = StyleSheet.create({
   main_view: {
     width: '100%',
-    height: '90%',
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -464,4 +446,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-export default ItemViewComponent;
+export default memo(ItemViewComponent);

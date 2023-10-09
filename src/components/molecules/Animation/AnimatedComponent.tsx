@@ -1,7 +1,7 @@
 import { Image, ImageSourcePropType, View } from 'react-native';
 import { COLORS } from '../../../constants/theme';
+import ElevatedCard from '../../atoms/Other/ElevatedCard';
 import AnimationTranslateScale from './AnimationTranslateScale';
-import ElevatedCard from '../../atoms/ElevatedCard';
 
 interface props {
   title: string;
@@ -24,8 +24,7 @@ const AnimatedComponent: React.FC<props> = ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-      }}
-    >
+      }}>
       <View
         style={{
           position: 'absolute',
@@ -35,13 +34,11 @@ const AnimatedComponent: React.FC<props> = ({
           width: '100%',
           height: '100%',
           borderRadius: 25,
-        }}
-      >
+        }}>
         <AnimationTranslateScale
           {...rest}
           scaleRange={[1, 1.3]}
-          scaleDuration={500}
-        >
+          scaleDuration={500}>
           <Image
             source={source}
             style={{

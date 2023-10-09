@@ -39,7 +39,7 @@ export const postApi = api.injectEndpoints({
       transformResponse: response => {
         return response.items;
       },
-      providesTags: ['Posts'],
+      providesTags: ['user-posts'],
     }),
     getpost: builder.query({
       query: id => {
@@ -57,7 +57,7 @@ export const postApi = api.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: ['Posts'],
+      invalidatesTags: ['Posts', 'user-posts'],
     }),
     getMatches: builder.query({
       query: itemId => {

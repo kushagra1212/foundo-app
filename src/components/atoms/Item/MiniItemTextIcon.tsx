@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { AntDesign } from '../../constants/icons';
-import { COLORS, FONTS } from '../../constants/theme';
-import { FilterItemOn } from '../../interfaces';
+import { AntDesign } from '../../../constants/icons';
+import { COLORS, FONTS } from '../../../constants/theme';
+import { FilterItemOn } from '../../../interfaces';
 
 type Props = {
   isSelected: boolean;

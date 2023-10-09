@@ -1,9 +1,9 @@
 import { memo, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
-import { Feather } from '../../constants/icons';
-import { COLORS, FONTS } from '../../constants/theme';
-import { SCREEN_WIDTH } from '../../utils';
+import { Feather } from '../../../constants/icons';
+import { COLORS, FONTS } from '../../../constants/theme';
+import { SCREEN_WIDTH } from '../../../utils';
 export type props = {
   navigation?: any;
   handleOnFocus?: () => void;

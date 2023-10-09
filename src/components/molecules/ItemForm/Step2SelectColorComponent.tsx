@@ -1,11 +1,11 @@
 import { FormikProps } from 'formik';
-import { View, Text, FlatList } from 'react-native';
+import React, { useEffect, useMemo } from 'react';
+import { FlatList, Text, View } from 'react-native';
+import { ITEM_STANDARD_COLORS } from '../../../constants/item';
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost } from '../../../interfaces';
-import React, { useEffect, useMemo } from 'react';
-import { ITEM_STANDARD_COLORS } from '../../../constants/item';
+import MiniItemColorIcon from '../../atoms/Item/MiniItemColorIcon';
 import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
-import MiniItemColorIcon from '../../atoms/MiniItemColorIcon';
 type props = FormikProps<AddPost> & {
   isValidHandler: (isValid: boolean) => void;
 };
@@ -38,8 +38,7 @@ const Step2SelectColorComponent: React.FC<props> = ({
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
-      }}
-    >
+      }}>
       <View style={{}}>
         <Text style={{ ...FONTS.h1 }}>
           Select{' '}
@@ -55,8 +54,7 @@ const Step2SelectColorComponent: React.FC<props> = ({
           scaleDuration={100}
           translateRangeX={[500, 0]}
           tension={100}
-          friction={1000}
-        >
+          friction={1000}>
           <FlatList
             data={colors}
             showsVerticalScrollIndicator={false}
@@ -73,7 +71,7 @@ const Step2SelectColorComponent: React.FC<props> = ({
                 onSelect={() => setFieldValue('color', item[0])}
               />
             )}
-            keyExtractor={(item) => {
+            keyExtractor={item => {
               return item[1].toString();
             }}
           />

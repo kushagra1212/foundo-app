@@ -13,10 +13,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 
-import BottomModal from '../../components/atoms/BottomModal';
 import FilterOptionComponent, {
   FILTER_ITEMS,
-} from '../../components/atoms/FilterOptionItem';
+} from '../../components/atoms/Item/FilterOptionItem';
+import BottomModal from '../../components/atoms/Other/BottomModal';
 import AdditionalFilterOptionComponent from '../../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
 import FilterItemComponent from '../../components/molecules/Filter/FilterItemComponent';
 import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';

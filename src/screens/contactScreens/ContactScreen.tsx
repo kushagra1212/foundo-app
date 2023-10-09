@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 
-import UserNotFound from '../../components/atoms/UserNotFound';
+import UserNotFound from '../../components/atoms/Auth/UserNotFound';
 import ContactListComponent from '../../components/molecules/Contact/ContactListComponent';
 import { COLORS, SIZES } from '../../constants/theme';
 import { useGetContactListQuery } from '../../redux/services/message-service';

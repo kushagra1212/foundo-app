@@ -39,7 +39,8 @@
           "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
-      "package": "com.kushagra711.foundoapp"
+      "package": "com.kushagra711.foundoapp",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": ""

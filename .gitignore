@@ -16,3 +16,5 @@ coverage/
 .env.production
 package-lock.json
 .env*
+eas.json
+google-services.json

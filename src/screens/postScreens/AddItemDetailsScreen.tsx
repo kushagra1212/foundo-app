@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import character2 from '../../assets/images/character1.png';
-import NotLoggedInComponent from '../../components/atoms/NotLoggedInComponent';
+import NotLoggedInComponent from '../../components/atoms/Auth/NotLoggedInComponent';
 import StepWiseProgress from '../../components/atoms/ProgressBar/StepWiseProgress';
 import NextStepButton from '../../components/molecules/ItemForm/NextStepButton';
 import PrevStepButton from '../../components/molecules/ItemForm/PrevStepButton';

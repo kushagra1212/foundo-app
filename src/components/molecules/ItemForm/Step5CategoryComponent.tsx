@@ -5,7 +5,7 @@ import { FlatList, Text, View } from 'react-native';
 import { ITEMCAT_TO_NUM } from '../../../constants/item';
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost } from '../../../interfaces';
-import MiniItemTextIcon from '../../atoms/MiniItemTextIcon';
+import MiniItemTextIcon from '../../atoms/Item/MiniItemTextIcon';
 import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
 type props = FormikProps<AddPost> & {
   isValidHandler: (isValid: boolean) => void;

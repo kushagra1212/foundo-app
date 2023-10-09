@@ -20,8 +20,8 @@ import { AntDesign, Feather, MaterialIcons } from '../../../constants/icons';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
 import { useSendContacMessageMutation } from '../../../redux/services/message-service';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
-import BottomModal from '../../atoms/BottomModal';
 import PickMapComponent from '../../atoms/Map/PickMapComponent';
+import BottomModal from '../../atoms/Other/BottomModal';
 import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
 import NotLoggedInProfileComponent from '../profile/NotLoggedInProfileComponent';
 type props = {

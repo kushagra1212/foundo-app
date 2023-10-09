@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Ionicons } from '../../constants/icons';
-import { COLORS, SIZES } from '../../constants/theme';
+import { Ionicons } from '../../../constants/icons';
+import { COLORS, SIZES } from '../../../constants/theme';
 type AnimationType = 'slide' | 'none' | 'fade' | undefined;
 type Props = {
   isVisible: boolean;

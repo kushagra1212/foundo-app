@@ -1,6 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, Text } from 'react-native';
-import { COLORS, FONTS } from '../../constants/theme';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+
+import { COLORS, FONTS } from '../../../constants/theme';
 type props = {
   title: string;
   navigation: any;
@@ -9,8 +10,7 @@ const LogInButtonComponent: React.FC<props> = ({ title, navigation }) => {
   return (
     <TouchableOpacity
       onPress={() => navigation.replace('Auth')}
-      style={styles.but}
-    >
+      style={styles.but}>
       <Text style={[FONTS.h1, { color: COLORS.white }]}>{title}</Text>
     </TouchableOpacity>
   );

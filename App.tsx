@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 
 import Error from './src/components/Error';
 import Foundo from './src/components/Foundo';
-import { LoadFoundo } from './src/components/LoadFoundo';
+import { LoadFoundo } from './src/components/molecules/Hooks/Auth/LoadFoundo';
 import { COLORS } from './src/constants/theme';
 import { api } from './src/redux/services/api-service';
 import { store } from './src/redux/store';
@@ -22,7 +22,6 @@ SplashScreen.preventAutoHideAsync();
 
 const App = () => {
   const [isLoaded, error, credentials] = LoadFoundo();
-
   useEffect(() => {
     if (isLoaded) {
       (async () => {

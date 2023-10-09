@@ -7,15 +7,18 @@ const initialState = {
   jwtToken: null,
   forgotPasswordLinkSent: false,
   jwtResetToken: null,
+  pushNotificationToken: null,
 };
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { user, jwtToken, jwtResetToken } = action.payload;
+      const { user, jwtToken, jwtResetToken, pushNotificationToken } =
+        action.payload;
       state.user = user;
       state.jwtToken = jwtToken !== undefined ? jwtToken : '';
+      state.pushNotificationToken = pushNotificationToken;
 
       if (jwtResetToken) state.jwtResetToken = jwtResetToken;
       setItemToLocalStorage(jwtToken, LOCAL_STORAGE_ACCESS_TOKEN_KEY);
@@ -48,3 +51,6 @@ export const selectCurrentUserId = (state: any) => {
   const user = state.auth.user;
   return user ? user.id : null;
 };
+
+export const selectCurrentPushNotificationToken = (state: any) =>
+  state.auth.pushNotificationToken;

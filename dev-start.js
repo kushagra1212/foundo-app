@@ -20,7 +20,7 @@ function getLocalIpAddress() {
       const ipAddressArray = ipAddress.split('\n');
 
       if (ipAddressArray && ipAddressArray.length > 0) {
-        return ipAddressArray[4];
+        return ipAddressArray[3];
       }
     }
   } catch (error) {
@@ -36,15 +36,15 @@ if (localIpAddress) {
   const SOCKET_URL = `http://${localIpAddress}:${process.env.LOCAL_CHAT_SOCKET_PORT}`;
 
   console.log(`Setting BASE_URL=${BASE_URL}`);
-  console.log(`Setting SOCKET_URL=${SOCKET_URL}`);
 
   // Read the existing .env file
   const envFileContent = fs.readFileSync('.env', 'utf8');
 
   // Update the values for LOCAL_SERVER_PORT and LOCAL_CHAT_SOCKET_PORT
-  const updatedEnvContent = envFileContent
-    .replace(/^BASE_URL=.*/m, `BASE_URL=${BASE_URL}`)
-    .replace(/^SOCKET_URL=.*/m, `SOCKET_URL=${SOCKET_URL}`);
+  const updatedEnvContent = envFileContent.replace(
+    /^BASE_URL=.*/m,
+    `BASE_URL=${BASE_URL}`,
+  );
 
   // Write the updated content back to the .env file
   fs.writeFileSync('.env', updatedEnvContent, 'utf8');

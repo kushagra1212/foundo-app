@@ -2,11 +2,11 @@ import React from 'react';
 import { ImageSourcePropType, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import character5 from '../../assets/images/character5.png';
-import object3 from '../../assets/images/object3.png';
-import { COLORS } from '../../constants/theme';
-import AnimatedComponent from '../molecules/Animation/AnimatedComponent';
-import AnimatedObject from '../molecules/Animation/AnimatedObject';
+import character5 from '../../../assets/images/character5.png';
+import object3 from '../../../assets/images/object3.png';
+import { COLORS } from '../../../constants/theme';
+import AnimatedComponent from '../../molecules/Animation/AnimatedComponent';
+import AnimatedObject from '../../molecules/Animation/AnimatedObject';
 import LogInButtonComponent from './LogInButtonComponent';
 type props = {
   navigation: any;

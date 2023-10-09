@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../../constants/theme';
 import { useUpdateUserSettingMutation } from '../../../redux/services/profile-service';
 import { numToBool } from '../../../utils';
-import ToggleComponent from '../../atoms/ToggleComponent';
+import ToggleComponent from '../../atoms/Other/ToggleComponent';
 type props = {
   userSettings: any;
   onClose: () => void;

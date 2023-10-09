@@ -14,13 +14,13 @@ import { ITEMCAT_TO_NUM } from '../../../constants/item';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
 import { FilterItemOn } from '../../../interfaces';
 import { filterItemOnInitial } from '../../../interfaces/initials';
-import BottomModal from '../../atoms/BottomModal';
 import {
   ListFilterItemSlideDownInput,
   ListFilterItemSlideDownList,
   ListFilterItemViewAllType,
-} from '../../atoms/ListItem';
-import MiniItemTextIcon from '../../atoms/MiniItemTextIcon';
+} from '../../atoms/Item/ListItem';
+import MiniItemTextIcon from '../../atoms/Item/MiniItemTextIcon';
+import BottomModal from '../../atoms/Other/BottomModal';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 type Props = {
@@ -152,6 +152,7 @@ const FilterItemComponent: React.FC<Props> = ({
       <BottomModal
         backgroundFilter={false}
         isVisible={viewAll}
+        iconName="close"
         onClose={closeModal}
         effect="fade">
         <View style={styles.view_container}>

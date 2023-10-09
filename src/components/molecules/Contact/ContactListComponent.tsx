@@ -1,11 +1,11 @@
-import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
+import { memo } from 'react';
+import { ActivityIndicator, FlatList } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import character4 from '../../../assets/images/character4.png';
 import { COLORS } from '../../../constants/theme';
 import { selectCurrentUserId } from '../../../redux/slices/authSlice';
 import { contactType } from '../../../screens/contactScreens/ContactScreen';
-import { SCREEN_HEIGHT } from '../../../utils';
 import AnimatedComponent from '../Animation/AnimatedComponent';
 import SingleContactComponent from './SingleContactComponent';
 
@@ -61,10 +61,4 @@ const ContactListComponent: React.FC<props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  cards: {
-    backgroundColor: COLORS.lightGrayPrePrimary,
-    minHeight: SCREEN_HEIGHT * 0.9,
-  },
-});
-export default ContactListComponent;
+export default memo(ContactListComponent);

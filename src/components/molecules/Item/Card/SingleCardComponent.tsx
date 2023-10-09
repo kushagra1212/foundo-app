@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -8,6 +8,7 @@ import { COLORS, FONTS, SIZES } from '../../../../constants/theme';
 import { Post } from '../../../../interfaces';
 import { selectCurrentUserId } from '../../../../redux/slices/authSlice';
 import { capitalizeEveryWord, capitalizeFirstLetter } from '../../../../utils';
+import BottomModal from '../../../atoms/Other/BottomModal';
 import ItemComponent from '../ItemViewComponent';
 
 export type SingleCardProps = {
@@ -22,20 +23,21 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({
     useState<boolean>(false);
   const currentUserId = useSelector(selectCurrentUserId);
   const toggleCardDetail = () => {
-    setIsCardDetailVisible(!isCardDetailVisible);
+    setIsCardDetailVisible(prev => !prev);
   };
   const isCurrentUser = currentUserId && item.fk_userId === currentUserId;
   const firstName = isCurrentUser ? 'You' : item.firstName;
   return (
     <View style={styles.card}>
-      {isCardDetailVisible && item?.id && (
-        <ItemComponent
-          isVisible={isCardDetailVisible}
-          item={item}
-          onClose={toggleCardDetail}
-          navigation={navigation}
-        />
-      )}
+      <BottomModal
+        height={'90%'}
+        backgroundFilter={true}
+        isVisible={isCardDetailVisible}
+        effect={'slide'}
+        onClose={toggleCardDetail}
+        iconName={'close-circle'}>
+        <ItemComponent item={item} navigation={navigation} />
+      </BottomModal>
       <View style={styles.card_header}>
         <Image source={{ uri: item.thumbnail }} style={styles.thumbnail} />
       </View>
@@ -255,4 +257,4 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
-export default SingleCardComponent;
+export default memo(SingleCardComponent);

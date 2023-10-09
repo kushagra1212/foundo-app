@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
-import { Feather } from '../../constants/icons';
-import { COLORS, FONTS } from '../../constants/theme';
+import { Feather } from '../../../constants/icons';
+import { COLORS, FONTS } from '../../../constants/theme';
 export type props = {
   navigation?: any;
   handleOnFocus?: () => void;

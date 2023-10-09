@@ -31,7 +31,7 @@ function runTests(pattern) {
 }
 
 (async () => {
-  let failedTests = 0;
+  const failedTestsMessages = [];
   for (const pattern of testPatterns) {
     try {
       const stdout = await runTests(pattern);
@@ -39,11 +39,12 @@ function runTests(pattern) {
       // console.log(chalk.green(stdout));
       console.log(chalk.green(`Tests for pattern ${pattern} passed.`));
     } catch (error) {
-      failedTests++;
       console.error(`Tests for pattern ${pattern} failed.`);
+
+      failedTestsMessages.push('Tests for pattern ' + pattern + ' failed.');
     }
   }
-  if (failedTests == 0) {
+  if (failedTestsMessages.length === 0) {
     console.log(
       chalk.green(
         `
@@ -59,13 +60,14 @@ function runTests(pattern) {
       chalk.red(
         `
         --------------------------------------------
-        ${failedTests} tests failed. ${
-          testPatterns.length - failedTests
+        ${failedTestsMessages.length} tests failed. ${
+          testPatterns.length - failedTestsMessages.length
         } tests passed. 
         --------------------------------------------
         
         `,
       ),
+      chalk.red(failedTestsMessages.join('\n')),
     );
   }
 })();

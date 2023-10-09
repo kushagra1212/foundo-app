@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
 
 import Foundo from './src/components/Foundo';
-import { credentialsType } from './src/components/LoadFoundo';
+import { credentialsType } from './src/components/molecules/Hooks/Auth/LoadFoundo';
 import { store } from './src/redux/store';
 
 describe('<App />', () => {

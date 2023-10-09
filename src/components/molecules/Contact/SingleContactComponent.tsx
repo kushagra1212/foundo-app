@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Ionicons } from '../../../constants/icons';
@@ -53,4 +54,4 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 });
-export default SingleContactComponent;
+export default memo(SingleContactComponent);

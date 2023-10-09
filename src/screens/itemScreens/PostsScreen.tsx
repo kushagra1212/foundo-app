@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import BottomModal from '../../components/atoms/BottomModal';
+import UserNotFound from '../../components/atoms/Auth/UserNotFound';
 import FilterOptionComponent, {
   FILTER_ITEMS,
-} from '../../components/atoms/FilterOptionItem';
-import LinearGradientComponent from '../../components/atoms/LinearGradientComponent';
-import UserNotFound from '../../components/atoms/UserNotFound';
+} from '../../components/atoms/Item/FilterOptionItem';
+import BottomModal from '../../components/atoms/Other/BottomModal';
+import LinearGradientComponent from '../../components/atoms/Other/LinearGradientComponent';
 import AdditionalFilterOptionComponent from '../../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
 import FilterItemComponent from '../../components/molecules/Filter/FilterItemComponent';
 import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';

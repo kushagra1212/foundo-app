@@ -11,7 +11,7 @@ import { toastConfig } from '../configs/toastConfig';
 import { setCredentials } from '../redux/slices/authSlice';
 import HomeScreen from '../screens/HomeScreen';
 import AuthScreen from '../screens/authScreens/AuthScreen';
-import { credentialsType } from './LoadFoundo';
+import { credentialsType } from './molecules/Hooks/Auth/LoadFoundo';
 export const prefix = Linking.createURL('app');
 const Stack = createNativeStackNavigator();
 

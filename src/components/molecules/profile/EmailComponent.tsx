@@ -1,28 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  View,
+  ActivityIndicator,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
-  Image,
-  ActivityIndicator,
+  View,
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS, FONTS } from '../../../constants/theme';
 import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
 
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { useDispatch } from 'react-redux';
 import phoneimage from '../../../assets/images/phone.png';
-import OTPInputBox from '../../atoms/OTPInputBox';
+import { AntDesign } from '../../../constants/icons';
 import {
   useResetOTPMutation,
   useSendOTPMutation,
   useVerifyOTPMutation,
 } from '../../../redux/services/otp-service';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { AntDesign } from '../../../constants/icons';
 import { updateUser } from '../../../redux/slices/authSlice';
-import { useDispatch } from 'react-redux';
+import OTPInputBox from '../../atoms/Other/OTPInputBox';
 type props = {
   email: string;
   user: any;
@@ -150,16 +150,14 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
               flexDirection: 'row',
               justifyContent: 'flex-start',
               alignItems: 'center',
-            }}
-          >
+            }}>
             <Text
               style={{
                 ...FONTS.h3,
                 margin: 20,
                 opacity: 0.7,
                 textAlign: 'center',
-              }}
-            >
+              }}>
               {email}{' '}
             </Text>
             <AntDesign
@@ -177,8 +175,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
               margin: 10,
               justifyContent: 'center',
               alignItems: 'center',
-            }}
-          >
+            }}>
             <Text>Your Email is Now Verified ! </Text>
           </View>
         </View>
@@ -207,8 +204,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
               margin: 20,
               opacity: 0.7,
               textAlign: 'center',
-            }}
-          >
+            }}>
             {email}
           </Text>
           <View
@@ -218,8 +214,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
               margin: 10,
               justifyContent: 'center',
               alignItems: 'center',
-            }}
-          >
+            }}>
             <Text>We've noticed that you haven't verified your email </Text>
           </View>
           <TouchableOpacity
@@ -233,14 +228,12 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
               isLoading ? { backgroundColor: COLORS.GrayPrimary } : {},
             ]}
             onPress={verifyEmailHandler}
-            disabled={isLoading}
-          >
+            disabled={isLoading}>
             <Text
               style={{
                 ...FONTS.h2,
                 color: COLORS.white,
-              }}
-            >
+              }}>
               Verify Email
             </Text>
           </TouchableOpacity>
@@ -250,8 +243,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
           style={{
             width: '100%',
             height: '100%',
-          }}
-        >
+          }}>
           <View style={{ margin: 20 }}>
             <Text style={FONTS.h1}>Enter OTP</Text>
             <Text>
@@ -263,8 +255,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
             scaleRange={[1, 1.3]}
             translateDuration={1000}
             translateRangeX={[0, 200]}
-            scaleDuration={1000}
-          >
+            scaleDuration={1000}>
             <Image
               source={phoneimage}
               style={{
@@ -283,28 +274,27 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
               flexDirection: 'row',
               justifyContent: 'space-around',
               marginTop: 10,
-            }}
-          >
+            }}>
             <OTPInputBox
               value={otp[0]}
               ref={digitFirstF}
-              onChange={(value) => handleTextChange(value, 0)}
+              onChange={value => handleTextChange(value, 0)}
             />
             <OTPInputBox
               value={otp[1]}
               ref={digitSecondF}
-              onChange={(value) => handleTextChange(value, 1)}
+              onChange={value => handleTextChange(value, 1)}
             />
             <OTPInputBox
               value={otp[2]}
               ref={digitThirdF}
-              onChange={(value) => handleTextChange(value, 2)}
+              onChange={value => handleTextChange(value, 2)}
             />
 
             <OTPInputBox
               ref={digitFourthF}
               value={otp[3]}
-              onChange={(value) => handleTextChange(value, 3)}
+              onChange={value => handleTextChange(value, 3)}
             />
           </View>
           <View>
@@ -315,8 +305,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
                     ...FONTS.body3,
                     color: COLORS.primary,
                     fontWeight: '900',
-                  }}
-                >
+                  }}>
                   Time Remaining: {minutes < 10 ? `0${minutes}` : minutes}:
                   {seconds < 10 ? `0${seconds}` : seconds}
                 </Text>
@@ -326,15 +315,13 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                  }}
-                >
+                  }}>
                   <Text
                     style={{
                       ...FONTS.body4,
                       color: COLORS.redPrimary,
                       fontWeight: '900',
-                    }}
-                  >
+                    }}>
                     Didn't recieve code?
                   </Text>
                   <TouchableOpacity
@@ -345,8 +332,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
                     }}
                     onPress={() => {
                       verifyEmailHandler();
-                    }}
-                  >
+                    }}>
                     <Text style={{ ...FONTS.h3, color: COLORS.white }}>
                       {' '}
                       Resend OTP
@@ -368,8 +354,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
                 alignSelf: 'center',
                 elevation: 100,
                 padding: 10,
-              }}
-            >
+              }}>
               <Text style={{ ...FONTS.h2, color: COLORS.white }}>
                 Failed To Verify
               </Text>
@@ -390,8 +375,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
                 : {}),
             }}
             disabled={getStringOTP().length !== 4 || !timerRunning}
-            onPress={verifyOTPHandler}
-          >
+            onPress={verifyOTPHandler}>
             <Text style={{ ...FONTS.h3, color: COLORS.white }}>SUBMIT</Text>
           </TouchableOpacity>
         </View>

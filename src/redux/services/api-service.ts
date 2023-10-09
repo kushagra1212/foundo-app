@@ -50,5 +50,6 @@ export const api = createApi({
     'Posts',
     'Messages',
     'contact',
+    'user-posts',
   ],
 });

@@ -1,15 +1,16 @@
 import MaskedView from '@react-native-masked-view/masked-view';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { BackHandler, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 
-import ChatTextComponent from '../../components/atoms/ChatTextComponent';
-import UserNotFound from '../../components/atoms/UserNotFound';
+import UserNotFound from '../../components/atoms/Auth/UserNotFound';
+import ChatTextComponent from '../../components/atoms/Other/ChatTextComponent';
 import MessageListComponent from '../../components/molecules/Message/MessageListComponent';
 import { Ionicons } from '../../constants/icons';
+import { WHITE_GRADIENT } from '../../constants/item';
 import { COLORS, FONTS } from '../../constants/theme';
 import { ChatMessage } from '../../interfaces';
 import {
@@ -25,7 +26,8 @@ export type props = {
 };
 const LIMIT = 15;
 const ChatScreen: React.FC<props> = ({ navigation, route }) => {
-  const unmounted = useRef(false);
+  const [getMessages] = useLazyGetMessagesQuery();
+  const [sendMessage] = useSendMessageMutation();
   const user = useSelector(selectCurrentUser);
   const [offset, setOffset] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
@@ -37,9 +39,6 @@ const ChatScreen: React.FC<props> = ({ navigation, route }) => {
       ? contact?.fk_user_Id_2
       : contact?.fk_user_Id_1;
   const messageFound = (messages && messages.length > 0) || loading;
-  const [getMessages] = useLazyGetMessagesQuery();
-
-  const [sendMessage] = useSendMessageMutation();
 
   const fetchMessages = async () => {
     if (loading || reachedEnd) return;
@@ -99,6 +98,7 @@ const ChatScreen: React.FC<props> = ({ navigation, route }) => {
   };
 
   useEffect(() => {
+    let unmounted = false;
     socket.emit('add-id', { id: user.id });
     navigation.getParent().setOptions({
       tabBarStyle: {
@@ -106,7 +106,9 @@ const ChatScreen: React.FC<props> = ({ navigation, route }) => {
         display: 'none',
       },
     });
-    if (!unmounted.current) {
+    BackHandler.addEventListener('hardwareBackPress', onPressBack);
+
+    if (!unmounted) {
       (async () => {
         await handleRefresh();
       })();
@@ -118,7 +120,8 @@ const ChatScreen: React.FC<props> = ({ navigation, route }) => {
           display: 'flex',
         },
       });
-      unmounted.current = true;
+      BackHandler.removeEventListener('hardwareBackPress', onPressBack);
+      unmounted = true;
     };
   }, []);
 
@@ -139,14 +142,6 @@ const ChatScreen: React.FC<props> = ({ navigation, route }) => {
     });
     return true;
   };
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', onPressBack);
-
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', onPressBack);
-    };
-  }, []);
 
   if (!user && !loading) {
     return (
@@ -185,49 +180,32 @@ const ChatScreen: React.FC<props> = ({ navigation, route }) => {
           </View>
         </View>
       </View>
-      <MaskedView
-        style={{ flex: 1, paddingBottom: 60 }}
-        maskElement={
-          <View
-            style={{
-              backgroundColor: 'transparent',
-              flex: 1,
-              marginTop: 0,
-            }}>
-            <LinearGradient
-              colors={[
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-              ]}
+      {!loading ? (
+        <MaskedView
+          style={{ flex: 1, paddingBottom: 60 }}
+          maskElement={
+            <View
               style={{
+                backgroundColor: 'transparent',
                 flex: 1,
-                borderRadius: 5,
-              }}></LinearGradient>
-          </View>
-        }>
-        <MessageListComponent
-          fetchMessages={fetchMessages}
-          loading={loading}
-          messages={messages}
-          reachedEnd={reachedEnd}
-          messageFound={messageFound}
-        />
-      </MaskedView>
+              }}>
+              <LinearGradient
+                colors={WHITE_GRADIENT}
+                style={{
+                  flex: 1,
+                  borderRadius: 5,
+                }}></LinearGradient>
+            </View>
+          }>
+          <MessageListComponent
+            fetchMessages={fetchMessages}
+            loading={loading}
+            messages={messages}
+            reachedEnd={reachedEnd}
+            messageFound={messageFound}
+          />
+        </MaskedView>
+      ) : null}
 
       <ChatTextComponent
         handleOnFocus={() => {}}

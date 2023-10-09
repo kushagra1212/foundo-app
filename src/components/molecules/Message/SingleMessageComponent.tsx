@@ -13,8 +13,8 @@ import { COLORS, FONTS, SIZES } from '../../../constants/theme';
 import { ChatMessage } from '../../../interfaces';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
 import { capitalizeEveryWord } from '../../../utils';
-import BottomModal from '../../atoms/BottomModal';
 import ShowMapComponent from '../../atoms/Map/ShowMapComponent';
+import BottomModal from '../../atoms/Other/BottomModal';
 export type props = {
   message: any;
 };

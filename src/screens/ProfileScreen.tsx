@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import BottomModal from '../components/atoms/BottomModal';
-import { ListFilterItemViewAllType } from '../components/atoms/ListItem';
-import LogoutButtonComponent from '../components/atoms/LogoutButtonComponent';
+import LogoutButtonComponent from '../components/atoms/Auth/LogoutButtonComponent';
+import { ListFilterItemViewAllType } from '../components/atoms/Item/ListItem';
+import BottomModal from '../components/atoms/Other/BottomModal';
 import EmailComponent from '../components/molecules/profile/EmailComponent';
 import NotLoggedInProfileComponent from '../components/molecules/profile/NotLoggedInProfileComponent';
 import PhoneNumberComponent from '../components/molecules/profile/PhoneNumberComponent';

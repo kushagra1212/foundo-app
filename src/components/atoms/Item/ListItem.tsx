@@ -12,11 +12,11 @@ import {
   View,
 } from 'react-native';
 
-import { FontAwesome, Ionicons } from '../../constants/icons';
-import { ITEM_STANDARD_COLORS } from '../../constants/item';
-import { COLORS, FONTS, SIZES } from '../../constants/theme';
-import { FilterItemOn } from '../../interfaces';
-import AnimationTranslateScale from '../molecules/Animation/AnimationTranslateScale';
+import { FontAwesome, Ionicons } from '../../../constants/icons';
+import { ITEM_STANDARD_COLORS } from '../../../constants/item';
+import { COLORS, FONTS, SIZES } from '../../../constants/theme';
+import { FilterItemOn } from '../../../interfaces';
+import AnimationTranslateScale from '../../molecules/Animation/AnimationTranslateScale';
 import MiniItemColorIcon from './MiniItemColorIcon';
 import MiniItemTextIcon from './MiniItemTextIcon';
 interface PropsType1 extends FilterItemOn {

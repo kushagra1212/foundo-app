@@ -1,14 +1,8 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS } from '../../../constants/theme';
-import AnimatedComponent from '../Animation/AnimatedComponent';
+import { ImageSourcePropType } from 'react-native';
 import character5 from '../../../assets/images/character5.png';
 import object3 from '../../../assets/images/object3.png';
-import AnimatedObject from '../Animation/AnimatedObject';
-import LogInButtonComponent from '../../atoms/LogInButtonComponent';
-import { View } from 'react-native';
-import { ImageSourcePropType } from 'react-native';
-import NotLoggedInComponent from '../../atoms/NotLoggedInComponent';
+import NotLoggedInComponent from '../../atoms/Auth/NotLoggedInComponent';
 type props = {
   navigation: any;
   characterSource?: ImageSourcePropType;

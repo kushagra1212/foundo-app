@@ -1,6 +1,7 @@
+import React, { Ref, forwardRef } from 'react';
 import { TextInput } from 'react-native-gesture-handler';
-import React, { useRef, useEffect, forwardRef, Ref } from 'react';
-import { COLORS, SIZES } from '../../constants/theme';
+
+import { COLORS, SIZES } from '../../../constants/theme';
 // type props = {
 //   value: string;
 //   onChange: (value: string) => void;
@@ -16,7 +17,7 @@ const OTPInputBox = forwardRef(
       value: string;
       onChange: (value: string) => void;
     },
-    ref: Ref<TextInput>
+    ref: Ref<TextInput>,
   ) => {
     return (
       <TextInput
@@ -38,6 +39,6 @@ const OTPInputBox = forwardRef(
         onChangeText={onChange}
       />
     );
-  }
+  },
 );
 export default OTPInputBox;

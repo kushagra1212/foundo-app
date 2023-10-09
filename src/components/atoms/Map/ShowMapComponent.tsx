@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
@@ -9,7 +9,7 @@ type props = {
   longitude: number;
 };
 const ShowMapComponent: React.FC<props> = ({ latitude, longitude }) => {
-  let webRef: any = undefined;
+  let webRef: any = useRef<WebView>(null).current;
   const [isMapReady, setIsMapReady] = useState<boolean>(false);
 
   return (
@@ -23,8 +23,10 @@ const ShowMapComponent: React.FC<props> = ({ latitude, longitude }) => {
           html: webViewTemplate({ latitude, longitude }),
         }}
         onLoadEnd={() => {
-          webRef.injectJavaScript(`map.setZoom(5)`);
-          setIsMapReady(true);
+          if (webRef) {
+            webRef.injectJavaScript(`map.setZoom(5)`);
+            setIsMapReady(true);
+          }
         }}
       />
     </View>

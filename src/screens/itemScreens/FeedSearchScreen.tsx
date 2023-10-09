@@ -14,8 +14,8 @@ import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 
 import searchItemImg from '../../assets/images/searchitem.png';
-import ElevatedCard from '../../components/atoms/ElevatedCard';
-import ItemSearchComponent from '../../components/atoms/ItemSearchComponent';
+import ItemSearchComponent from '../../components/atoms/Item/ItemSearchComponent';
+import ElevatedCard from '../../components/atoms/Other/ElevatedCard';
 import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
 import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
 import SingleCardComponent from '../../components/molecules/Item/Card/SingleCardComponent';

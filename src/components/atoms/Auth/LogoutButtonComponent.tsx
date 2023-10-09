@@ -1,18 +1,8 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import {
-  AntDesign,
-  FontAwesome,
-  Ionicons,
-  MaterialIcons,
-} from '../../constants/icons';
-import { COLORS, FONTS } from '../../constants/theme';
-import { logoutUser } from '../../redux/services/auth-service';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+
+import { MaterialIcons } from '../../../constants/icons';
+import { COLORS, FONTS } from '../../../constants/theme';
+import { logoutUser } from '../../../redux/services/auth-service';
 export type props = {
   navigation: any;
 };

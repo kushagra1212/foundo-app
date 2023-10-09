@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { RefreshControl } from 'react-native-gesture-handler';
 
-import { ListFilterItemViewAllType } from '../../components/atoms/ListItem';
+import { ListFilterItemViewAllType } from '../../components/atoms/Item/ListItem';
 import NotLoggedInProfileComponent from '../../components/molecules/profile/NotLoggedInProfileComponent';
 import { Entypo, Ionicons } from '../../constants/icons';
 import { COLORS, FONTS } from '../../constants/theme';

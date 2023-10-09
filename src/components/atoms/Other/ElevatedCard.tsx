@@ -1,5 +1,6 @@
-import { COLORS, FONTS } from '../../constants/theme';
 import { Text, View } from 'react-native';
+
+import { COLORS, FONTS } from '../../../constants/theme';
 type props = {
   title: string;
   description: string;
@@ -19,15 +20,14 @@ const ElevatedCard: React.FC<props> = ({
         backgroundColor: COLORS.white,
         zIndex: 3,
         padding: 20,
-        elevation: elevation,
+        elevation,
         borderRadius: 20,
         display: 'flex',
         alignItems: 'stretch',
         justifyContent: 'center',
         marginTop: '80%',
         ...elevationCardStyle,
-      }}
-    >
+      }}>
       <Text style={FONTS.h1}>{title}</Text>
       <Text style={FONTS.body4}>{description}</Text>
     </View>
