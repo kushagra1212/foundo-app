@@ -70,9 +70,13 @@ const ItemViewComponent: React.FC<props> = ({
     setShowContactModal(false);
     setShowDetailsModal(false);
     setShowMapView(false);
-    navigation.navigate('UserProfileScreen', {
-      fk_userId: item.fk_userId,
-    });
+    if (user?.id === item.fk_userId) {
+      navigation.navigate('ProfileScreen');
+    } else {
+      navigation.navigate('UserProfileScreen', {
+        fk_userId: item.fk_userId,
+      });
+    }
   };
   const handleShowContactModal = async () => {
     const { data: contact } = await getIsAContact(
@@ -264,12 +268,12 @@ const ItemViewComponent: React.FC<props> = ({
               </View>
               {showMapView && (
                 <BottomModal
+                  backgroundColor={COLORS.black}
                   height={'90%'}
                   backgroundFilter={true}
                   isVisible={true}
                   effect={'fade'}
-                  onClose={closeMapView}
-                  iconName={'close'}>
+                  onClose={closeMapView}>
                   <ShowMapComponent
                     latitude={detailedItem.itemLocation.latitude}
                     longitude={detailedItem.itemLocation.longitude}

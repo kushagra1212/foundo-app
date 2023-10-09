@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { memo, useMemo, useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -217,4 +217,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FilterItemComponent;
+export default memo(FilterItemComponent);

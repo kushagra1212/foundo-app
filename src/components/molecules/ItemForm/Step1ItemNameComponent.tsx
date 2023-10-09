@@ -4,6 +4,7 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost } from '../../../interfaces';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../../utils';
 import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
 type props = FormikProps<AddPost> & {
   isValidHandler: (isValid: boolean) => void;
@@ -27,10 +28,13 @@ const Step1ItemNameComponent: React.FC<props> = ({
         </Text>
       </View>
       <AnimationTranslateScale
-        translateRange={[500, 0]}
+        translateRange={[0, 0]}
         translateDuration={500}
-        scaleRange={[0.5, 1]}
-        scaleDuration={1000}>
+        scaleRange={[0.8, 0.9]}
+        scaleDuration={100}
+        translateRangeX={[500, 0]}
+        tension={100}
+        friction={1000}>
         <View>
           <TextInput
             focusable={true}
@@ -60,16 +64,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   item_name_input: {
-    width: '100%',
     fontFamily: 'Roboto_400Regular',
-    backgroundColor: COLORS.lightGrayPrePrimary,
-    alignSelf: 'center',
-    marginTop: 100,
-    height: 100,
-    borderRadius: 10,
-    padding: 20,
-    fontSize: 55,
+    backgroundColor: COLORS.lightGraySecondary,
+    fontSize: 35,
     fontWeight: '900',
+    padding: 15,
+    borderRadius: 20,
+    width: SCREEN_WIDTH * 0.8,
+    overflow: 'scroll',
+    borderWidth: 1,
+    borderColor: COLORS.GraySecondary,
+    marginTop: SCREEN_HEIGHT * 0.1,
   },
 });
 

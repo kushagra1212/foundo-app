@@ -37,12 +37,12 @@ export const webViewTemplate = ({ latitude, longitude }) => {
             
 
         });
-        var marker = new tt.Marker({fillColor: 'red', color: 'red', width: 50, height: 70,elevation: 10})
+        var marker = new tt.Marker({fillColor: 'red', color: 'red', width: 50, height: 70,elevation: 20})
 .setLngLat( [${longitude}, ${latitude}])
 .addTo(map);
         map.on('dragend', function() {
             let center = map.getCenter();
-            window.ReactNativeWebView.postMessage(center.lng.toFixed(3) + ", " + center.lat.toFixed(3));
+            window.ReactNativeWebView.postMessage(center.lng.toFixed(6) + ", " + center.lat.toFixed(6));
         })
     </script>
 </div>

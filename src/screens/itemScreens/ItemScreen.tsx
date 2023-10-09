@@ -207,7 +207,8 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
         {/* Shows behind the mask, you can put anything here, such as an image */}
         <RefreshControl
           refreshing={refreshing}
-          onRefresh={handleRefreshControl}>
+          onRefresh={handleRefreshControl}
+          style={{ flex: 1 }}>
           <CardsComponent
             fetchPosts={fetchPosts}
             loading={loading}

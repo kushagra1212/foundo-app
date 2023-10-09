@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import { AntDesign } from '../../constants/icons';
@@ -17,19 +17,19 @@ const MiniItemTextIcon: React.FC<Props> = ({
 }) => {
   return (
     <View
-      style={{
-        ...styles.btn,
-        ...(isSelected ? styles.selected_btn : styles.not_selected_btn),
-      }}
+      style={[
+        styles.btn,
+        isSelected ? styles.selected_btn : styles.not_selected_btn,
+      ]}
       onTouchEnd={() =>
         updateItemFilterOption({ category: isSelected ? '' : text })
       }
       testID={text}>
       <Text
-        style={{
-          ...FONTS.h4,
-          ...(isSelected ? { color: COLORS.white } : { color: COLORS.black }),
-        }}>
+        style={[
+          FONTS.h4,
+          isSelected ? { color: COLORS.white } : { color: COLORS.black },
+        ]}>
         {text}
       </Text>
       {isSelected ? (
@@ -71,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MiniItemTextIcon;
+export default memo(MiniItemTextIcon);

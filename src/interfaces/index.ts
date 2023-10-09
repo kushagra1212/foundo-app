@@ -11,7 +11,7 @@ export interface User {
   isVerified?: number;
 }
 export interface Post {
-  id: string;
+  id?: string;
   category: string;
   thumbnail: string;
   itemName: string;

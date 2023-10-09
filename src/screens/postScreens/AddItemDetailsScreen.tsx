@@ -1,5 +1,5 @@
 import { Formik, FormikProps } from 'formik';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { BackHandler, Dimensions, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -48,8 +48,10 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
   const [isValid, setValid] = useState<boolean>(false);
   const user = useSelector(selectCurrentUser);
   const [currentStep, setCurrentStep] = useState<number>(1);
+  const formRef = React.useRef<FormikProps<AddPost>>(null);
   const _isFounded = navigation.getState().routes[1].params.isFounded;
   const closeThisScreen = () => {
+    formRef.current?.resetForm();
     dispatch(
       updateAddItemDetailsScreenStatus({ addItemDetailsScreenStatus: false }),
     );
@@ -139,9 +141,19 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
   return (
     <SafeAreaView testID="AddItemDetails">
       <View style={[styles.container, { height }]}>
-        <PrevStepButton
-          close={() => (currentStep === 1 ? closeThisScreen() : previousStep())}
-        />
+        <View style={styles.header_container}>
+          <PrevStepButton
+            close={() =>
+              currentStep === 1 ? closeThisScreen() : previousStep()
+            }
+          />
+          <Ionicons
+            name="close-circle"
+            size={60}
+            color="black"
+            onPress={closeThisScreen}
+          />
+        </View>
         <StepWiseProgress numberOfSteps={8} currentStep={currentStep} />
         <View style={{ flex: 1 }}>
           <Formik
@@ -151,7 +163,8 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
               fk_userId: user.id,
               isFounded: _isFounded,
             }}
-            onSubmit={handleSubmit}>
+            onSubmit={handleSubmit}
+            innerRef={formRef}>
             {(props: FormikProps<AddPost>) => (
               <CurrentStepComponent isValidHandler={isValidHander} {...props} />
             )}
@@ -182,6 +195,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: '100%',
     backgroundColor: COLORS.lightGrayPrePrimary,
+  },
+  header_container: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   nextStepButtonContainer: {
     bottom: 0,

@@ -12,6 +12,10 @@
       "android": {
         "buildType": "apk",
         "gradleCommand": ":app:assembleRelease"
+      },
+      "env": {
+        "BASE_URL": "",
+        "LOCAL_STORAGE_ACCESS_TOKEN_KEY": ""
       }
     },
     "production": {}

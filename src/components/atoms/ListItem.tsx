@@ -295,7 +295,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     margin: 10,
-    width: '80%',
     justifyContent: 'flex-start',
   },
   view_all: {

@@ -15,6 +15,7 @@ type Props = {
   reset?: () => void;
   height?: string | number;
   iconName?: string;
+  backgroundColor?: string;
 };
 const BottomModal: React.FC<Props> = ({
   isVisible,
@@ -27,6 +28,7 @@ const BottomModal: React.FC<Props> = ({
   effect = 'slide',
   titleText = '',
   refreshAvail = false,
+  backgroundColor = COLORS.lightGrayPrePrimary,
 }) => {
   return (
     <Modal
@@ -34,7 +36,7 @@ const BottomModal: React.FC<Props> = ({
       transparent={true}
       visible={isVisible}
       statusBarTranslucent={true}
-      style={{ backgroundColor: COLORS.lightGrayPrePrimary }}>
+      style={{ backgroundColor }}>
       <View style={backgroundFilter ? styles.modal : { height: '100%' }}></View>
       <View style={[styles.modalContent, { height }]}>
         <View style={styles.titleContainer}>

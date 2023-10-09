@@ -1,8 +1,10 @@
 import { FormikProps } from 'formik';
-import { View, Text, TextInput } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
+
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost } from '../../../interfaces';
-import React, { useEffect } from 'react';
+import { SCREEN_WIDTH } from '../../../utils';
 import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
 type props = FormikProps<AddPost> & {
   isValidHandler: (isValid: boolean) => void;
@@ -19,28 +21,17 @@ const Step7BrandandCityComponent: React.FC<props> = ({
       !errors.brand &&
         values.brand.trim().length > 0 &&
         !errors.city &&
-        values.city.trim().length > 0
+        values.city.trim().length > 0,
     );
   }, [errors.brand, errors.city]);
 
   return (
-    <View
-      style={{
-        marginTop: '10%',
-        alignSelf: 'center',
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
+    <View style={styles.main_container}>
       <View
         style={{
           paddingLeft: 10,
           paddingRight: 10,
-        }}
-      >
+        }}>
         <Text style={{ ...FONTS.h1 }}>
           Write <Text style={{ color: COLORS.primary }}>Brand </Text>
           of the Item and{' '}
@@ -49,56 +40,70 @@ const Step7BrandandCityComponent: React.FC<props> = ({
         </Text>
       </View>
       <AnimationTranslateScale
-        translateRange={[500, 0]}
+        translateRange={[0, 0]}
         translateDuration={500}
-        scaleRange={[0.5, 1]}
-        scaleDuration={1000}
-      >
-        <View>
+        scaleRange={[0.8, 0.9]}
+        scaleDuration={100}
+        translateRangeX={[500, 0]}
+        tension={100}
+        friction={1000}>
+        <View style={styles.input_container}>
           <TextInput
             focusable={true}
             autoFocus={true}
-            style={{
-              width: '100%',
-              fontFamily: 'Roboto_400Regular',
-              backgroundColor: COLORS.lightGrayPrePrimary,
-              alignSelf: 'center',
-              marginTop: 50,
-              height: 100,
-              borderRadius: 10,
-              padding: 20,
-              fontSize: 25,
-              fontWeight: '900',
-            }}
+            maxLength={13}
+            style={styles.input}
             placeholder="Brand"
             onChangeText={handleChange('brand')}
             onBlur={handleBlur('brand')}
-            value={values.brand.substring(0, 13)}
-            keyboardType="email-address"
+            value={values.brand}
+            keyboardType="ascii-capable"
           />
           <TextInput
+            style={styles.input}
             focusable={true}
-            style={{
-              width: '100%',
-              fontFamily: 'Roboto_400Regular',
-              backgroundColor: COLORS.lightGrayPrePrimary,
-              alignSelf: 'center',
-              height: 100,
-              borderRadius: 10,
-              padding: 20,
-              fontSize: 25,
-              fontWeight: '900',
-            }}
             placeholder="City"
+            maxLength={13}
             onChangeText={handleChange('city')}
             onBlur={handleBlur('city')}
-            value={values.city.substring(0, 13)}
-            keyboardType="email-address"
+            value={values.city}
+            keyboardType="ascii-capable"
           />
         </View>
       </AnimationTranslateScale>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  main_container: {
+    marginTop: '10%',
+    alignSelf: 'center',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  input_container: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    marginTop: 0,
+    height: SCREEN_WIDTH * 0.5,
+  },
+  input: {
+    fontFamily: 'Roboto_400Regular',
+    backgroundColor: COLORS.lightGraySecondary,
+    fontSize: 35,
+    fontWeight: '900',
+    padding: 15,
+    borderRadius: 20,
+    width: SCREEN_WIDTH * 0.8,
+    overflow: 'scroll',
+    borderWidth: 1,
+    borderColor: COLORS.GraySecondary,
+  },
+});
 
 export default Step7BrandandCityComponent;

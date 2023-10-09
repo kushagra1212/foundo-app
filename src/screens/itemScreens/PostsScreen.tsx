@@ -1,15 +1,13 @@
 import MaskedView from '@react-native-masked-view/masked-view';
-import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { useDispatch, useSelector } from 'react-redux';
 
 import BottomModal from '../../components/atoms/BottomModal';
 import FilterOptionComponent, {
   FILTER_ITEMS,
 } from '../../components/atoms/FilterOptionItem';
+import LinearGradientComponent from '../../components/atoms/LinearGradientComponent';
 import UserNotFound from '../../components/atoms/UserNotFound';
 import AdditionalFilterOptionComponent from '../../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
 import FilterItemComponent from '../../components/molecules/Filter/FilterItemComponent';
@@ -21,23 +19,12 @@ import { FilterItemOn, Post } from '../../interfaces';
 import { filterItemOnInitial } from '../../interfaces/initials';
 import { useLazyGetUserPostsQuery } from '../../redux/services/post-service';
 import { useGetUserQuery } from '../../redux/services/profile-service';
-import {
-  resetUserPosts,
-  selectUserPosts,
-  selectUserPostsFilterType,
-  selectUserPostsLimit,
-  selectUserPostsOffset,
-  updateUserPosts,
-  updateUsersPostsFilter,
-} from '../../redux/slices/postSlice';
 
 export type props = {
   navigation: any;
   route: any;
 };
 const PostsScreen: React.FC<props> = ({ navigation, route }) => {
-  const filterType = useSelector(selectUserPostsFilterType);
-  const posts: Post[] = useSelector(selectUserPosts);
   const userId = route.params.userId;
   const { data: user } = useGetUserQuery({ fk_userId: userId });
   const [itemFilterOption, setItemFilterOption] =
@@ -46,31 +33,29 @@ const PostsScreen: React.FC<props> = ({ navigation, route }) => {
   const [advFilterOn, setAdvFilterOn] = useState<boolean | undefined>(
     undefined,
   );
-  const limit = useSelector(selectUserPostsLimit);
-  const offset = useSelector(selectUserPostsOffset);
-  const [getPost, { isLoading }] = useLazyGetUserPostsQuery();
+  const [offset, setOffset] = useState<number>(0);
+  const limit = 1;
+  const [getPost] = useLazyGetUserPostsQuery();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const [postFound, setPostFound] = useState<boolean>(false);
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [filterType, setFilterType] = useState<number>(0);
+
   const handleChangeFilter = (id: number) => {
-    dispatch(updateUsersPostsFilter({ filterType: id }));
+    setFilterType(id);
   };
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const onModalClose = () => {
     setBackgroundFilter(false);
     if (advFilterOn === undefined) setAdvFilterOn(true);
     else setAdvFilterOn(!advFilterOn);
-    dispatch(updateUsersPostsFilter({ filterType }));
-    setTimeout(() => {
-      setIsModalVisible(false);
-    }, 10);
+
+    setIsModalVisible(false);
   };
   const onModalOpen = () => {
     setIsModalVisible(true);
     setBackgroundFilter(true);
-    dispatch(resetUserPosts());
   };
   const updateItemFilterOption = (options: FilterItemOn): void => {
     setItemFilterOption({ ...itemFilterOption, ...options });
@@ -79,51 +64,52 @@ const PostsScreen: React.FC<props> = ({ navigation, route }) => {
     setItemFilterOption(filterItemOnInitial);
   };
   const fetchPosts = async () => {
-    setPostFound(true);
-    if (loading) return;
-    setLoading(true);
     const cat = { ...itemFilterOption };
 
     try {
-      const posts = await getPost({
+      const _posts = await getPost({
         offset,
         limit,
         userId,
         founded: filterType,
         ...cat,
       }).unwrap();
-      dispatch(updateUserPosts({ offset: offset + limit, posts }));
-      setLoading(false);
+      setOffset(prev => prev + limit);
+      setPosts(prev => [...prev, ..._posts]);
     } catch (e: any) {
       console.log(e);
-      setLoading(false);
       setReachedEnd(true);
 
-      if (posts.length !== 0)
-        Toast.show({
-          type: 'success',
-          props: {
-            text: `You've seen it all`,
-            message: null,
-          },
-        });
-      else setPostFound(false);
+      if (posts.length !== 0) {
+      }
+    } finally {
+      setLoading(false);
     }
   };
+
+  const refreshPosts = async () => {
+    setReachedEnd(false);
+    setOffset(0);
+    setPosts([]);
+    setLoading(true);
+    await fetchPosts();
+  };
+  const isPostFound = !loading && posts.length !== 0;
+  const handleRefreshControl = async () => {
+    await refreshPosts();
+  };
+
   useEffect(() => {
     let flag: boolean = true;
     if (flag) {
-      setReachedEnd(false);
-      if (offset === 0) {
-        fetchPosts();
-      }
+      refreshPosts();
     }
     return () => {
       flag = false;
     };
-  }, [filterType, advFilterOn, offset]);
+  }, [filterType, advFilterOn]);
 
-  if (!userId) {
+  if (!userId && !loading) {
     return (
       <UserNotFound
         navigation={navigation}
@@ -181,13 +167,6 @@ const PostsScreen: React.FC<props> = ({ navigation, route }) => {
             )}
             keyExtractor={(item: any) => item.id}
             horizontal
-            refreshing={false}
-            onRefresh={() => {
-              setRefreshing(true);
-              setTimeout(() => {
-                setRefreshing(false);
-              }, 10000);
-            }}
           />
           <AdditionalFilterOptionComponent
             onModalOpen={onModalOpen}
@@ -198,45 +177,13 @@ const PostsScreen: React.FC<props> = ({ navigation, route }) => {
           />
         </View>
       </View>
-      <MaskedView
-        style={{ flex: 1 }}
-        maskElement={
-          <View
-            style={{
-              backgroundColor: 'transparent',
-              flex: 1,
-              marginTop: 0,
-            }}>
-            <LinearGradient
-              colors={[
-                '#FFFFFF00',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-                '#FFFFFF',
-              ]}
-              style={{
-                flex: 1,
-                borderRadius: 5,
-              }}></LinearGradient>
-          </View>
-        }>
-        {/* Shows behind the mask, you can put anything here, such as an image */}
+      <MaskedView style={{ flex: 1 }} maskElement={<LinearGradientComponent />}>
+        {/* Shows behind the mask, can put anything here, such as an image */}
 
         <CardsComponent
           fetchPosts={fetchPosts}
           loading={loading}
-          postFound={postFound}
+          postFound={isPostFound}
           posts={posts}
           reachedEnd={reachedEnd}
           navigation={navigation}
