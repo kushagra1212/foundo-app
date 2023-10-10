@@ -24,14 +24,19 @@ const PickMapComponent: React.FC<props> = ({ coordinates, onConfirm }) => {
 
   const onButtonPress = async () => {
     const [lng, lat] = mapCenter.split(',');
+    const latitude = parseFloat(lat);
+    const longitude = parseFloat(lng);
+    if (longitude && latitude) {
+      // webRef2.injectJavaScript(
+      //   `map.setCenter([${parseFloat(lng)}, ${parseFloat(lat)}])`
+      // );
+      setIsUpdating(true);
+      onConfirm({ latitude, longitude });
 
-    // webRef2.injectJavaScript(
-    //   `map.setCenter([${parseFloat(lng)}, ${parseFloat(lat)}])`
-    // );
-    setIsUpdating(true);
-    onConfirm({ latitude: parseFloat(lat), longitude: parseFloat(lng) });
-
-    setIsUpdating(false);
+      setIsUpdating(false);
+    } else {
+      alert('Please select a location');
+    }
   };
 
   const handleMapEvent = (event: any) => {
@@ -80,7 +85,13 @@ const PickMapComponent: React.FC<props> = ({ coordinates, onConfirm }) => {
           Long press on the marker and drag it to the desired location
         </Text>
 
-        <TouchableOpacity style={styles.confirm_btn} onPress={onButtonPress}>
+        <TouchableOpacity
+          style={[
+            styles.confirm_btn,
+            { backgroundColor: isMapReady ? COLORS.black : COLORS.GrayPrimary },
+          ]}
+          disabled={!isMapReady}
+          onPress={onButtonPress}>
           <Text style={[FONTS.h2, { color: COLORS.white }]}>Confirm</Text>
         </TouchableOpacity>
       </View>

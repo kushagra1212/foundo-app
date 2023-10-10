@@ -32,6 +32,7 @@ const ChatScreen: React.FC<props> = ({ navigation, route }) => {
   const [offset, setOffset] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [initializing, setInitializing] = useState<boolean>(true);
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
   const contact = route.params.contact;
   const receiverId =
@@ -75,7 +76,8 @@ const ChatScreen: React.FC<props> = ({ navigation, route }) => {
 
   const handleSendMesssage = async (message: string) => {
     socket.emit('send', {
-      id: receiverId,
+      senderId: user?.id,
+      receiverId,
       messageBody: message,
     });
     try {
@@ -111,6 +113,7 @@ const ChatScreen: React.FC<props> = ({ navigation, route }) => {
     if (!unmounted) {
       (async () => {
         await handleRefresh();
+        setInitializing(false);
       })();
     }
     return () => {
@@ -127,12 +130,11 @@ const ChatScreen: React.FC<props> = ({ navigation, route }) => {
 
   useEffect(() => {
     socket.on('receive', async (data: any) => {
-      await handleRefresh();
+      console.log('senderId', data?.senderId, 'receiverId', receiverId);
+      if (data?.senderId && data?.senderId === receiverId) {
+        await handleRefresh();
+      }
     });
-
-    return () => {
-      socket.off('receive');
-    };
   }, [socket]);
 
   const onPressBack = (): boolean | null | undefined => {
@@ -180,7 +182,7 @@ const ChatScreen: React.FC<props> = ({ navigation, route }) => {
           </View>
         </View>
       </View>
-      {!loading ? (
+      {!initializing ? (
         <MaskedView
           style={{ flex: 1, paddingBottom: 60 }}
           maskElement={

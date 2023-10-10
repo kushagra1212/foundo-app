@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   },
   login_container: {
     margin: 20,
-    marginTop: 10,
+    marginTop: 80,
     marginBottom: 100,
     height: '100%',
     fontFamily: 'Roboto_400Regular',
