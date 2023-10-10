@@ -130,7 +130,6 @@ const ChatScreen: React.FC<props> = ({ navigation, route }) => {
 
   useEffect(() => {
     socket.on('receive', async (data: any) => {
-      console.log('senderId', data?.senderId, 'receiverId', receiverId);
       if (data?.senderId && data?.senderId === receiverId) {
         await handleRefresh();
       }

@@ -34,7 +34,7 @@ const PostsScreen: React.FC<props> = ({ navigation, route }) => {
     undefined,
   );
   const [offset, setOffset] = useState<number>(0);
-  const limit = 1;
+  const limit = 5;
   const [getPost] = useLazyGetUserPostsQuery();
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -177,20 +177,24 @@ const PostsScreen: React.FC<props> = ({ navigation, route }) => {
           />
         </View>
       </View>
-      <MaskedView style={{ flex: 1 }} maskElement={<LinearGradientComponent />}>
-        {/* Shows behind the mask, can put anything here, such as an image */}
+      {!loading ? (
+        <MaskedView
+          style={{ flex: 1 }}
+          maskElement={<LinearGradientComponent />}>
+          {/* Shows behind the mask, can put anything here, such as an image */}
 
-        <CardsComponent
-          fetchPosts={fetchPosts}
-          loading={loading}
-          postFound={isPostFound}
-          posts={posts}
-          reachedEnd={reachedEnd}
-          navigation={navigation}
-          SingleCardComponent={SingleCardComponent}
-        />
-        <View style={{ height: 10 }}></View>
-      </MaskedView>
+          <CardsComponent
+            fetchPosts={fetchPosts}
+            loading={loading}
+            postFound={isPostFound}
+            posts={posts}
+            reachedEnd={reachedEnd}
+            navigation={navigation}
+            SingleCardComponent={SingleCardComponent}
+          />
+          <View style={{ height: 10 }}></View>
+        </MaskedView>
+      ) : null}
       {isModalVisible && (
         <BottomModal
           backgroundFilter={backgroundFilter}

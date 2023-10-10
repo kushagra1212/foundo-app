@@ -18,7 +18,7 @@ export function LoadFoundo(): [boolean, Error | null, credentialsType] {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [pushToken, notification] = LoadNotificationToken();
-  console.log(notification);
+
   const [credentials, setCredentials] = useState<credentialsType>(null);
   const url = Linking.useURL();
 
