@@ -36,7 +36,7 @@ export async function registerForPushNotificationsAsync(): Promise<
     token = (await Notifications.getDevicePushTokenAsync()).data;
     // console.log(token);
   } else {
-    alert('Must use physical device for Push Notifications');
+    console.log('Must use physical device for Push Notifications');
   }
 
   return token;

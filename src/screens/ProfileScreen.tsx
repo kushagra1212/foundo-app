@@ -217,7 +217,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       <LogoutButtonComponent navigation={navigation} />
       {open.email && (
         <BottomModal
-          height={user?.isVerified ? '30%' : '90%'}
+          height={'90%'}
           backgroundFilter={true}
           isVisible={true}
           effect={'fade'}

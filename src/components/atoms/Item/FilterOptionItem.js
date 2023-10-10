@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 import { COLORS, FONTS } from '../../../constants/theme';
@@ -64,4 +65,4 @@ const styles = StyleSheet.create({
     color: COLORS.black,
   },
 });
-export default FilterOptionComponent;
+export default memo(FilterOptionComponent);

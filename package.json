@@ -12,7 +12,9 @@
     "test:eslint": "echo \"\\033[33mRunning eslint check\" &&  eslint .",
     "jest": "jest",
     "test-coverage": "jest --detectOpenHandles --verbose --cache --forceExit --coverage",
-    "dev-start": "node dev-start && npm start -- -c --android"
+    "dev-start": "node dev-start && npm start -- -c --android",
+    "detox-build": "detox build --configuration android.release",
+    "detox-test": "detox test --configuration android.release"
   },
   "dependencies": {
     "@expo-google-fonts/roboto": "^0.2.2",
@@ -35,8 +37,8 @@
     "expo-secure-store": "~12.3.1",
     "expo-splash-screen": "^0.20.5",
     "expo-status-bar": "~1.6.0",
+    "expo-system-ui": "~2.4.0",
     "formik": "^2.2.9",
-    "jest": "^29.2.1",
     "node": "^20.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -61,16 +63,22 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@config-plugins/detox": "^6.0.0",
     "@testing-library/react-native": "^12.3.0",
+    "@types/detox": "^18.1.0",
     "@types/jest": "^28.1.6",
     "@types/react": "~18.2.14",
     "@types/react-native": "^0.68.2",
     "@types/react-native-dotenv": "^0.2.0",
     "@types/react-test-renderer": "^18.0.0",
+    "detox": "^20.13.0",
+    "detox-expo-helpers": "^0.6.0",
     "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-universe": "^12.0.0",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "expo-detox-hook": "^1.0.10",
+    "jest": "^29.7.0",
     "jest-expo": "^49.0.0",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"

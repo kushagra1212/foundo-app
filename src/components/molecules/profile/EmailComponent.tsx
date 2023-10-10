@@ -9,13 +9,12 @@ import {
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS, FONTS } from '../../../constants/theme';
-import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
-
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch } from 'react-redux';
+
 import phoneimage from '../../../assets/images/phone.png';
 import { AntDesign } from '../../../constants/icons';
+import { COLORS, FONTS } from '../../../constants/theme';
 import {
   useResetOTPMutation,
   useSendOTPMutation,
@@ -23,6 +22,7 @@ import {
 } from '../../../redux/services/otp-service';
 import { updateUser } from '../../../redux/slices/authSlice';
 import OTPInputBox from '../../atoms/Other/OTPInputBox';
+import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
 type props = {
   email: string;
   user: any;
@@ -34,7 +34,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
   const [seconds, setSeconds] = useState<number>(0);
   const [showOtpInput, setShowOtpInput] = useState<boolean>(false);
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
-  const [otp, setOtp] = useState<Array<string>>(['', '', '', '']);
+  const [otp, setOtp] = useState<string[]>(['', '', '', '']);
   const digitFirstF = useRef<TextInput>(null);
   const digitSecondF = useRef<TextInput>(null);
   const digitThirdF = useRef<TextInput>(null);
@@ -55,12 +55,12 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
     }
   };
   const getStringOTP = () => {
-    let optStr = otp.join('');
+    const optStr = otp.join('');
     return optStr;
   };
 
   const handleTextChange = (value: string, index: number) => {
-    let currOtp = [...otp];
+    const currOtp = [...otp];
     currOtp[index] = value;
     if (value !== '') {
       if (index == 0) {

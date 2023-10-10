@@ -1,0 +1,3 @@
+#!/bin/bash
+
+npm run detox-build && npm run detox-test
