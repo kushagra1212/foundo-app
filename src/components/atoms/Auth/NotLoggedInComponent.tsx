@@ -25,9 +25,7 @@ const NotLoggedInComponent: React.FC<props> = ({
   return (
     <SafeAreaView
       style={{
-        height: '100%',
         backgroundColor: COLORS.lightGrayPrePrimary,
-        zIndex: 10,
       }}>
       <AnimatedComponent
         title={title}

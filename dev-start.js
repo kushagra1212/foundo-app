@@ -20,7 +20,7 @@ function getLocalIpAddress() {
       const ipAddressArray = ipAddress.split('\n');
 
       if (ipAddressArray && ipAddressArray.length > 0) {
-        return ipAddressArray[3];
+        return ipAddressArray[1];
       }
     }
   } catch (error) {

@@ -15,8 +15,9 @@ const UserNotFound: React.FC<props> = ({ navigation, message }) => {
   return (
     <SafeAreaView
       style={{
-        height: '100%',
+        flex: 1,
         backgroundColor: COLORS.lightGrayPrePrimary,
+        paddingTop: 40,
       }}>
       <View style={{ zIndex: 1, top: '60%' }}>
         <AnimatedObject width={300} height={300} source={object3} />

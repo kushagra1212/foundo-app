@@ -24,7 +24,6 @@ import { ITEM_STANDARD_COLORS } from '../../../constants/item';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
 import { useLazyGetIsAContactQuery } from '../../../redux/services/message-service';
 import { useGetpostQuery } from '../../../redux/services/post-service';
-import { useGetUserQuery } from '../../../redux/services/profile-service';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
 import { capitalizeFirstLetter } from '../../../utils';
 import ItemExtraDetailCompoent from '../../atoms/Item/ItemExtraDetailComponent';
@@ -46,15 +45,14 @@ const ItemViewComponent: React.FC<props> = ({
   const { data: detailedItem, isLoading } = useGetpostQuery(item.id);
 
   const [getIsAContact] = useLazyGetIsAContactQuery();
-  const { data: userWhoPosted } = useGetUserQuery({
-    fk_userId: item.fk_userId,
-  });
+
   const [showDetailsModal, setShowDetailsModal] = useState<boolean>(false);
   const [showMapView, setShowMapView] = useState<boolean>(false);
   const [showContactModal, setShowContactModal] = useState<boolean>(false);
 
   const user = useSelector(selectCurrentUser);
   const isCurrentUser = user?.id === item.fk_userId;
+
   const closeDetailsModal = () => {
     setShowDetailsModal(false);
   };
@@ -101,7 +99,7 @@ const ItemViewComponent: React.FC<props> = ({
   };
   const userWhoPostedFullName = isCurrentUser
     ? 'You'
-    : `${userWhoPosted?.firstName} ${userWhoPosted?.lastName}`;
+    : `${detailedItem?.userFirstName} ${detailedItem?.userLastName}`;
   return (
     <SafeAreaView>
       {isLoading ? (
@@ -110,10 +108,10 @@ const ItemViewComponent: React.FC<props> = ({
         <View style={styles.main_view}>
           <View style={styles.profile_view}>
             <View style={styles.pic_container}>
-              {userWhoPosted?.profilePhoto ? (
+              {detailedItem?.userProfilePhoto ? (
                 <Image
                   source={{
-                    uri: userWhoPosted?.profilePhoto,
+                    uri: detailedItem?.userProfilePhoto,
                   }}
                   style={styles.profile_icon}
                 />
@@ -244,7 +242,7 @@ const ItemViewComponent: React.FC<props> = ({
                 <Text style={styles.message_btn_text}>
                   <Entypo name="message" size={25} color={COLORS.white} />
                   {'   '}
-                  <Text>Message {userWhoPosted?.firstName}</Text>
+                  <Text>Message {detailedItem?.userFirstName}</Text>
                 </Text>
               </TouchableOpacity>
             )}
