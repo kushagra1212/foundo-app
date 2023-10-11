@@ -52,6 +52,8 @@ const PostsScreen: React.FC<props> = ({ navigation, route }) => {
     else setAdvFilterOn(!advFilterOn);
 
     setIsModalVisible(false);
+    setOffset(0);
+    setPosts([]);
   };
   const onModalOpen = () => {
     setIsModalVisible(true);
@@ -127,14 +129,7 @@ const PostsScreen: React.FC<props> = ({ navigation, route }) => {
             alignItems: 'center',
             padding: 10,
           }}>
-          <View
-            style={{
-              backgroundColor: COLORS.GraySecondary,
-              borderRadius: 50,
-              paddingLeft: 3,
-              paddingRight: 3,
-              elevation: 10,
-            }}>
+          <View style={styles.go_back}>
             <Ionicons
               name="chevron-back-outline"
               size={40}
@@ -248,6 +243,13 @@ const styles = StyleSheet.create({
   item_text_ip: {
     marginLeft: 10,
     width: '90%',
+  },
+  go_back: {
+    backgroundColor: COLORS.GrayPrimary,
+    borderRadius: 50,
+    paddingLeft: 3,
+    paddingRight: 3,
+    elevation: 10,
   },
 });
 export default PostsScreen;

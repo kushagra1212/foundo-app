@@ -1,3 +1,4 @@
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as Linking from 'expo-linking';
@@ -29,23 +30,25 @@ const Foundo: React.FC<FoundoProps> = ({ credentials }) => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer
-        linking={{ prefixes: [prefix], config: routesConfig }}>
-        <Stack.Navigator initialRouteName={'Home'}>
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="Auth"
-            component={AuthScreen}
-          />
-          <Stack.Screen
-            options={{ headerShown: false }}
-            name="Home"
-            component={HomeScreen}
-          />
-        </Stack.Navigator>
+      <BottomSheetModalProvider>
+        <NavigationContainer
+          linking={{ prefixes: [prefix], config: routesConfig }}>
+          <Stack.Navigator initialRouteName={'Home'}>
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="Auth"
+              component={AuthScreen}
+            />
+            <Stack.Screen
+              options={{ headerShown: false }}
+              name="Home"
+              component={HomeScreen}
+            />
+          </Stack.Navigator>
 
-        <Toast config={toastConfig} visibilityTime={2000} />
-      </NavigationContainer>
+          <Toast config={toastConfig} visibilityTime={2000} />
+        </NavigationContainer>
+      </BottomSheetModalProvider>
     </GestureHandlerRootView>
   );
 };

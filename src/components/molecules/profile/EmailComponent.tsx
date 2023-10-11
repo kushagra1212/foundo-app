@@ -39,7 +39,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
   const digitSecondF = useRef<TextInput>(null);
   const digitThirdF = useRef<TextInput>(null);
   const digitFourthF = useRef<TextInput>(null);
-  const [sendOTP] = useSendOTPMutation();
+  const [sendOTP, { isLoading: isLoadingSetOtp }] = useSendOTPMutation();
   const [verifyOTP, { isError: otpError, isLoading }] = useVerifyOTPMutation();
   const [resetOTP] = useResetOTPMutation();
   const verifyEmailHandler = async () => {
@@ -133,33 +133,10 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
       {user?.is_verified ? (
         <View style={styles.view}>
           <AnimationTranslateScale scaleRange={[2, 2]} scaleDuration={50}>
-            <Image
-              source={phoneimage}
-              style={{
-                width: 500,
-                height: 500,
-                position: 'absolute',
-                zIndex: 0,
-                right: 1,
-              }}
-            />
+            <Image source={phoneimage} style={styles.phone_image} />
           </AnimationTranslateScale>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            }}>
-            <Text
-              style={{
-                ...FONTS.h3,
-                margin: 20,
-                opacity: 0.7,
-                textAlign: 'center',
-              }}>
-              {email}{' '}
-            </Text>
+          <View style={styles.email_container}>
+            <Text style={styles.email_text}>{email} </Text>
             <AntDesign
               style={{
                 color: COLORS.redPrimary,
@@ -168,14 +145,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
               size={25}
             />
           </View>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              margin: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+          <View style={styles.you_email_verified_container}>
             <Text>Your Email is Now Verified ! </Text>
           </View>
         </View>
@@ -187,34 +157,10 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
             animating={isLoading}
           />
           <AnimationTranslateScale scaleRange={[2, 2]} scaleDuration={50}>
-            <Image
-              source={phoneimage}
-              style={{
-                width: 500,
-                height: 500,
-                position: 'absolute',
-                zIndex: 0,
-                right: 1,
-              }}
-            />
+            <Image source={phoneimage} style={styles.phone_image} />
           </AnimationTranslateScale>
-          <Text
-            style={{
-              ...FONTS.h3,
-              margin: 20,
-              opacity: 0.7,
-              textAlign: 'center',
-            }}>
-            {email}
-          </Text>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              margin: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+          <Text style={styles.email_text_of_modal}>{email}</Text>
+          <View style={styles.not_verified_email_container}>
             <Text>We've noticed that you haven't verified your email </Text>
           </View>
           <TouchableOpacity
@@ -225,17 +171,11 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
                 height: 50,
                 marginTop: 10,
               },
-              isLoading ? { backgroundColor: COLORS.GrayPrimary } : {},
+              isLoadingSetOtp ? { backgroundColor: COLORS.GrayPrimary } : {},
             ]}
             onPress={verifyEmailHandler}
             disabled={isLoading}>
-            <Text
-              style={{
-                ...FONTS.h2,
-                color: COLORS.white,
-              }}>
-              Verify Email
-            </Text>
+            <Text style={[styles.verify_btn]}>Verify Email</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -258,23 +198,15 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
             scaleDuration={1000}>
             <Image
               source={phoneimage}
-              style={{
-                width: 500,
-                height: 500,
-                position: 'absolute',
-                zIndex: 0,
-                right: 1,
-                opacity: 0.3,
-              }}
+              style={[
+                styles.phone_image,
+                {
+                  opacity: 0.3,
+                },
+              ]}
             />
           </AnimationTranslateScale>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 10,
-            }}>
+          <View style={styles.otp_box_container}>
             <OTPInputBox
               value={otp[0]}
               ref={digitFirstF}
@@ -310,18 +242,8 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
                   {seconds < 10 ? `0${seconds}` : seconds}
                 </Text>
               ) : (
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
-                  <Text
-                    style={{
-                      ...FONTS.body4,
-                      color: COLORS.redPrimary,
-                      fontWeight: '900',
-                    }}>
+                <View style={styles.didnt_recieve_code}>
+                  <Text style={styles.did_recieve_code_text}>
                     Didn't recieve code?
                   </Text>
                   <TouchableOpacity
@@ -344,17 +266,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
           </View>
 
           {otpError && (
-            <View
-              style={{
-                backgroundColor: COLORS.redPrimary,
-                justifyContent: 'space-around',
-                alignItems: 'flex-start',
-                borderRadius: 10,
-                width: '80%',
-                alignSelf: 'center',
-                elevation: 100,
-                padding: 10,
-              }}>
+            <View style={styles.failed_to_verify}>
               <Text style={{ ...FONTS.h2, color: COLORS.white }}>
                 Failed To Verify
               </Text>
@@ -406,6 +318,74 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  verify_btn: {
+    ...FONTS.h2,
+    color: COLORS.white,
+  },
+  failed_to_verify: {
+    backgroundColor: COLORS.redPrimary,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderRadius: 10,
+    width: '80%',
+    alignSelf: 'center',
+    elevation: 10,
+  },
+  phone_image: {
+    width: 500,
+    height: 500,
+    position: 'absolute',
+    zIndex: 0,
+    right: 1,
+  },
+  email_container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  email_text: {
+    ...FONTS.h3,
+    margin: 20,
+    opacity: 0.7,
+    textAlign: 'center',
+  },
+  you_email_verified_container: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  email_text_of_modal: {
+    ...FONTS.h3,
+    margin: 20,
+    opacity: 0.7,
+    textAlign: 'center',
+  },
+  not_verified_email_container: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  didnt_recieve_code: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  did_recieve_code_text: {
+    ...FONTS.body4,
+    color: COLORS.redPrimary,
+    fontWeight: '900',
+  },
+  otp_box_container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
   },
 });
 export default EmailComponent;

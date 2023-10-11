@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { StyleSheet, Switch, View } from 'react-native';
 
 import { COLORS } from '../../../constants/theme';
@@ -22,4 +23,4 @@ const ToggleComponent: React.FC<props> = ({ value, onChange }) => {
 const styles = StyleSheet.create({
   view: {},
 });
-export default ToggleComponent;
+export default memo(ToggleComponent);

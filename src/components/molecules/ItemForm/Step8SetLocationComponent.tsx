@@ -37,6 +37,7 @@ const Step8SetLocationComponent: React.FC<props> = ({
   const user = useSelector(selectCurrentUser);
   const [showMap, setShowMap] = React.useState(true);
   const [addItem, { isLoading }] = useAddItemPostMutation();
+
   useEffect(() => {
     isValidHandler(!errors.location);
   }, [errors.location]);

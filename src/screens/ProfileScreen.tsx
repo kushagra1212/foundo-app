@@ -1,5 +1,6 @@
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
+import { useRef } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -13,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import LogoutButtonComponent from '../components/atoms/Auth/LogoutButtonComponent';
 import { ListFilterItemViewAllType } from '../components/atoms/Item/ListItem';
-import BottomModal from '../components/atoms/Other/BottomModal';
+import BackDropComponent from '../components/molecules/Animation/BackDropComponent';
 import EmailComponent from '../components/molecules/profile/EmailComponent';
 import NotLoggedInProfileComponent from '../components/molecules/profile/NotLoggedInProfileComponent';
 import PhoneNumberComponent from '../components/molecules/profile/PhoneNumberComponent';
@@ -29,41 +30,34 @@ type props = {
   navigation: any;
 };
 
-interface OpenDialog {
-  email: boolean;
-  phoneNumber: boolean;
-  residentialAddress: boolean;
-  updatePrivacy: boolean;
-}
-const intitalOpenDialog = {
-  email: false,
-  phoneNumber: false,
-  residentialAddress: false,
-  updatePrivacy: false,
-};
 const ProfileScreen: React.FC<props> = ({ navigation }) => {
   const user = useSelector(selectCurrentUser);
   const { data: userSetting, isLoading } = useGetUserSettingQuery({
     fk_userId: user ? user?.id : null,
   });
-  const [open, setOpen] = useState<OpenDialog>(intitalOpenDialog);
   const [userUpdate, { isLoading: uploadLoading }] = useUserUpdateMutation();
   const dispatch = useDispatch();
+
+  const mailBottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const phoneBottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const residentialAddressBottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const updatePrivacyBottomSheetModalRef = useRef<BottomSheetModal>(null);
+
   const viewAllHandler = (
     value: 'email' | 'phoneNumber' | 'Residential Address' | 'Update Privacy',
   ) => {
     switch (value) {
       case 'email':
-        setOpen({ ...intitalOpenDialog, email: true });
+        mailBottomSheetModalRef.current?.present();
         break;
       case 'phoneNumber':
-        setOpen({ ...intitalOpenDialog, phoneNumber: true });
+        phoneBottomSheetModalRef.current?.present();
         break;
       case 'Residential Address':
-        setOpen({ ...intitalOpenDialog, residentialAddress: true });
+        residentialAddressBottomSheetModalRef.current?.present();
         break;
       case 'Update Privacy':
-        setOpen({ ...intitalOpenDialog, updatePrivacy: true });
+        updatePrivacyBottomSheetModalRef.current?.present();
         break;
       default:
     }
@@ -92,6 +86,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
       }
     }
   };
+
   if (!user) {
     return <NotLoggedInProfileComponent navigation={navigation} />;
   }
@@ -168,6 +163,7 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
             }
             viewAllHandler={() => viewAllHandler('email')}
           />
+
           <ListFilterItemViewAllType
             arrowText=""
             items={undefined}
@@ -215,65 +211,59 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
         </View>
       </View>
       <LogoutButtonComponent navigation={navigation} />
-      {open.email && (
-        <BottomModal
-          height={'90%'}
-          backgroundFilter={true}
-          isVisible={true}
-          effect={'fade'}
-          iconName="close"
-          onClose={() => setOpen(intitalOpenDialog)}>
-          <EmailComponent
-            onClose={() => setOpen(intitalOpenDialog)}
-            email={user?.email}
-            user={user}
-          />
-        </BottomModal>
-      )}
-      {open.phoneNumber && (
-        <BottomModal
-          height={user?.phoneNo ? '30%' : '60%'}
-          backgroundFilter={true}
-          isVisible={true}
-          effect={'fade'}
-          onClose={() => setOpen(intitalOpenDialog)}>
-          <PhoneNumberComponent
-            onClose={() => setOpen(intitalOpenDialog)}
-            phoneNumber={user?.phoneNo}
-            userId={user?.id}
-          />
-        </BottomModal>
-      )}
-      {open.residentialAddress && (
-        <BottomModal
-          height={user?.address ? '40%' : '30%'}
-          backgroundFilter={true}
-          isVisible={true}
-          effect={'fade'}
-          iconName="close"
-          onClose={() => setOpen(intitalOpenDialog)}>
-          <UserAddressComponent
-            onClose={() => setOpen(intitalOpenDialog)}
-            address={user?.address}
-            userId={user?.id}
-          />
-        </BottomModal>
-      )}
-      {open.updatePrivacy && (
-        <BottomModal
-          height="60%"
-          backgroundFilter={true}
-          isVisible={true}
-          effect={'fade'}
-          onClose={() => setOpen(intitalOpenDialog)}>
-          <UserUpdatePrivacyComponent
-            onClose={() => setOpen(intitalOpenDialog)}
-            userSettings={userSetting}
-            isLoading={isLoading}
-            userId={user?.id}
-          />
-        </BottomModal>
-      )}
+
+      <BottomSheetModal
+        ref={mailBottomSheetModalRef}
+        index={1}
+        snapPoints={['80%', '80%']}
+        handleStyle={[styles.header_style, { backgroundColor: COLORS.white }]}
+        backdropComponent={BackDropComponent}>
+        <EmailComponent
+          onClose={() => mailBottomSheetModalRef.current?.close()}
+          email={user?.email}
+          user={user}
+        />
+      </BottomSheetModal>
+
+      <BottomSheetModal
+        ref={phoneBottomSheetModalRef}
+        index={1}
+        snapPoints={['80%', '80%']}
+        handleStyle={styles.header_style}
+        backdropComponent={BackDropComponent}>
+        <PhoneNumberComponent
+          onClose={() => phoneBottomSheetModalRef.current?.close()}
+          phoneNumber={user?.phoneNo}
+          userId={user?.id}
+        />
+      </BottomSheetModal>
+
+      <BottomSheetModal
+        ref={residentialAddressBottomSheetModalRef}
+        index={1}
+        snapPoints={['30%', '30%']}
+        handleStyle={styles.header_style}
+        backdropComponent={BackDropComponent}>
+        <UserAddressComponent
+          onClose={() => residentialAddressBottomSheetModalRef.current?.close()}
+          address={user?.address}
+          userId={user?.id}
+        />
+      </BottomSheetModal>
+
+      <BottomSheetModal
+        ref={updatePrivacyBottomSheetModalRef}
+        index={1}
+        snapPoints={['80%', '80%']}
+        handleStyle={styles.header_style}
+        backdropComponent={BackDropComponent}>
+        <UserUpdatePrivacyComponent
+          onClose={() => updatePrivacyBottomSheetModalRef.current?.close()}
+          userSettings={userSetting}
+          isLoading={isLoading}
+          userId={user?.id}
+        />
+      </BottomSheetModal>
     </ScrollView>
   );
 };
@@ -298,6 +288,10 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 20,
     backgroundColor: COLORS.black,
+  },
+  header_style: {
+    backgroundColor: COLORS.lightGrayPrePrimary,
+    borderRadius: 20,
   },
 });
 export default ProfileScreen;

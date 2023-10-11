@@ -35,9 +35,14 @@ import ContactOwnerComponent from './ContactOwnerComponent';
 type props = {
   item: any;
   navigation: any;
+  closeModal: () => void;
 };
 
-const ItemViewComponent: React.FC<props> = ({ item, navigation }) => {
+const ItemViewComponent: React.FC<props> = ({
+  item,
+  navigation,
+  closeModal,
+}) => {
   const { data: detailedItem, isLoading } = useGetpostQuery(item.id);
 
   const [getIsAContact] = useLazyGetIsAContactQuery();
@@ -61,6 +66,7 @@ const ItemViewComponent: React.FC<props> = ({ item, navigation }) => {
   };
 
   const showUserProfileHandler = () => {
+    closeModal();
     setShowContactModal(false);
     setShowDetailsModal(false);
     setShowMapView(false);
@@ -72,6 +78,7 @@ const ItemViewComponent: React.FC<props> = ({ item, navigation }) => {
       });
     }
   };
+
   const handleShowContactModal = async () => {
     const { data: contact } = await getIsAContact(
       {
@@ -81,6 +88,7 @@ const ItemViewComponent: React.FC<props> = ({ item, navigation }) => {
       false,
     );
     if (contact) {
+      closeModal();
       navigation.navigate('MessageScreen', {
         screen: 'ChatScreen',
         params: {
@@ -249,46 +257,42 @@ const ItemViewComponent: React.FC<props> = ({ item, navigation }) => {
                 View Details
               </Text>
             </View>
-            {showMapView && (
-              <BottomModal
-                backgroundColor={COLORS.black}
-                height={'90%'}
-                backgroundFilter={true}
-                isVisible={true}
-                effect={'fade'}
-                onClose={closeMapView}>
-                <ShowMapComponent
-                  latitude={detailedItem.itemLocation.latitude}
-                  longitude={detailedItem.itemLocation.longitude}
-                />
-              </BottomModal>
-            )}
-            {showDetailsModal && (
-              <BottomModal
-                height={250}
-                backgroundFilter={true}
-                isVisible={true}
-                effect={'fade'}
-                onClose={closeDetailsModal}
-                iconName={'close'}>
-                <ItemExtraDetailCompoent detailedItem={detailedItem} />
-              </BottomModal>
-            )}
-            {showContactModal && (
-              <BottomModal
-                height={Dimensions.get('window').height}
-                backgroundFilter={true}
-                isVisible={true}
-                effect={'fade'}
-                onClose={closeContactModal}
-                iconName={'close'}>
-                <ContactOwnerComponent
-                  navigation={navigation}
-                  close={closeContactModal}
-                  receiverId={user?.id ? item.fk_userId : null}
-                />
-              </BottomModal>
-            )}
+            <BottomModal
+              backgroundColor={COLORS.black}
+              height={'90%'}
+              backgroundFilter={true}
+              isVisible={showMapView}
+              effect={'fade'}
+              onClose={closeMapView}>
+              <ShowMapComponent
+                latitude={detailedItem.itemLocation.latitude}
+                longitude={detailedItem.itemLocation.longitude}
+              />
+            </BottomModal>
+
+            <BottomModal
+              height={250}
+              backgroundFilter={true}
+              isVisible={showDetailsModal}
+              effect={'fade'}
+              onClose={closeDetailsModal}
+              iconName={'close'}>
+              <ItemExtraDetailCompoent detailedItem={detailedItem} />
+            </BottomModal>
+
+            <BottomModal
+              height={Dimensions.get('window').height}
+              backgroundFilter={true}
+              isVisible={showContactModal}
+              effect={'fade'}
+              onClose={closeContactModal}
+              iconName={'close'}>
+              <ContactOwnerComponent
+                navigation={navigation}
+                close={closeContactModal}
+                receiverId={user?.id ? item.fk_userId : null}
+              />
+            </BottomModal>
           </ScrollView>
         </View>
       )}
