@@ -1,4 +1,5 @@
 import { Image, ImageSourcePropType, View } from 'react-native';
+
 import { COLORS } from '../../../constants/theme';
 import ElevatedCard from '../../atoms/Other/ElevatedCard';
 import AnimationTranslateScale from './AnimationTranslateScale';

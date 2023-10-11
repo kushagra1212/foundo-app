@@ -91,7 +91,8 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
     return <NotLoggedInProfileComponent navigation={navigation} />;
   }
   return (
-    <ScrollView>
+    <ScrollView
+      style={{ backgroundColor: COLORS.lightGrayPrimary, paddingTop: 40 }}>
       <View style={styles.profile_view}>
         <TouchableOpacity
           style={{ alignSelf: 'flex-end' }}

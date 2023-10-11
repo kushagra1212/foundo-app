@@ -139,7 +139,9 @@ const AddItemDetailsScreen: React.FC<props> = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView testID="AddItemDetails">
+    <SafeAreaView
+      testID="AddItemDetails"
+      style={{ backgroundColor: COLORS.lightGrayPrePrimary }}>
       <View style={[styles.container, { height }]}>
         <View style={styles.header_container}>
           <PrevStepButton

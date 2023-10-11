@@ -43,14 +43,12 @@ const App = () => {
     return <Error error={error} resetError={() => {}} />;
   }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ApiProvider api={api}>
-        <Provider store={store}>
-          <StatusBar style="dark" />
-          <Foundo credentials={credentials} />
-        </Provider>
-      </ApiProvider>
-    </SafeAreaView>
+    <ApiProvider api={api}>
+      <Provider store={store}>
+        <StatusBar style="dark" />
+        <Foundo credentials={credentials} />
+      </Provider>
+    </ApiProvider>
   );
 };
 export default App;
