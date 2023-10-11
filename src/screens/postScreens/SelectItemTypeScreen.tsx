@@ -25,7 +25,7 @@ const SelectItemTypeScreen: React.FC<props> = ({ navigation }) => {
   };
 
   return (
-    <View mode="margin" style={{ backgroundColor: COLORS.lightGrayPrePrimary }}>
+    <View style={{ backgroundColor: COLORS.lightGrayPrePrimary }}>
       <AnimatedObject style={{ opacity: 0.5, zIndex: 0 }} source={object2} />
 
       <AnimatedComponent
