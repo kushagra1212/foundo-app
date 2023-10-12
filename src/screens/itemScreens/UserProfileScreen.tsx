@@ -47,7 +47,7 @@ const UserProfileScreen: React.FC<props> = ({ navigation, route }) => {
   }
 
   return (
-    <View style={{ display: 'flex' }}>
+    <View style={{ display: 'flex', paddingTop: 30 }}>
       {isLoading && !user ? (
         <ActivityIndicator size="large" color={COLORS.primary} />
       ) : (
@@ -117,7 +117,6 @@ const UserProfileScreen: React.FC<props> = ({ navigation, route }) => {
                 </Text>
                 <View
                   style={{
-                    backgroundColor: COLORS.lightGrayPrePrimary,
                     marginTop: 5,
                   }}>
                   {user?.email && (

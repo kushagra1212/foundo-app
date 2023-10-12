@@ -31,12 +31,7 @@ const ListFilterItemViewAllType: React.FC<PropsType1> = memo(
   ({ text, icon, ...rest }) => {
     return (
       <TouchableOpacity
-        style={{
-          backgroundColor: COLORS.white,
-          elevation: 20,
-          borderRadius: 20,
-          margin: 10,
-        }}
+        style={styles.list_item_container}
         onPress={() => (rest.viewAllHandler ? rest.viewAllHandler() : {})}
         testID={`viewAllButton` + text}>
         <View style={styles.list_item}>
@@ -283,6 +278,12 @@ const ListFilterItemSlideDownInput: React.FC<PropsType3> = memo(
   },
 );
 const styles = StyleSheet.create({
+  list_item_container: {
+    backgroundColor: COLORS.white,
+    elevation: 20,
+    borderRadius: 20,
+    margin: 10,
+  },
   list_item: {
     display: 'flex',
     flexDirection: 'row',

@@ -1,8 +1,10 @@
+import MaskedView from '@react-native-masked-view/masked-view';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 
+import LinearGradientComponent from '../../components/atoms/Other/LinearGradientComponent';
 import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
 import SingleCardComponent from '../../components/molecules/Item/Card/SingleCardComponent';
 import { Ionicons } from '../../constants/icons';
@@ -87,12 +89,25 @@ const UserPostsRecommendationScreen: React.FC<
 
   return (
     <View style={styles.header}>
-      <Ionicons onPress={onPressBack} name="arrow-back" size={35} />
-
+      <View style={styles.back_btn}>
+        <Ionicons onPress={onPressBack} name="arrow-back" size={30} />
+      </View>
       <Text style={styles.text_header}>
         We recommend you to check out these posts 😊
       </Text>
-      <View style={styles.card}>
+      <MaskedView
+        style={{
+          flex: 1,
+        }}
+        maskElement={
+          <View
+            style={{
+              backgroundColor: 'transparent',
+              flex: 1,
+            }}>
+            <LinearGradientComponent />
+          </View>
+        }>
         <CardsComponent
           fetchPosts={fetchPosts}
           loading={loading}
@@ -102,17 +117,22 @@ const UserPostsRecommendationScreen: React.FC<
           navigation={navigation}
           SingleCardComponent={SingleCardComponent}
         />
-      </View>
+      </MaskedView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   header: {
-    margin: 10,
+    paddingTop: 40,
+    paddingBottom: 10,
+    flex: 1,
   },
   text_header: { alignSelf: 'center', fontSize: SIZES.h4, margin: 10 },
   card: { paddingBottom: 230 },
+  back_btn: {
+    marginLeft: 10,
+  },
 });
 
 export default UserPostsRecommendationScreen;
