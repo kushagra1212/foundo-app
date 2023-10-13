@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {
   ActivityIndicator,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -17,10 +18,10 @@ import * as yup from 'yup';
 import object2 from '../../../assets/images/object2.png';
 import { AntDesign, Feather, MaterialIcons } from '../../../constants/icons';
 import { COLORS, FONTS, SIZES } from '../../../constants/theme';
-import { useSendMessageMutation } from '../../../redux/services/message-service';
+import { useSendContacMessageMutation } from '../../../redux/services/message-service';
 import { selectCurrentUser } from '../../../redux/slices/authSlice';
-import BottomModal from '../../atoms/BottomModal';
 import PickMapComponent from '../../atoms/Map/PickMapComponent';
+import BottomModal from '../../atoms/Other/BottomModal';
 import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
 import NotLoggedInProfileComponent from '../profile/NotLoggedInProfileComponent';
 type props = {
@@ -33,11 +34,9 @@ const ContactOwnerComponent: React.FC<props> = ({
   close,
   navigation,
 }) => {
-  const [uri, setUri] = useState('./../assets/images/character1.svg');
   const [isMapVisible, setIsMapVisible] = useState<boolean>(false);
   const user = useSelector(selectCurrentUser);
-  const [sendMessage, { isLoading, isSuccess, isError, error }] =
-    useSendMessageMutation();
+  const [sendMessage, { isLoading }] = useSendContacMessageMutation();
   const handleMapClose = () => {
     setIsMapVisible(false);
   };
@@ -72,7 +71,7 @@ const ContactOwnerComponent: React.FC<props> = ({
     );
   }
   return (
-    <SafeAreaView>
+    <ScrollView>
       <AnimationTranslateScale scaleRange={[1, 1.01]} scaleDuration={1000}>
         <Image
           source={object2}
@@ -90,9 +89,7 @@ const ContactOwnerComponent: React.FC<props> = ({
         <ActivityIndicator size="large" color={COLORS.redPrimary} />
       ) : null}
       <View style={styles.login_container}>
-        <Text style={styles.login_text}>
-          Send a message to the owner of this item
-        </Text>
+        <Text style={styles.login_text}>Send a message to this person</Text>
         <Formik
           enableReinitialize={true}
           validationSchema={contactMessageSchema}
@@ -134,8 +131,8 @@ const ContactOwnerComponent: React.FC<props> = ({
                     fontFamily: 'Roboto_400Regular',
                   }}
                   placeholder="write a title"
-                  onChangeText={handleChange('title')}
-                  onBlur={handleBlur('title')}
+                  onChangeText={handleChange('baseMessage.title')}
+                  onBlur={handleBlur('baseMessage.title')}
                   value={values.baseMessage.title}
                 />
               </View>
@@ -150,10 +147,10 @@ const ContactOwnerComponent: React.FC<props> = ({
                 <TextInput
                   numberOfLines={4}
                   multiline={true}
-                  style={{ width: '80%', fontSize: 20 }}
+                  style={{ width: '80%', fontSize: 20, maxHeight: 200 }}
                   placeholder="write a message"
-                  onChangeText={handleChange('message')}
-                  onBlur={handleBlur('message')}
+                  onChangeText={handleChange('baseMessage.message')}
+                  onBlur={handleBlur('baseMessage.message')}
                   value={values.baseMessage.message}
                 />
               </View>
@@ -367,7 +364,7 @@ const ContactOwnerComponent: React.FC<props> = ({
           )}
         </Formik>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -444,24 +441,18 @@ const styles = StyleSheet.create({
 });
 const contactMessageSchema = yup.object().shape({
   baseMessage: yup.object().shape({
-    fk_senderId: yup.number().required('fk_senderId is required').optional(),
-    fk_receiverId: yup
-      .number()
-      .required('fk_receiverId is required')
-      .optional(),
-    title: yup.string().required('title is required').optional(),
-    message: yup.string().required('message is required').optional(),
+    fk_senderId: yup.number().required('fk_senderId is required'),
+    fk_receiverId: yup.number().required('fk_receiverId is required'),
+    title: yup.string().required('title is required').min(3),
+    message: yup.string().required('message is required').min(3),
   }),
   isFound: yup.number().required('isFound is required').optional(),
-  isPhoneNoShared: yup
-    .number()
-    .required('isPhoneNoShared is required')
-    .optional(),
+  isPhoneNoShared: yup.number().optional(),
   location: yup
     .object()
     .shape({
-      latitude: yup.number().required('latitude is required').optional(),
-      longitude: yup.number().required('longitude is required').optional(),
+      latitude: yup.number().required('latitude is required'),
+      longitude: yup.number().required('longitude is required'),
     })
     .optional(),
 });

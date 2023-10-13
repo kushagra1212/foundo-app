@@ -1,28 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  View,
+  ActivityIndicator,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
-  Image,
-  ActivityIndicator,
+  View,
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS, FONTS } from '../../../constants/theme';
-import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { useDispatch } from 'react-redux';
 
 import phoneimage from '../../../assets/images/phone.png';
-import OTPInputBox from '../../atoms/OTPInputBox';
+import { AntDesign } from '../../../constants/icons';
+import { COLORS, FONTS } from '../../../constants/theme';
 import {
   useResetOTPMutation,
   useSendOTPMutation,
   useVerifyOTPMutation,
 } from '../../../redux/services/otp-service';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { AntDesign } from '../../../constants/icons';
 import { updateUser } from '../../../redux/slices/authSlice';
-import { useDispatch } from 'react-redux';
+import OTPInputBox from '../../atoms/Other/OTPInputBox';
+import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
 type props = {
   email: string;
   user: any;
@@ -34,12 +34,12 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
   const [seconds, setSeconds] = useState<number>(0);
   const [showOtpInput, setShowOtpInput] = useState<boolean>(false);
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
-  const [otp, setOtp] = useState<Array<string>>(['', '', '', '']);
+  const [otp, setOtp] = useState<string[]>(['', '', '', '']);
   const digitFirstF = useRef<TextInput>(null);
   const digitSecondF = useRef<TextInput>(null);
   const digitThirdF = useRef<TextInput>(null);
   const digitFourthF = useRef<TextInput>(null);
-  const [sendOTP] = useSendOTPMutation();
+  const [sendOTP, { isLoading: isLoadingSetOtp }] = useSendOTPMutation();
   const [verifyOTP, { isError: otpError, isLoading }] = useVerifyOTPMutation();
   const [resetOTP] = useResetOTPMutation();
   const verifyEmailHandler = async () => {
@@ -55,12 +55,12 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
     }
   };
   const getStringOTP = () => {
-    let optStr = otp.join('');
+    const optStr = otp.join('');
     return optStr;
   };
 
   const handleTextChange = (value: string, index: number) => {
-    let currOtp = [...otp];
+    const currOtp = [...otp];
     currOtp[index] = value;
     if (value !== '') {
       if (index == 0) {
@@ -133,35 +133,10 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
       {user?.is_verified ? (
         <View style={styles.view}>
           <AnimationTranslateScale scaleRange={[2, 2]} scaleDuration={50}>
-            <Image
-              source={phoneimage}
-              style={{
-                width: 500,
-                height: 500,
-                position: 'absolute',
-                zIndex: 0,
-                right: 1,
-              }}
-            />
+            <Image source={phoneimage} style={styles.phone_image} />
           </AnimationTranslateScale>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            }}
-          >
-            <Text
-              style={{
-                ...FONTS.h3,
-                margin: 20,
-                opacity: 0.7,
-                textAlign: 'center',
-              }}
-            >
-              {email}{' '}
-            </Text>
+          <View style={styles.email_container}>
+            <Text style={styles.email_text}>{email} </Text>
             <AntDesign
               style={{
                 color: COLORS.redPrimary,
@@ -170,15 +145,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
               size={25}
             />
           </View>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              margin: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+          <View style={styles.you_email_verified_container}>
             <Text>Your Email is Now Verified ! </Text>
           </View>
         </View>
@@ -190,36 +157,10 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
             animating={isLoading}
           />
           <AnimationTranslateScale scaleRange={[2, 2]} scaleDuration={50}>
-            <Image
-              source={phoneimage}
-              style={{
-                width: 500,
-                height: 500,
-                position: 'absolute',
-                zIndex: 0,
-                right: 1,
-              }}
-            />
+            <Image source={phoneimage} style={styles.phone_image} />
           </AnimationTranslateScale>
-          <Text
-            style={{
-              ...FONTS.h3,
-              margin: 20,
-              opacity: 0.7,
-              textAlign: 'center',
-            }}
-          >
-            {email}
-          </Text>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              margin: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+          <Text style={styles.email_text_of_modal}>{email}</Text>
+          <View style={styles.not_verified_email_container}>
             <Text>We've noticed that you haven't verified your email </Text>
           </View>
           <TouchableOpacity
@@ -230,19 +171,11 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
                 height: 50,
                 marginTop: 10,
               },
-              isLoading ? { backgroundColor: COLORS.GrayPrimary } : {},
+              isLoadingSetOtp ? { backgroundColor: COLORS.GrayPrimary } : {},
             ]}
             onPress={verifyEmailHandler}
-            disabled={isLoading}
-          >
-            <Text
-              style={{
-                ...FONTS.h2,
-                color: COLORS.white,
-              }}
-            >
-              Verify Email
-            </Text>
+            disabled={isLoading}>
+            <Text style={[styles.verify_btn]}>Verify Email</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -250,8 +183,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
           style={{
             width: '100%',
             height: '100%',
-          }}
-        >
+          }}>
           <View style={{ margin: 20 }}>
             <Text style={FONTS.h1}>Enter OTP</Text>
             <Text>
@@ -263,48 +195,38 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
             scaleRange={[1, 1.3]}
             translateDuration={1000}
             translateRangeX={[0, 200]}
-            scaleDuration={1000}
-          >
+            scaleDuration={1000}>
             <Image
               source={phoneimage}
-              style={{
-                width: 500,
-                height: 500,
-                position: 'absolute',
-                zIndex: 0,
-                right: 1,
-                opacity: 0.3,
-              }}
+              style={[
+                styles.phone_image,
+                {
+                  opacity: 0.3,
+                },
+              ]}
             />
           </AnimationTranslateScale>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              marginTop: 10,
-            }}
-          >
+          <View style={styles.otp_box_container}>
             <OTPInputBox
               value={otp[0]}
               ref={digitFirstF}
-              onChange={(value) => handleTextChange(value, 0)}
+              onChange={value => handleTextChange(value, 0)}
             />
             <OTPInputBox
               value={otp[1]}
               ref={digitSecondF}
-              onChange={(value) => handleTextChange(value, 1)}
+              onChange={value => handleTextChange(value, 1)}
             />
             <OTPInputBox
               value={otp[2]}
               ref={digitThirdF}
-              onChange={(value) => handleTextChange(value, 2)}
+              onChange={value => handleTextChange(value, 2)}
             />
 
             <OTPInputBox
               ref={digitFourthF}
               value={otp[3]}
-              onChange={(value) => handleTextChange(value, 3)}
+              onChange={value => handleTextChange(value, 3)}
             />
           </View>
           <View>
@@ -315,26 +237,13 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
                     ...FONTS.body3,
                     color: COLORS.primary,
                     fontWeight: '900',
-                  }}
-                >
+                  }}>
                   Time Remaining: {minutes < 10 ? `0${minutes}` : minutes}:
                   {seconds < 10 ? `0${seconds}` : seconds}
                 </Text>
               ) : (
-                <View
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Text
-                    style={{
-                      ...FONTS.body4,
-                      color: COLORS.redPrimary,
-                      fontWeight: '900',
-                    }}
-                  >
+                <View style={styles.didnt_recieve_code}>
+                  <Text style={styles.did_recieve_code_text}>
                     Didn't recieve code?
                   </Text>
                   <TouchableOpacity
@@ -345,8 +254,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
                     }}
                     onPress={() => {
                       verifyEmailHandler();
-                    }}
-                  >
+                    }}>
                     <Text style={{ ...FONTS.h3, color: COLORS.white }}>
                       {' '}
                       Resend OTP
@@ -358,18 +266,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
           </View>
 
           {otpError && (
-            <View
-              style={{
-                backgroundColor: COLORS.redPrimary,
-                justifyContent: 'space-around',
-                alignItems: 'flex-start',
-                borderRadius: 10,
-                width: '80%',
-                alignSelf: 'center',
-                elevation: 100,
-                padding: 10,
-              }}
-            >
+            <View style={styles.failed_to_verify}>
               <Text style={{ ...FONTS.h2, color: COLORS.white }}>
                 Failed To Verify
               </Text>
@@ -390,8 +287,7 @@ const EmailComponent: React.FC<props> = ({ email, user, onClose }) => {
                 : {}),
             }}
             disabled={getStringOTP().length !== 4 || !timerRunning}
-            onPress={verifyOTPHandler}
-          >
+            onPress={verifyOTPHandler}>
             <Text style={{ ...FONTS.h3, color: COLORS.white }}>SUBMIT</Text>
           </TouchableOpacity>
         </View>
@@ -422,6 +318,74 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  verify_btn: {
+    ...FONTS.h2,
+    color: COLORS.white,
+  },
+  failed_to_verify: {
+    backgroundColor: COLORS.redPrimary,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderRadius: 10,
+    width: '80%',
+    alignSelf: 'center',
+    elevation: 10,
+  },
+  phone_image: {
+    width: 500,
+    height: 500,
+    position: 'absolute',
+    zIndex: 0,
+    right: 1,
+  },
+  email_container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  email_text: {
+    ...FONTS.h3,
+    margin: 20,
+    opacity: 0.7,
+    textAlign: 'center',
+  },
+  you_email_verified_container: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  email_text_of_modal: {
+    ...FONTS.h3,
+    margin: 20,
+    opacity: 0.7,
+    textAlign: 'center',
+  },
+  not_verified_email_container: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  didnt_recieve_code: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  did_recieve_code_text: {
+    ...FONTS.body4,
+    color: COLORS.redPrimary,
+    fontWeight: '900',
+  },
+  otp_box_container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
   },
 });
 export default EmailComponent;

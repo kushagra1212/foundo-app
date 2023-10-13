@@ -23,7 +23,7 @@ const PhoneNumberComponent: React.FC<props> = ({
   const dispatch = useDispatch();
   const [isValid, setIsValid] = useState<boolean>(false);
   const [userUpdate] = useUserUpdateMutation();
-  const user = useCallback(useGetUserQuery({ userId }).data, []);
+  const user = useCallback(useGetUserQuery({ fk_userId: userId }).data, []);
   const phoneInput = useRef<PhoneInput>(null);
   const setPhoneNumber = (value: string) => {
     value = value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, '');

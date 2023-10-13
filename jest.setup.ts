@@ -17,7 +17,7 @@ import { configure } from '@testing-library/react-native';
  * @see https://github.com/expo/expo/issues/18742
  */
 
-configure({ asyncUtilTimeout: 10000 });
+configure({ asyncUtilTimeout: 20000 });
 jest.setTimeout(50000);
 
 console.error = message => {

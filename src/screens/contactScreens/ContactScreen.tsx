@@ -1,93 +1,79 @@
 import MaskedView from '@react-native-masked-view/masked-view';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 
-import character4 from '../../assets/images/character4.png';
-import object3 from '../../assets/images/object1.png';
-import LogInButtonComponent from '../../components/atoms/LogInButtonComponent';
-import AnimatedComponent from '../../components/molecules/Animation/AnimatedComponent';
-import AnimatedObject from '../../components/molecules/Animation/AnimatedObject';
+import UserNotFound from '../../components/atoms/Auth/UserNotFound';
 import ContactListComponent from '../../components/molecules/Contact/ContactListComponent';
 import { COLORS, SIZES } from '../../constants/theme';
-import { useLazyGetContactsQuery } from '../../redux/services/message-service';
+import { useGetContactListQuery } from '../../redux/services/message-service';
 import { selectCurrentUser } from '../../redux/slices/authSlice';
 
 export type props = {
   navigation: any;
 };
-
+export type contactType = {
+  id: number;
+  fk_user_Id_1: number;
+  fk_user_Id_2: number;
+  chat_enabled: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  total_count: number;
+};
+const LIMIT = 5;
 const ContactScreen: React.FC<props> = ({ navigation }) => {
   const user = useSelector(selectCurrentUser);
-  const [contactOption, setContactOption] = useState({
-    limit: 5,
-    offset: 0,
-  });
-  const [getContacts, { isLoading, isError }] = useLazyGetContactsQuery();
+
+  const [offset, setOffset] = useState<number>(0);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const { isLoading, isError, error, isFetching, data, refetch } =
+    useGetContactListQuery({
+      offset,
+      limit: LIMIT,
+      userId: user?.id,
+    });
+  const contacts = data?.contacts || [];
   const [reachedEnd, setReachedEnd] = useState<boolean>(false);
-  const [contacts, setContacts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [contactFound, setContactFound] = useState<boolean>(true);
-  const fetchContacts = async () => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      const res = await getContacts({
-        offset: contactOption.offset,
-        limit: contactOption.limit,
-        userId: user?.id,
-      }).unwrap();
 
-      if (res.length === 0) {
-        setLoading(false);
-        setReachedEnd(true);
-        if (contacts.length === 0) setContactFound(false);
-        else setContactFound(true);
-        return;
-      }
-      setContactOption({
-        ...contactOption,
-        offset: contactOption.limit + contactOption.offset,
+  const loading = isLoading || isFetching;
+  const fetchContacts = () => {
+    if (isError) {
+      Toast.show({
+        type: 'error',
+        props: {
+          text: 'Error !',
+          message: error?.data?.message,
+        },
       });
-      setContacts([...contacts, ...res]);
-      setLoading(false);
-      setContactFound(true);
-    } catch (e: any) {
-      console.log(e);
-      setLoading(false);
-      setReachedEnd(true);
-      setContactFound(false);
     }
-  };
-  useEffect(() => {
-    let unmouted = false;
-    if (!unmouted) fetchContacts();
-    return () => {
-      unmouted = true;
-    };
-  }, [user?.id]);
 
-  if (user === null) {
+    if (loading || isError || reachedEnd) return;
+
+    if (contacts.length && contacts.length === contacts[0].total_count) {
+      setReachedEnd(true);
+      return;
+    }
+
+    setOffset(prev => prev + LIMIT);
+  };
+
+  const handleRefreshControl = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
+
+  if (!user) {
     return (
-      <SafeAreaView
-        style={{
-          height: '100%',
-          backgroundColor: COLORS.lightGrayPrePrimary,
-        }}>
-        <View style={{ zIndex: 1, top: '60%' }}>
-          <AnimatedObject width={300} height={300} source={object3} />
-        </View>
-        <AnimatedComponent
-          title="Not Logged In"
-          description="Please login to see your contacts"
-          source={character4}
-        />
-        <View style={{ marginTop: '10%' }}>
-          <LogInButtonComponent navigation={navigation} title="Log in" />
-        </View>
-      </SafeAreaView>
+      <UserNotFound
+        navigation={navigation}
+        message="Please login to see your contacts"
+      />
     );
   }
   return (
@@ -126,19 +112,19 @@ const ContactScreen: React.FC<props> = ({ navigation }) => {
           </View>
         }>
         <Text style={styles.chat_text}>Chats</Text>
-        <View
-          style={{
-            marginTop: 20,
-            marginBottom: 20,
-          }}>
-          <ContactListComponent
-            fetchContacts={fetchContacts}
-            loading={isLoading}
-            contacts={contacts}
-            reachedEnd={reachedEnd}
-            contactFound={contactFound}
-            navigation={navigation}
-          />
+        <View style={styles.contactList}>
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefreshControl}>
+            <ContactListComponent
+              fetchContacts={fetchContacts}
+              loading={loading}
+              contacts={contacts}
+              reachedEnd={reachedEnd}
+              contactFound={contacts && contacts.length > 0}
+              navigation={navigation}
+            />
+          </RefreshControl>
         </View>
       </MaskedView>
     </SafeAreaView>
@@ -160,6 +146,10 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     width: '90%',
     alignSelf: 'center',
+  },
+  contactList: {
+    marginTop: 20,
+    marginBottom: 75,
   },
 });
 export default ContactScreen;

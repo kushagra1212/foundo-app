@@ -3,6 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
 import {
   FlatList,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -12,10 +13,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import { useDispatch, useSelector } from 'react-redux';
 
-import BottomModal from '../../components/atoms/BottomModal';
 import FilterOptionComponent, {
   FILTER_ITEMS,
-} from '../../components/atoms/FilterOptionItem';
+} from '../../components/atoms/Item/FilterOptionItem';
+import BottomModal from '../../components/atoms/Other/BottomModal';
 import AdditionalFilterOptionComponent from '../../components/molecules/Filter/AditionalFilterOptionComponent.tsx';
 import FilterItemComponent from '../../components/molecules/Filter/FilterItemComponent';
 import CardsComponent from '../../components/molecules/Item/Card/CardsComponent';
@@ -116,6 +117,13 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
       else setPostFound(false);
     }
   };
+  const handleRefreshControl = () => {
+    setRefreshing(true);
+    dispatch(resetPosts());
+    setReachedEnd(false);
+    setRefreshing(false);
+  };
+
   useEffect(() => {
     let flag: boolean = true;
     if (!feedSearchScreenStatus) {
@@ -131,9 +139,10 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
 
   const handleOnFocus = () => {
     dispatch(updateFeedSearchScreenStatus({ feedSearchScreenStatus: true }));
-    dispatch(updateFilter({ filterType: !filterType }));
+    dispatch(updateFilter({ filterType: filterType ? 0 : 1 }));
     navigation.navigate('FeedSearchScreen');
   };
+
   return (
     <SafeAreaView style={styles.feed}>
       <View>
@@ -167,12 +176,7 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
             keyExtractor={(item: any) => item.id}
             horizontal
             refreshing={false}
-            onRefresh={() => {
-              setRefreshing(true);
-              setTimeout(() => {
-                setRefreshing(false);
-              }, 10000);
-            }}
+            onRefresh={handleRefreshControl}
           />
           <AdditionalFilterOptionComponent
             onModalOpen={onModalOpen}
@@ -201,16 +205,20 @@ const ItemScreen: React.FC<props> = ({ navigation }) => {
           </View>
         }>
         {/* Shows behind the mask, you can put anything here, such as an image */}
-
-        <CardsComponent
-          fetchPosts={fetchPosts}
-          loading={loading}
-          postFound={postFound}
-          posts={posts}
-          reachedEnd={reachedEnd}
-          navigation={navigation}
-          SingleCardComponent={SingleCardComponent}
-        />
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefreshControl}
+          style={{ flex: 1 }}>
+          <CardsComponent
+            fetchPosts={fetchPosts}
+            loading={loading}
+            postFound={postFound}
+            posts={posts}
+            reachedEnd={reachedEnd}
+            navigation={navigation}
+            SingleCardComponent={SingleCardComponent}
+          />
+        </RefreshControl>
         <View style={{ height: 10 }}></View>
       </MaskedView>
       {isModalVisible && (

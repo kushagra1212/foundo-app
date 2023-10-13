@@ -1,13 +1,14 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { StyleSheet } from 'react-native';
+
 import { COLORS } from '../constants/theme';
 import AddItemDetailsScreen from './postScreens/AddItemDetailsScreen';
 import SelectItemTypeScreen from './postScreens/SelectItemTypeScreen';
 
 const Stack = createNativeStackNavigator();
 
-export type props = {};
+export type props = object;
 const AddItemScreen: React.FC<props> = () => {
   return (
     <Stack.Navigator initialRouteName="SelectItemTypeScreen">

@@ -1,34 +1,42 @@
+import { User } from '../../interfaces';
 import { api } from './api-service';
 
 export const profileApi = api.injectEndpoints({
   endpoints: builder => ({
     getUserSetting: builder.query({
-      query: ({ userId }) => {
-        return `/v1/user-setting/${userId}`;
+      query: ({ fk_userId }) => {
+        return `/v1/user-setting/${fk_userId}`;
       },
       transformResponse: response => {
         return response.userSetting;
       },
-      providesTags: ['user-setting'],
+      providesTags: (result, error, arg) => {
+        return [{ type: 'user-setting', id: arg.fk_userId }];
+      },
     }),
     getUser: builder.query({
-      query: ({ userId }) => {
-        return `/v1/users/${userId}`;
+      query: ({ fk_userId }) => {
+        return `/v1/users/${fk_userId}`;
       },
       transformResponse: response => {
-        return response.user;
+        console.log(response);
+        return response.user as User;
       },
-      providesTags: ['user'],
+      providesTags: (result, error, arg) => {
+        return [{ type: 'user', id: arg.fk_userId }];
+      },
     }),
     updateUserSetting: builder.mutation({
-      query: ({ userId, update }) => {
+      query: ({ fk_userId, update }) => {
         return {
-          url: `/v1/user-setting/${userId}}`,
+          url: `/v1/user-setting/${fk_userId}`,
           method: 'PATCH',
           body: update,
         };
       },
-      invalidatesTags: ['user-setting'],
+      invalidatesTags: (result, error, arg) => {
+        return [{ type: 'user-setting', id: arg.fk_userId }];
+      },
     }),
   }),
   overrideExisting: true,

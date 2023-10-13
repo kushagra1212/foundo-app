@@ -1,5 +1,4 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
 import character3 from '../../assets/images/character3.png';
@@ -26,7 +25,7 @@ const SelectItemTypeScreen: React.FC<props> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView mode="margin">
+    <View style={{ backgroundColor: COLORS.lightGrayPrePrimary }}>
       <AnimatedObject style={{ opacity: 0.5, zIndex: 0 }} source={object2} />
 
       <AnimatedComponent
@@ -60,7 +59,7 @@ const SelectItemTypeScreen: React.FC<props> = ({ navigation }) => {
       </View>
 
       <AnimatedObject style={{ opacity: 1, bottom: 50 }} source={object2} />
-    </SafeAreaView>
+    </View>
   );
 };
 

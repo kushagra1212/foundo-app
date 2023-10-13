@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { COLORS, FONTS } from '../../../../constants/theme';
+import { AntDesign } from '../../../../constants/icons';
+import { COLORS } from '../../../../constants/theme';
 import { useGetMatchesQuery } from '../../../../redux/services/post-service';
 import SingleCardComponent, { SingleCardProps } from './SingleCardComponent';
 
@@ -20,32 +21,24 @@ const SingleCardComponentWithMatch: React.FC<SingleCardProps> = props => {
   return (
     <View>
       <TouchableOpacity style={styles.banner_button} onPress={handleMatchPress}>
-        <Text
-          style={{
-            color: COLORS.black,
-            fontWeight: '800',
-            alignSelf: 'center',
-          }}>
-          We have found
-          <Text style={{ color: COLORS.bluePrimary }}>
-            {' ' + data.length + ' '}
+        <View style={styles.txt}>
+          <Text>
+            We have found
+            <Text style={{ color: COLORS.bluePrimary }}>
+              {' ' + data.length + ' '}
+            </Text>
+            matches for {item.isFounded ? '' : 'your'}
+            <Text style={{ color: COLORS.bluePrimary }}>
+              {' ' + item.itemName}
+            </Text>
           </Text>
-          matches for {item.isFounded ? '' : 'your'}
-          <Text style={{ color: COLORS.bluePrimary }}>
-            {' ' + item.itemName}
-          </Text>
-        </Text>
-
-        <Text
-          style={{
-            ...FONTS.h4,
-            alignSelf: 'center',
-            paddingTop: 10,
-            color: COLORS.GrayPrimary,
-          }}>
-          {' '}
-          Click here to see them
-        </Text>
+        </View>
+        <AntDesign
+          name="arrowright"
+          size={25}
+          color={COLORS.black}
+          style={styles.arrow_right}
+        />
       </TouchableOpacity>
 
       <SingleCardComponent {...props} />
@@ -55,17 +48,23 @@ const SingleCardComponentWithMatch: React.FC<SingleCardProps> = props => {
 
 const styles = StyleSheet.create({
   banner_button: {
-    backgroundColor: COLORS.white,
-    elevation: 20,
+    backgroundColor: COLORS.lightGrayPrimary,
+    elevation: 10,
     borderRadius: 10,
     marginTop: 25,
     marginBottom: -5,
     padding: 10,
     width: '90%',
-    alignSelf: 'center',
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
+  txt: {
+    width: '90%',
+  },
+  arrow_right: { position: 'absolute', right: 10 },
 });
 
 export default SingleCardComponentWithMatch;

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { memo, useCallback, useRef } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -8,7 +9,8 @@ import { COLORS, FONTS, SIZES } from '../../../../constants/theme';
 import { Post } from '../../../../interfaces';
 import { selectCurrentUserId } from '../../../../redux/slices/authSlice';
 import { capitalizeEveryWord, capitalizeFirstLetter } from '../../../../utils';
-import ItemComponent from '../ItemViewComponent';
+import BackDropComponent from '../../Animation/BackDropComponent';
+import ItemViewComponent from '../ItemViewComponent';
 
 export type SingleCardProps = {
   item: Post;
@@ -18,25 +20,32 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({
   item,
   navigation,
 }) => {
-  const [isCardDetailVisible, setIsCardDetailVisible] =
-    useState<boolean>(false);
   const currentUserId = useSelector(selectCurrentUserId);
-  const toggleCardDetail = () => {
-    setIsCardDetailVisible(!isCardDetailVisible);
-  };
 
-  const firstName =
-    currentUserId && item.userId == currentUserId ? 'You' : item.firstName;
+  const itemViewBottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const isCurrentUser = currentUserId && item.fk_userId === currentUserId;
+  const firstName = isCurrentUser ? 'You' : item.firstName;
+
+  const closeItemViewBottomSheet = useCallback(() => {
+    itemViewBottomSheetRef.current?.close();
+  }, []);
+
   return (
     <View style={styles.card}>
-      {isCardDetailVisible && item?.id && (
-        <ItemComponent
-          isVisible={isCardDetailVisible}
+      <BottomSheetModal
+        ref={itemViewBottomSheetRef}
+        index={1}
+        snapPoints={['90%', '90%']}
+        handleStyle={[styles.header_style, { backgroundColor: COLORS.white }]}
+        backdropComponent={BackDropComponent}>
+        <ItemViewComponent
           item={item}
-          onClose={toggleCardDetail}
           navigation={navigation}
+          closeModal={closeItemViewBottomSheet}
         />
-      )}
+      </BottomSheetModal>
+
       <View style={styles.card_header}>
         <Image source={{ uri: item.thumbnail }} style={styles.thumbnail} />
       </View>
@@ -135,7 +144,7 @@ const SingleCardComponent: React.FC<SingleCardProps> = ({
             alignItems: 'center',
           }}>
           <TouchableOpacity
-            onPress={toggleCardDetail}
+            onPress={() => itemViewBottomSheetRef.current?.present()}
             style={styles.view_details}
             testID="viewDetailsButton">
             <Text
@@ -255,5 +264,10 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '0 deg' }],
     margin: 10,
   },
+  header_style: {
+    backgroundColor: COLORS.white,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
 });
-export default SingleCardComponent;
+export default memo(SingleCardComponent);

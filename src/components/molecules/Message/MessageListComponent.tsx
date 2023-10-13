@@ -1,11 +1,14 @@
-import { StyleSheet, FlatList, ActivityIndicator, Image } from 'react-native';
-import { COLORS } from '../../../constants/theme';
-import SingleMessageComponent from './SingleMessageComponent';
+import { memo } from 'react';
+import { ActivityIndicator, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import character5 from '../../../assets/images/character5.png';
+import { COLORS } from '../../../constants/theme';
+import { ChatMessage } from '../../../interfaces';
 import AnimatedComponent from '../Animation/AnimatedComponent';
+import SingleMessageComponent from './SingleMessageComponent';
 export type props = {
-  messages: Array<any>;
+  messages: ChatMessage[];
   reachedEnd: boolean;
   fetchMessages: () => void;
   loading: boolean;
@@ -40,7 +43,7 @@ const MessageListComponent: React.FC<props> = ({
       )}
       inverted={true}
       onEndReached={reachedEnd ? null : fetchMessages}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={item => item.id.toString()}
       ListFooterComponent={
         loading ? (
           <SafeAreaView>
@@ -57,9 +60,4 @@ const MessageListComponent: React.FC<props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  cards: {
-    backgroundColor: COLORS.GrayPrimary,
-  },
-});
-export default MessageListComponent;
+export default memo(MessageListComponent);

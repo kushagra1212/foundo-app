@@ -1,11 +1,12 @@
 import { FormikProps } from 'formik';
-import { View, Text, FlatList } from 'react-native';
+import React, { useEffect, useMemo } from 'react';
+import { FlatList, Text, View } from 'react-native';
+
+import { ITEMCAT_TO_NUM } from '../../../constants/item';
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost } from '../../../interfaces';
-import React, { useEffect, useMemo } from 'react';
-import { ITEMCAT_TO_NUM } from '../../../constants/item';
+import MiniItemTextIcon from '../../atoms/Item/MiniItemTextIcon';
 import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
-import MiniItemTextIcon from '../../atoms/MiniItemTextIcon';
 type props = FormikProps<AddPost> & {
   isValidHandler: (isValid: boolean) => void;
 };
@@ -18,8 +19,8 @@ const Step5CategoryComponent: React.FC<props> = ({
   errors,
 }) => {
   const categories = useMemo(() => {
-    let categories: Array<[string, number]> = [];
-    for (let element of ITEMCAT_TO_NUM.entries()) {
+    const categories: [string, number][] = [];
+    for (const element of ITEMCAT_TO_NUM.entries()) {
       categories.push(element);
     }
     return categories;
@@ -38,8 +39,7 @@ const Step5CategoryComponent: React.FC<props> = ({
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
-      }}
-    >
+      }}>
       <View style={{ margin: 10, marginTop: 0, marginBottom: 0 }}>
         <Text style={{ ...FONTS.h1 }}>
           Select{' '}
@@ -53,12 +53,11 @@ const Step5CategoryComponent: React.FC<props> = ({
         <AnimationTranslateScale
           translateRange={[0, 0]}
           translateDuration={500}
-          scaleRange={[1, 1]}
+          scaleRange={[0.8, 0.9]}
           scaleDuration={100}
-          translateRangeX={[500, 0]}
+          translateRangeX={[500, 20]}
           tension={100}
-          friction={1000}
-        >
+          friction={1000}>
           <FlatList
             data={categories}
             contentContainerStyle={{
@@ -76,7 +75,7 @@ const Step5CategoryComponent: React.FC<props> = ({
                 }
               />
             )}
-            keyExtractor={(item) => {
+            keyExtractor={item => {
               return item[0].toString();
             }}
           />

@@ -1,12 +1,22 @@
 import { FormikProps } from 'formik';
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { COLORS, FONTS } from '../../../constants/theme';
-import { AddPost, ILocation } from '../../../interfaces';
 import React, { useEffect } from 'react';
-import PickMapComponent from '../../atoms/Map/PickMapComponent';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { useAddItemPostMutation } from '../../../redux/services/post-service';
+import { useSelector } from 'react-redux';
+
 import { MaterialIcons } from '../../../constants/icons';
+import { COLORS, FONTS } from '../../../constants/theme';
+import { AddPost, ILocation, Post } from '../../../interfaces';
+import { useAddItemPostMutation } from '../../../redux/services/post-service';
+import { selectCurrentUser } from '../../../redux/slices/authSlice';
+import PickMapComponent from '../../atoms/Map/PickMapComponent';
+import SingleCardComponent from '../Item/Card/SingleCardComponent';
 type props = FormikProps<AddPost> & {
   isValidHandler: (isValid: boolean) => void;
   closeThisScreen: () => void; // <--- Add this line
@@ -24,8 +34,10 @@ const Step8SetLocationComponent: React.FC<props> = ({
   closeThisScreen,
   resetForm,
 }) => {
+  const user = useSelector(selectCurrentUser);
   const [showMap, setShowMap] = React.useState(true);
   const [addItem, { isLoading }] = useAddItemPostMutation();
+
   useEffect(() => {
     isValidHandler(!errors.location);
   }, [errors.location]);
@@ -56,25 +68,26 @@ const Step8SetLocationComponent: React.FC<props> = ({
       });
     }
   };
+  const item: Post = {
+    fk_userId: user.id,
+    itemName: values.itemName,
+    category: values.category,
+    description: values.description,
+    thumbnail: values.pictures[0].image,
+    firstName: user.firstName,
+    dateTime: values.dateTime,
+    color: values.color,
+    brand: values.brand,
+    city: values.city,
+    isFounded: values.isFounded,
+  };
   return (
-    <View
-      style={{
-        marginTop: '10%',
-        alignSelf: 'center',
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-      <View style={{}}>
-        <Text style={{ ...FONTS.h2 }}>
-          Set an approximate{' '}
-          <Text style={{ color: COLORS.redPrimary }}>Location </Text>
-          for your Item that you've lost
-        </Text>
-      </View>
+    <View style={styles.main_container}>
+      <Text style={{ ...FONTS.h2 }}>
+        Set an approximate{' '}
+        <Text style={{ color: COLORS.redPrimary }}>Location </Text>
+        for your Item that you've lost
+      </Text>
       {showMap ? (
         <View>
           <PickMapComponent
@@ -89,64 +102,38 @@ const Step8SetLocationComponent: React.FC<props> = ({
       ) : (
         <View>
           <TouchableOpacity
-            style={{
-              backgroundColor: COLORS.white,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: 10,
-              margin: 10,
-              borderRadius: 30,
-              elevation: 30,
-              alignSelf: 'center',
-            }}
-            onPress={() => setShowMap(true)}
-          >
-            <Text
-              style={[
-                FONTS.h2,
-                {
-                  color: COLORS.black,
-                  justifyContent: 'center',
-                  textAlign: 'center',
-                  alignSelf: 'center',
-                  alignItems: 'center',
-                },
-              ]}
-            >
+            style={styles.location_button}
+            onPress={() => setShowMap(true)}>
+            <Text style={styles.location_button_text}>
               Reset Location{' '}
               <MaterialIcons
                 name="location-pin"
-                size={25}
+                size={20}
                 color={COLORS.redPrimary}
               />
             </Text>
           </TouchableOpacity>
-          <ActivityIndicator
-            size="large"
-            color={COLORS.greenPrimary}
-            animating={isLoading}
-          />
-          <View
-            style={{ marginTop: '40%', elevation: 50, alignSelf: 'center' }}
-          >
+          {isLoading ? (
+            <ActivityIndicator
+              size="large"
+              color={COLORS.greenPrimary}
+              animating={isLoading}
+            />
+          ) : null}
+          <View style={{ elevation: 50 }}>
+            <SingleCardComponent item={item} navigation={{}} />
             <TouchableOpacity
-              style={{
-                backgroundColor: isLoading ? COLORS.GrayPrimary : COLORS.black,
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: 10,
-                margin: 10,
-                borderRadius: 100,
-                height: 150,
-                width: 150,
-                elevation: 50,
-              }}
+              style={[
+                styles.post_button,
+                {
+                  backgroundColor: isLoading
+                    ? COLORS.GrayPrimary
+                    : COLORS.black,
+                },
+              ]}
               disabled={isLoading}
-              onPress={addPost}
-            >
-              <Text style={[FONTS.h1, { color: COLORS.white }]}>Add Post</Text>
+              onPress={addPost}>
+              <Text style={styles.post_button_text}>Add Post</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -154,5 +141,55 @@ const Step8SetLocationComponent: React.FC<props> = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  main_container: {
+    marginTop: '10%',
+    alignSelf: 'center',
+    width: '90%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  location_button: {
+    backgroundColor: COLORS.white,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    marginTop: 5,
+    borderRadius: 10,
+    elevation: 5,
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.GrayPrimary,
+  },
+  location_button_text: {
+    ...FONTS.h2,
+    color: COLORS.black,
+    justifyContent: 'center',
+    textAlign: 'center',
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  post_button: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    margin: 10,
+    borderRadius: 10,
+    width: '80%',
+    elevation: 15,
+    alignSelf: 'center',
+  },
+  post_button_text: {
+    ...FONTS.h1,
+    color: COLORS.white,
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default Step8SetLocationComponent;

@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { AntDesign, FontAwesome, Ionicons } from '../../constants/icons';
-import { COLORS, FONTS, SIZES } from '../../constants/theme';
-import { FilterItemOn } from '../../interfaces';
+import { StyleSheet, Text, View } from 'react-native';
+
+import { AntDesign } from '../../../constants/icons';
+import { COLORS, FONTS } from '../../../constants/theme';
+import { FilterItemOn } from '../../../interfaces';
 
 type Props = {
   isSelected: boolean;
@@ -24,8 +25,7 @@ const MiniItemColorIcon: React.FC<Props> = ({
         ...styles.btn,
         ...(isSelected ? styles.selected_btn : styles.not_selected_btn),
       }}
-      onTouchEnd={() => onSelect({ color: isSelected ? '' : text })}
-    >
+      onTouchEnd={() => onSelect({ color: isSelected ? '' : text })}>
       <View
         style={[
           {
@@ -38,14 +38,12 @@ const MiniItemColorIcon: React.FC<Props> = ({
             elevation: 3,
           },
           style,
-        ]}
-      ></View>
+        ]}></View>
       <Text
         style={{
           ...FONTS.h4,
           ...(isSelected ? { color: COLORS.white } : { color: COLORS.black }),
-        }}
-      >
+        }}>
         {text}
       </Text>
       {isSelected ? (

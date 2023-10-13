@@ -1,37 +1,32 @@
-import { View, StyleSheet } from 'react-native';
+import { useRef, useState } from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
+
+import { COLORS } from '../../../constants/theme';
 import { webViewTemplate } from './showMapTemplate';
 type props = {
   latitude: number;
   longitude: number;
 };
 const ShowMapComponent: React.FC<props> = ({ latitude, longitude }) => {
-  let webRef: any = undefined;
+  let webRef: any = useRef<WebView>(null).current;
+  const [isMapReady, setIsMapReady] = useState<boolean>(false);
 
   return (
     <View style={{ flex: 1 }}>
-      {/* <MapView
-        region={{
-          latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        style={styles.map}
-      >
-        <Marker
-          coordinate={{
-            latitude: latitude,
-            longitude: longitude,
-          }}
-        />
-      </MapView> */}
+      {!isMapReady && <ActivityIndicator size="large" color={COLORS.primary} />}
       <WebView
-        ref={(r) => (webRef = r)}
+        ref={r => (webRef = r)}
         style={styles.map}
         originWhitelist={['*']}
         source={{
-          html: webViewTemplate({ latitude: latitude, longitude: longitude }),
+          html: webViewTemplate({ latitude, longitude }),
+        }}
+        onLoadEnd={() => {
+          if (webRef) {
+            webRef.injectJavaScript(`map.setZoom(5)`);
+            setIsMapReady(true);
+          }
         }}
       />
     </View>

@@ -39,7 +39,8 @@
           "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
-      "package": "com.kushagra711.foundoapp"
+      "package": "com.kushagra711.foundoapp",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": ""
@@ -49,6 +50,7 @@
         "projectId": "14dc1de5-6c6a-4163-8488-b4977b56f03e"
       }
     },
-    "owner": "kushagra711"
+    "owner": "kushagra711",
+    "plugins": ["@config-plugins/detox"]
   }
 }

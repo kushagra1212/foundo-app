@@ -1,13 +1,20 @@
 import React from 'react';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 
-import { Ionicons } from '../../constants/icons';
-import { COLORS, SIZES } from '../../constants/theme';
+import { Ionicons } from '../../../constants/icons';
+import { COLORS, SIZES } from '../../../constants/theme';
 type AnimationType = 'slide' | 'none' | 'fade' | undefined;
 type Props = {
   isVisible: boolean;
   children: JSX.Element;
-  onClose: (options: any) => void;
+  onClose: (options?: any) => void;
   backgroundFilter: boolean;
   effect?: AnimationType;
   titleText?: string;
@@ -15,6 +22,7 @@ type Props = {
   reset?: () => void;
   height?: string | number;
   iconName?: string;
+  backgroundColor?: string;
 };
 const BottomModal: React.FC<Props> = ({
   isVisible,
@@ -27,6 +35,7 @@ const BottomModal: React.FC<Props> = ({
   effect = 'slide',
   titleText = '',
   refreshAvail = false,
+  backgroundColor = COLORS.lightGrayPrePrimary,
 }) => {
   return (
     <Modal
@@ -34,7 +43,9 @@ const BottomModal: React.FC<Props> = ({
       transparent={true}
       visible={isVisible}
       statusBarTranslucent={true}
-      style={{ backgroundColor: COLORS.lightGrayPrePrimary }}>
+      style={{ backgroundColor }}
+      key={titleText}
+      onRequestClose={onClose}>
       <View style={backgroundFilter ? styles.modal : { height: '100%' }}></View>
       <View style={[styles.modalContent, { height }]}>
         <View style={styles.titleContainer}>
@@ -51,7 +62,7 @@ const BottomModal: React.FC<Props> = ({
           )}
           <Text style={styles.title}>{titleText}</Text>
 
-          <Pressable onPress={onClose} testID="closeButton">
+          <TouchableWithoutFeedback onPressOut={onClose} testID="closeButton">
             <Ionicons
               style={{
                 fontWeight: '500',
@@ -59,7 +70,7 @@ const BottomModal: React.FC<Props> = ({
               name={iconName !== 'close-circle' ? iconName : 'close-circle'}
               size={45}
             />
-          </Pressable>
+          </TouchableWithoutFeedback>
         </View>
         {children}
       </View>

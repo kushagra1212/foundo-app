@@ -3,7 +3,6 @@ import ErrorBoundary from 'react-native-error-boundary';
 import { Provider } from 'react-redux';
 
 import Error from '../../components/Error';
-import { logOut } from '../../redux/slices/authSlice';
 import { store } from '../../redux/store';
 import { handleErrors } from '../../utils';
 import FeedSearchSceen from './FeedSearchScreen';
@@ -11,8 +10,7 @@ import FeedSearchSceen from './FeedSearchScreen';
 describe('<FeedSearchSceen />', () => {
   let FeedSearchSceenRender: React.ReactElement;
   let navigation: any;
-  beforeAll(() => {
-    store.dispatch(logOut());
+  beforeEach(() => {
     navigation = {
       navigate: jest.fn(),
       goBack: jest.fn(),
@@ -51,7 +49,5 @@ describe('<FeedSearchSceen />', () => {
   });
   afterEach(() => {
     jest.clearAllMocks();
-    jest.useFakeTimers();
-    store.dispatch({ type: 'RESET' });
   });
 });

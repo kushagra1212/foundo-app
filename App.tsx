@@ -1,19 +1,18 @@
+import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { ActivityIndicator, Dimensions } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 
 import Error from './src/components/Error';
 import Foundo from './src/components/Foundo';
-import { LoadFoundo } from './src/components/LoadFoundo';
+import { LoadFoundo } from './src/components/molecules/Hooks/Auth/LoadFoundo';
 import { COLORS } from './src/constants/theme';
+import { api } from './src/redux/services/api-service';
 import { store } from './src/redux/store';
 // Re-export the default UI
-
-export const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
-  Dimensions.get('window');
 
 SplashScreen.preventAutoHideAsync();
 // const errorHandler = (error: Error, stackTrace: string) => {
@@ -23,7 +22,6 @@ SplashScreen.preventAutoHideAsync();
 
 const App = () => {
   const [isLoaded, error, credentials] = LoadFoundo();
-
   useEffect(() => {
     if (isLoaded) {
       (async () => {
@@ -45,10 +43,12 @@ const App = () => {
     return <Error error={error} resetError={() => {}} />;
   }
   return (
-    <Provider store={store}>
-      <StatusBar style="dark" />
-      <Foundo credentials={credentials} />
-    </Provider>
+    <ApiProvider api={api}>
+      <Provider store={store}>
+        <StatusBar style="dark" />
+        <Foundo credentials={credentials} />
+      </Provider>
+    </ApiProvider>
   );
 };
 export default App;

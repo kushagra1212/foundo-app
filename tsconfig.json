@@ -18,5 +18,5 @@
     "jest.config.js"
   ],
   "extends": "expo/tsconfig.base",
-  "typeRoots": ["./src/types"]
+  "typeRoots": ["./src/types","detox"]
 }

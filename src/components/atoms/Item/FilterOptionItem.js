@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-import { COLORS, FONTS } from '../../constants/theme';
+import { COLORS, FONTS } from '../../../constants/theme';
 export const LOST_ITEM = 0;
 export const FOUND_ITEM = 1;
 export const FILTER_ITEMS = [
@@ -64,4 +65,4 @@ const styles = StyleSheet.create({
     color: COLORS.black,
   },
 });
-export default FilterOptionComponent;
+export default memo(FilterOptionComponent);

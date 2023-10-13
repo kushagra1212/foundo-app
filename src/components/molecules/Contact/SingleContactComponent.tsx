@@ -1,15 +1,23 @@
+import { memo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Ionicons } from '../../../constants/icons';
 import { COLORS, FONTS } from '../../../constants/theme';
+import { contactType } from '../../../screens/contactScreens/ContactScreen';
 export type props = {
-  contact: any;
+  contact: contactType;
   navigation: any;
+  currentUserId: number;
 };
-const SingleContactComponent: React.FC<props> = ({ contact, navigation }) => {
+const SingleContactComponent: React.FC<props> = ({
+  contact,
+  navigation,
+  currentUserId,
+}) => {
   const handleOpen = () => {
     navigation.navigate('ChatScreen', { contact });
   };
+
   return (
     <TouchableOpacity style={styles.contact} onPress={handleOpen}>
       <View>
@@ -46,4 +54,4 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 });
-export default SingleContactComponent;
+export default memo(SingleContactComponent);

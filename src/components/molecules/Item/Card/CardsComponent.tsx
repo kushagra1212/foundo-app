@@ -1,9 +1,7 @@
+import { memo } from 'react';
 import {
   ActivityIndicator,
-  FlatList,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  StyleSheet,
+  FlatList
 } from 'react-native';
 
 import character5 from '../../../../assets/images/character5.png';
@@ -28,12 +26,6 @@ const CardsComponent: React.FC<props> = ({
   navigation,
   SingleCardComponent,
 }) => {
-  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const { nativeEvent } = event;
-    const { contentOffset } = nativeEvent;
-    const { y } = contentOffset;
-  };
-
   if (!postFound) {
     return (
       <AnimatedComponent
@@ -50,12 +42,12 @@ const CardsComponent: React.FC<props> = ({
       renderItem={({ item }) => (
         <SingleCardComponent
           navigation={navigation}
-          key={item.id.toString()}
+          key={item?.id?.toString()}
           item={item}
         />
       )}
       onEndReached={reachedEnd ? null : fetchPosts}
-      keyExtractor={item => item.id.toString()}
+      keyExtractor={(item: any) => item.id.toString()}
       ListFooterComponent={
         loading ? (
           <ActivityIndicator
@@ -69,9 +61,4 @@ const CardsComponent: React.FC<props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  cards: {
-    backgroundColor: COLORS.GrayPrimary,
-  },
-});
-export default CardsComponent;
+export default memo(CardsComponent);

@@ -1,5 +1,6 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { COLORS, FONTS } from '../../constants/theme';
+import { StyleSheet, Text, View } from 'react-native';
+
+import { COLORS, FONTS } from '../../../constants/theme';
 type props = {
   detailedItem: any;
 };

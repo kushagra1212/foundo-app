@@ -1,18 +1,17 @@
-import React, { useRef } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import { COLORS } from '../../../constants/theme';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming,
-} from 'react-native-reanimated';
+import React from 'react';
+import { Image, StyleSheet, View } from 'react-native';
 import {
   ComposedGesture,
   Gesture,
   GestureDetector,
   GestureType,
 } from 'react-native-gesture-handler';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 
 interface GestureDetectorProps {
   gesture?: ComposedGesture | GestureType;
@@ -25,8 +24,14 @@ enum Direction {
 }
 type props = {
   urls: string[];
+  height?: number;
+  width?: number;
 };
-const AnimatedImageComponent: React.FC<props> = ({ urls }) => {
+const AnimatedImageComponent: React.FC<props> = ({
+  urls,
+  height = 300,
+  width = 300,
+}) => {
   const NewGestureDetector: React.FC<GestureDetectorProps> = GestureDetector;
   const END_POSITION = 250;
   const direction = useSharedValue(Direction.CENTER);
@@ -35,7 +40,7 @@ const AnimatedImageComponent: React.FC<props> = ({ urls }) => {
   const scale2 = useSharedValue(0.5);
   const position2 = useSharedValue(END_POSITION);
   const panGesture = Gesture.Pan()
-    .onUpdate((e) => {
+    .onUpdate(e => {
       if (direction.value === Direction.CENTER) {
         position1.value = e.translationX;
         position2.value = END_POSITION + e.translationX;
@@ -54,7 +59,7 @@ const AnimatedImageComponent: React.FC<props> = ({ urls }) => {
         scale2.value = Math.max(scale2.value - 0.01, 0.5);
       }
     })
-    .onEnd((e) => {
+    .onEnd(e => {
       if (position1.value > END_POSITION / 2) {
         position1.value = withTiming(END_POSITION, { duration: 200 });
         direction.value = Direction.RIGHT;
@@ -93,16 +98,16 @@ const AnimatedImageComponent: React.FC<props> = ({ urls }) => {
         style={{
           width: '100%',
           height: '100%',
-        }}
-      >
-        <Animated.View style={[styles.ball, animatedStyle]}>
+        }}>
+        <Animated.View style={[styles.ball, animatedStyle, { height, width }]}>
           <Image
             source={{ uri: urls[0] }}
             style={{ width: '100%', height: '100%', borderRadius: 10 }}
           />
         </Animated.View>
         {urls.length > 1 && (
-          <Animated.View style={[styles.ball, animatedStyle2]}>
+          <Animated.View
+            style={[styles.ball, animatedStyle2, { height, width }]}>
             <Image
               source={{ uri: urls[1] }}
               style={{ width: '100%', height: '100%', borderRadius: 10 }}
@@ -115,8 +120,6 @@ const AnimatedImageComponent: React.FC<props> = ({ urls }) => {
 };
 const styles = StyleSheet.create({
   ball: {
-    width: 300,
-    height: 300,
     backgroundColor: 'white',
     alignSelf: 'center',
     position: 'absolute',

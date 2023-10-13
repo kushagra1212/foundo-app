@@ -1,13 +1,15 @@
+import * as ImagePicker from 'expo-image-picker';
 import { FormikProps } from 'formik';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { useEffect } from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { MaterialIcons } from '../../../constants/icons';
 import { COLORS, FONTS } from '../../../constants/theme';
 import { AddPost } from '../../../interfaces';
-import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
-import { useEffect } from 'react';
-import { MaterialIcons } from '../../../constants/icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { getBase64FromUrl } from '../../../utils';
-import * as ImagePicker from 'expo-image-picker';
+import AnimationTranslateScale from '../Animation/AnimationTranslateScale';
+
 type props = FormikProps<AddPost> & {
   isValidHandler: (isValid: boolean) => void;
 };
@@ -33,7 +35,7 @@ const Step6UploadPicturesComponent: React.FC<props> = ({
 
     if (!result.canceled) {
       const base64 = await getBase64FromUrl(result.assets[0].uri);
-      let temp = [...values.pictures];
+      const temp = [...values.pictures];
       temp[id].image = base64;
       setFieldValue('pictures', temp);
     }
@@ -52,8 +54,7 @@ const Step6UploadPicturesComponent: React.FC<props> = ({
         justifyContent: 'space-between',
         alignItems: 'center',
       }}
-      mode="margin"
-    >
+      mode="margin">
       <View
         style={{
           display: 'flex',
@@ -62,8 +63,7 @@ const Step6UploadPicturesComponent: React.FC<props> = ({
           alignItems: 'center',
           paddingLeft: 10,
           paddingRight: 10,
-        }}
-      >
+        }}>
         <Text style={{ ...FONTS.h1, lineHeight: 40 }}>
           Add{' '}
           <Text style={{ color: COLORS.bluePrimary, fontSize: 31 }}>
@@ -83,16 +83,14 @@ const Step6UploadPicturesComponent: React.FC<props> = ({
           scaleDuration={100}
           translateRangeX={[500, -20]}
           tension={100}
-          friction={1000}
-        >
+          friction={1000}>
           <View
             style={{
               width: 150,
               elevation: 10,
               backgroundColor: COLORS.white,
               borderRadius: 10,
-            }}
-          >
+            }}>
             <TouchableOpacity onPress={() => showImagePicker(0)}>
               {values.pictures[0].image !== '' ? (
                 <Image
@@ -112,8 +110,7 @@ const Step6UploadPicturesComponent: React.FC<props> = ({
               backgroundColor: COLORS.white,
               borderRadius: 10,
               margin: 10,
-            }}
-          >
+            }}>
             <TouchableOpacity onPress={() => showImagePicker(1)}>
               {values.pictures[1].image !== '' ? (
                 <Image

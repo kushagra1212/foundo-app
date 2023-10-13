@@ -18,25 +18,29 @@ import * as yup from 'yup';
 
 import character1 from '../../assets/images/character1.png';
 import AnimationTranslateScale from '../../components/molecules/Animation/AnimationTranslateScale';
+import { PUSH_NOTIFICATION_LS } from '../../components/molecules/Hooks/Notification/LoadNotificationToken';
 import { Entypo, Ionicons, SimpleLineIcons } from '../../constants/icons';
 import { COLORS, SIZES } from '../../constants/theme';
 import { useUserLoginMutation } from '../../redux/services/auth-service';
 import { setCredentials } from '../../redux/slices/authSlice';
 import { updateFilter } from '../../redux/slices/postSlice';
+import { getTokenFromLocalStorage } from '../../storage/foundo-localstorage';
 
 export type props = {
   navigation: any;
 };
 const SigninScreen: React.FC<props> = ({ navigation }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
-  const [uri, setUri] = useState('./../assets/images/character1.svg');
   const [userLogin, { isLoading }] = useUserLoginMutation();
 
   const dispatch = useDispatch();
 
   const handleLoginSubmit = async (data: object) => {
     try {
-      const res = await userLogin(data).unwrap();
+      const pushNotificationToken =
+        await getTokenFromLocalStorage(PUSH_NOTIFICATION_LS);
+      console.log(pushNotificationToken);
+      const res = await userLogin({ ...data, pushNotificationToken }).unwrap();
       Toast.show({
         type: 'success',
         props: {

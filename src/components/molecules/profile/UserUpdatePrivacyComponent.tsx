@@ -1,10 +1,11 @@
-import React from 'react';
-import { View, StyleSheet, Text, ActivityIndicator } from 'react-native';
+import React, { memo } from 'react';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { COLORS, FONTS } from '../../../constants/theme';
 import { useUpdateUserSettingMutation } from '../../../redux/services/profile-service';
 import { numToBool } from '../../../utils';
-import ToggleComponent from '../../atoms/ToggleComponent';
+import ToggleComponent from '../../atoms/Other/ToggleComponent';
 type props = {
   userSettings: any;
   onClose: () => void;
@@ -23,17 +24,17 @@ const UserUpdatePrivacyComponent: React.FC<props> = ({
 }) => {
   const [updateUserSettings, { isLoading: settingUpdateLoader }] =
     useUpdateUserSettingMutation();
-
   const updatePrivacy = async (state: any) => {
     try {
       await updateUserSettings({
-        userId,
-        ...state,
+        fk_userId: userId,
+        update: state,
       }).unwrap();
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
     <SafeAreaView>
       <View style={styles.view}>
@@ -49,14 +50,10 @@ const UserUpdatePrivacyComponent: React.FC<props> = ({
           <Text style={FONTS.body3}>Allow others to see your Phone Number</Text>
           <ToggleComponent
             value={numToBool(userSettings.displayPhoneNo)}
-            onChange={(value) => {
-              setTimeout(
-                () =>
-                  updatePrivacy({
-                    displayPhoneNo: value ? 1 : 0,
-                  }),
-                500
-              );
+            onChange={value => {
+              updatePrivacy({
+                displayPhoneNo: value ? 1 : 0,
+              });
             }}
           />
         </View>
@@ -66,14 +63,10 @@ const UserUpdatePrivacyComponent: React.FC<props> = ({
           </Text>
           <ToggleComponent
             value={numToBool(userSettings.displayProfilePhoto)}
-            onChange={(value) => {
-              setTimeout(
-                () =>
-                  updatePrivacy({
-                    displayProfilePhoto: value ? 1 : 0,
-                  }),
-                100
-              );
+            onChange={value => {
+              updatePrivacy({
+                displayProfilePhoto: value ? 1 : 0,
+              });
             }}
           />
         </View>
@@ -81,14 +74,10 @@ const UserUpdatePrivacyComponent: React.FC<props> = ({
           <Text style={FONTS.body3}>Allow others to see your Address</Text>
           <ToggleComponent
             value={numToBool(userSettings.displayAddress)}
-            onChange={(value) => {
-              setTimeout(
-                () =>
-                  updatePrivacy({
-                    displayAddress: value ? 1 : 0,
-                  }),
-                500
-              );
+            onChange={value => {
+              updatePrivacy({
+                displayAddress: value ? 1 : 0,
+              });
             }}
           />
         </View>
@@ -136,4 +125,4 @@ const styles = StyleSheet.create({
     height: 100,
   },
 });
-export default UserUpdatePrivacyComponent;
+export default memo(UserUpdatePrivacyComponent);
