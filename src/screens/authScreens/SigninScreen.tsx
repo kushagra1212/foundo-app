@@ -39,7 +39,7 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
     try {
       const pushNotificationToken =
         await getTokenFromLocalStorage(PUSH_NOTIFICATION_LS);
-      console.log(pushNotificationToken);
+
       const res = await userLogin({ ...data, pushNotificationToken }).unwrap();
       Toast.show({
         type: 'success',
@@ -147,9 +147,11 @@ const SigninScreen: React.FC<props> = ({ navigation }) => {
                   </View>
                   <TouchableOpacity
                     style={
-                      isValid ? styles.login_btn_active : styles.login_btn_off
+                      !isValid || isLoading
+                        ? styles.login_btn_off
+                        : styles.login_btn_active
                     }
-                    disabled={!isValid}
+                    disabled={!isValid || isLoading}
                     onPress={() => handleSubmit()}
                     testID="signinButton">
                     <Text style={styles.login_btn_text}>Login</Text>

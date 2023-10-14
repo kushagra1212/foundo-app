@@ -8,9 +8,6 @@ import {
 } from '../../storage/foundo-localstorage';
 import { api } from './api-service';
 
-type Response = {
-  data: any;
-};
 export const authApi = api.injectEndpoints({
   endpoints: builder => ({
     userLogin: builder.mutation({
@@ -62,6 +59,15 @@ export const authApi = api.injectEndpoints({
       },
       invalidatesTags: ['user'],
     }),
+    addLogs: builder.mutation({
+      query: ({ body }: { body: any }) => {
+        return {
+          url: `/logs`,
+          method: 'POST',
+          body,
+        };
+      },
+    }),
   }),
   overrideExisting: true,
 });
@@ -93,4 +99,5 @@ export const {
   useUserVerifyResetPasswordQuery,
   useUserResetPasswordMutation,
   useUserUpdateMutation,
+  useAddLogsMutation,
 } = authApi;

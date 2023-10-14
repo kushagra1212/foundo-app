@@ -18,7 +18,7 @@ import { configure } from '@testing-library/react-native';
  */
 
 configure({ asyncUtilTimeout: 20000 });
-jest.setTimeout(50000);
+jest.setTimeout(40000);
 
 console.error = message => {
   if (message.startsWith('Warning:')) {

@@ -19,7 +19,6 @@ export const profileApi = api.injectEndpoints({
         return `/v1/users/${fk_userId}`;
       },
       transformResponse: response => {
-        console.log(response);
         return response.user as User;
       },
       providesTags: (result, error, arg) => {

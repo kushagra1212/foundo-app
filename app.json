@@ -18,7 +18,8 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kushagra711.foundoapp"
+      "bundleIdentifier": "com.kushagra711.foundoapp",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "versionCode": 2,
@@ -51,6 +52,17 @@
       }
     },
     "owner": "kushagra711",
-    "plugins": ["@config-plugins/detox"]
+    "plugins": [
+      "@config-plugins/detox",
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth"
+    ]
+  },
+  "notification": {
+    "icon": "./src/assets/icons/foundo.png",
+    "color": "#FFFFFF",
+    "androidmode": "default",
+    "androidcollapsedtitle": "updates from foundo app",
+    "iosdisplayinforeground": true
   }
 }

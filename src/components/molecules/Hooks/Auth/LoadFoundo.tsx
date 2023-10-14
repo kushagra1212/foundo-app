@@ -17,7 +17,7 @@ export function LoadFoundo(): [boolean, Error | null, credentialsType] {
   const [isfontLoaded] = useFonts(ROBOTO_FONTS);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [pushToken, notification] = LoadNotificationToken();
+  const [pushToken] = LoadNotificationToken();
 
   const [credentials, setCredentials] = useState<credentialsType>(null);
   const url = Linking.useURL();

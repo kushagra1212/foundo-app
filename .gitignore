@@ -18,5 +18,6 @@ package-lock.json
 .env*
 eas.json
 google-services.json
+GoogleService-Info.plist
 android/
 ios/

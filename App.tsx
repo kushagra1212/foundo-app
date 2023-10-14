@@ -1,4 +1,5 @@
 import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
+import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
@@ -19,6 +20,13 @@ SplashScreen.preventAutoHideAsync();
 //   /* Log the error to an error reporting service */
 //   // console.log(error, stackTrace);
 // };
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 const App = () => {
   const [isLoaded, error, credentials] = LoadFoundo();
@@ -42,6 +50,7 @@ const App = () => {
   if (error) {
     return <Error error={error} resetError={() => {}} />;
   }
+
   return (
     <ApiProvider api={api}>
       <Provider store={store}>

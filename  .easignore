@@ -19,4 +19,5 @@ package-lock.json
 .env.production
 .env
 google-services.json
+GoogleService-Info.plist
 eas.json
