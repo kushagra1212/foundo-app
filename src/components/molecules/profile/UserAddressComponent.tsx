@@ -58,10 +58,10 @@ const UserAddressComponent: React.FC<props> = ({
   };
   const CheckIfLocationEnabled = async () => {
     try {
-      const enabled = await Location.hasServicesEnabledAsync();
+      const { status } = await Location.requestForegroundPermissionsAsync();
 
-      if (enabled) {
-        setLocationServiceEnabled(enabled);
+      if (status === 'granted') {
+        setLocationServiceEnabled(true);
       }
     } catch (err) {
       console.log(err);
@@ -70,11 +70,11 @@ const UserAddressComponent: React.FC<props> = ({
     }
   };
   useEffect(() => {
-    let go = true;
-    if (go && user) setDisplayCurrentAddress(user?.address);
+    let flag = true;
+    if (flag && user?.address) setDisplayCurrentAddress(user?.address);
 
     return () => {
-      go = false;
+      flag = false;
     };
   }, [user]);
   useEffect(() => {
@@ -94,12 +94,6 @@ const UserAddressComponent: React.FC<props> = ({
   const GetCurrentLocation = async () => {
     try {
       setLoading(true);
-      const { status } = await Location.requestForegroundPermissionsAsync();
-
-      if (status !== 'granted') {
-        onClose();
-        return;
-      }
 
       const { coords } = await Location.getCurrentPositionAsync();
 

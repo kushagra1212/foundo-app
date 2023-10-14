@@ -234,7 +234,6 @@ const ProfileScreen: React.FC<props> = ({ navigation }) => {
         backdropComponent={BackDropComponent}>
         <PhoneNumberComponent
           onClose={() => phoneBottomSheetModalRef.current?.close()}
-          phoneNumber={user?.phoneNo}
           userId={user?.id}
         />
       </BottomSheetModal>

@@ -1,4 +1,5 @@
 import { Formik } from 'formik';
+import { useState } from 'react';
 import {
   Image,
   Keyboard,
@@ -34,10 +35,12 @@ interface props {
 const ForgotPasswordScreen: React.FC<props> = () => {
   const [userForgotPassword] = useUserForgotPasswordMutation();
   const forgotPasswordLinkSent = useSelector(selectorgotPasswordStatus);
+  const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const handleSubmit = async (details: object) => {
     try {
+      setLoading(true);
       const res = await userForgotPassword(details).unwrap();
       Toast.show({
         type: 'success',
@@ -56,10 +59,14 @@ const ForgotPasswordScreen: React.FC<props> = () => {
           message: err.data.errorMessage,
         },
       });
+    } finally {
+      setLoading(false);
     }
   };
   const resendEmail = () => {
+    setLoading(true);
     dispatch(setForgotPasswordLinkSent({ forgotPasswordLinkSent: false }));
+    setLoading(false);
   };
   return (
     <SafeAreaView
@@ -125,11 +132,11 @@ const ForgotPasswordScreen: React.FC<props> = () => {
 
                       <TouchableOpacity
                         style={
-                          isValid
-                            ? styles.login_btn_active
-                            : styles.login_btn_off
+                          !isValid || loading
+                            ? styles.login_btn_off
+                            : styles.login_btn_active
                         }
-                        disabled={!isValid}
+                        disabled={!isValid || loading}
                         onPress={() => handleSubmit()}
                         testID="sendButtonForgotPassword">
                         <Text style={styles.login_btn_text}>Send Email</Text>
@@ -174,10 +181,11 @@ const ForgotPasswordScreen: React.FC<props> = () => {
           </View>
           <TouchableOpacity
             style={
-              forgotPasswordLinkSent
-                ? styles.login_btn_active
-                : styles.login_btn_off
+              !forgotPasswordLinkSent || loading
+                ? styles.login_btn_off
+                : styles.login_btn_active
             }
+            disabled={!forgotPasswordLinkSent || loading}
             onPress={resendEmail}>
             <Text style={styles.login_btn_text}>Resend Email</Text>
           </TouchableOpacity>

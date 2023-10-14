@@ -13,6 +13,7 @@ const baseQuery = fetchBaseQuery({
       headers.set('x-auth-token', `${token}`);
     }
     headers.set('Accept', 'application/json');
+    headers.set('Content-Type', 'application/json');
     return headers;
   },
 });

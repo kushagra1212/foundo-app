@@ -14,38 +14,30 @@ export type credentialsType = null | {
 async function schedulePushNotification() {
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: "You've got mail! 📬",
-      body: 'Here is the notification body',
-      data: { data: 'goes here' },
+      title: 'Welcome to Foundo',
+      body: 'Let us help you find your lost items',
     },
-    trigger: { seconds: 2 },
+    trigger: {
+      seconds: 1,
+    },
   });
 }
 export const PUSH_NOTIFICATION_LS = 'PUSH_NOTIFICATION_LS';
-export function LoadNotificationToken(): [string, any] {
+export function LoadNotificationToken(): [string] {
   const [pushToken, setPushToken] = useState('');
-  const [notification, setNotification] = useState<any>(false);
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
   useEffect(() => {
+    schedulePushNotification();
     registerForPushNotificationsAsync()
       .then(async token => {
         if (token) {
           await setItemToLocalStorage(token, PUSH_NOTIFICATION_LS);
+
           setPushToken(token);
         }
       })
       .catch(err => console.log(err));
-
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener(notification => {
-        setNotification(notification);
-      });
-
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener(response => {
-        //console.log(response);
-      });
 
     return () => {
       console.log('Clean up notification');
@@ -58,5 +50,5 @@ export function LoadNotificationToken(): [string, any] {
     };
   }, []);
 
-  return [pushToken, notification];
+  return [pushToken];
 }

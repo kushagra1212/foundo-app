@@ -14,7 +14,6 @@ import {
 import { TextInput } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import character2 from '../../assets/images/character2.png';
@@ -26,37 +25,31 @@ import {
   useUserResetPasswordMutation,
   useUserVerifyResetPasswordQuery,
 } from '../../redux/services/auth-service';
-import {
-  selectCurrentResetToken,
-  selectCurrentUser,
-} from '../../redux/slices/authSlice';
 
 export type props = {
   navigation: any;
+  route: any;
 };
 SplashScreen.preventAutoHideAsync();
-const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const jwtResetToken = useSelector(selectCurrentResetToken);
-  const currUser = useSelector(selectCurrentUser);
-  const [apploading, setAppLoading] = useState(false);
+const ResetPasswordScreen: React.FC<props> = ({ navigation, route }) => {
   const [secureTextEntry, setSecureTextEntry] = useState({ password: true });
   const [userResetPassword, {}] = useUserResetPasswordMutation();
+  const { token, email } = route.params;
   const {
     data: userCredentials,
     error,
     isLoading,
   } = useUserVerifyResetPasswordQuery({
-    email: currUser?.email,
-    token: jwtResetToken,
+    email,
+    token,
   });
 
   const handleSubmit = async ({ password }: { password: string }) => {
     try {
       const res = await userResetPassword({
         password,
-        email: currUser?.email,
-        token: jwtResetToken,
+        email,
+        token,
       }).unwrap();
       Toast.show({
         type: 'success',
@@ -180,9 +173,11 @@ const ResetPasswordScreen: React.FC<props> = ({ navigation }) => {
                     </View>
                     <TouchableOpacity
                       style={
-                        isValid ? styles.login_btn_active : styles.login_btn_off
+                        !isValid || isLoading
+                          ? styles.login_btn_off
+                          : styles.login_btn_active
                       }
-                      disabled={!isValid}
+                      disabled={!isValid || isLoading}
                       onPress={() => handleSubmit()}>
                       <Text style={styles.login_btn_text}>Update Password</Text>
                     </TouchableOpacity>
