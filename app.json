@@ -52,11 +52,7 @@
       }
     },
     "owner": "kushagra711",
-    "plugins": [
-      "@config-plugins/detox",
-      "@react-native-firebase/app",
-      "@react-native-firebase/auth"
-    ]
+    "plugins": ["@config-plugins/detox"]
   },
   "notification": {
     "icon": "./src/assets/icons/foundo.png",
