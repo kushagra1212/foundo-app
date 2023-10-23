@@ -6,17 +6,20 @@
 ## Screenshots
 
 <div align="center">
-  <img src="https://m.media-amazon.com/images/I/81Zw3hm2L+L.jpg" width="200" alt="Screenshot 1">
-  <img src="https://m.media-amazon.com/images/I/81SSA5pUNML.jpg" width="200" alt="Screenshot 2">
-  <img src="https://m.media-amazon.com/images/I/81VvAKqkJNL.jpg" width="200" alt="Screenshot 3">
-  <img src="https://m.media-amazon.com/images/I/81cdDVuNBhL.jpg" width="200" alt="Screenshot 4">
-  
+  <img src="https://m.media-amazon.com/images/I/717yFkA6l1L._SL500_.jpg" width="200" alt="Screenshot 1">
+  <img src="https://m.media-amazon.com/images/I/71HkVGMI0ML._SL500_.jpg" width="200" alt="Screenshot 2">
+  <img src="https://m.media-amazon.com/images/I/71KQjYJOR6L._SL500_.jpg" width="200" alt="Screenshot 3">
+  <img src="https://m.media-amazon.com/images/I/71lEPQldVXL._SL500_.jpg" width="200" alt="Screenshot 4">
+  <img src="https://m.media-amazon.com/images/I/71fjiaN08kL._SL500_.jpg" width="200" alt="Screenshot 4">
+  <img src="https://m.media-amazon.com/images/I/71RG+vyKFxL._SL500_.jpg" width="200" alt="Screenshot 5">
+  <img src="https://m.media-amazon.com/images/I/61ijVuGUrwL._SL500_.jpg" width="200" alt="Screenshot 6">
+  <img src="https://m.media-amazon.com/images/I/71HqQ959FYL._SL500_.jpg" width="200" alt="Screenshot 6">
 </div>
 
-## Demo Video  
+## Preview Video  
 Click the Youtube Icon to watch the demo video on YouTube:
 
-[<img src="https://www.iconpacks.net/icons/2/free-youtube-logo-icon-2431-thumb.png" width="50">](https://www.youtube.com/watch?v=FFfxGZapPZE)
+[<img src="https://www.iconpacks.net/icons/2/free-youtube-logo-icon-2431-thumb.png" width="50">](https://youtu.be/lAMOcoMJo1M?feature=shared)
 
 
 
